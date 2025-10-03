@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binance P2P Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #111827;
+/* gray-900 */
+            --bg-secondary: #1F2937;
+/* gray-800 */
+            --bg-tertiary: #374151;
+/* gray-700 */
+            --text-primary: #F9FAFB;
+/* gray-50 */
+            --text-secondary: #D1D5DB;
+/* gray-300 */
+            --accent-yellow: #FBBF24;
+/* amber-400 */
+            --accent-green: #34D399;
+/* emerald-400 */
+            --accent-red: #F87171;
+/* red-400 */
+            --accent-blue: #60A5FA;
+/* blue-400 */
+            --accent-purple: #A78BFA;
+/* violet-400 */
+            --accent-cyan: #22D3EE;
+/* cyan-400 */
+        }
+        body {
+            font-family: 'Padauk', sans-serif;
+background-color: var(--bg-primary);
+            color: var(--text-primary);
+            scroll-behavior: smooth;
+        }
+        .glass-card {
+            background: rgba(31, 41, 55, 0.6);
+/* bg-secondary with opacity */
+            backdrop-filter: blur(10px);
+border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .btn {
+            transition: all 0.3s ease;
+}
+        .btn:hover {
+            transform: translateY(-2px);
+box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .input-field {
+            background-color: var(--bg-tertiary);
+border: 1px solid transparent;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+        .input-field:focus {
+            border-color: var(--accent-yellow);
+box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.3);
+            outline: none;
+}
+        /* Modal transition */
+        .modal.hidden {
+            opacity: 0;
+pointer-events: none;
+        }
+        .modal {
+            transition: opacity 0.3s ease-in-out;
+}
+        /* Hide number input spinners */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+}
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto max-w-5xl p-4 md:p-6">
+
+        <header class="text-center my-8">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500">Binance P2P Tracker</h1>
+            <p class="text-md md:text-lg text-gray-400 mt-2">သင်၏ USDT Portfolio ကို စီမံခန့်ခွဲပါ</p>
+        </header>
+
+            <section id="dashboard-section" class="mb-8">
+             <div class="glass-card p-4 sm:p-6 rounded-2xl shadow-2xl">
+                <h2 class="text-xl font-bold text-yellow-400 mb-4">သင်၏ Portfolio</h2>
+                <div id="mainDashboard" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 text-center">
+                                 </div>
+            </div>
+        </section>
+        
+        <section id="live-price-section" class="mb-8">
+            <div class="glass-card p-6 rounded-2xl shadow-2xl border-2 border-cyan-400/30 bg-gradient-to-br from-cyan-900/30 via-gray-900 to-gray-900">
+               
+ <div class="max-w-md mx-auto text-center">
+                    <label for="currentMarketPrice" class="block mb-2 font-medium text-cyan-300">Live Portfolio ကြည့်ရန် လက်ရှိ USDT ပေါက်ဈေးထည့်ပါ</label>
+                    <input type="number" id="currentMarketPrice" class="input-field text-white text-xl rounded-lg w-full p-3 text-center" placeholder="4,800">
+                </div>
+            </div>
+        
+</section>
+        
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            <div class="glass-card p-6 rounded-2xl shadow-2xl flex flex-col">
+                <h3 class="text-xl font-bold text-green-400 mb-4">ဝယ်ယူမှုအသစ်</h3>
+             
+   <div class="space-y-4 flex-grow">
+                    <div>
+                        <label for="usdtAmountBuy" class="text-sm text-gray-400">USDT အရေအတွက်</label>
+                        <input type="number" id="usdtAmountBuy" class="input-field w-full p-2.5 rounded-lg mt-1" placeholder="100" required>
+              
+      </div>
+                    <div>
+                        <label for="buyPrice" class="text-sm text-gray-400">၀ယ်ဈေး (MMK)</label>
+                        <input type="number" id="buyPrice" class="input-field w-full p-2.5 rounded-lg mt-1" placeholder="4,750" required>
+             
+       </div>
+                    <div>
+                        <label for="paymentMethodBuy" class="text-sm text-gray-400">ငွေပေးချေမှု</label>
+                        <select id="paymentMethodBuy" class="input-field w-full p-2.5 rounded-lg mt-1">
+                
+            <option value="Kpay">Kpay</option>
+                            <option value="Wavepay">Wavepay</option>
+                        </select>
+                    </div>
+              
+  </div>
+                <button id="addBuyBtn" class="btn w-full mt-6 text-gray-900 bg-green-400 hover:bg-green-500 font-bold rounded-lg text-md px-5 py-3 text-center">မှတ်တမ်းတင်မည်</button>
+                <div id="addBuyError" class="mt-2 text-center text-red-400 font-medium text-sm h-4"></div>
+            </div>
+            
+                   <div class="glass-card p-6 rounded-2xl shadow-2xl flex flex-col">
+                <h3 class="text-xl font-bold text-red-400 mb-4">ရောင်းချမှုအသစ်</h3>
+                <div class="space-y-4 flex-grow">
+                    <div>
+                        <label for="usdtAmountSell" class="text-sm text-gray-400">USDT အရေအတွက်</label>
+ 
+                       <input type="number" id="usdtAmountSell" class="input-field w-full p-2.5 rounded-lg mt-1" placeholder="50" required>
+                    </div>
+                    <div>
+                        <label for="sellPrice" class="text-sm text-gray-400">ရောင်းဈေး 
+(MMK)</label>
+                        <input type="number" id="sellPrice" class="input-field w-full p-2.5 rounded-lg mt-1" placeholder="4,850" required>
+                    </div>
+                    <div>
+                        <label for="paymentMethodSell" class="text-sm 
+text-gray-400">ငွေလက်ခံရရှိမှု</label>
+                        <select id="paymentMethodSell" class="input-field w-full p-2.5 rounded-lg mt-1">
+                            <option value="Kpay">Kpay</option>
+                            <option value="Wavepay">Wavepay</option>
+            
+            </select>
+                    </div>
+                </div>
+                <button id="addSellBtn" class="btn w-full mt-6 text-white bg-red-500 hover:bg-red-600 font-bold rounded-lg text-md px-5 py-3 text-center">မှတ်တမ်းတင်မည်</button>
+                <div id="addSellError" class="mt-2 text-center text-red-400 font-medium text-sm 
+h-4"></div>
+            </div>
+
+             <div class="glass-card p-6 rounded-2xl shadow-2xl flex flex-col">
+                <h3 class="text-xl font-bold text-purple-400 mb-4">Portfolio ချိန်ညှိရန်</h3>
+                <div class="space-y-4 flex-grow">
+               
+     <div>
+                        <label for="usdtAmountAdjust" class="text-sm text-gray-400">USDT အရေအတွက်</label>
+                        <input type="number" id="usdtAmountAdjust" class="input-field w-full p-2.5 rounded-lg mt-1" placeholder="10" required>
+                    </div>
+              
+      <div>
+                        <label for="adjustmentType" class="text-sm text-gray-400">လုပ်ဆောင်ချက်</label>
+                        <select id="adjustmentType" class="input-field w-full p-2.5 rounded-lg mt-1">
+                            <option value="add">အပေါင်း</option>
+        
+                    <option value="subtract">အနှုတ်</option>
+                        </select>
+                    </div>
+                </div>
+                <button id="adjustBtn" class="btn 
+w-full mt-6 text-white bg-purple-500 hover:bg-purple-600 font-bold rounded-lg text-md px-5 py-3 text-center">ချိန်ညှိမည်</button>
+                <div id="adjustError" class="mt-2 text-center text-red-400 font-medium text-sm h-4"></div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            <div class="lg:col-span-2 glass-card p-6 rounded-2xl shadow-2xl">
+    
+            <h2 class="text-xl font-bold text-yellow-400 mb-4">အရောင်းအဝယ် မှတ်တမ်းများ</h2>
+                <div id="transactionHistoryContainer" class="space-y-3 max-h-[400px] overflow-y-auto pr-2">
+                    <div id="noTransactionsText" class="text-center py-8">
+                        <svg class="mx-auto h-12 w-12 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" 
+stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                        <h3 class="mt-2 text-sm font-medium text-gray-400">မှတ်တမ်းများ မရှိသေးပါ</h3>
+                        <p class="mt-1 text-sm text-gray-500">အရောင်းအဝယ်အသစ် ထည့်သွင်းလိုက်ပါ။</p>
+                    </div>
+ 
+               </div>
+            </div>
+             <div class="lg:col-span-1 glass-card p-6 rounded-2xl shadow-2xl">
+                <h3 class="text-xl font-bold text-yellow-400 mb-4">ငွေပေးချေမှု Summary</h3>
+                <div id="paymentSummaryContainer" class="space-y-3 
+text-sm"></div>
+            </div>
+        </section>
+
+        <section class="glass-card p-6 rounded-2xl shadow-2xl border border-red-500/30">
+            <h2 class="text-xl font-bold text-red-400 mb-4">Settings</h2>
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 mb-4 md:mb-0">သင်၏ 
+မှတ်တမ်းများအားလုံးကို ဖျက်သိမ်းပါ။<br><span class="font-bold">ဤလုပ်ဆောင်ချက်ကို ပြန်ပြင်၍မရပါ။</span></p>
+                <button id="clearDataBtn" class="btn text-white bg-red-600 hover:bg-red-700 font-bold rounded-lg text-md px-5 py-3 text-center">ဒေတာအားလုံးဖျက်မည်</button>
+            </div>
+        </section>
+
+
+        <footer class="text-center text-gray-600 text-sm mt-8">
+            <p>Binance P2P Tracker &copy;
+2024</p>
+        </footer>
+
+    </div>
+    
+    <div id="editModal" class="modal hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
+        <div class="glass-card p-6 rounded-2xl shadow-2xl w-full max-w-md">
+            <h3 id="editModalTitle" class="text-xl font-bold mb-4">မှတ်တမ်းပြင်ဆင်ရန်</h3>
+            <div class="space-y-4">
+                <div>
+  
+                  <label for="editUsdtAmount" class="text-sm text-gray-400">USDT အရေအတွက်</label>
+                    <input type="number" id="editUsdtAmount" class="input-field w-full p-2.5 rounded-lg mt-1" required>
+                </div>
+                <div id="editPriceContainer">
+                 
+   <label for="editPrice" class="text-sm text-gray-400">ဈေးနှုန်း (MMK)</label>
+                    <input type="number" id="editPrice" class="input-field w-full p-2.5 rounded-lg mt-1" required>
+                </div>
+                <div id="editPaymentContainer">
+                    <label for="editPaymentMethod" class="text-sm text-gray-400">ငွေပေးချေမှု</label>
+         
+           <select id="editPaymentMethod" class="input-field w-full p-2.5 rounded-lg mt-1">
+                        <option value="Kpay">Kpay</option>
+                        <option value="Wavepay">Wavepay</option>
+                    </select>
+             
+   </div>
+            </div>
+            <div id="editError" class="mt-4 text-center text-red-400 font-medium text-sm h-4"></div>
+            <div class="mt-6 flex justify-end gap-4">
+                <button id="cancelEditBtn" class="btn text-gray-300 bg-gray-600 hover:bg-gray-500 font-bold rounded-lg text-md px-5 py-2.5 text-center">မလုပ်တော့ပါ</button>
+                <button id="saveEditBtn" class="btn text-gray-900 bg-yellow-400 hover:bg-yellow-500 font-bold 
+rounded-lg text-md px-5 py-2.5 text-center">သိမ်းဆည်းမည်</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmClearModal" class="modal hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
+        <div class="glass-card p-6 rounded-2xl shadow-2xl w-full max-w-md text-center">
+            <svg class="mx-auto h-12 w-12 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 
+1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
+            <h3 class="text-xl font-bold mt-4">သေချာပါသလား?</h3>
+            <p class="text-gray-400 mt-2">သင်၏ မှတ်တမ်းများအားလုံး အပြီးတိုင် ဖျက်သိမ်းသွားမည်ဖြစ်ပြီး ပြန်လည်ရယူနိုင်တော့မည် မဟုတ်ပါ။</p>
+            <div class="mt-6 flex justify-center gap-4">
+                <button id="cancelClearBtn" class="btn text-gray-300 bg-gray-600 hover:bg-gray-500 font-bold rounded-lg text-md px-8 py-2.5 text-center">မလုပ်တော့ပါ</button>
+              
+  <button id="confirmClearBtn" class="btn text-white bg-red-600 hover:bg-red-700 font-bold rounded-lg text-md px-8 py-2.5 text-center">အတည်ပြုသည်</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="confirmDeleteTxModal" class="modal hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
+        <div class="glass-card p-6 rounded-2xl shadow-2xl w-full max-w-md text-center">
+            <svg class="mx-auto h-12 w-12 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="none" 
+viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
+            <h3 class="text-xl font-bold mt-4">မှတ်တမ်း ဖျက်မည်?</h3>
+            <p class="text-gray-400 mt-2">ဤမှတ်တမ်းကို အပြီးတိုင် ဖျက်သိမ်းရန် သေချာပါသလား?</p>
+            <div class="mt-6 flex justify-center gap-4">
+                <button id="cancelDeleteTxBtn" class="btn text-gray-300 bg-gray-600 hover:bg-gray-500 font-bold rounded-lg text-md px-8 py-2.5 text-center">မလုပ်တော့ပါ</button>
+  
+              <button id="confirmDeleteTxBtn" class="btn text-white bg-red-600 hover:bg-red-700 font-bold rounded-lg text-md px-8 py-2.5 text-center">ဖျက်မည်</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+/* obfuscated */
+const _0x4ff8e1=_0x5337;(function(_0x4ea0eb,_0xd4fa46){const _0x5046c3=_0x5337,_0x6cc554=_0x4ea0eb();while(!![]){try{const _0x1acfae=parseInt(_0x5046c3(0x214))/0x1+parseInt(_0x5046c3(0x121))/0x2*(-parseInt(_0x5046c3(0x128))/0x3)+parseInt(_0x5046c3(0x116))/0x4+-parseInt(_0x5046c3(0x176))/0x5+parseInt(_0x5046c3(0x1cf))/0x6*(parseInt(_0x5046c3(0x11b))/0x7)+parseInt(_0x5046c3(0x1f5))/0x8+-parseInt(_0x5046c3(0x156))/0x9;if(_0x1acfae===_0xd4fa46)break;else _0x6cc554['push'](_0x6cc554['shift']());}catch(_0x441fa7){_0x6cc554['push'](_0x6cc554['shift']());}}}(_0x5c9c,0xc16f6),document[_0x4ff8e1(0x12d)](_0x4ff8e1(0x1ec),()=>{const _0x208de0=_0x4ff8e1,_0x1b4c93={'khgyt':_0x208de0(0x170),'GcAvH':_0x208de0(0x16b),'fKilD':function(_0x5b1d68,_0x376c39){return _0x5b1d68===_0x376c39;},'ZCNxs':_0x208de0(0x1d8),'CLnRa':function(_0x7fdfbf){return _0x7fdfbf();},'rGnAP':_0x208de0(0x14d),'acpVR':_0x208de0(0x19e),'DsNzP':function(_0x47d5f1,_0x35c402){return _0x47d5f1*_0x35c402;},'JLlMo':_0x208de0(0x1a5),'qexHK':_0x208de0(0x20f),'uKACT':_0x208de0(0x1b6),'kJyPZ':_0x208de0(0x16e),'wgLzt':'Kpay','lXxtz':_0x208de0(0x16c),'boaOV':_0x208de0(0x13f),'QFyXI':function(_0x28a35a,_0x4159ce){return _0x28a35a!==_0x4159ce;},'SdPJw':_0x208de0(0x1ca),'kOExm':'none','gqLDh':function(_0x20421f){return _0x20421f();},'BuKxN':function(_0x50a6b7,_0x10f52a){return _0x50a6b7===_0x10f52a;},'CaOQI':_0x208de0(0x199),'QZXqU':_0x208de0(0x1c9),'jhges':_0x208de0(0x19c),'dxlzw':_0x208de0(0x1b0),'EDerF':function(_0x360b5e,_0x3e7f52){return _0x360b5e+_0x3e7f52;},'hbPzC':function(_0x1f886b,_0x4f7054){return _0x1f886b(_0x4f7054);},'Qvnsk':function(_0xbb1df4,_0x1a52f,_0x2d4087){return _0xbb1df4(_0x1a52f,_0x2d4087);},'KFuAc':function(_0x517895,_0x32e220){return _0x517895/_0x32e220;},'OYImw':function(_0x295807,_0x20e668){return _0x295807-_0x20e668;},'lWWMl':function(_0x3d3f77,_0x100b4b){return _0x3d3f77-_0x100b4b;},'nefSh':function(_0x259555,_0x18e4f5){return _0x259555>_0x18e4f5;},'LNEoP':function(_0x31e651,_0x1ea94b){return _0x31e651>_0x1ea94b;},'YlVRj':function(_0x435e87,_0x287bf5){return _0x435e87>=_0x287bf5;},'cqOJd':_0x208de0(0x107),'gcwSh':function(_0x4d09f0,_0x292a22){return _0x4d09f0>=_0x292a22;},'ZqUse':'en-US','IITMy':_0x208de0(0x206),'mbWKi':'hidden','lLpWm':function(_0x130ba2,_0x44b9ef){return _0x130ba2===_0x44b9ef;},'ZMcjy':_0x208de0(0x1ea),'vxBCa':function(_0x2cf216,_0x1e088c){return _0x2cf216(_0x1e088c);},'NrTWU':function(_0x3d2ae0,_0x122bad){return _0x3d2ae0(_0x122bad);},'ajFdp':function(_0x504c00,_0x2693fa){return _0x504c00<=_0x2693fa;},'pfCWA':function(_0x495ea4,_0x26c29b){return _0x495ea4>_0x26c29b;},'voqyR':function(_0x2c150c){return _0x2c150c();},'YxExs':function(_0x248ec8){return _0x248ec8();},'gFyaQ':function(_0x23a1a0,_0x509d1e){return _0x23a1a0(_0x509d1e);},'uGinh':function(_0x44ccfc,_0x324945){return _0x44ccfc(_0x324945);},'wzfvv':_0x208de0(0x12a),'Khpid':function(_0x2429e6,_0x337998){return _0x2429e6===_0x337998;},'nhDWb':function(_0xfc524d,_0x23c359){return _0xfc524d>_0x23c359;},'yayQP':'SUnIT','axGBh':'ဈေးနှုန်း\x20မှန်ကန်စွာဖြည့်ပါ။','elKTg':function(_0x2a01c9){return _0x2a01c9();},'PeAog':function(_0x56b650,_0x4ead8c){return _0x56b650(_0x4ead8c);},'fEKZF':function(_0x3a5a68,_0x19de4a){return _0x3a5a68===_0x19de4a;},'uSGHi':_0x208de0(0x1dd),'DZIpR':function(_0xe9a348){return _0xe9a348();},'BTMNi':function(_0x390164,_0x7d94db){return _0x390164!==_0x7d94db;},'EkDUo':function(_0x69dbd1,_0x2c421d){return _0x69dbd1<=_0x2c421d;},'tIGDW':function(_0x116589,_0x486e49){return _0x116589<=_0x486e49;},'MlYTo':'TzAvV','mVjVZ':function(_0x2a1b95){return _0x2a1b95();},'BupEQ':function(_0x4757d7,_0x59e5df){return _0x4757d7===_0x59e5df;},'WiQKE':function(_0x4c640e){return _0x4c640e();},'bkAzZ':_0x208de0(0x19f),'efKSv':_0x208de0(0x113),'LBVfY':function(_0x385035,_0x3af1f5){return _0x385035<=_0x3af1f5;},'udAXO':_0x208de0(0x14c),'KHHlD':_0x208de0(0x18e),'uZlOX':_0x208de0(0x1c0),'IUJoP':function(_0x2c7c20,_0x567654){return _0x2c7c20(_0x567654);},'EJeOC':function(_0x267a75,_0x345c83){return _0x267a75(_0x345c83);},'aOtUZ':function(_0x27dafa,_0x5b546d){return _0x27dafa===_0x5b546d;},'VsuLU':_0x208de0(0x1fd),'qusZc':_0x208de0(0x10a),'DPkGN':_0x208de0(0x178),'CFzOi':_0x208de0(0x19a),'BvsCJ':'paymentMethodBuy','niJLo':_0x208de0(0x1f7),'YmagD':_0x208de0(0x16a),'kHJMP':_0x208de0(0x1ae),'RAaFk':'paymentMethodSell','XpXci':_0x208de0(0x1c4),'LRAHt':_0x208de0(0x19d),'njzzC':_0x208de0(0x17f),'Hxdaf':'adjustmentType','owisN':_0x208de0(0x138),'ylOaY':_0x208de0(0x1a4),'BiQmv':_0x208de0(0x1e8),'EdKxg':_0x208de0(0x1ef),'DnpnI':'transactionHistoryContainer','DlvLD':_0x208de0(0x1e0),'rwaKQ':_0x208de0(0x193),'ZGDLk':'editModal','odYGI':_0x208de0(0x196),'aEKey':_0x208de0(0x13e),'fyQjW':_0x208de0(0x1ac),'FqAsW':'editPrice','ewAij':_0x208de0(0x141),'yzXzF':_0x208de0(0x20b),'zzQsB':_0x208de0(0x1e3),'FCZAi':'clearDataBtn','CguUa':_0x208de0(0x124),'tQcRp':'cancelClearBtn','IEoRf':_0x208de0(0x181),'MZyZR':_0x208de0(0x202),'qNVMF':function(_0x3f5e9a){return _0x3f5e9a();}},_0x31943b=document[_0x208de0(0x15f)](_0x208de0(0x11d)),_0x343fd4=document[_0x208de0(0x15f)](_0x1b4c93[_0x208de0(0x119)]),_0x243d44=document[_0x208de0(0x15f)](_0x1b4c93['BvsCJ']),_0x386e51=document[_0x208de0(0x15f)](_0x208de0(0x200)),_0x399362=document[_0x208de0(0x15f)](_0x1b4c93[_0x208de0(0x14b)]),_0x3b5e2b=document['getElementById'](_0x1b4c93[_0x208de0(0x111)]),_0x5904b8=document[_0x208de0(0x15f)](_0x1b4c93[_0x208de0(0x1ed)]),_0x44f1c3=document['getElementById'](_0x1b4c93[_0x208de0(0x154)]),_0x582907=document[_0x208de0(0x15f)](_0x1b4c93[_0x208de0(0x179)]),_0x5c4818=document['getElementById'](_0x1b4c93[_0x208de0(0x174)]),_0x46ba62=document['getElementById'](_0x1b4c93[_0x208de0(0x1fb)]),_0x1bf671=document[_0x208de0(0x15f)](_0x1b4c93[_0x208de0(0x1c5)]),_0x11d03e=document['getElementById'](_0x1b4c93['owisN']),_0x2959b5=document[_0x208de0(0x15f)](_0x1b4c93[_0x208de0(0x1d1)]),_0x4edfb8=document['getElementById'](_0x1b4c93[_0x208de0(0x18f)]),_0x2b5b93=document[_0x208de0(0x15f)](_0x1b4c93['EdKxg']),_0x379e77=document['getElementById'](_0x1b4c93[_0x208de0(0x132)]),_0xc6d483=document['getElementById'](_0x1b4c93[_0x208de0(0x1b2)]),_0x2d64bc=document[_0x208de0(0x15f)](_0x1b4c93['rwaKQ']),_0x48e62b=document[_0x208de0(0x15f)](_0x1b4c93[_0x208de0(0x114)]),_0x2b93bb=document[_0x208de0(0x15f)](_0x1b4c93['odYGI']),_0xc88a6b=document[_0x208de0(0x15f)](_0x1b4c93[_0x208de0(0x1e1)]),_0x343ae8=document[_0x208de0(0x15f)](_0x1b4c93[_0x208de0(0x1af)]),_0x4ff4ed=document[_0x208de0(0x15f)]('editUsdtAmount'),_0x260c5f=document[_0x208de0(0x15f)](_0x1b4c93[_0x208de0(0x168)]),_0x412051=document[_0x208de0(0x15f)](_0x1b4c93['ewAij']),_0x4012b9=document[_0x208de0(0x15f)](_0x1b4c93[_0x208de0(0x15e)]),_0x24d6e0=document[_0x208de0(0x15f)]('editPaymentContainer'),_0x22aeac=document[_0x208de0(0x15f)](_0x1b4c93[_0x208de0(0x1db)]),_0x5defb0=document[_0x208de0(0x15f)](_0x208de0(0x1d7)),_0x239694=document['getElementById']('cancelEditBtn'),_0x992150=document[_0x208de0(0x15f)](_0x1b4c93[_0x208de0(0x171)]),_0x4f8be3=document[_0x208de0(0x15f)](_0x1b4c93['CguUa']),_0x36a80f=document['getElementById'](_0x1b4c93[_0x208de0(0x117)]),_0x156f45=document[_0x208de0(0x15f)](_0x1b4c93['IEoRf']),_0x4fcc1b=document[_0x208de0(0x15f)](_0x1b4c93[_0x208de0(0x182)]);let _0x4c85c4=[];function _0x2eae0d(){const _0x41fc85=_0x208de0;localStorage[_0x41fc85(0x150)](_0x1b4c93[_0x41fc85(0x1e2)],JSON[_0x41fc85(0x1df)](_0x4c85c4));}function _0x587db9(){const _0x3d67b3=_0x208de0;if(_0x1b4c93[_0x3d67b3(0x11c)](_0x1b4c93[_0x3d67b3(0x144)],_0x1b4c93[_0x3d67b3(0x144)])){const _0x5536ee=localStorage[_0x3d67b3(0x1f9)](_0x1b4c93['khgyt']);if(_0x5536ee)_0x4c85c4=JSON[_0x3d67b3(0x153)](_0x5536ee);_0x51cf2b();}else{_0x521f63[_0x3d67b3(0x184)]=_0x1b4c93['GcAvH'];return;}}function _0x51cf2b(){const _0x2b857c=_0x208de0;_0x1b4c93[_0x2b857c(0x194)](_0x19fb92),_0x1b4c93[_0x2b857c(0x194)](_0x3b169b);}function _0x4a3f5d(_0x1f84db,_0x2d1f0b){const _0x1c0ab8=_0x208de0;_0x2d64bc[_0x1c0ab8(0x105)]=_0x1c0ab8(0x1ee)+(_0x1f84db[_0x1c0ab8(0x191)]||0x0)[_0x1c0ab8(0x1ff)]()+_0x1c0ab8(0x1d3)+(_0x1f84db['Wavepay']||0x0)[_0x1c0ab8(0x1ff)]()+_0x1c0ab8(0x1c8)+(_0x2d1f0b[_0x1c0ab8(0x191)]||0x0)[_0x1c0ab8(0x1ff)]()+_0x1c0ab8(0x1d3)+(_0x2d1f0b[_0x1c0ab8(0x16c)]||0x0)[_0x1c0ab8(0x1ff)]()+_0x1c0ab8(0x1b5);}function _0x19fb92(){const _0xb40157=_0x208de0;if(_0x4c85c4[_0xb40157(0x12e)]===0x0)_0x1b4c93[_0xb40157(0x212)](_0x1b4c93['SdPJw'],_0xb40157(0x219))?(_0x379e77[_0xb40157(0x105)]='',_0x379e77['appendChild'](_0xc6d483),_0xc6d483[_0xb40157(0x210)][_0xb40157(0x147)]=_0xb40157(0x14d)):(_0x49dc48[_0xb40157(0x105)]='',_0x40b6e1[_0xb40157(0x1a6)](_0x344af2),_0x5db78c['style'][_0xb40157(0x147)]=_0x1b4c93[_0xb40157(0x1b3)]);else{_0xc6d483['style'][_0xb40157(0x147)]=_0x1b4c93[_0xb40157(0x18a)],_0x379e77[_0xb40157(0x105)]='';const _0x384642=[..._0x4c85c4]['sort']((_0x38e19d,_0x354673)=>_0x354673['id']-_0x38e19d['id']);_0x384642['forEach'](_0x14bde4=>{const _0x5e1e67=_0xb40157,_0x5e3990=document[_0x5e1e67(0x15b)](_0x1b4c93[_0x5e1e67(0x204)]),_0x3c6eb3=_0x1b4c93['DsNzP'](_0x14bde4[_0x5e1e67(0x1a8)],_0x14bde4[_0x5e1e67(0x103)]);let _0x56173d,_0x3f92eb,_0x2f4a17,_0x29ebf9,_0x4517b2,_0x248591;switch(_0x14bde4[_0x5e1e67(0x1bb)]){case _0x1b4c93[_0x5e1e67(0x1fe)]:_0x56173d=_0x5e1e67(0x1ce),_0x3f92eb=_0x5e1e67(0x1f6),_0x2f4a17='text-green-400',_0x29ebf9=_0x5e1e67(0x1bf)+_0x14bde4[_0x5e1e67(0x1a8)]['toLocaleString']()+_0x5e1e67(0x1bc)+_0x14bde4[_0x5e1e67(0x103)][_0x5e1e67(0x1ff)]()+'\x20MMK</p>',_0x248591='<p\x20class=\x22font-bold\x20text-white\x22>'+_0x3c6eb3[_0x5e1e67(0x1ff)]()+_0x5e1e67(0x12f);break;case _0x5e1e67(0x199):_0x56173d=_0x5e1e67(0x1a7),_0x3f92eb='ရောင်းချမှု',_0x2f4a17=_0x1b4c93[_0x5e1e67(0x201)],_0x29ebf9=_0x5e1e67(0x1bf)+_0x14bde4[_0x5e1e67(0x1a8)][_0x5e1e67(0x1ff)]()+'\x20USDT\x20@\x20'+_0x14bde4[_0x5e1e67(0x103)]['toLocaleString']()+_0x5e1e67(0x12f),_0x248591='<p\x20class=\x22font-bold\x20text-white\x22>'+_0x3c6eb3[_0x5e1e67(0x1ff)]()+'\x20MMK</p>';break;case _0x1b4c93['uKACT']:_0x56173d=_0x5e1e67(0x104),_0x3f92eb=_0x5e1e67(0x177),_0x2f4a17=_0x5e1e67(0x16e),_0x29ebf9='<p\x20class=\x22text-xs\x20text-gray-400\x22>'+_0x14bde4[_0x5e1e67(0x1a8)][_0x5e1e67(0x1ff)]()+_0x5e1e67(0x159),_0x248591='';break;case _0x5e1e67(0x1ea):_0x56173d='<svg\x20xmlns=\x22http://www.w3.org/2000/svg\x22\x20class=\x22h-6\x20w-6\x20text-purple-400\x22\x20fill=\x22none\x22\x20viewBox=\x220\x200\x2024\x2024\x22\x20stroke=\x22currentColor\x22><path\x20stroke-linecap=\x22round\x22\x20stroke-linejoin=\x22round\x22\x20stroke-width=\x222\x22\x20d=\x22M15\x2012H9m12\x200a9\x209\x200\x2011-18\x200\x209\x209\x200\x200118\x200z\x22\x20/></svg>',_0x3f92eb='ချိန်ညှိမှု\x20(အနှုတ်)',_0x2f4a17=_0x1b4c93['kJyPZ'],_0x29ebf9=_0x5e1e67(0x1bf)+_0x14bde4[_0x5e1e67(0x1a8)][_0x5e1e67(0x1ff)]()+_0x5e1e67(0x159),_0x248591='';break;}switch(_0x14bde4[_0x5e1e67(0x20c)]){case _0x1b4c93[_0x5e1e67(0x115)]:_0x4517b2='bg-blue-600/50\x20text-blue-300';break;case _0x1b4c93[_0x5e1e67(0x1ab)]:_0x4517b2=_0x5e1e67(0x17b);break;default:_0x4517b2=_0x5e1e67(0x1e4);}_0x5e3990[_0x5e1e67(0x195)]=_0x1b4c93[_0x5e1e67(0x12b)],_0x5e3990[_0x5e1e67(0x105)]=_0x5e1e67(0x185)+_0x56173d+_0x5e1e67(0x10d)+_0x2f4a17+'\x22>'+_0x3f92eb+_0x5e1e67(0x164)+_0x29ebf9+_0x5e1e67(0x197)+_0x248591+_0x5e1e67(0x16f)+_0x4517b2+'\x22>'+(_0x14bde4[_0x5e1e67(0x20c)]||'')+_0x5e1e67(0x143)+_0x14bde4['id']+_0x5e1e67(0x1de)+_0x14bde4['id']+_0x5e1e67(0x1e9),_0x379e77[_0x5e1e67(0x1a6)](_0x5e3990);});}}function _0x3b169b(){const _0x4dacf8=_0x208de0,_0x3aac51={'EYEpT':function(_0x49f3e9){const _0x182958=_0x5337;return _0x1b4c93[_0x182958(0x131)](_0x49f3e9);},'jJRfc':function(_0x2d33e3,_0x21f883){return _0x2d33e3*_0x21f883;},'ryipA':function(_0x553b62,_0x189104){const _0x438ef6=_0x5337;return _0x1b4c93[_0x438ef6(0x1cc)](_0x553b62,_0x189104);},'pcwPj':_0x4dacf8(0x1a5),'jIYOr':function(_0x176b46,_0x15771f){return _0x176b46+_0x15771f;},'FxLfb':_0x1b4c93[_0x4dacf8(0x1da)],'ScGXQ':function(_0x417b7c,_0x178c68){const _0x42a97c=_0x4dacf8;return _0x1b4c93[_0x42a97c(0x11c)](_0x417b7c,_0x178c68);},'njSOi':function(_0x1da191,_0x3caf6b){return _0x1b4c93['BuKxN'](_0x1da191,_0x3caf6b);},'Rirpt':'add','idUor':function(_0x582010,_0x4b52e5){return _0x582010!==_0x4b52e5;},'sSIht':_0x1b4c93['QZXqU'],'OTdKn':_0x4dacf8(0x1ea),'QKJtN':_0x1b4c93[_0x4dacf8(0x1f3)],'STioC':_0x1b4c93[_0x4dacf8(0x1d2)],'qxWpY':function(_0x1d2cfc,_0xd55b58){const _0x3135b8=_0x4dacf8;return _0x1b4c93[_0x3135b8(0x1e6)](_0x1d2cfc,_0xd55b58);}},_0x363eef=_0x1b4c93[_0x4dacf8(0x216)](parseFloat,_0x4edfb8[_0x4dacf8(0x1cd)]);let _0x2bda44=0x0,_0x2dbad0=0x0,_0x25b1f6=0x0,_0x43fda6=0x0;const _0x427811={'Kpay':0x0,'Wavepay':0x0},_0x54720d={'Kpay':0x0,'Wavepay':0x0};_0x4c85c4[_0x4dacf8(0x106)](_0x43bc32=>{const _0x558152=_0x4dacf8,_0x4e3d0d=_0x3aac51['jJRfc'](_0x43bc32[_0x558152(0x1a8)],_0x43bc32['price']);if(_0x3aac51[_0x558152(0x15c)](_0x43bc32[_0x558152(0x1bb)],_0x3aac51[_0x558152(0x152)]))_0x2bda44+=_0x43bc32[_0x558152(0x1a8)],_0x2dbad0+=_0x4e3d0d,_0x427811[_0x43bc32[_0x558152(0x20c)]]=_0x3aac51[_0x558152(0x1e7)](_0x427811[_0x43bc32[_0x558152(0x20c)]]||0x0,_0x4e3d0d);else{if(_0x43bc32['type']===_0x3aac51['FxLfb'])_0x3aac51[_0x558152(0x183)]('POcpV',_0x558152(0x1f1))?(_0x604770='<p\x20class=\x22text-lg\x20md:text-xl\x20font-bold\x20text-gray-500\x22>-</p>',_0x1c594d=''):(_0x25b1f6+=_0x43bc32[_0x558152(0x1a8)],_0x43fda6+=_0x4e3d0d,_0x54720d[_0x43bc32[_0x558152(0x20c)]]=_0x3aac51[_0x558152(0x1e7)](_0x54720d[_0x43bc32[_0x558152(0x20c)]]||0x0,_0x4e3d0d));else{if(_0x3aac51['njSOi'](_0x43bc32[_0x558152(0x1bb)],_0x3aac51[_0x558152(0x218)])){if(_0x3aac51[_0x558152(0x20a)](_0x3aac51['sSIht'],_0x3aac51[_0x558152(0x187)])){const _0x379f7a=_0x111b2b(_0x35cd2d[_0x558152(0x112)]['deletingId']);_0x379f7a&&(_0x202f1c=_0x2e9093[_0x558152(0x125)](_0x97603f=>_0x97603f['id']!==_0x379f7a),_0x3aac51[_0x558152(0x188)](_0x49e59e),_0x3aac51[_0x558152(0x188)](_0x22b9d8),_0x2f8aed(_0x3dccd9));}else _0x2bda44+=_0x43bc32[_0x558152(0x1a8)];}else{if(_0x43bc32[_0x558152(0x1bb)]===_0x3aac51[_0x558152(0x10b)]){if(_0x3aac51[_0x558152(0x11a)]===_0x3aac51[_0x558152(0x18b)]){if(_0xc6b6f9[_0x558152(0x11f)]===_0x33f11e)_0x3495bb(_0x1d9a10);}else _0x2bda44-=_0x43bc32[_0x558152(0x1a8)];}}}}}),_0x1b4c93[_0x4dacf8(0x109)](_0x4a3f5d,_0x427811,_0x54720d);const _0x46d6e1=_0x4c85c4[_0x4dacf8(0x125)](_0x960939=>_0x960939[_0x4dacf8(0x1bb)]===_0x4dacf8(0x1a5)||_0x960939[_0x4dacf8(0x1bb)]===_0x4dacf8(0x1b6))[_0x4dacf8(0x208)]((_0x16f35e,_0x5400fa)=>_0x16f35e+_0x5400fa[_0x4dacf8(0x1a8)],0x0),_0x44d353=_0x46d6e1>0x0?_0x1b4c93[_0x4dacf8(0x1d0)](_0x2dbad0,_0x46d6e1):0x0,_0xfabe08=_0x25b1f6*_0x44d353,_0x47b262=_0x1b4c93[_0x4dacf8(0x20e)](_0x43fda6,_0xfabe08),_0x5ab91b=_0x1b4c93[_0x4dacf8(0x192)](_0x2bda44,_0x25b1f6);let _0x1be1ce,_0x3d43bd;if(_0x1b4c93[_0x4dacf8(0x180)](_0x5ab91b,0.001)&&!_0x1b4c93[_0x4dacf8(0x216)](isNaN,_0x363eef)&&_0x1b4c93[_0x4dacf8(0x1d4)](_0x363eef,0x0)){if(_0x1b4c93[_0x4dacf8(0x212)](_0x4dacf8(0x120),_0x4dacf8(0x120)))_0x4fffb+=_0x1967fa[_0x4dacf8(0x1a8)],_0x17bd3b+=_0x1c56a5,_0x5859f0[_0x23f3f2[_0x4dacf8(0x20c)]]=_0x3aac51[_0x4dacf8(0x1e7)](_0x3eadb2[_0x361b84['paymentMethod']]||0x0,_0x2c61b1);else{const _0x25b085=_0x5ab91b*_0x363eef,_0x3b8d2b=_0x1b4c93[_0x4dacf8(0x211)](_0x5ab91b,_0x44d353),_0x334c30=_0x1b4c93[_0x4dacf8(0x20e)](_0x25b085,_0x3b8d2b);_0x3d43bd='<p\x20class=\x22text-lg\x20md:text-xl\x20font-bold\x20text-cyan-400\x22>'+_0x25b085[_0x4dacf8(0x1ff)](_0x4dacf8(0x1b7),{'maximumFractionDigits':0x0})+_0x4dacf8(0x12f),_0x1be1ce=_0x4dacf8(0x1c2)+(_0x1b4c93[_0x4dacf8(0x134)](_0x334c30,0x0)?_0x1b4c93[_0x4dacf8(0x190)]:_0x1b4c93['qexHK'])+_0x4dacf8(0x1d9)+(_0x1b4c93[_0x4dacf8(0x173)](_0x334c30,0x0)?'+':'')+_0x334c30['toLocaleString'](_0x1b4c93[_0x4dacf8(0x1a1)],{'maximumFractionDigits':0x0})+')</p>';}}else _0x1b4c93[_0x4dacf8(0x212)](_0x1b4c93[_0x4dacf8(0x151)],_0x1b4c93[_0x4dacf8(0x151)])?(_0x40cec6+=_0x2267d5[_0x4dacf8(0x1a8)],_0x475d07+=_0x4fb4c5,_0x4d5bd4[_0x2856e0['paymentMethod']]=_0x3aac51[_0x4dacf8(0x169)](_0x4ade7f[_0x232644['paymentMethod']]||0x0,_0x48e754)):(_0x3d43bd='<p\x20class=\x22text-lg\x20md:text-xl\x20font-bold\x20text-gray-500\x22>-</p>',_0x1be1ce='');_0x2b5b93[_0x4dacf8(0x105)]=_0x4dacf8(0x198)+_0x5ab91b[_0x4dacf8(0x1ff)](_0x1b4c93[_0x4dacf8(0x1a1)],{'maximumFractionDigits':0x2})+_0x4dacf8(0x1b9)+_0x44d353['toLocaleString'](_0x4dacf8(0x1b7),{'maximumFractionDigits':0x0})+'\x20MMK</p></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22glass-card\x20p-3\x20sm:p-4\x20rounded-lg\x20flex\x20flex-col\x20justify-center\x22><p\x20class=\x22text-xs\x20sm:text-sm\x20text-gray-400\x22>အမြတ်/အရှုံး</p><p\x20class=\x22text-xl\x20md:text-2xl\x20font-bold\x20mt-1\x20'+(_0x1b4c93[_0x4dacf8(0x173)](_0x47b262,0x0)?_0x1b4c93[_0x4dacf8(0x190)]:_0x4dacf8(0x20f))+'\x22>'+(_0x1b4c93[_0x4dacf8(0x134)](_0x47b262,0x0)?'+':'')+_0x47b262[_0x4dacf8(0x1ff)](_0x1b4c93[_0x4dacf8(0x1a1)],{'maximumFractionDigits':0x0})+_0x4dacf8(0x19b)+_0x3d43bd+_0x1be1ce+_0x4dacf8(0x10e);}function _0x1e3e5b(_0x224634){const _0x4c3a07=_0x208de0;_0x224634[_0x4c3a07(0x126)][_0x4c3a07(0x1c6)](_0x4c3a07(0x108));}function _0x3933bf(_0x285241){const _0x3e5073=_0x208de0;_0x285241[_0x3e5073(0x126)][_0x3e5073(0x1b6)](_0x1b4c93[_0x3e5073(0x127)]);}function _0xfd65c1(){const _0xcd11be=_0x208de0,_0x3d6e09={'bXDKc':function(_0x2c6949,_0x319673){const _0x295974=_0x5337;return _0x1b4c93[_0x295974(0x157)](_0x2c6949,_0x319673);},'eJXwE':function(_0x43da7d,_0x1b1b4c){return _0x43da7d(_0x1b1b4c);},'wCEUH':function(_0x34729a,_0x4aba49){return _0x34729a(_0x4aba49);},'zEylU':function(_0x1fc2a4,_0x41fe41){const _0x22f9f8=_0x5337;return _0x1b4c93[_0x22f9f8(0x1b8)](_0x1fc2a4,_0x41fe41);},'XRdSo':function(_0x170cc6,_0x3fa36d){return _0x1b4c93['tIGDW'](_0x170cc6,_0x3fa36d);},'ceiup':_0x1b4c93['MlYTo'],'WaRJN':_0x1b4c93[_0xcd11be(0x1fe)],'DoYxY':function(_0x153d4f){const _0xc9a3fe=_0xcd11be;return _0x1b4c93[_0xc9a3fe(0x1a9)](_0x153d4f);},'yBjnZ':function(_0x47b7de,_0x465f0a){const _0x1553d3=_0xcd11be;return _0x1b4c93[_0x1553d3(0x123)](_0x47b7de,_0x465f0a);},'xfJYY':function(_0xdbbcb5,_0x4770fc){return _0xdbbcb5(_0x4770fc);},'MPoGE':function(_0x33fef5,_0x62b1d5){return _0x33fef5<=_0x62b1d5;},'nshvv':_0x1b4c93[_0xcd11be(0x205)],'YUJqZ':function(_0x1c583a,_0x23e526){const _0x3006ca=_0xcd11be;return _0x1b4c93[_0x3006ca(0x146)](_0x1c583a,_0x23e526);},'zhAhZ':_0xcd11be(0x1ea),'UxVoV':function(_0x1bc73d,_0x50b941){return _0x1bc73d>_0x50b941;},'oKnmZ':function(_0x2cf92a){const _0x589fb1=_0xcd11be;return _0x1b4c93[_0x589fb1(0x136)](_0x2cf92a);},'uruaN':_0x1b4c93['bkAzZ'],'dvUmC':_0x1b4c93[_0xcd11be(0x207)],'LWTxX':function(_0x37c62a,_0x236afe){const _0x470604=_0xcd11be;return _0x1b4c93[_0x470604(0x216)](_0x37c62a,_0x236afe);},'LzmtE':function(_0x5adef9,_0x73bc15){const _0x3f2c27=_0xcd11be;return _0x1b4c93[_0x3f2c27(0x1cb)](_0x5adef9,_0x73bc15);},'YijSG':function(_0x3bc07f,_0x58a492){const _0x26e8d4=_0xcd11be;return _0x1b4c93[_0x26e8d4(0x11c)](_0x3bc07f,_0x58a492);},'bmYbp':_0x1b4c93[_0xcd11be(0x17a)],'AyNVY':function(_0xc7bb33){return _0xc7bb33();},'ElDta':_0x1b4c93['KHHlD'],'oJXUx':function(_0xc52dbe,_0x4366be){const _0x9bece9=_0xcd11be;return _0x1b4c93[_0x9bece9(0x1a3)](_0xc52dbe,_0x4366be);},'nRcXV':function(_0x202131,_0x41a4c2){const _0x303f74=_0xcd11be;return _0x1b4c93[_0x303f74(0x1a3)](_0x202131,_0x41a4c2);},'GxupB':_0x1b4c93[_0xcd11be(0x1f2)],'RzEVg':_0x1b4c93[_0xcd11be(0x1ba)],'juRtZ':_0xcd11be(0x1c7),'DgqsI':_0x1b4c93[_0xcd11be(0x18a)],'lzqoX':_0x1b4c93[_0xcd11be(0x1b3)],'jYQpj':function(_0x191c9b,_0x4fb3a8){return _0x191c9b(_0x4fb3a8);},'TYnCN':function(_0x3733d0){return _0x3733d0();},'oCYQw':function(_0x110b47,_0x302f64){const _0x33c2b5=_0xcd11be;return _0x1b4c93[_0x33c2b5(0x10c)](_0x110b47,_0x302f64);},'reuav':function(_0x3127f3,_0x83a540){return _0x3127f3(_0x83a540);},'COGZj':function(_0xeb6553,_0x2f488f){const _0x2203a4=_0xcd11be;return _0x1b4c93[_0x2203a4(0x1c3)](_0xeb6553,_0x2f488f);},'yJkDZ':function(_0x14f770,_0x38b5e0){const _0x3b5360=_0xcd11be;return _0x1b4c93[_0x3b5360(0x1fa)](_0x14f770,_0x38b5e0);},'KWCLg':_0x1b4c93[_0xcd11be(0x1d6)],'NjhJW':function(_0xbd8031){return _0xbd8031();},'oPFBd':function(_0x405a02,_0x4b829b){return _0x405a02(_0x4b829b);}},_0x1d6cf5=()=>_0x4c85c4[_0xcd11be(0x208)]((_0x4f2523,_0x3c00bc)=>{const _0x20a186=_0xcd11be;if(_0x1b4c93[_0x20a186(0x11c)](_0x3c00bc[_0x20a186(0x1bb)],_0x1b4c93[_0x20a186(0x1fe)])||_0x1b4c93['lLpWm'](_0x3c00bc[_0x20a186(0x1bb)],_0x1b4c93[_0x20a186(0x1f2)]))return _0x1b4c93[_0x20a186(0x1e6)](_0x4f2523,_0x3c00bc[_0x20a186(0x1a8)]);if(_0x1b4c93[_0x20a186(0x11c)](_0x3c00bc['type'],_0x1b4c93[_0x20a186(0x1da)])||_0x1b4c93[_0x20a186(0x1cc)](_0x3c00bc[_0x20a186(0x1bb)],_0x1b4c93[_0x20a186(0x12c)]))return _0x1b4c93['OYImw'](_0x4f2523,_0x3c00bc['amount']);return _0x4f2523;},0x0);_0x386e51[_0xcd11be(0x12d)](_0x1b4c93[_0xcd11be(0x1f4)],()=>{const _0x586eba=_0xcd11be;if(_0x3d6e09['bXDKc'](_0x586eba(0x17e),_0x586eba(0x14e))){const _0x2fe79c=_0x3d6e09[_0x586eba(0x20d)](parseFloat,_0x31943b[_0x586eba(0x1cd)]),_0x287ebc=parseFloat(_0x343fd4[_0x586eba(0x1cd)]),_0x4c5dfd=_0x243d44[_0x586eba(0x1cd)];_0x399362[_0x586eba(0x184)]='';if(_0x3d6e09[_0x586eba(0x140)](isNaN,_0x2fe79c)||_0x3d6e09[_0x586eba(0x20d)](isNaN,_0x287ebc)||_0x3d6e09['zEylU'](_0x2fe79c,0x0)||_0x3d6e09['XRdSo'](_0x287ebc,0x0)){if(_0x3d6e09[_0x586eba(0x209)]!==_0x3d6e09[_0x586eba(0x209)])_0x427425[_0x586eba(0x126)][_0x586eba(0x1b6)](_0x586eba(0x108));else{_0x399362[_0x586eba(0x184)]=_0x586eba(0x16b);return;}}_0x4c85c4[_0x586eba(0x13c)]({'id':Date[_0x586eba(0x13b)](),'type':_0x3d6e09[_0x586eba(0x13a)],'amount':_0x2fe79c,'price':_0x287ebc,'paymentMethod':_0x4c5dfd}),_0x3d6e09['DoYxY'](_0x2eae0d),_0x51cf2b(),_0x31943b['value']='',_0x343fd4[_0x586eba(0x1cd)]='';}else _0x3f13bd-=_0x585d59[_0x586eba(0x1a8)];}),_0x582907['addEventListener'](_0x1b4c93['qusZc'],()=>{const _0x1d5c14=_0xcd11be,_0x3b6fcd=_0x1b4c93['vxBCa'](parseFloat,_0x3b5e2b[_0x1d5c14(0x1cd)]),_0x43de17=parseFloat(_0x5904b8[_0x1d5c14(0x1cd)]),_0x1f774c=_0x44f1c3[_0x1d5c14(0x1cd)];_0x5c4818['textContent']='';if(_0x1b4c93[_0x1d5c14(0x216)](isNaN,_0x3b6fcd)||_0x1b4c93[_0x1d5c14(0x165)](isNaN,_0x43de17)||_0x3b6fcd<=0x0||_0x1b4c93[_0x1d5c14(0x17c)](_0x43de17,0x0)){_0x5c4818[_0x1d5c14(0x184)]='တန်ဖိုးများ\x20မှန်ကန်စွာဖြည့်ပါ။';return;}if(_0x1b4c93['pfCWA'](_0x3b6fcd,_0x1b4c93[_0x1d5c14(0x172)](_0x1d6cf5))){_0x5c4818['textContent']=_0x1d5c14(0x162)+_0x1b4c93[_0x1d5c14(0x11e)](_0x1d6cf5)[_0x1d5c14(0x1ff)]()+_0x1d5c14(0x1b4);return;}_0x4c85c4[_0x1d5c14(0x13c)]({'id':Date[_0x1d5c14(0x13b)](),'type':_0x1b4c93['CaOQI'],'amount':_0x3b6fcd,'price':_0x43de17,'paymentMethod':_0x1f774c}),_0x1b4c93[_0x1d5c14(0x194)](_0x2eae0d),_0x1b4c93[_0x1d5c14(0x131)](_0x51cf2b),_0x3b5e2b[_0x1d5c14(0x1cd)]='',_0x5904b8[_0x1d5c14(0x1cd)]='';}),_0x11d03e[_0xcd11be(0x12d)](_0x1b4c93[_0xcd11be(0x1f4)],()=>{const _0x2cd34b=_0xcd11be;if(_0x3d6e09[_0x2cd34b(0x1dc)](_0x2cd34b(0x118),_0x3d6e09[_0x2cd34b(0x13d)])){const _0x453775=_0x3d6e09[_0x2cd34b(0x1bd)](_0xd0febe,_0x435dd3[_0x2cd34b(0x1cd)]),_0x4e908c=_0x3b0596[_0x2cd34b(0x1cd)];_0x2d8c3a[_0x2cd34b(0x184)]='';if(_0x3d6e09[_0x2cd34b(0x149)](_0x58be73,_0x453775)||_0x3d6e09[_0x2cd34b(0x1d5)](_0x453775,0x0)){_0x22dc41['textContent']=_0x3d6e09[_0x2cd34b(0x213)];return;}if(_0x3d6e09[_0x2cd34b(0x1dc)](_0x4e908c,_0x3d6e09[_0x2cd34b(0x16d)])&&_0x3d6e09[_0x2cd34b(0x130)](_0x453775,_0x3d6e09[_0x2cd34b(0x158)](_0x49a6ac))){_0x2a7a91[_0x2cd34b(0x184)]=_0x2cd34b(0x162)+_0x290768()[_0x2cd34b(0x1ff)]()+_0x2cd34b(0x1b4);return;}_0x1cd179[_0x2cd34b(0x13c)]({'id':_0x486b39[_0x2cd34b(0x13b)](),'type':_0x4e908c,'amount':_0x453775,'price':0x0,'paymentMethod':_0x3d6e09[_0x2cd34b(0x110)]}),_0x35328c(),_0x3d6e09[_0x2cd34b(0x14f)](_0x4dedd4),_0x1440d1['value']='';}else{const _0x32ca75=_0x3d6e09[_0x2cd34b(0x10f)](parseFloat,_0x46ba62['value']),_0x11df37=_0x1bf671[_0x2cd34b(0x1cd)];_0x2959b5['textContent']='';if(isNaN(_0x32ca75)||_0x3d6e09[_0x2cd34b(0x1a0)](_0x32ca75,0x0)){if(_0x3d6e09[_0x2cd34b(0x1aa)](_0x2cd34b(0x14c),_0x3d6e09[_0x2cd34b(0x186)])){_0x2959b5[_0x2cd34b(0x184)]=_0x2cd34b(0x12a);return;}else _0x8128dc[_0x2cd34b(0x1cd)]=_0xa1ab3c[_0x2cd34b(0x103)],_0x33f450[_0x2cd34b(0x1cd)]=_0x5852aa[_0x2cd34b(0x20c)];}if(_0x11df37===_0x3d6e09[_0x2cd34b(0x16d)]&&_0x3d6e09[_0x2cd34b(0x130)](_0x32ca75,_0x3d6e09[_0x2cd34b(0x167)](_0x1d6cf5))){_0x2959b5['textContent']='လက်ကျန်\x20'+_0x1d6cf5()[_0x2cd34b(0x1ff)]()+_0x2cd34b(0x1b4);return;}_0x4c85c4[_0x2cd34b(0x13c)]({'id':Date[_0x2cd34b(0x13b)](),'type':_0x11df37,'amount':_0x32ca75,'price':0x0,'paymentMethod':_0x3d6e09[_0x2cd34b(0x110)]}),_0x3d6e09[_0x2cd34b(0x158)](_0x2eae0d),_0x3d6e09[_0x2cd34b(0x14f)](_0x51cf2b),_0x46ba62['value']='';}}),_0x379e77['addEventListener'](_0xcd11be(0x10a),_0x465c27=>{const _0x1b3fda=_0xcd11be,_0x339a9b=_0x465c27['target'][_0x1b3fda(0x1a2)](_0x3d6e09[_0x1b3fda(0x17d)]);if(_0x339a9b){const _0x1a6083=_0x3d6e09['oJXUx'](parseInt,_0x339a9b[_0x1b3fda(0x112)]['id']);_0xc88a6b['dataset'][_0x1b3fda(0x1b1)]=_0x1a6083,_0x3d6e09[_0x1b3fda(0x1f0)](_0x1e3e5b,_0xc88a6b);}const _0x2c88ea=_0x465c27[_0x1b3fda(0x11f)][_0x1b3fda(0x1a2)]('.edit-btn');if(_0x2c88ea){const _0x27dc4f=_0x3d6e09[_0x1b3fda(0x129)](parseInt,_0x2c88ea[_0x1b3fda(0x112)]['id']),_0x332e48=_0x4c85c4['find'](_0x3144bc=>_0x3144bc['id']===_0x27dc4f);if(_0x332e48){_0x48e62b[_0x1b3fda(0x112)][_0x1b3fda(0x142)]=_0x27dc4f,_0x4ff4ed[_0x1b3fda(0x1cd)]=_0x332e48[_0x1b3fda(0x1a8)];const _0x5c3140=_0x332e48[_0x1b3fda(0x1bb)]===_0x3d6e09['GxupB']||_0x332e48[_0x1b3fda(0x1bb)]===_0x3d6e09['zhAhZ'];_0x343ae8[_0x1b3fda(0x184)]=_0x5c3140?_0x3d6e09[_0x1b3fda(0x14a)]:_0x3d6e09[_0x1b3fda(0x1f8)],_0x4012b9['style'][_0x1b3fda(0x147)]=_0x5c3140?_0x3d6e09[_0x1b3fda(0x139)]:_0x3d6e09['lzqoX'],_0x24d6e0[_0x1b3fda(0x210)][_0x1b3fda(0x147)]=_0x5c3140?_0x3d6e09['DgqsI']:_0x3d6e09[_0x1b3fda(0x18d)],!_0x5c3140&&(_0x260c5f[_0x1b3fda(0x1cd)]=_0x332e48['price'],_0x412051[_0x1b3fda(0x1cd)]=_0x332e48[_0x1b3fda(0x20c)]),_0x3d6e09[_0x1b3fda(0x122)](_0x1e3e5b,_0x48e62b);}}}),_0x4edfb8['addEventListener'](_0x1b4c93[_0xcd11be(0x137)],_0x3b169b),_0x5defb0['addEventListener']('click',()=>{const _0x2c6a53=_0xcd11be,_0x21018e=_0x1b4c93[_0x2c6a53(0x123)](parseInt,_0x48e62b[_0x2c6a53(0x112)][_0x2c6a53(0x142)]),_0x2b670e=_0x4c85c4[_0x2c6a53(0x175)](_0x481259=>_0x481259['id']===_0x21018e);if(_0x1b4c93[_0x2c6a53(0x11c)](_0x2b670e,-0x1))return;const _0x4217bd=_0x4c85c4[_0x2b670e],_0x2064fe=parseFloat(_0x4ff4ed[_0x2c6a53(0x1cd)]);_0x22aeac[_0x2c6a53(0x184)]='';if(_0x1b4c93[_0x2c6a53(0x1a3)](isNaN,_0x2064fe)||_0x1b4c93['ajFdp'](_0x2064fe,0x0)){_0x22aeac[_0x2c6a53(0x184)]=_0x1b4c93[_0x2c6a53(0x205)];return;}const _0x40f3b8=_0x4c85c4[_0x2c6a53(0x125)](_0x5ca9ba=>_0x5ca9ba['id']!==_0x21018e)[_0x2c6a53(0x208)]((_0x507929,_0x3d0bbd)=>_0x507929+(_0x3d0bbd[_0x2c6a53(0x1bb)]!==_0x2c6a53(0x199)&&_0x3d0bbd[_0x2c6a53(0x1bb)]!==_0x2c6a53(0x1ea)?_0x3d0bbd['amount']:-_0x3d0bbd[_0x2c6a53(0x1a8)]),0x0);if((_0x1b4c93['Khpid'](_0x4217bd[_0x2c6a53(0x1bb)],_0x1b4c93[_0x2c6a53(0x1da)])||_0x1b4c93[_0x2c6a53(0x11c)](_0x4217bd['type'],_0x1b4c93[_0x2c6a53(0x12c)]))&&_0x1b4c93[_0x2c6a53(0x189)](_0x2064fe,_0x40f3b8)){_0x22aeac[_0x2c6a53(0x184)]=_0x2c6a53(0x217);return;}_0x4217bd[_0x2c6a53(0x1a8)]=_0x2064fe;if(_0x1b4c93[_0x2c6a53(0x15d)](_0x4217bd[_0x2c6a53(0x1bb)],_0x1b4c93[_0x2c6a53(0x1fe)])||_0x4217bd[_0x2c6a53(0x1bb)]===_0x1b4c93[_0x2c6a53(0x1da)]){if(_0x1b4c93[_0x2c6a53(0x212)](_0x1b4c93[_0x2c6a53(0x1ad)],_0x1b4c93[_0x2c6a53(0x1ad)]))_0x3d6e09[_0x2c6a53(0x14f)](_0x9de15e),_0x3d6e09[_0x2c6a53(0x1eb)](_0x5c8807);else{const _0x5666c2=_0x1b4c93[_0x2c6a53(0x165)](parseFloat,_0x260c5f[_0x2c6a53(0x1cd)]);if(_0x1b4c93[_0x2c6a53(0x216)](isNaN,_0x5666c2)||_0x5666c2<=0x0){_0x22aeac[_0x2c6a53(0x184)]=_0x1b4c93[_0x2c6a53(0x1be)];return;}_0x4217bd[_0x2c6a53(0x103)]=_0x5666c2,_0x4217bd[_0x2c6a53(0x20c)]=_0x412051[_0x2c6a53(0x1cd)];}}_0x1b4c93[_0x2c6a53(0x161)](_0x2eae0d),_0x1b4c93[_0x2c6a53(0x194)](_0x51cf2b),_0x1b4c93[_0x2c6a53(0x1c1)](_0x3933bf,_0x48e62b);}),_0x239694[_0xcd11be(0x12d)](_0x1b4c93['qusZc'],()=>_0x3933bf(_0x48e62b)),_0x48e62b[_0xcd11be(0x12d)](_0x1b4c93[_0xcd11be(0x1f4)],_0x310aee=>{const _0x4cd79d=_0xcd11be;if(_0x1b4c93['Khpid'](_0x310aee[_0x4cd79d(0x11f)],_0x48e62b))_0x1b4c93[_0x4cd79d(0x165)](_0x3933bf,_0x48e62b);}),_0x992150[_0xcd11be(0x12d)](_0x1b4c93[_0xcd11be(0x1f4)],()=>_0x1e3e5b(_0x2b93bb)),_0x36a80f[_0xcd11be(0x12d)](_0x1b4c93[_0xcd11be(0x1f4)],()=>_0x3933bf(_0x2b93bb)),_0x2b93bb[_0xcd11be(0x12d)](_0x1b4c93['qusZc'],_0x123612=>{const _0x1b845f=_0xcd11be;if(_0x1b4c93[_0x1b845f(0x166)](_0x123612['target'],_0x2b93bb))_0x3933bf(_0x2b93bb);}),_0x4f8be3[_0xcd11be(0x12d)](_0x1b4c93[_0xcd11be(0x1f4)],()=>{const _0x575a4d=_0xcd11be;if(_0x1b4c93[_0x575a4d(0x15a)](_0x1b4c93[_0x575a4d(0x145)],_0x1b4c93[_0x575a4d(0x145)]))_0x4c85c4=[],_0x2eae0d(),_0x1b4c93[_0x575a4d(0x1e5)](_0x51cf2b),_0x1b4c93[_0x575a4d(0x123)](_0x3933bf,_0x2b93bb);else{if(_0x3d6e09[_0x575a4d(0x1aa)](_0x78efdb[_0x575a4d(0x11f)],_0x595a3b))_0x3d6e09['oCYQw'](_0x11818f,_0x1b2f25);}}),_0x4fcc1b[_0xcd11be(0x12d)](_0xcd11be(0x10a),()=>_0x3933bf(_0xc88a6b)),_0xc88a6b['addEventListener'](_0x1b4c93[_0xcd11be(0x1f4)],_0x1cb238=>{const _0x10ef8b=_0xcd11be;if(_0x3d6e09[_0x10ef8b(0x1dc)](_0x1cb238[_0x10ef8b(0x11f)],_0xc88a6b))_0x3d6e09['eJXwE'](_0x3933bf,_0xc88a6b);}),_0x156f45[_0xcd11be(0x12d)](_0x1b4c93[_0xcd11be(0x1f4)],()=>{const _0x4dd2dd=_0xcd11be,_0x567955={'cwAoZ':function(_0x3afdce){return _0x3afdce();},'rEzza':function(_0x5bcd29){return _0x3d6e09['DoYxY'](_0x5bcd29);},'RRLJm':function(_0x1dbace,_0x17dcd7){const _0x498194=_0x5337;return _0x3d6e09[_0x498194(0x215)](_0x1dbace,_0x17dcd7);}},_0x4e84d2=_0x3d6e09[_0x4dd2dd(0x160)](parseInt,_0xc88a6b['dataset'][_0x4dd2dd(0x1b1)]);_0x4e84d2&&(_0x3d6e09[_0x4dd2dd(0x18c)](_0x3d6e09[_0x4dd2dd(0x163)],_0x4dd2dd(0x135))?(_0x40b48d=[],_0x567955['cwAoZ'](_0x56296b),_0x567955[_0x4dd2dd(0x203)](_0x20ef2d),_0x567955[_0x4dd2dd(0x155)](_0x1e303e,_0x116ebb)):(_0x4c85c4=_0x4c85c4[_0x4dd2dd(0x125)](_0x189d2d=>_0x189d2d['id']!==_0x4e84d2),_0x3d6e09[_0x4dd2dd(0x158)](_0x2eae0d),_0x3d6e09[_0x4dd2dd(0x133)](_0x51cf2b),_0x3d6e09[_0x4dd2dd(0x1fc)](_0x3933bf,_0xc88a6b)));});}_0x587db9(),_0x1b4c93[_0x208de0(0x148)](_0xfd65c1);}));function _0x5337(_0x43791d,_0x252bde){const _0x5c9c3c=_0x5c9c();return _0x5337=function(_0x533712,_0x61b492){_0x533712=_0x533712-0x103;let _0x5ea012=_0x5c9c3c[_0x533712];return _0x5ea012;},_0x5337(_0x43791d,_0x252bde);}function _0x5c9c(){const _0x2964ff=['mbWKi','21213dseWfI','nRcXV','USDT\x20အရေအတွက်\x20မှန်ကန်စွာဖြည့်ပါ။','boaOV','ZMcjy','addEventListener','length','\x20MMK</p>','UxVoV','gqLDh','DnpnI','NjhJW','YlVRj','LOnFy','WiQKE','DPkGN','adjustBtn','DgqsI','WaRJN','now','push','dvUmC','confirmDeleteTxModal','bg-gray-700/50\x20p-3\x20rounded-lg\x20flex\x20items-center\x20gap-4','wCEUH','editPaymentMethod','editingId','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20items-center\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20data-id=\x22','ZCNxs','uSGHi','BupEQ','display','qNVMF','xfJYY','RzEVg','niJLo','yOmHB','block','UVFjN','DoYxY','setItem','IITMy','pcwPj','parse','RAaFk','RRLJm','28278045DXRjnp','BTMNi','oKnmZ','\x20USDT</p>','lLpWm','createElement','ryipA','Khpid','yzXzF','getElementById','COGZj','elKTg','လက်ကျန်\x20','KWCLg','</p>\x0a\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','NrTWU','fEKZF','AyNVY','FqAsW','qxWpY','usdtAmountSell','တန်ဖိုးများ\x20မှန်ကန်စွာဖြည့်ပါ။','Wavepay','zhAhZ','text-purple-400','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-xs\x20font-semibold\x20px-2\x20py-0.5\x20rounded-full\x20','p2pTransactions','FCZAi','voqyR','gcwSh','LRAHt','findIndex','2070540qVDadL','ချိန်ညှိမှု\x20(အပေါင်း)','input','XpXci','udAXO','bg-green-600/50\x20text-green-300','ajFdp','ElDta','AWavt','usdtAmountAdjust','nefSh','confirmDeleteTxBtn','MZyZR','ScGXQ','textContent','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex-shrink-0\x22>','bmYbp','sSIht','EYEpT','nhDWb','kOExm','STioC','yJkDZ','lzqoX','.delete-btn','BiQmv','cqOJd','Kpay','lWWMl','paymentSummaryContainer','CLnRa','className','confirmClearModal','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22text-right\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22glass-card\x20p-3\x20sm:p-4\x20rounded-lg\x20flex\x20flex-col\x20justify-center\x22><p\x20class=\x22text-xs\x20sm:text-sm\x20text-gray-400\x22>လက်ကျန်\x20USDT</p><p\x20class=\x22text-xl\x20md:text-2xl\x20font-bold\x20text-white\x20mt-1\x22>$','sell','buyPrice','\x20MMK</p></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22glass-card\x20p-3\x20sm:p-4\x20rounded-lg\x20flex\x20flex-col\x20justify-center\x20border-2\x20border-cyan-400/30\x20bg-gradient-to-br\x20from-cyan-900/30\x20via-gray-900\x20to-gray-900\x22><p\x20class=\x22text-xs\x20sm:text-sm\x20font-medium\x20text-cyan-300\x22>Live\x20Value</p>','ekKDm','addSellError','div','ချိန်ညှိမှု','LzmtE','ZqUse','closest','uGinh','adjustError','buy','appendChild','<svg\x20xmlns=\x22http://www.w3.org/2000/svg\x22\x20class=\x22h-6\x20w-6\x20text-red-400\x22\x20fill=\x22none\x22\x20viewBox=\x220\x200\x2024\x2024\x22\x20stroke=\x22currentColor\x22><path\x20stroke-linecap=\x22round\x22\x20stroke-linejoin=\x22round\x22\x20stroke-width=\x222\x22\x20d=\x22M12\x2019l9\x202-9-18-9\x2018\x209-2zm0\x200v-8\x22\x20/></svg>','amount','mVjVZ','YijSG','lXxtz','editModalTitle','yayQP','sellPrice','fyQjW','ZxqVz','deletingId','DlvLD','rGnAP','\x20သာရှိပါသည်။','</span></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','add','en-US','EkDUo','</p></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22glass-card\x20p-3\x20sm:p-4\x20rounded-lg\x20\x0aflex\x20flex-col\x20justify-center\x22><p\x20class=\x22text-xs\x20sm:text-sm\x20text-gray-400\x22>ပျမ်းမျှဝယ်ဈေး</p><p\x20class=\x22text-xl\x20md:text-2xl\x20font-bold\x20text-white\x20mt-1\x22>','uZlOX','type','\x20USDT\x20@\x20','yBjnZ','axGBh','<p\x20class=\x22text-xs\x20text-gray-400\x22>','ချိန်ညှိမှု\x20ပြင်ဆင်ရန်','PeAog','<p\x20class=\x22text-xs\x20md:text-sm\x20','EJeOC','addSellBtn','Hxdaf','remove','မှတ်တမ်း\x20ပြင်ဆင်ရန်','</span></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22mt-4\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h4\x20class=\x22font-bold\x20text-red-400\x20mb-2\x20flex\x20items-center\x20gap-2\x22><svg\x20xmlns=\x22http://www.w3.org/2000/svg\x22\x20class=\x22h-5\x20w-5\x22\x20viewBox=\x220\x200\x2020\x2020\x22\x20fill=\x22currentColor\x22><path\x20fill-rule=\x22evenodd\x22\x20d=\x22M10\x2018a8\x208\x200\x20100-16\x208\x208\x200\x20000\x2016zm3.707-8.707a1\x201\x200\x2000-1.414-1.414L10.586\x209.586\x209.293\x208.293a1\x201\x200\x2000-1.414\x201.414l2\x202a1\x201\x200\x20001.414\x200l4-4z\x22\x20clip-rule=\x22evenodd\x22\x20/></svg>ရရှိငွေ</h4>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20justify-between\x20items-center\x20text-gray-300\x22><span>Kpay:</span>\x20<span\x20class=\x22font-semibold\x22>','QWpZT','BCEBk','LBVfY','BuKxN','value','<svg\x20xmlns=\x22http://www.w3.org/2000/svg\x22\x20class=\x22h-6\x20w-6\x20text-green-400\x22\x20fill=\x22none\x22\x20viewBox=\x220\x200\x2024\x2024\x22\x20stroke=\x22currentColor\x22><path\x20stroke-linecap=\x22round\x22\x20stroke-linejoin=\x22round\x22\x20stroke-width=\x222\x22\x20d=\x22M12\x204v16m8-8H4\x22\x20/></svg>','12uGEWLS','KFuAc','ylOaY','dxlzw','</span></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20justify-between\x20items-center\x20text-gray-300\x22><span>Wavepay:</span>\x20<span\x20class=\x22font-semibold\x22>','LNEoP','MPoGE','VsuLU','saveEditBtn','aNmRT','\x22>(','CaOQI','zzQsB','YUJqZ','GUVKw','\x22\x20class=\x22edit-btn\x20text-gray-500\x20hover:text-yellow-400\x20p-1\x20rounded-full\x22><svg\x20xmlns=\x22http://www.w3.org/2000/svg\x22\x20class=\x22h-5\x20w-5\x22\x20\x0aviewBox=\x220\x200\x2020\x2020\x22\x20fill=\x22currentColor\x22><path\x20d=\x22M17.414\x202.586a2\x202\x200\x2000-2.828\x200L7\x2010.172V13h2.828l7.586-7.586a2\x202\x200\x20000-2.828z\x22\x20/><path\x20fill-rule=\x22evenodd\x22\x20d=\x22M2\x206a2\x202\x200\x20012-2h4a1\x201\x200\x20010\x202H4v10h10v-4a1\x201\x200\x20112\x200v4a2\x202\x200\x2001-2\x202H4a2\x202\x200\x2001-2-2V6z\x22\x20clip-rule=\x22evenodd\x22\x20/></svg></button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20data-id=\x22','stringify','noTransactionsText','aEKey','khgyt','editError','bg-gray-600/50\x20text-gray-300','DZIpR','EDerF','jIYOr','currentMarketPrice','\x22\x20class=\x22delete-btn\x20text-gray-500\x20hover:text-red-400\x20p-1\x20rounded-full\x22><svg\x20xmlns=\x22http://www.w3.org/2000/svg\x22\x20class=\x22h-5\x20w-5\x22\x20fill=\x22none\x22\x20viewBox=\x220\x200\x2024\x2024\x22\x20stroke=\x22currentColor\x22><path\x20stroke-linecap=\x22round\x22\x20stroke-linejoin=\x22round\x22\x20stroke-width=\x222\x22\x20d=\x22M6\x2018L18\x206M6\x206l12\x2012\x22\x20/></svg></button>\x0a\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','subtract','TYnCN','DOMContentLoaded','kHJMP','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h4\x20class=\x22font-bold\x20text-green-400\x20mb-2\x20flex\x20items-center\x20gap-2\x22><svg\x20xmlns=\x22http://www.w3.org/2000/svg\x22\x20class=\x22h-5\x20w-5\x22\x20viewBox=\x220\x200\x2020\x2020\x22\x20fill=\x22currentColor\x22><path\x20fill-rule=\x22evenodd\x22\x20d=\x22M10\x2018a8\x208\x200\x20100-16\x208\x20\x0a8\x200\x20000\x2016zm.707-10.293a1\x201\x200\x2000-1.414-1.414l-3\x203a1\x201\x200\x20000\x201.414l3\x203a1\x201\x200\x20001.414-1.414L9.414\x2011H13a1\x201\x200\x20100-2H9.414l1.293-1.293z\x22\x20clip-rule=\x22evenodd\x22\x20/></svg>သုံးစွဲငွေ</h4>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20justify-between\x20items-center\x20text-gray-300\x22><span>Kpay:</span>\x20<span\x20class=\x22font-semibold\x22>','mainDashboard','oJXUx','vPUKP','uKACT','jhges','qusZc','7285864FqFIhz','ဝယ်ယူမှု','addBuyError','juRtZ','getItem','aOtUZ','njzzC','oPFBd','PVvaL','JLlMo','toLocaleString','addBuyBtn','qexHK','cancelDeleteTxBtn','rEzza','acpVR','wzfvv','LIMqL','efKSv','reduce','ceiup','idUor','editPriceContainer','paymentMethod','eJXwE','OYImw','text-red-400','style','DsNzP','QFyXI','nshvv','1532140DALVBV','reuav','hbPzC','လက်ကျန်\x20USDT\x20မလုံလောက်ပါ။','Rirpt','Korun','price','<svg\x20xmlns=\x22http://www.w3.org/2000/svg\x22\x20class=\x22h-6\x20w-6\x20text-purple-400\x22\x20fill=\x22none\x22\x20viewBox=\x220\x200\x2024\x2024\x22\x20stroke=\x22currentColor\x22><path\x20stroke-linecap=\x22round\x22\x20stroke-linejoin=\x22round\x22\x20stroke-width=\x222\x22\x20d=\x22M12\x209v3m0\x200v3m0-3h3m-3\x200H9m12\x200a9\x209\x200\x2011-18\x200\x209\x209\x200\x200118\x200z\x22\x20/></svg>','innerHTML','forEach','text-green-400','hidden','Qvnsk','click','OTdKn','IUJoP','</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex-grow\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22font-bold\x20','</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','LWTxX','uruaN','YmagD','dataset','pEGqK','ZGDLk','wgLzt','3402540FXwLJA','tQcRp','MzwXL','CFzOi','QKJtN','4310915MqcMpA','fKilD','usdtAmountBuy','YxExs','target','SnqpN','50XylGBI','jYQpj','gFyaQ','confirmClearBtn','filter','classList'];_0x5c9c=function(){return _0x2964ff;};return _0x5c9c();}
+</script>
+</body>
+</html>

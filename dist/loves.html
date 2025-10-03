@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1 Year Anniversary</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1);
+      background-size: 400% 400%;
+      animation: gradientBG 10s ease infinite;
+      color: #ffffff;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    @keyframes gradientBG {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    h1 {
+      font-size: 4.5rem;
+      margin-bottom: 20px;
+      animation: fadeIn 2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .countdown {
+      font-size: 30px;
+      margin-top: 10px;
+      animation: fadeIn 2.5s ease-out;
+    }
+
+    .typewriter {
+      border-right: 3px solid #ffffff;
+      animation: typing 4s steps(50, end), blink 0.7s step-end infinite;
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 text-white min-h-screen flex flex-col">
+  <header class="fixed top-0 left-0 w-full bg-opacity-30 bg-black text-white py-6 shadow-lg text-center z-50">
+    <h1 class="text-3xl font-bold">🎉 1 Year Anniversary 🎉</h1>
+    <p class="mt-2">I love you more than I can say</p>
+  </header>
+
+  <main class="container mx-auto mt-24 mb-24 px-4">
+    <div class="text-center max-w-xl mx-auto p-8 bg-opacity-20 bg-white rounded-lg shadow-lg">
+        <div id="message" class="hidden mb-6">
+            <span class="typewriter"></span>
+          </div>
+        <button id="showMessageBtn" class="bg-purple-700 text-white py-2 px-4 rounded hover:bg-purple-800 transition duration-300">
+            Message for you
+          </button>
+          
+    </div>
+  </main>
+
+  <footer class="fixed bottom-0 left-0 w-full bg-opacity-30 bg-black text-white py-4 shadow-lg text-center z-50">
+    <p>Made with ❤️ for you</p>
+  </footer>
+
+  <canvas id="heartsCanvas"></canvas>
+  <script>
+/* obfuscated */
+const _0x13cf06=_0x1721;(function(_0x2b7c1c,_0x3856c5){const _0x188228=_0x1721,_0x2bb3ed=_0x2b7c1c();while(!![]){try{const _0x5978b2=-parseInt(_0x188228(0x223))/0x1*(parseInt(_0x188228(0x219))/0x2)+parseInt(_0x188228(0x1f2))/0x3*(parseInt(_0x188228(0x222))/0x4)+-parseInt(_0x188228(0x20f))/0x5+parseInt(_0x188228(0x205))/0x6+parseInt(_0x188228(0x1fb))/0x7*(parseInt(_0x188228(0x22c))/0x8)+parseInt(_0x188228(0x213))/0x9+-parseInt(_0x188228(0x218))/0xa;if(_0x5978b2===_0x3856c5)break;else _0x2bb3ed['push'](_0x2bb3ed['shift']());}catch(_0x1aa543){_0x2bb3ed['push'](_0x2bb3ed['shift']());}}}(_0x566f,0xddc75));function _0x1721(_0x7afd53,_0x4b6f91){const _0x566f70=_0x566f();return _0x1721=function(_0x1721db,_0x91b7c0){_0x1721db=_0x1721db-0x1ee;let _0x148409=_0x566f70[_0x1721db];return _0x148409;},_0x1721(_0x7afd53,_0x4b6f91);}const canvas=document[_0x13cf06(0x217)](_0x13cf06(0x1fe)),ctx=canvas[_0x13cf06(0x1fa)]('2d');canvas[_0x13cf06(0x20c)]=window[_0x13cf06(0x226)],canvas['height']=window[_0x13cf06(0x220)];const hearts=[];class Heart{constructor(_0x488c40,_0x42ec3d,_0x5e986a,_0x2a4a55,_0xdf5010){const _0x3e4b96=_0x13cf06,_0x1725ce=_0x3e4b96(0x21d)['split']('|');let _0x410ffa=0x0;while(!![]){switch(_0x1725ce[_0x410ffa++]){case'0':this[_0x3e4b96(0x21a)]=_0xdf5010;continue;case'1':this[_0x3e4b96(0x1f6)]=_0x2a4a55;continue;case'2':this['y']=_0x42ec3d;continue;case'3':this['x']=_0x488c40;continue;case'4':this[_0x3e4b96(0x202)]=_0x5e986a;continue;}break;}}['draw'](){const _0xb09f8c=_0x13cf06,_0x168248={'wZcFu':'5|6|3|4|0|1|2','foovb':function(_0x235b9e,_0x466c5b){return _0x235b9e/_0x466c5b;},'MJTgo':function(_0x1ae082,_0x3eb795){return _0x1ae082+_0x3eb795;},'TICts':function(_0x5e2103,_0x3171f7){return _0x5e2103/_0x3171f7;},'phjVl':function(_0x1c1e21,_0x37a4f5){return _0x1c1e21-_0x37a4f5;},'UbMRK':function(_0x5f2fdb,_0x27dd12){return _0x5f2fdb/_0x27dd12;},'SAAML':function(_0x30c223,_0x1bde37){return _0x30c223-_0x1bde37;},'ESZho':function(_0x3e817e,_0x3133d6){return _0x3e817e-_0x3133d6;},'ZSJfG':function(_0x406ddd,_0x3454ff){return _0x406ddd+_0x3454ff;}},_0x1bac34=_0x168248[_0xb09f8c(0x22f)][_0xb09f8c(0x1f0)]('|');let _0x13ca4d=0x0;while(!![]){switch(_0x1bac34[_0x13ca4d++]){case'0':ctx[_0xb09f8c(0x208)](this['x']+this[_0xb09f8c(0x202)],this['y']+_0x168248[_0xb09f8c(0x21f)](this[_0xb09f8c(0x202)],0x3),_0x168248['MJTgo'](this['x'],_0x168248[_0xb09f8c(0x1f3)](this[_0xb09f8c(0x202)],0x2)),_0x168248[_0xb09f8c(0x230)](this['y'],_0x168248[_0xb09f8c(0x200)](this[_0xb09f8c(0x202)],0x2)),this['x'],this['y']);continue;case'1':ctx[_0xb09f8c(0x1f4)]();continue;case'2':ctx[_0xb09f8c(0x20d)]();continue;case'3':ctx[_0xb09f8c(0x21b)](this['x'],this['y']);continue;case'4':ctx[_0xb09f8c(0x208)](_0x168248['SAAML'](this['x'],this[_0xb09f8c(0x202)]/0x2),_0x168248['ESZho'](this['y'],_0x168248[_0xb09f8c(0x1f3)](this['size'],0x2)),_0x168248[_0xb09f8c(0x230)](this['x'],this[_0xb09f8c(0x202)]),_0x168248[_0xb09f8c(0x1ef)](this['y'],_0x168248[_0xb09f8c(0x21f)](this[_0xb09f8c(0x202)],0x3)),this['x'],_0x168248[_0xb09f8c(0x201)](this['y'],this[_0xb09f8c(0x202)]));continue;case'5':ctx[_0xb09f8c(0x215)]=this[_0xb09f8c(0x21a)];continue;case'6':ctx[_0xb09f8c(0x231)]();continue;}break;}}[_0x13cf06(0x21c)](){const _0x34972b=_0x13cf06,_0x476ee3={'CXtRf':function(_0x549ae3,_0x5381e2){return _0x549ae3>_0x5381e2;},'ZubyF':function(_0x5d0a5a,_0x1c059f){return _0x5d0a5a*_0x1c059f;}};this['y']+=this['speed'],_0x476ee3['CXtRf'](this['y'],canvas[_0x34972b(0x203)])&&(this['y']=-this[_0x34972b(0x202)],this['x']=_0x476ee3[_0x34972b(0x211)](Math[_0x34972b(0x22b)](),canvas[_0x34972b(0x20c)])),this[_0x34972b(0x229)]();}}function initHearts(){const _0x104208=_0x13cf06,_0x57572f={'qWXYS':function(_0x4fdd76,_0xac21b7){return _0x4fdd76*_0xac21b7;},'CeUqW':function(_0x5e0d0d,_0x3fae12){return _0x5e0d0d-_0x3fae12;},'wlCav':function(_0x18cef9,_0x58d3d9){return _0x18cef9*_0x58d3d9;},'HPUzK':function(_0x4e3b73,_0x3102bb){return _0x4e3b73+_0x3102bb;},'xrNir':function(_0x22e629,_0xeb15a3){return _0x22e629*_0xeb15a3;}};for(let _0x304793=0x0;_0x304793<0x64;_0x304793++){const _0x1812f3=_0x57572f[_0x104208(0x1f5)](Math[_0x104208(0x22b)](),canvas['width']),_0x190f8e=_0x57572f[_0x104208(0x1fc)](_0x57572f[_0x104208(0x22d)](Math[_0x104208(0x22b)](),canvas[_0x104208(0x203)]),canvas[_0x104208(0x203)]),_0x392a5a=_0x57572f[_0x104208(0x1f1)](_0x57572f[_0x104208(0x22d)](Math[_0x104208(0x22b)](),0x14),0xa),_0x442dda=_0x57572f['HPUzK'](_0x57572f[_0x104208(0x1f7)](Math[_0x104208(0x22b)](),0x2),0x1),_0xaeb31a='rgba(255,\x2020,\x20147,\x20'+Math[_0x104208(0x22b)]()+')';hearts[_0x104208(0x1fd)](new Heart(_0x1812f3,_0x190f8e,_0x392a5a,_0x442dda,_0xaeb31a));}}function animate(){const _0x54f72e=_0x13cf06,_0x4e90c9={'JfkNM':function(_0x4be2c7,_0x2164ef){return _0x4be2c7(_0x2164ef);}};ctx['clearRect'](0x0,0x0,canvas[_0x54f72e(0x20c)],canvas[_0x54f72e(0x203)]),hearts[_0x54f72e(0x1f8)](_0x29ca2a=>_0x29ca2a[_0x54f72e(0x21c)]()),_0x4e90c9['JfkNM'](requestAnimationFrame,animate);}initHearts(),animate(),window[_0x13cf06(0x22e)]('resize',()=>{const _0x3f8737=_0x13cf06,_0x26880c={'cfRVr':function(_0x25962d){return _0x25962d();}};canvas['width']=window['innerWidth'],canvas[_0x3f8737(0x203)]=window[_0x3f8737(0x220)],hearts[_0x3f8737(0x214)]=0x0,_0x26880c['cfRVr'](initHearts);}),document[_0x13cf06(0x22e)](_0x13cf06(0x225),()=>{const _0xcad68f=_0x13cf06,_0x5defda={'bBTSl':function(_0x37468c,_0x826b2a){return _0x37468c>=_0x826b2a;},'KnbzT':function(_0x3e0d3f,_0x1fab46){return _0x3e0d3f(_0x1fab46);},'wQwwY':function(_0x2dad2d,_0x427987){return _0x2dad2d(_0x427987);},'UtVIg':function(_0x54131b,_0x5d2989){return _0x54131b===_0x5d2989;},'KKJzT':'ynHeL','rEdul':function(_0x1faa10,_0xec01c5,_0x27a517){return _0x1faa10(_0xec01c5,_0x27a517);},'rwFiq':_0xcad68f(0x209),'QmcQM':_0xcad68f(0x22a),'nhYLu':_0xcad68f(0x20b),'hSlJM':_0xcad68f(0x206),'EFEdn':_0xcad68f(0x233),'LTQFQ':_0xcad68f(0x228)},_0x108e50=_0x5defda[_0xcad68f(0x216)],_0x527242=document[_0xcad68f(0x217)](_0x5defda['nhYLu']),_0x5a282d=document['getElementById'](_0x5defda['hSlJM']),_0x4624ee=document[_0xcad68f(0x234)](_0x5defda[_0xcad68f(0x21e)]);_0x527242['addEventListener'](_0x5defda[_0xcad68f(0x224)],()=>{const _0x29f8f2=_0xcad68f,_0xd16dcb={'CwCYJ':function(_0x19c5f1,_0x3d1d25){const _0x3c04da=_0x1721;return _0x5defda[_0x3c04da(0x1ff)](_0x19c5f1,_0x3d1d25);},'flnxn':function(_0x2c715b,_0x38e22b){const _0x4c4a9a=_0x1721;return _0x5defda[_0x4c4a9a(0x1f9)](_0x2c715b,_0x38e22b);}};if(!_0x4624ee[_0x29f8f2(0x212)]){if(_0x5defda[_0x29f8f2(0x210)](_0x29f8f2(0x227),_0x5defda[_0x29f8f2(0x207)])){_0x36c751[_0x29f8f2(0x212)]+=_0x15678f[_0x56c29a],_0x3ed7ca++;if(_0xd16dcb[_0x29f8f2(0x20a)](_0x34e8dd,_0x3e97cc[_0x29f8f2(0x214)]))_0xd16dcb[_0x29f8f2(0x20e)](_0x20b0fc,_0x3580a3);}else{let _0x2e8d67=0x0;const _0x269db3=_0x5defda[_0x29f8f2(0x232)](setInterval,()=>{const _0x17469b=_0x29f8f2;_0x4624ee[_0x17469b(0x212)]+=_0x108e50[_0x2e8d67],_0x2e8d67++;if(_0x5defda[_0x17469b(0x1ff)](_0x2e8d67,_0x108e50[_0x17469b(0x214)]))_0x5defda[_0x17469b(0x1ee)](clearInterval,_0x269db3);},0x64);_0x5a282d['classList'][_0x29f8f2(0x221)](_0x5defda[_0x29f8f2(0x204)]);}}});});function _0x566f(){const _0x14603a=['moveTo','update','3|2|4|1|0','EFEdn','foovb','innerHeight','remove','541156lobatp','1WkfRTs','LTQFQ','DOMContentLoaded','innerWidth','aFXac','click','draw','Happy\x201-year\x20anniversary,\x20my\x20love!\x20❤️\x20Thank\x20you\x20so\x20much\x20for\x20being\x20by\x20my\x20side\x20throughout\x20this\x20entire\x20year.\x20Through\x20the\x20good\x20times\x20and\x20the\x20bad,\x20you’ve\x20always\x20been\x20there,\x20and\x20I\x20love\x20you\x20so\x20much\x20for\x20that.\x20Now\x20and\x20always,\x20I\x20hope\x20you’ll\x20stay\x20by\x20my\x20side,\x20just\x20as\x20I’ll\x20always\x20be\x20by\x20yours.\x20Starting\x20from\x20this\x201-year\x20milestone,\x20let’s\x20continue\x20to\x20be\x20together\x20for\x20many\x20more\x20years\x20to\x20come.\x20I\x20love\x20you\x20endlessly!\x20I\x20love\x20you\x20more\x20than\x20I\x20can\x20say\x20💖','random','11032bjQRcx','wlCav','addEventListener','wZcFu','phjVl','beginPath','rEdul','.typewriter','querySelector','KnbzT','MJTgo','split','HPUzK','3iUOHgt','TICts','closePath','qWXYS','speed','xrNir','forEach','wQwwY','getContext','8225KvqZrV','CeUqW','push','heartsCanvas','bBTSl','UbMRK','ZSJfG','size','height','rwFiq','7354380IODbHz','message','KKJzT','bezierCurveTo','hidden','CwCYJ','showMessageBtn','width','fill','flnxn','2434645nrUpBe','UtVIg','ZubyF','textContent','2387880OnpAqq','length','fillStyle','QmcQM','getElementById','3681130dXrKtJ','2966434FBnJLe','color'];_0x566f=function(){return _0x14603a;};return _0x566f();}
+</script>
+</body>
+
+</html>
