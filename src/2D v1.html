@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thailand Lottery 2D Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Padauk', sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(to right, #1e3a8a, #3b82f6);
+        }
+        .result-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .transaction-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        .edit-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #60a5fa; /* blue-400 */
+        }
+        .edit-btn:hover {
+            color: #93c5fd; /* blue-300 */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-lg mx-auto">
+        <!-- Live Portfolio Section -->
+        <div id="livePortfolio" class="mb-6 p-6 rounded-2xl shadow-2xl result-card border border-gray-700">
+            <h2 class="text-2xl font-bold text-center mb-1 text-yellow-300">ပေါက်ဂဏန်း တိုက်ရိုက်စစ်ဆေးရန်</h2>
+            <p class="text-center text-xs text-gray-400 mb-4">ပေါက်ဂဏန်းထည့်ပြီး ကံထူးရှင်များကို ရှာဖွေပါ</p>
+
+            <!-- Live Numbers Input -->
+            <div class="mb-4">
+                <label for="live2D" class="block mb-2 text-sm font-medium text-gray-200">လက်ရှိ 2D ပေါက်ဂဏန်း</label>
+                <input type="text" id="live2D" class="bg-gray-800 border border-gray-600 text-green-400 text-3xl font-bold text-center rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="--" maxlength="2">
+            </div>
+
+            <!-- Check Button -->
+            <div class="space-y-4">
+                 <button id="checkPortfolioBtn" class="w-full text-white bg-indigo-500 hover:bg-indigo-600 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-bold rounded-lg text-lg px-5 py-3 text-center transition duration-300 transform hover:scale-105">တိုက်စစ်မည်</button>
+            </div>
+
+            <!-- Portfolio Result Display -->
+            <div id="portfolioResult" class="mt-4 text-center"></div>
+        </div>
+        
+        <div class="gradient-bg rounded-2xl shadow-2xl p-6 md:p-8 mb-6">
+            <h1 class="text-3xl font-bold text-center mb-2 text-yellow-300">2D Master - စာရင်းကိုင် App</h1>
+            <p class="text-center text-gray-200 mb-6">သင့်ရဲ့ 2D ထိုးကြေး၊ အရှုံးအမြတ်များကို တိကျသေချာစွာ မှတ်သား စီမံလိုက်ပါ</p>
+
+            <!-- Input Form -->
+            <div class="space-y-4">
+                <div>
+                    <label for="initialCapital" class="block mb-2 text-sm font-medium text-gray-200">မိမိ၏ မူလအရင်းငွေ (MMK)</label>
+                    <input type="number" id="initialCapital" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-400" placeholder="ဥပမာ: 50000">
+                </div>
+            </div>
+            
+            <!-- New Transaction Form -->
+            <div class="mt-6 border-t border-blue-400 pt-4">
+                <h2 class="text-xl font-semibold text-center text-yellow-200 mb-3">ထိုးငွေစာရင်း ထည့်သွင်းရန်</h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label for="customerName" class="block mb-2 text-sm font-medium text-gray-200">Customer အမည်</label>
+                        <input type="text" id="customerName" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="ဥပမာ: Aung Aung">
+                    </div>
+
+                    <!-- Input container for bets -->
+                    <div id="transactionInputContainer">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="betNumbers" class="block mb-2 text-sm font-medium text-gray-200">2D ဂဏန်းများ</label>
+                                <input type="text" id="betNumbers" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="26R, 00 to 99">
+                            </div>
+                            <div>
+                                <label for="betAmountPerNumber" class="block mb-2 text-sm font-medium text-gray-200">တစ်ကွက်ထိုးငွေ (MMK)</label>
+                                <input type="number" id="betAmountPerNumber" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="1000">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="paymentMethod" class="block mb-2 text-sm font-medium text-gray-200">ဘဏ်အမျိုးအစား</label>
+                        <select id="paymentMethod" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            <option value="Kpay">Kpay</option>
+                            <option value="Wavepay">WavePay</option>
+                        </select>
+                    </div>
+                </div>
+                <button id="addTransactionBtn" class="mt-4 w-full text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-bold rounded-lg text-lg px-5 py-3 text-center transition duration-300 transform hover:scale-105">စာရင်းထည့်မည်</button>
+            </div>
+        </div>
+
+        <!-- Transaction List -->
+        <div id="transactionListContainer" class="mt-6 p-6 rounded-2xl shadow-2xl result-card border border-gray-700 hidden">
+            <div class="text-center mb-4">
+                <h2 class="text-2xl font-bold text-yellow-300">ထိုးကြေးမှတ်တမ်းများ</h2>
+            </div>
+            <ul id="transactionList" class="space-y-2 max-h-60 overflow-y-auto pr-2">
+                <!-- Transactions will be dynamically inserted here -->
+            </ul>
+        </div>
+
+        <!-- Agent Summary -->
+        <div id="agentSummaryContainer" class="mt-6 p-6 rounded-2xl shadow-2xl result-card border border-gray-700 hidden">
+            <h2 class="text-2xl font-bold text-center mb-4 text-yellow-300">နေ့စဉ်စာရင်းချုပ်</h2>
+            <div class="space-y-3">
+                <div class="flex justify-between text-lg">
+                    <span class="font-medium text-gray-300">ထိုးထားသော ဂဏန်းများ (စုစုပေါင်း):</span>
+                    <span id="totalUniqueNumbers" class="font-bold text-white">0</span>
+                </div>
+                 <div class="flex justify-between text-lg">
+                    <span class="font-medium text-gray-300">ထိုးထားသော ငွေ (စုစုပေါင်း):</span>
+                    <span id="totalAgentBetAmount" class="font-bold text-white">0 MMK</span>
+                </div>
+                <!-- Customer Filter -->
+                <div class="border-t border-gray-600 pt-3 mt-3">
+                     <label for="customerFilterSelect" class="block mb-2 text-sm font-medium text-gray-300">Customer အလိုက်စစ်ရန်:</label>
+                     <select id="customerFilterSelect" class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white focus:ring-blue-500 focus:border-blue-500 text-sm">
+                        <!-- Options will be added dynamically -->
+                     </select>
+                </div>
+
+                <!-- Customer Specific Summary -->
+                <div id="customerSpecificSummary" class="hidden border-t border-gray-500 pt-3 mt-3">
+                    <h3 id="selectedCustomerName" class="text-lg font-semibold text-yellow-200 mb-2"></h3>
+                     <div class="flex justify-between text-base">
+                        <span class="font-medium text-gray-300">ထိုးထားသော ဂဏန်းများ:</span>
+                        <span id="customerTotalNumbers" class="font-bold text-white">0</span>
+                    </div>
+                     <div class="flex justify-between text-base">
+                        <span class="font-medium text-gray-300">ထိုးထားသော ငွေ:</span>
+                        <span id="customerTotalAmount" class="font-bold text-white">0 MMK</span>
+                    </div>
+                     <!-- New Section for showing customer-specific numbers -->
+                    <div class="pt-2">
+                        <button id="toggleCustomerNumbersBtn" class="text-blue-400 hover:text-blue-300 text-sm font-semibold">[ထိုးဂဏန်းများ ကြည့်ရန်]</button>
+                        <div id="customerNumbersList" class="hidden mt-2 p-2 bg-gray-800 border border-gray-700 rounded-md max-h-24 overflow-y-auto">
+                            <p class="text-xs text-gray-300 break-words"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Results Display -->
+        <div id="results" class="mt-6 p-6 rounded-2xl shadow-2xl result-card border border-gray-700 hidden">
+            <h2 class="text-2xl font-bold text-center mb-4 text-yellow-300">ငွေစာရင်းချုပ်</h2>
+            <div class="space-y-3 text-lg">
+                <div class="flex justify-between">
+                    <span class="font-medium text-gray-300">စုစုပေါင်း ထိုးငွေ:</span>
+                    <span id="totalBet" class="font-bold text-red-400">0 MMK</span>
+                </div>
+                <hr class="border-gray-600"/>
+                <div class="flex justify-between">
+                    <span class="font-medium text-gray-300">ကျန်ရှိငွေ:</span>
+                    <span id="finalCapital" class="font-bold text-yellow-300">0 MMK</span>
+                </div>
+            </div>
+
+            <!-- Bank Summary -->
+            <div id="bankSummary" class="mt-6 border-t border-gray-600 pt-4">
+                <h3 class="text-xl font-bold text-center mb-3">ဘဏ်အလိုက် စာရင်းချုပ်</h3>
+                <div class="p-3 bg-gray-800 rounded-lg mb-2">
+                     <p class="font-bold text-lg text-blue-300">Kpay</p>
+                     <div class="flex justify-between text-sm"><span>စုစုပေါင်း အထွက်:</span><span id="kpayOut">0 MMK</span></div>
+                </div>
+                <div class="p-3 bg-gray-800 rounded-lg">
+                     <p class="font-bold text-lg" style="color: #00c77f;">WavePay</p>
+                     <div class="flex justify-between text-sm"><span>စုစုပေါင်း အထွက်:</span><span id="wavepayOut">0 MMK</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div id="settingsSection" class="mt-6 p-6 rounded-2xl shadow-2xl result-card border border-gray-700">
+            <h2 class="text-xl font-bold mb-3 text-red-400">Settings</h2>
+            <div class="flex justify-between items-center">
+                <div>
+                    <p class="text-sm text-gray-300">သင်၏ မှတ်တမ်းများအားလုံးကို ဖျက်သိမ်းပါမည်။</p>
+                    <p class="text-xs text-gray-400">ဤလုပ်ဆောင်ချက်ကို ပြန်ပြင်၍မရပါ။</p>
+                </div>
+                <button id="deleteAllDataBtn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">ဒေတာအားလုံးဖျက်မည်</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-gray-800 rounded-2xl shadow-xl w-full max-w-md p-6 border border-gray-600">
+            <h3 class="text-xl font-bold text-center mb-4 text-yellow-300">စာရင်း ပြင်ဆင်ရန်</h3>
+            <input type="hidden" id="editTransactionId">
+            <div class="space-y-4">
+                 <div>
+                    <label for="editCustomerName" class="block mb-2 text-sm font-medium text-gray-200">Customer အမည်</label>
+                    <input type="text" id="editCustomerName" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                </div>
+
+                <div id="editBetInputs">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="editBetNumbers" class="block mb-2 text-sm font-medium text-gray-200">2D ဂဏန်းများ</label>
+                            <input type="text" id="editBetNumbers" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        </div>
+                        <div>
+                            <label for="editBetAmountPerNumber" class="block mb-2 text-sm font-medium text-gray-200">တစ်ကွက်ထိုးငွေ</label>
+                            <input type="number" id="editBetAmountPerNumber" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="editPaymentMethod" class="block mb-2 text-sm font-medium text-gray-200">ဘဏ်အမျိုးအစား</label>
+                    <select id="editPaymentMethod" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="Kpay">Kpay</option>
+                        <option value="Wavepay">WavePay</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+                <button id="cancelEditBtn" class="px-5 py-2.5 bg-gray-600 hover:bg-gray-500 rounded-lg text-sm font-bold">မလုပ်တော့ပါ</button>
+                <button id="saveChangesBtn" class="px-5 py-2.5 bg-yellow-500 hover:bg-yellow-600 rounded-lg text-sm font-bold text-gray-900">သိမ်းဆည်းမည်</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-gray-800 rounded-2xl shadow-xl w-full max-w-sm p-6 border border-gray-600 text-center">
+            <!-- Warning Icon -->
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-900 mb-4">
+                <svg class="h-6 w-6 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-white">သေချာပါသလား?</h3>
+            <p class="text-sm text-gray-400 mb-6">သင်၏ မှတ်တမ်းများအားလုံး အပြီးတိုင် ဖျက်သိမ်းသွားမည်ဖြစ်ပြီး ပြန်လည်ရယူနိုင်တော့မည် မဟုတ်ပါ။</p>
+            <div class="flex justify-center space-x-4">
+                <button id="cancelDeleteBtn" class="px-6 py-2.5 bg-gray-600 hover:bg-gray-500 rounded-lg text-sm font-bold w-full">မလုပ်တော့ပါ</button>
+                <button id="confirmDeleteBtn" class="px-6 py-2.5 bg-red-600 hover:bg-red-700 rounded-lg text-sm font-bold text-white w-full">အတည်ပြုသည်</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- STATE ---
+        let transactions = [];
+
+        // --- DOM ELEMENTS ---
+        const initialCapitalInput = document.getElementById('initialCapital');
+        const paymentMethodSelect = document.getElementById('paymentMethod');
+        const addTransactionBtn = document.getElementById('addTransactionBtn');
+        const transactionListContainer = document.getElementById('transactionListContainer');
+        const transactionList = document.getElementById('transactionList');
+        const resultsDiv = document.getElementById('results');
+        const checkPortfolioBtn = document.getElementById('checkPortfolioBtn');
+        const portfolioResultDiv = document.getElementById('portfolioResult');
+        const deleteAllDataBtn = document.getElementById('deleteAllDataBtn');
+        
+        // Main Form Inputs
+        const customerNameInput = document.getElementById('customerName');
+        const betNumbersInput = document.getElementById('betNumbers');
+        const betAmountPerNumberInput = document.getElementById('betAmountPerNumber');
+
+        // Agent Summary Elements
+        const customerFilterSelect = document.getElementById('customerFilterSelect');
+
+        // Edit Modal Elements
+        const editModal = document.getElementById('editModal');
+        const editTransactionIdInput = document.getElementById('editTransactionId');
+        const editCustomerNameInput = document.getElementById('editCustomerName');
+        const editPaymentMethodSelect = document.getElementById('editPaymentMethod');
+        const editBetNumbersInput = document.getElementById('editBetNumbers');
+        const editBetAmountPerNumberInput = document.getElementById('editBetAmountPerNumber');
+        const saveChangesBtn = document.getElementById('saveChangesBtn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+
+        // Confirmation Modal Elements
+        const confirmationModal = document.getElementById('confirmationModal');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+
+        // --- EVENT LISTENERS ---
+        addTransactionBtn.addEventListener('click', addTransaction);
+        initialCapitalInput.addEventListener('input', updateUI);
+        checkPortfolioBtn.addEventListener('click', checkPortfolio);
+        deleteAllDataBtn.addEventListener('click', () => {
+            if (transactions.length > 0) {
+                confirmationModal.classList.remove('hidden');
+            }
+        });
+        customerFilterSelect.addEventListener('change', handleCustomerFilterChange);
+        
+        // Modal Listeners
+        saveChangesBtn.addEventListener('click', saveTransactionChanges);
+        cancelEditBtn.addEventListener('click', closeEditModal);
+
+        // Confirmation Modal Listeners
+        confirmDeleteBtn.addEventListener('click', () => {
+            clearAllTransactions();
+            confirmationModal.classList.add('hidden');
+        });
+        cancelDeleteBtn.addEventListener('click', () => {
+            confirmationModal.classList.add('hidden');
+        });
+
+
+        // --- CORE APP FUNCTIONS ---
+
+        /**
+         * Parses a raw string of bet numbers into an array of individual numbers.
+         * Handles special formats like '58R' (reverse) and '00 to 99' (range).
+         * @param {string} inputString - The raw string from the input field.
+         * @returns {string[]} An array of unique numbers.
+         */
+        function parseBetNumbers(inputString) {
+            const numbersSet = new Set();
+            const parts = inputString.split(',').map(p => p.trim());
+
+            for (const part of parts) {
+                if (!part) continue;
+
+                const lowerPart = part.toLowerCase();
+
+                // Handle 'R' format (e.g., 58R)
+                if (lowerPart.endsWith('r')) {
+                    const numStr = lowerPart.slice(0, -1);
+                    if (!isNaN(numStr) && numStr.length > 0) {
+                        const reversedNumStr = numStr.split('').reverse().join('');
+                        numbersSet.add(numStr.padStart(2, '0'));
+                        numbersSet.add(reversedNumStr.padStart(2, '0'));
+                    }
+                } 
+                // Handle 'to' format (e.g., 00 to 99)
+                else if (lowerPart.includes('to')) {
+                    const range = lowerPart.split('to').map(n => n.trim());
+                    if (range.length === 2) {
+                        const start = parseInt(range[0], 10);
+                        const end = parseInt(range[1], 10);
+                        if (!isNaN(start) && !isNaN(end) && start <= end) {
+                            for (let i = start; i <= end; i++) {
+                                // Pad with zero for 2D numbers
+                                if (i < 100) {
+                                   numbersSet.add(i.toString().padStart(2, '0'));
+                                }
+                            }
+                        }
+                    }
+                }
+                // Handle normal number
+                else {
+                    if (!isNaN(part)) {
+                       numbersSet.add(part.padStart(2, '0'));
+                    }
+                }
+            }
+            return Array.from(numbersSet);
+        }
+
+        function addTransaction() {
+            const customerName = customerNameInput.value.trim();
+            if (!customerName) {
+                alert('Customer အမည်ကို ထည့်သွင်းပါ။');
+                return;
+            }
+            const method = paymentMethodSelect.value;
+            
+            const numbersRaw = betNumbersInput.value.trim();
+            const amountPerNumber = parseFloat(betAmountPerNumberInput.value);
+            
+            if (!numbersRaw || !amountPerNumber || amountPerNumber <= 0) {
+                alert('ကျေးဇူးပြု၍ ထိုးဂဏန်းနှင့် တစ်ကွက်ထိုးငွေကို မှန်ကန်စွာဖြည့်ပါ။');
+                return;
+            }
+
+            const numbers = parseBetNumbers(numbersRaw);
+            if (numbers.length === 0) {
+                alert('ထိုးဂဏန်း format မမှန်ပါ။ ဥပမာ: 58R, 42, 00 to 10');
+                return;
+            }
+            
+            const transaction = { 
+                id: Date.now(), 
+                method: method, 
+                type: 'bet', 
+                customerName: customerName,
+                rawNumbers: numbersRaw,
+                numbers: numbers,
+                amount_per_number: amountPerNumber,
+                amount: numbers.length * amountPerNumber
+            };
+
+            transactions.push(transaction);
+            updateUI();
+
+            // Clear input
+            customerNameInput.value = '';
+            betNumbersInput.value = '';
+            betAmountPerNumberInput.value = '';
+        }
+        
+        function openEditModal(id) {
+            const transaction = transactions.find(t => t.id === id);
+            if (!transaction) return;
+
+            editTransactionIdInput.value = transaction.id;
+            editCustomerNameInput.value = transaction.customerName;
+            editPaymentMethodSelect.value = transaction.method;
+            editBetNumbersInput.value = transaction.rawNumbers; 
+            editBetAmountPerNumberInput.value = transaction.amount_per_number;
+
+            editModal.classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            editModal.classList.add('hidden');
+        }
+
+        function saveTransactionChanges() {
+            const id = parseInt(editTransactionIdInput.value);
+            const transactionIndex = transactions.findIndex(t => t.id === id);
+            if (transactionIndex === -1) return;
+
+            const customerName = editCustomerNameInput.value.trim();
+            if (!customerName) {
+                 alert('Customer အမည်ကို ထည့်သွင်းပါ။');
+                return;
+            }
+            
+            const method = editPaymentMethodSelect.value;
+            const numbersRaw = editBetNumbersInput.value.trim();
+            const amountPerNumber = parseFloat(editBetAmountPerNumberInput.value);
+            
+            if (!numbersRaw || !amountPerNumber || amountPerNumber <= 0) {
+                alert('ကျေးဇူးပြု၍ ထိုးဂဏန်းနှင့် တစ်ကွက်ထိုးငွေကို မှန်ကန်စွာဖြည့်ပါ။');
+                return;
+            }
+            const numbers = parseBetNumbers(numbersRaw);
+            if (numbers.length === 0) {
+                alert('ထိုးဂဏန်း format မမှန်ပါ။');
+                return;
+            }
+            
+            let updatedTransaction = { 
+                ...transactions[transactionIndex], 
+                method, 
+                customerName,
+                rawNumbers: numbersRaw,
+                numbers: numbers,
+                amount_per_number: amountPerNumber,
+                amount: numbers.length * amountPerNumber
+            };
+
+            transactions[transactionIndex] = updatedTransaction;
+            updateUI();
+            closeEditModal();
+        }
+
+        function checkPortfolio() {
+            const live2D = document.getElementById('live2D').value.trim();
+
+            if (!live2D || isNaN(live2D) || live2D.length > 2) {
+                portfolioResultDiv.innerHTML = `<p class="text-red-400">ကျေးဇူးပြု၍ 2D ပေါက်ဂဏန်းကို မှန်ကန်စွာထည့်ပါ။</p>`;
+                return;
+            }
+            
+            const paddedLive2D = live2D.padStart(2, '0');
+            let resultsHTML = [];
+            const winnersMap = new Map();
+
+            transactions.forEach(t => {
+                if (t.type === 'bet' && t.numbers.includes(paddedLive2D)) {
+                    const winningAmount = t.amount_per_number * 80;
+                    const winnerInfo = { 
+                        name: t.customerName, 
+                        win: `${paddedLive2D}`, 
+                        amount: winningAmount,
+                        betAmount: t.amount_per_number
+                    };
+                    if (!winnersMap.has(t.customerName)) {
+                        winnersMap.set(t.customerName, []);
+                    }
+                    winnersMap.get(t.customerName).push(winnerInfo);
+                }
+            });
+
+            resultsHTML.push('<h4 class="text-lg font-bold mb-2 text-white">စာရင်းချုပ်အရ ပေါက်သူများ</h4>');
+            if (winnersMap.size > 0) {
+                winnersMap.forEach((wins, name) => {
+                    wins.forEach(win => {
+                         resultsHTML.push(`
+                            <div class="text-green-400 font-bold p-3 bg-green-900/50 rounded-lg mb-2 flex justify-between items-center text-sm">
+                                <span>🎉 ${name} (2D: ${win.win}) - ထိုးငွေ: ${win.betAmount.toLocaleString()} MMK, ပေါက်ငွေ: ${win.amount.toLocaleString()} MMK</span>
+                            </div>
+                         `);
+                    });
+                });
+            } else {
+                resultsHTML.push(`<p class="text-yellow-400">စာရင်းထဲမှ ပေါက်သူမရှိပါ။</p>`);
+            }
+            
+            portfolioResultDiv.innerHTML = resultsHTML.join('');
+        }
+        
+        function clearAllTransactions() {
+            if (transactions.length > 0) {
+                 transactions = [];
+                 updateUI();
+            }
+        }
+
+        function toggleNumberList(id) {
+            const numberListDiv = document.getElementById(`numbers-${id}`);
+            if (numberListDiv) {
+                numberListDiv.classList.toggle('hidden');
+            }
+        }
+
+        function deleteTransaction(id) {
+            transactions = transactions.filter(t => t.id !== id);
+            updateUI();
+        }
+
+        function updateUI() {
+            renderTransactionList();
+            calculateAndRenderSummaries();
+            calculateAndRenderAgentSummary();
+        }
+
+        function renderTransactionList() {
+            if (transactions.length === 0) {
+                transactionListContainer.classList.add('hidden');
+                return;
+            }
+            transactionListContainer.classList.remove('hidden');
+            transactionList.innerHTML = '';
+
+            transactions.slice().reverse().forEach(t => { // Show newest first
+                const amountColor = 'text-red-400';
+                const typeText = `ထိုးငွေ: (${t.rawNumbers})`;
+                const viewNumbersButton = `<button onclick="toggleNumberList(${t.id})" class="text-blue-400 hover:text-blue-300 text-xs ml-2 font-semibold">[ဂဏန်းများကြည့်ရန်]</button>`;
+                const fullNumberList = `
+                    <div id="numbers-${t.id}" class="hidden mt-2 p-2 bg-gray-800 border border-gray-700 rounded-md">
+                        <p class="text-xs text-gray-300 break-words">${t.numbers.join(', ')}</p>
+                    </div>
+                `;
+
+                const li = document.createElement('li');
+                li.className = 'transaction-item p-3 rounded-md';
+                li.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="flex-grow mr-4">
+                            <p class="text-sm font-semibold text-gray-100">${t.customerName}</p>
+                            <p class="font-bold ${amountColor}">${t.amount.toLocaleString()} MMK</p>
+                            <p class="text-xs text-gray-400 mt-1">${typeText}${viewNumbersButton}</p>
+                        </div>
+                        <div class="flex items-center flex-shrink-0">
+                            <span class="text-xs font-semibold px-2 py-1 rounded-full ${t.method === 'Kpay' ? 'bg-blue-600' : 'bg-green-600'}">${t.method}</span>
+                            <button onclick="openEditModal(${t.id})" class="edit-btn p-2 ml-1" title="ပြင်ဆင်ရန်">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                                    <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <button onclick="deleteTransaction(${t.id})" class="text-red-500 hover:text-red-400 p-2" title="ဖျက်ရန်">
+                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    ${fullNumberList}
+                `;
+                transactionList.appendChild(li);
+            });
+        }
+
+        function handleCustomerFilterChange() {
+            const selectedCustomer = customerFilterSelect.value;
+            const summaryDiv = document.getElementById('customerSpecificSummary');
+            const toggleCustomerNumbersBtn = document.getElementById('toggleCustomerNumbersBtn');
+            const customerNumbersListDiv = document.getElementById('customerNumbersList');
+            const customerNumbersListP = customerNumbersListDiv.querySelector('p');
+
+            if (selectedCustomer === 'all') {
+                summaryDiv.classList.add('hidden');
+            } else {
+                const betTransactions = transactions.filter(t => t.type === 'bet' && t.customerName === selectedCustomer);
+                
+                const customerNumbers = new Set();
+                let customerTotalAmount = 0;
+
+                betTransactions.forEach(t => {
+                    t.numbers.forEach(num => customerNumbers.add(num));
+                    customerTotalAmount += t.amount;
+                });
+                
+                document.getElementById('selectedCustomerName').textContent = `${selectedCustomer} ၏ စာရင်း`;
+                document.getElementById('customerTotalNumbers').textContent = customerNumbers.size;
+                document.getElementById('customerTotalAmount').textContent = `${customerTotalAmount.toLocaleString()} MMK`;
+                
+                if (customerNumbers.size > 0) {
+                    customerNumbersListP.textContent = Array.from(customerNumbers).sort().join(', ');
+                    toggleCustomerNumbersBtn.style.display = 'inline-block';
+                    toggleCustomerNumbersBtn.onclick = () => customerNumbersListDiv.classList.toggle('hidden');
+                    customerNumbersListDiv.classList.add('hidden'); // Ensure it's hidden initially
+                } else {
+                    toggleCustomerNumbersBtn.style.display = 'none';
+                    customerNumbersListDiv.classList.add('hidden');
+                }
+                
+                summaryDiv.classList.remove('hidden');
+            }
+        }
+
+        function calculateAndRenderAgentSummary() {
+            const betTransactions = transactions.filter(t => t.type === 'bet');
+            const agentSummaryContainer = document.getElementById('agentSummaryContainer');
+
+            if (betTransactions.length === 0) {
+                agentSummaryContainer.classList.add('hidden');
+                return;
+            }
+
+            agentSummaryContainer.classList.remove('hidden');
+
+            const allNumbers = new Set();
+            let totalBetAmount = 0;
+            const customerNames = new Set();
+
+            betTransactions.forEach(t => {
+                t.numbers.forEach(num => allNumbers.add(num));
+                totalBetAmount += t.amount;
+                customerNames.add(t.customerName);
+            });
+
+            // Update overall summary
+            document.getElementById('totalUniqueNumbers').textContent = allNumbers.size;
+            document.getElementById('totalAgentBetAmount').textContent = `${totalBetAmount.toLocaleString()} MMK`;
+
+            // Populate dropdown
+            const currentSelectedCustomer = customerFilterSelect.value;
+            customerFilterSelect.innerHTML = '<option value="all">Customer အားလုံး</option>'; 
+            
+            Array.from(customerNames).sort().forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = name;
+                customerFilterSelect.appendChild(option);
+            });
+            
+            // Restore selection
+            if (Array.from(customerNames).includes(currentSelectedCustomer)) {
+                customerFilterSelect.value = currentSelectedCustomer;
+            }
+
+            // Update the specific view based on the current selection
+            handleCustomerFilterChange();
+        }
+
+        function calculateAndRenderSummaries() {
+            if (transactions.length === 0 && !initialCapitalInput.value) {
+                resultsDiv.classList.add('hidden');
+                return;
+            }
+             resultsDiv.classList.remove('hidden');
+
+            const initialCapital = parseFloat(initialCapitalInput.value) || 0;
+            
+            let totalBet = 0;
+            let kpayOut = 0, wavepayOut = 0;
+
+            transactions.forEach(t => {
+                if (t.type === 'bet') {
+                    totalBet += t.amount;
+                    if (t.method === 'Kpay') kpayOut += t.amount;
+                    else wavepayOut += t.amount;
+                }
+            });
+
+            const finalCapital = initialCapital - totalBet;
+            
+            // Render overall summary
+            document.getElementById('totalBet').textContent = `${totalBet.toLocaleString()} MMK`;
+            document.getElementById('finalCapital').textContent = `${finalCapital.toLocaleString()} MMK`;
+
+            // Render bank summary
+            document.getElementById('kpayOut').textContent = `${kpayOut.toLocaleString()} MMK`;
+            document.getElementById('wavepayOut').textContent = `${wavepayOut.toLocaleString()} MMK`;
+        }
+    </script>
+</body>
+</html>
+
