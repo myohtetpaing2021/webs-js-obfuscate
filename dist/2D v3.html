@@ -1,972 +1,301 @@
-!DOCTYPE html
-html lang=my
-head
-    meta charset=UTF-8
-    meta name=viewport content=width=device-width, initial-scale=1.0
-    title2D Master - စာရင်းကိုင် Apptitle
-    script src=httpscdn.tailwindcss.comscript
-    link rel=preconnect href=httpsfonts.googleapis.com
-    link rel=preconnect href=httpsfonts.gstatic.com crossorigin
-    link href=httpsfonts.googleapis.comcss2family=Padaukwght@400;700&display=swap rel=stylesheet
-    style
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2D Master - စာရင်းကိုင် App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap" rel="stylesheet">
+    <style>
         body {
-            font-family 'Padauk', sans-serif;
-            background-color #0d1117;
+            font-family: 'Padauk', sans-serif;
+            background-color: #0d1117;
         }
         .card {
-            background-color #161b22;
-            border 1px solid #30363d;
-            border-radius 0.75rem;
-            position relative;
-            overflow hidden;
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 0.75rem;
+            position: relative;
+            overflow: hidden;
         }
-        .cardbefore {
-            content '';
-            position absolute;
-            top 0;
-            left 0;
-            right 0;
-            height 2px;
-            background linear-gradient(to right, #1e3a8a, #3b82f6);
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, #1e3a8a, #3b82f6);
         }
         .table-header {
-            background-color #1f242c;
+            background-color: #1f242c;
         }
-        .table-rowhover {
-            background-color #21262d;
+        .table-row:hover {
+            background-color: #21262d;
         }
-         Hide arrows from number input 
-        input[type=number]-webkit-inner-spin-button,
-        input[type=number]-webkit-outer-spin-button {
-            -webkit-appearance none;
-            margin 0;
+        /* Hide arrows from number input */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
         input[type=number] {
-            -moz-appearance textfield;
+            -moz-appearance: textfield;
         }
         @media print {
-            body  {
-                visibility hidden;
+            body * {
+                visibility: hidden;
             }
-            #print-section, #print-section  {
-                visibility visible;
+            #print-section, #print-section * {
+                visibility: visible;
             }
             #print-section {
-                position absolute;
-                left 0;
-                top 0;
-                width 100%;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
             }
             table {
-                width 100%;
-                border-collapse collapse;
+                width: 100%;
+                border-collapse: collapse;
             }
             th, td {
-                border 1px solid black;
-                padding 8px;
-                text-align left;
+                border: 1px solid black;
+                padding: 8px;
+                text-align: left;
             }
         }
-    style
-head
-body class=text-gray-300 min-h-screen p-4 mdp-8
+    </style>
+</head>
+<body class="text-gray-300 min-h-screen p-4 md:p-8">
 
-    div class=w-full max-w-7xl mx-auto space-y-6
-        header class=text-center
-            h1 class=text-3xl mdtext-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-yellow-3002D Master - စာရင်းကိုင် Apph1
-            p class=text-gray-400 mt-2သင့်ရဲ့ 2D ထိုးကြေး၊ အရှုံးအမြတ်များကို တိကျသေချာစွာ မှတ်သား စီမံလိုက်ပါp
-        header
+    <div class="w-full max-w-7xl mx-auto space-y-6">
+        <header class="text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-yellow-300">2D Master - စာရင်းကိုင် App</h1>
+            <p class="text-gray-400 mt-2">သင့်ရဲ့ 2D ထိုးကြေး၊ အရှုံးအမြတ်များကို တိကျသေချာစွာ မှတ်သား စီမံလိုက်ပါ</p>
+        </header>
 
-        main class=grid grid-cols-1 lggrid-cols-3 gap-6
-            !-- Left Column --
-            div class=lgcol-span-1 space-y-6
-                !-- Live Portfolio --
-                div class=card p-6
-                    h2 class=flex items-center text-xl font-bold text-yellow-300 mb-4
-                        svg xmlns=httpwww.w3.org2000svg class=h-6 w-6 mr-2 fill=none viewBox=0 0 24 24 stroke=currentColor stroke-width=2path stroke-linecap=round stroke-linejoin=round d=M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122 svg
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Column -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- Live Portfolio -->
+                <div class="card p-6">
+                    <h2 class="flex items-center text-xl font-bold text-yellow-300 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" /></svg>
                         ပေါက်ဂဏန်း တိုက်စစ်ရန်
-                    h2
-                     div class=mb-4
-                        label for=live2D class=block mb-2 text-sm font-medium text-gray-400လက်ရှိ 2D ပေါက်ဂဏန်းlabel
-                        input type=text id=live2D class=bg-gray-900 border border-gray-600 text-green-400 text-3xl font-bold text-center rounded-lg focusring-blue-500 focusborder-blue-500 block w-full p-2.5 placeholder=-- maxlength=2
-                    div
-                    button id=checkPortfolioBtn class=w-full text-white bg-indigo-600 hoverbg-indigo-700 font-bold rounded-lg text-md px-5 py-3 text-center transitionတိုက်စစ်မည်button
-                    div id=portfolioResult class=mt-4 text-centerdiv
-                div
+                    </h2>
+                     <div class="mb-4">
+                        <label for="live2D" class="block mb-2 text-sm font-medium text-gray-400">လက်ရှိ 2D ပေါက်ဂဏန်း</label>
+                        <input type="text" id="live2D" class="bg-gray-900 border border-gray-600 text-green-400 text-3xl font-bold text-center rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="--" maxlength="2">
+                    </div>
+                    <button id="checkPortfolioBtn" class="w-full text-white bg-indigo-600 hover:bg-indigo-700 font-bold rounded-lg text-md px-5 py-3 text-center transition">တိုက်စစ်မည်</button>
+                    <div id="portfolioResult" class="mt-4 text-center"></div>
+                </div>
 
-                 !-- Input Form --
-                div class=card p-6
-                    h2 class=flex items-center text-xl font-bold text-yellow-300 mb-4
-                        svg xmlns=httpwww.w3.org2000svg class=h-6 w-6 mr-2 fill=none viewBox=0 0 24 24 stroke=currentColor stroke-width=2path stroke-linecap=round stroke-linejoin=round d=M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z svg
+                 <!-- Input Form -->
+                <div class="card p-6">
+                    <h2 class="flex items-center text-xl font-bold text-yellow-300 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                         ထိုးငွေစာရင်း ထည့်သွင်းရန်
-                    h2
-                    div class=space-y-4
-                        div
-                            label for=initialCapital class=block mb-2 text-sm font-medium text-gray-400မိမိ၏ မူလအရင်းငွေ (MMK)label
-                            input type=number id=initialCapital class=bg-gray-900 border border-gray-600 text-white text-sm rounded-lg focusring-blue-500 focusborder-blue-500 block w-full p-2.5 placeholder=50000
-                        div
-                        div
-                            label for=customerName class=block mb-2 text-sm font-medium text-gray-400Customer အမည်label
-                            input type=text id=customerName class=bg-gray-900 border border-gray-600 text-white text-sm rounded-lg focusring-blue-500 focusborder-blue-500 block w-full p-2.5 placeholder=Aung Aung
-                        div
-                        div
-                            label for=betNumbers class=block mb-2 text-sm font-medium text-gray-4002D ဂဏန်းများlabel
-                            input type=text id=betNumbers class=bg-gray-900 border border-gray-600 text-white text-sm rounded-lg focusring-blue-500 focusborder-blue-500 block w-full p-2.5 placeholder=26R, (42,45)R, 00-99
-                        div
-                        div
-                            label for=betAmountPerNumber class=block mb-2 text-sm font-medium text-gray-400တစ်ကွက်ထိုးငွေ (MMK)label
-                            input type=number id=betAmountPerNumber class=bg-gray-900 border border-gray-600 text-white text-sm rounded-lg focusring-blue-500 focusborder-blue-500 block w-full p-2.5 placeholder=1000
-                        div
-                        div
-                            label for=paymentMethod class=block mb-2 text-sm font-medium text-gray-400ဘဏ်အမျိုးအစားlabel
-                            select id=paymentMethod class=bg-gray-900 border border-gray-600 text-white text-sm rounded-lg focusring-blue-500 focusborder-blue-500 block w-full p-2.5
-                                option value=KpayKpayoption
-                                option value=WavepayWavePayoption
-                            select
-                        div
-                        button id=addTransactionBtn class=w-full text-white bg-blue-600 hoverbg-blue-700 focusring-4 focusoutline-none focusring-blue-800 font-bold rounded-lg text-md px-5 py-3 text-center transitionစာရင်းထည့်မည်button
-                    div
-                div
-            div
+                    </h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="initialCapital" class="block mb-2 text-sm font-medium text-gray-400">မိမိ၏ မူလအရင်းငွေ (MMK)</label>
+                            <input type="number" id="initialCapital" class="bg-gray-900 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="50000">
+                        </div>
+                        <div>
+                            <label for="customerName" class="block mb-2 text-sm font-medium text-gray-400">Customer အမည်</label>
+                            <input type="text" id="customerName" class="bg-gray-900 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Aung Aung">
+                        </div>
+                        <div>
+                            <label for="betNumbers" class="block mb-2 text-sm font-medium text-gray-400">2D ဂဏန်းများ</label>
+                            <input type="text" id="betNumbers" class="bg-gray-900 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="26R, (42,45)R, 00-99">
+                        </div>
+                        <div>
+                            <label for="betAmountPerNumber" class="block mb-2 text-sm font-medium text-gray-400">တစ်ကွက်ထိုးငွေ (MMK)</label>
+                            <input type="number" id="betAmountPerNumber" class="bg-gray-900 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="1000">
+                        </div>
+                        <div>
+                            <label for="paymentMethod" class="block mb-2 text-sm font-medium text-gray-400">ဘဏ်အမျိုးအစား</label>
+                            <select id="paymentMethod" class="bg-gray-900 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                <option value="Kpay">Kpay</option>
+                                <option value="Wavepay">WavePay</option>
+                            </select>
+                        </div>
+                        <button id="addTransactionBtn" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-800 font-bold rounded-lg text-md px-5 py-3 text-center transition">စာရင်းထည့်မည်</button>
+                    </div>
+                </div>
+            </div>
             
-            !-- Right Column --
-            div class=lgcol-span-2 space-y-6
-                !-- Summaries --
-                div class=grid grid-cols-1 mdgrid-cols-2 gap-6
-                     !-- Agent Summary --
-                    div id=agentSummaryContainer class=card p-6 hidden
-                        h2 class=flex items-center text-xl font-bold text-yellow-300 mb-4
-                            svg xmlns=httpwww.w3.org2000svg class=h-6 w-6 mr-2 fill=none viewBox=0 0 24 24 stroke=currentColor stroke-width=2path stroke-linecap=round stroke-linejoin=round d=M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z svg
+            <!-- Right Column -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Summaries -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                     <!-- Agent Summary -->
+                    <div id="agentSummaryContainer" class="card p-6 hidden">
+                        <h2 class="flex items-center text-xl font-bold text-yellow-300 mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                             နေ့စဉ်စာရင်းချုပ်
-                        h2
-                        div class=space-y-3 text-sm
-                            div class=flex justify-between items-centerspan class=text-gray-400စုစုပေါင်း ထိုးဂဏန်းspan span id=totalUniqueNumbers class=font-bold text-lg text-white0spandiv
-                            div class=flex justify-between items-centerspan class=text-gray-400စုစုပေါင်း ထိုးငွေspan span id=totalAgentBetAmount class=font-bold text-lg text-white0 MMKspandiv
-                            div class=border-t border-gray-700 pt-3 mt-2
-                                 label for=customerFilterSelect class=block mb-2 text-sm font-medium text-gray-400Customer အလိုက်စစ်ရန်label
-                                 select id=customerFilterSelect class=block w-full bg-gray-900 border border-gray-600 rounded-md p-2 text-white focusring-blue-500 focusborder-blue-500 text-smselect
-                            div
-                            div id=customerSpecificSummary class=hidden border-t border-gray-700 pt-3 mt-2 space-y-2
-                                h3 id=selectedCustomerName class=font-semibold text-yellow-200h3
-                                div class=flex justify-betweenspan class=text-gray-400ထိုးထားသော ဂဏန်းများspanspan id=customerTotalNumbers class=font-bold text-white0spandiv
-                                div class=flex justify-betweenspan class=text-gray-400ထိုးထားသော ငွေspanspan id=customerTotalAmount class=font-bold text-white0 MMKspandiv
-                                div
-                                    button id=toggleCustomerNumbersBtn class=text-blue-400 hovertext-blue-300 text-xs font-semibold[ထိုးဂဏန်းများ ကြည့်ရန်]button
-                                    div id=customerNumbersList class=hidden mt-2 p-2 bg-gray-900 rounded-md text-xs text-gray-400 break-words max-h-20 overflow-y-autodiv
-                                div
-                            div
-                        div
-                    div
-                     !-- Financial Summary --
-                    div id=results class=card p-6 hidden
-                        h2 class=flex items-center text-xl font-bold text-yellow-300 mb-4
-                           svg xmlns=httpwww.w3.org2000svg class=h-6 w-6 mr-2 fill=none viewBox=0 0 24 24 stroke=currentColor stroke-width=2path stroke-linecap=round stroke-linejoin=round d=M13 7h8m0 0v8m0-8l-8 8-4-4-6 6 svg
+                        </h2>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between items-center"><span class="text-gray-400">စုစုပေါင်း ထိုးဂဏန်း:</span> <span id="totalUniqueNumbers" class="font-bold text-lg text-white">0</span></div>
+                            <div class="flex justify-between items-center"><span class="text-gray-400">စုစုပေါင်း ထိုးငွေ:</span> <span id="totalAgentBetAmount" class="font-bold text-lg text-white">0 MMK</span></div>
+                            <div class="border-t border-gray-700 pt-3 mt-2">
+                                 <label for="customerFilterSelect" class="block mb-2 text-sm font-medium text-gray-400">Customer အလိုက်စစ်ရန်:</label>
+                                 <select id="customerFilterSelect" class="block w-full bg-gray-900 border border-gray-600 rounded-md p-2 text-white focus:ring-blue-500 focus:border-blue-500 text-sm"></select>
+                            </div>
+                            <div id="customerSpecificSummary" class="hidden border-t border-gray-700 pt-3 mt-2 space-y-2">
+                                <h3 id="selectedCustomerName" class="font-semibold text-yellow-200"></h3>
+                                <div class="flex justify-between"><span class="text-gray-400">ထိုးထားသော ဂဏန်းများ:</span><span id="customerTotalNumbers" class="font-bold text-white">0</span></div>
+                                <div class="flex justify-between"><span class="text-gray-400">ထိုးထားသော ငွေ:</span><span id="customerTotalAmount" class="font-bold text-white">0 MMK</span></div>
+                                <div>
+                                    <button id="toggleCustomerNumbersBtn" class="text-blue-400 hover:text-blue-300 text-xs font-semibold">[ထိုးဂဏန်းများ ကြည့်ရန်]</button>
+                                    <div id="customerNumbersList" class="hidden mt-2 p-2 bg-gray-900 rounded-md text-xs text-gray-400 break-words max-h-20 overflow-y-auto"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <!-- Financial Summary -->
+                    <div id="results" class="card p-6 hidden">
+                        <h2 class="flex items-center text-xl font-bold text-yellow-300 mb-4">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
                             ငွေစာရင်းချုပ်
-                        h2
-                        div class=space-y-3 text-sm
-                            div class=flex justify-between items-centerspan class=text-gray-400စုစုပေါင်း ထိုးငွေspan span id=totalBet class=font-bold text-lg text-red-4000 MMKspandiv
-                            div class=flex justify-between items-centerspan class=text-gray-400ကျန်ရှိငွေspan span id=finalCapital class=font-bold text-lg text-green-4000 MMKspandiv
-                            div id=bankSummary class=mt-2 border-t border-gray-700 pt-3
-                               div class=p-2 bg-gray-900 rounded-lg mb-2
-                                 p class=font-bold text-md text-blue-400Kpayp
-                                 div class=flex justify-between text-xsspanစုစုပေါင်း အထွက်spanspan id=kpayOut0 MMKspandiv
-                               div
-                               div class=p-2 bg-gray-900 rounded-lg
-                                 p class=font-bold text-md text-green-400WavePayp
-                                 div class=flex justify-between text-xsspanစုစုပေါင်း အထွက်spanspan id=wavepayOut0 MMKspandiv
-                               div
-                            div
-                        div
-                    div
-                div
+                        </h2>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between items-center"><span class="text-gray-400">စုစုပေါင်း ထိုးငွေ:</span> <span id="totalBet" class="font-bold text-lg text-red-400">0 MMK</span></div>
+                            <div class="flex justify-between items-center"><span class="text-gray-400">ကျန်ရှိငွေ:</span> <span id="finalCapital" class="font-bold text-lg text-green-400">0 MMK</span></div>
+                            <div id="bankSummary" class="mt-2 border-t border-gray-700 pt-3">
+                               <div class="p-2 bg-gray-900 rounded-lg mb-2">
+                                 <p class="font-bold text-md text-blue-400">Kpay</p>
+                                 <div class="flex justify-between text-xs"><span>စုစုပေါင်း အထွက်:</span><span id="kpayOut">0 MMK</span></div>
+                               </div>
+                               <div class="p-2 bg-gray-900 rounded-lg">
+                                 <p class="font-bold text-md text-green-400">WavePay</p>
+                                 <div class="flex justify-between text-xs"><span>စုစုပေါင်း အထွက်:</span><span id="wavepayOut">0 MMK</span></div>
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
-                !-- Transaction Table --
-                div id=transactionListContainer class=card hidden
-                     div class=p-6 flex justify-between items-center
-                         h2 class=flex items-center text-xl font-bold text-yellow-300
-                            svg xmlns=httpwww.w3.org2000svg class=h-6 w-6 mr-2 fill=none viewBox=0 0 24 24 stroke=currentColor stroke-width=2path stroke-linecap=round stroke-linejoin=round d=M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z svg
+                <!-- Transaction Table -->
+                <div id="transactionListContainer" class="card hidden">
+                     <div class="p-6 flex justify-between items-center">
+                         <h2 class="flex items-center text-xl font-bold text-yellow-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
                             ထိုးကြေးမှတ်တမ်းများ
-                        h2
-                        div class=flex space-x-2
-                            button id=printRecordsBtn class=bg-gray-600 hoverbg-gray-500 text-white font-bold py-2 px-3 rounded-lg text-xsPrint ထုတ်မည်button
-                            button id=exportRecordsBtn class=bg-blue-600 hoverbg-blue-700 text-white font-bold py-2 px-3 rounded-lg text-xsData ထုတ်မည်button
-                        div
-                    div
-                    div class=overflow-x-auto
-                        table class=w-full text-sm text-left text-gray-400
-                            thead class=text-xs text-gray-400 uppercase table-header
-                                tr
-                                    th scope=col class=px-6 py-3Customerth
-                                    th scope=col class=px-6 py-3ထိုးငွေth
-                                    th scope=col class=px-6 py-3ဘဏ်th
-                                    th scope=col class=px-6 py-3 text-rightActionsth
-                                tr
-                            thead
-                            tbody id=transactionList
-                                !-- JS will insert rows here --
-                            tbody
-                        table
-                    div
-                div
+                        </h2>
+                        <div class="flex space-x-2">
+                            <button id="printRecordsBtn" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-3 rounded-lg text-xs">Print ထုတ်မည်</button>
+                            <button id="exportRecordsBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded-lg text-xs">Data ထုတ်မည်</button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-400">
+                            <thead class="text-xs text-gray-400 uppercase table-header">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">Customer</th>
+                                    <th scope="col" class="px-6 py-3">ထိုးငွေ</th>
+                                    <th scope="col" class="px-6 py-3">ဘဏ်</th>
+                                    <th scope="col" class="px-6 py-3 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionList">
+                                <!-- JS will insert rows here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-                !-- Settings --
-                div id=settingsSection class=card p-6 space-y-4
-                    h2 class=flex items-center text-xl font-bold text-red-400 mb-2
-                        svg xmlns=httpwww.w3.org2000svg class=h-6 w-6 mr-2 fill=none viewBox=0 0 24 24 stroke=currentColor stroke-width=2path stroke-linecap=round stroke-linejoin=round d=M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0 3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z path stroke-linecap=round stroke-linejoin=round d=M15 12a3 3 0 11-6 0 3 3 0 016 0z svg
+                <!-- Settings -->
+                <div id="settingsSection" class="card p-6 space-y-4">
+                    <h2 class="flex items-center text-xl font-bold text-red-400 mb-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0 3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                         Settings
-                    h2
-                     div class=flex justify-between items-center p-3 bg-gray-900 rounded-lg
-                        div
-                            p class=text-sm font-semibold text-blue-300Data ထုတ်ထည့် ပြုလုပ်ရန်p
-                            p class=text-xs text-gray-500Backup အတွက် သို့မဟုတ် Device ပြောင်းသုံးရန်p
-                        div
-                        div class=flex space-x-2
-                             button id=exportAllDataBtn class=bg-blue-600 hoverbg-blue-700 text-white font-bold py-2 px-4 rounded-lg flex-shrink-0 text-xsData အားလုံးထုတ်မည်button
-                             button id=importDataBtn class=bg-green-600 hoverbg-green-700 text-white font-bold py-2 px-4 rounded-lg flex-shrink-0 text-xsData အားလုံးထည့်မည်button
-                             input type=file id=importFileInput class=hidden accept=.json
-                        div
-                    div
-                     div class=flex justify-between items-center p-3 bg-gray-900 rounded-lg
-                        div
-                            p class=text-sm font-semibold text-red-400Data အားလုံးဖျက်ရန်p
-                            p class=text-xs text-gray-500ဤလုပ်ဆောင်ချက်ကို ပြန်ပြင်၍မရပါ။p
-                        div
-                        button id=deleteAllDataBtn class=bg-red-600 hoverbg-red-700 text-white font-bold py-2 px-4 rounded-lg flex-shrink-0 text-xsဒေတာအားလုံးဖျက်မည်button
-                    div
-                div
-            div
-        main
-    div
+                    </h2>
+                     <div class="flex justify-between items-center p-3 bg-gray-900 rounded-lg">
+                        <div>
+                            <p class="text-sm font-semibold text-blue-300">Data ထုတ်/ထည့် ပြုလုပ်ရန်</p>
+                            <p class="text-xs text-gray-500">Backup အတွက် သို့မဟုတ် Device ပြောင်းသုံးရန်</p>
+                        </div>
+                        <div class="flex space-x-2">
+                             <button id="exportAllDataBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg flex-shrink-0 text-xs">Data အားလုံးထုတ်မည်</button>
+                             <button id="importDataBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg flex-shrink-0 text-xs">Data အားလုံးထည့်မည်</button>
+                             <input type="file" id="importFileInput" class="hidden" accept=".json">
+                        </div>
+                    </div>
+                     <div class="flex justify-between items-center p-3 bg-gray-900 rounded-lg">
+                        <div>
+                            <p class="text-sm font-semibold text-red-400">Data အားလုံးဖျက်ရန်</p>
+                            <p class="text-xs text-gray-500">ဤလုပ်ဆောင်ချက်ကို ပြန်ပြင်၍မရပါ။</p>
+                        </div>
+                        <button id="deleteAllDataBtn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg flex-shrink-0 text-xs">ဒေတာအားလုံးဖျက်မည်</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
 
-    !-- Edit Modal --
-    div id=editModal class=fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden z-50
-        div class=bg-gray-800 rounded-2xl shadow-xl w-full max-w-md p-6 border border-gray-600
-            h3 class=text-xl font-bold text-center mb-4 text-yellow-300စာရင်း ပြင်ဆင်ရန်h3
-            input type=hidden id=editTransactionId
-            div class=space-y-4
-                 div
-                    label for=editCustomerName class=block mb-2 text-sm font-medium text-gray-400Customer အမည်label
-                    input type=text id=editCustomerName class=bg-gray-900 border-gray-600 text-white text-sm rounded-lg focusring-blue-500 focusborder-blue-500 block w-full p-2.5
-                div
-                div
-                    label for=editBetNumbers class=block mb-2 text-sm font-medium text-gray-4002D ဂဏန်းများlabel
-                    input type=text id=editBetNumbers class=bg-gray-900 border-gray-600 text-white text-sm rounded-lg focusring-blue-500 focusborder-blue-500 block w-full p-2.5
-                div
-                div
-                    label for=editBetAmountPerNumber class=block mb-2 text-sm font-medium text-gray-400တစ်ကွက်ထိုးငွေlabel
-                    input type=number id=editBetAmountPerNumber class=bg-gray-900 border-gray-600 text-white text-sm rounded-lg focusring-blue-500 focusborder-blue-500 block w-full p-2.5
-                div
-                div
-                    label for=editPaymentMethod class=block mb-2 text-sm font-medium text-gray-400ဘဏ်အမျိုးအစားlabel
-                    select id=editPaymentMethod class=bg-gray-900 border-gray-600 text-white text-sm rounded-lg focusring-blue-500 focusborder-blue-500 block w-full p-2.5
-                        option value=KpayKpayoption
-                        option value=WavepayWavePayoption
-                    select
-                div
-            div
-            div class=mt-6 flex justify-end space-x-3
-                button id=cancelEditBtn class=px-5 py-2.5 bg-gray-600 hoverbg-gray-500 rounded-lg text-sm font-boldမလုပ်တော့ပါbutton
-                button id=saveChangesBtn class=px-5 py-2.5 bg-yellow-500 hoverbg-yellow-600 rounded-lg text-sm font-bold text-gray-900သိမ်းဆည်းမည်button
-            div
-        div
-    div
+    <!-- Edit Modal -->
+    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-gray-800 rounded-2xl shadow-xl w-full max-w-md p-6 border border-gray-600">
+            <h3 class="text-xl font-bold text-center mb-4 text-yellow-300">စာရင်း ပြင်ဆင်ရန်</h3>
+            <input type="hidden" id="editTransactionId">
+            <div class="space-y-4">
+                 <div>
+                    <label for="editCustomerName" class="block mb-2 text-sm font-medium text-gray-400">Customer အမည်</label>
+                    <input type="text" id="editCustomerName" class="bg-gray-900 border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                </div>
+                <div>
+                    <label for="editBetNumbers" class="block mb-2 text-sm font-medium text-gray-400">2D ဂဏန်းများ</label>
+                    <input type="text" id="editBetNumbers" class="bg-gray-900 border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                </div>
+                <div>
+                    <label for="editBetAmountPerNumber" class="block mb-2 text-sm font-medium text-gray-400">တစ်ကွက်ထိုးငွေ</label>
+                    <input type="number" id="editBetAmountPerNumber" class="bg-gray-900 border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                </div>
+                <div>
+                    <label for="editPaymentMethod" class="block mb-2 text-sm font-medium text-gray-400">ဘဏ်အမျိုးအစား</label>
+                    <select id="editPaymentMethod" class="bg-gray-900 border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="Kpay">Kpay</option>
+                        <option value="Wavepay">WavePay</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+                <button id="cancelEditBtn" class="px-5 py-2.5 bg-gray-600 hover:bg-gray-500 rounded-lg text-sm font-bold">မလုပ်တော့ပါ</button>
+                <button id="saveChangesBtn" class="px-5 py-2.5 bg-yellow-500 hover:bg-yellow-600 rounded-lg text-sm font-bold text-gray-900">သိမ်းဆည်းမည်</button>
+            </div>
+        </div>
+    </div>
 
-    !-- Confirmation Modal --
-    div id=confirmationModal class=fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden z-50
-        div class=bg-gray-800 rounded-2xl shadow-xl w-full max-w-sm p-6 border border-gray-600 text-center
-            div class=mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-900 mb-4
-                svg class=h-6 w-6 text-red-400 xmlns=httpwww.w3.org2000svg fill=none viewBox=0 0 24 24 stroke-width=1.5 stroke=currentColorpath stroke-linecap=round stroke-linejoin=round d=M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z svg
-            div
-            h3 class=text-xl font-bold mb-2 text-whiteသေချာပါသလားh3
-            p class=text-sm text-gray-400 mb-6သင်၏ မှတ်တမ်းများအားလုံး အပြီးတိုင် ဖျက်သိမ်းသွားမည်ဖြစ်ပြီး ပြန်လည်ရယူနိုင်တော့မည် မဟုတ်ပါ။p
-            div class=flex justify-center space-x-4
-                button id=cancelDeleteBtn class=px-6 py-2.5 bg-gray-600 hoverbg-gray-500 rounded-lg text-sm font-bold w-fullမလုပ်တော့ပါbutton
-                button id=confirmDeleteBtn class=px-6 py-2.5 bg-red-600 hoverbg-red-700 rounded-lg text-sm font-bold text-white w-fullအတည်ပြုသည်button
-            div
-        div
-    div
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-gray-800 rounded-2xl shadow-xl w-full max-w-sm p-6 border border-gray-600 text-center">
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-900 mb-4">
+                <svg class="h-6 w-6 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-white">သေချာပါသလား?</h3>
+            <p class="text-sm text-gray-400 mb-6">သင်၏ မှတ်တမ်းများအားလုံး အပြီးတိုင် ဖျက်သိမ်းသွားမည်ဖြစ်ပြီး ပြန်လည်ရယူနိုင်တော့မည် မဟုတ်ပါ။</p>
+            <div class="flex justify-center space-x-4">
+                <button id="cancelDeleteBtn" class="px-6 py-2.5 bg-gray-600 hover:bg-gray-500 rounded-lg text-sm font-bold w-full">မလုပ်တော့ပါ</button>
+                <button id="confirmDeleteBtn" class="px-6 py-2.5 bg-red-600 hover:bg-red-700 rounded-lg text-sm font-bold text-white w-full">အတည်ပြုသည်</button>
+            </div>
+        </div>
+    </div>
     
-    !-- Toast Notification --
-    div id=toast class=fixed bottom-5 right-5 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg hidden transition-opacity duration-300
-        p id=toast-messagep
-    div
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg hidden transition-opacity duration-300">
+        <p id="toast-message"></p>
+    </div>
 
 
-    script
-         --- STATE ---
-        let transactions = [];
-
-         --- DOM ELEMENTS ---
-        const initialCapitalInput = document.getElementById('initialCapital');
-        const paymentMethodSelect = document.getElementById('paymentMethod');
-        const addTransactionBtn = document.getElementById('addTransactionBtn');
-        const transactionListContainer = document.getElementById('transactionListContainer');
-        const transactionListBody = document.getElementById('transactionList');
-        const resultsDiv = document.getElementById('results');
-        const checkPortfolioBtn = document.getElementById('checkPortfolioBtn');
-        const portfolioResultDiv = document.getElementById('portfolioResult');
-        const deleteAllDataBtn = document.getElementById('deleteAllDataBtn');
-        
-        const customerNameInput = document.getElementById('customerName');
-        const betNumbersInput = document.getElementById('betNumbers');
-        const betAmountPerNumberInput = document.getElementById('betAmountPerNumber');
-
-        const customerFilterSelect = document.getElementById('customerFilterSelect');
-
-        const editModal = document.getElementById('editModal');
-        const editTransactionIdInput = document.getElementById('editTransactionId');
-        const editCustomerNameInput = document.getElementById('editCustomerName');
-        const editPaymentMethodSelect = document.getElementById('editPaymentMethod');
-        const editBetNumbersInput = document.getElementById('editBetNumbers');
-        const editBetAmountPerNumberInput = document.getElementById('editBetAmountPerNumber');
-        const saveChangesBtn = document.getElementById('saveChangesBtn');
-        const cancelEditBtn = document.getElementById('cancelEditBtn');
-
-        const confirmationModal = document.getElementById('confirmationModal');
-        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-        
-        const printRecordsBtn = document.getElementById('printRecordsBtn');
-        const exportRecordsBtn = document.getElementById('exportRecordsBtn');
-        const exportAllDataBtn = document.getElementById('exportAllDataBtn');
-        const importDataBtn = document.getElementById('importDataBtn');
-        const importFileInput = document.getElementById('importFileInput');
-        const toast = document.getElementById('toast');
-        const toastMessage = document.getElementById('toast-message');
-
-
-         --- EVENT LISTENERS ---
-        document.addEventListener('DOMContentLoaded', () = {
-            loadData();
-            updateUI();
-        });
-
-        addTransactionBtn.addEventListener('click', addTransaction);
-        initialCapitalInput.addEventListener('input', updateUI);
-        checkPortfolioBtn.addEventListener('click', checkPortfolio);
-        deleteAllDataBtn.addEventListener('click', () = {
-            if (transactions.length  0  initialCapitalInput.value) {
-                confirmationModal.classList.remove('hidden');
-            }
-        });
-        customerFilterSelect.addEventListener('change', handleCustomerFilterChange);
-        
-        saveChangesBtn.addEventListener('click', saveTransactionChanges);
-        cancelEditBtn.addEventListener('click', closeEditModal);
-
-        confirmDeleteBtn.addEventListener('click', () = {
-            clearAllData();
-            confirmationModal.classList.add('hidden');
-        });
-        cancelDeleteBtn.addEventListener('click', () = {
-            confirmationModal.classList.add('hidden');
-        });
-
-        printRecordsBtn.addEventListener('click', printRecords);
-        exportRecordsBtn.addEventListener('click', exportRecords);
-        exportAllDataBtn.addEventListener('click', exportAllData);
-        importDataBtn.addEventListener('click', () = importFileInput.click());
-        importFileInput.addEventListener('change', importData);
-
-         --- CORE APP FUNCTIONS ---
-        
-        function showToast(message, isSuccess = true) {
-            toastMessage.textContent = message;
-            toast.className = `fixed bottom-5 right-5 text-white py-2 px-4 rounded-lg shadow-lg transition-opacity duration-300 ${isSuccess  'bg-green-600'  'bg-red-600'}`;
-            toast.classList.remove('hidden');
-            setTimeout(() = {
-                toast.classList.add('hidden');
-            }, 3000);
-        }
-
-        function parseBetNumbers(inputString) {
-            const numbersSet = new Set();
-            let processedString = inputString;
-
-             Regex to find all occurrences of (...)r or (...)R
-            const groupRRegex = (([^)]+))[rR]g;
-            let match;
-
-             Step 1 Process all (...)R groups first
-            let tempStringForParsing = processedString;
-            while ((match = groupRRegex.exec(processedString)) !== null) {
-                const numbersInside = match[1];  The content inside the parentheses
-                const individualNumbers = numbersInside.split(',').map(n = n.trim());
-                for (const numStr of individualNumbers) {
-                    if (!isNaN(numStr) && numStr.length  0) {
-                         const paddedNumStr = numStr.padStart(2, '0');
-                         const reversedNumStr = paddedNumStr.split('').reverse().join('');
-                         numbersSet.add(paddedNumStr);
-                         numbersSet.add(reversedNumStr);
-                    }
-                }
-                 Mark this part as processed by replacing it with an empty string
-                tempStringForParsing = tempStringForParsing.replace(match[0], '');
-            }
-            
-             Step 2 Process the rest of the string.
-             Use regex to split by comma or space, and filter out empty strings
-            const parts = tempStringForParsing.split([ ,]+).filter(p = p.trim() !== '');
-
-            for (const part of parts) {
-                if (!part) continue;
-                const lowerPart = part.toLowerCase();
-
-                 Handles 58R format
-                if (lowerPart.endsWith('r')) {
-                    const numStr = lowerPart.slice(0, -1);
-                    if (!isNaN(numStr) && numStr.length  0) {
-                        const paddedNumStr = numStr.padStart(2, '0');
-                        const reversedNumStr = paddedNumStr.split('').reverse().join('');
-                        numbersSet.add(paddedNumStr);
-                        numbersSet.add(reversedNumStr);
-                    }
-                } 
-                 Handles 00-99 or 00to99 format
-                else if (lowerPart.includes('to')  lowerPart.includes('-')) {
-                    const delimiter = lowerPart.includes('to')  'to'  '-';
-                    const range = lowerPart.split(delimiter).map(n = n.trim());
-                    if (range.length === 2) {
-                        const start = parseInt(range[0], 10);
-                        const end = parseInt(range[1], 10);
-                        if (!isNaN(start) && !isNaN(end) && start = end) {
-                            for (let i = start; i = end; i++) {
-                                if (i  100) {
-                                   numbersSet.add(i.toString().padStart(2, '0'));
-                                }
-                            }
-                        }
-                    }
-                }
-                 Handles single number like 42
-                else {
-                    if (!isNaN(part)) {
-                       numbersSet.add(part.padStart(2, '0'));
-                    }
-                }
-            }
-            return Array.from(numbersSet);
-        }
-
-        function addTransaction() {
-            const customerName = customerNameInput.value.trim();
-            const method = paymentMethodSelect.value;
-            const numbersRaw = betNumbersInput.value.trim();
-            const amountPerNumber = parseFloat(betAmountPerNumberInput.value);
-            
-            if (!customerName  !numbersRaw  !amountPerNumber  amountPerNumber = 0) {
-                showToast('ကျေးဇူးပြု၍ အချက်အလက်များ ပြည့်စုံစွာ ဖြည့်သွင်းပါ။', false);
-                return;
-            }
-
-            const numbers = parseBetNumbers(numbersRaw);
-            if (numbers.length === 0) {
-                showToast('ထိုးဂဏန်း format မမှန်ပါ။ ဥပမာ 58R, (42,45)R, 00-10', false);
-                return;
-            }
-            
-            const transaction = { 
-                id Date.now(), 
-                method method, 
-                type 'bet', 
-                customerName customerName,
-                rawNumbers numbersRaw,
-                numbers numbers,
-                amount_per_number amountPerNumber,
-                amount numbers.length  amountPerNumber
-            };
-
-            transactions.push(transaction);
-            updateUI();
-            showToast('စာရင်းထည့်သွင်းခြင်း အောင်မြင်ပါသည်။');
-
-            customerNameInput.value = '';
-            betNumbersInput.value = '';
-            betAmountPerNumberInput.value = '';
-        }
-        
-        function openEditModal(id) {
-            const transaction = transactions.find(t = t.id === id);
-            if (!transaction) return;
-
-            editTransactionIdInput.value = transaction.id;
-            editCustomerNameInput.value = transaction.customerName;
-            editPaymentMethodSelect.value = transaction.method;
-            editBetNumbersInput.value = transaction.rawNumbers; 
-            editBetAmountPerNumberInput.value = transaction.amount_per_number;
-
-            editModal.classList.remove('hidden');
-        }
-
-        function closeEditModal() {
-            editModal.classList.add('hidden');
-        }
-
-        function saveTransactionChanges() {
-            const id = parseInt(editTransactionIdInput.value);
-            const transactionIndex = transactions.findIndex(t = t.id === id);
-            if (transactionIndex === -1) return;
-
-            const customerName = editCustomerNameInput.value.trim();
-            const method = editPaymentMethodSelect.value;
-            const numbersRaw = editBetNumbersInput.value.trim();
-            const amountPerNumber = parseFloat(editBetAmountPerNumberInput.value);
-            
-            if (!customerName  !numbersRaw  !amountPerNumber  amountPerNumber = 0) {
-                 showToast('ကျေးဇူးပြု၍ အချက်အလက်များ ပြည့်စုံစွာ ဖြည့်သွင်းပါ။', false);
-                return;
-            }
-            const numbers = parseBetNumbers(numbersRaw);
-            if (numbers.length === 0) {
-                showToast('ထိုးဂဏန်း format မမှန်ပါ။', false);
-                return;
-            }
-            
-            transactions[transactionIndex] = { 
-                ...transactions[transactionIndex], 
-                method, 
-                customerName,
-                rawNumbers numbersRaw,
-                numbers,
-                amount_per_number amountPerNumber,
-                amount numbers.length  amountPerNumber
-            };
-
-            updateUI();
-            closeEditModal();
-            showToast('ပြင်ဆင်ခြင်း အောင်မြင်ပါသည်။');
-        }
-
-        function checkPortfolio() {
-            const live2D = document.getElementById('live2D').value.trim();
-            if (!live2D  isNaN(live2D)  live2D.length  2) {
-                portfolioResultDiv.innerHTML = `p class=text-red-4002D ပေါက်ဂဏန်းကို မှန်ကန်စွာထည့်ပါ။p`;
-                return;
-            }
-            
-            const paddedLive2D = live2D.padStart(2, '0');
-            const winners = transactions.filter(t = t.type === 'bet' && t.numbers.includes(paddedLive2D));
-
-            if (winners.length  0) {
-                portfolioResultDiv.innerHTML = 'h4 class=text-lg font-bold mb-2 text-whiteကံထူးရှင်များh4' + winners.map(win = {
-                    const winningAmount = win.amount_per_number  80;
-                    return `div class=text-green-400 font-semibold p-2 bg-green-90050 rounded-lg mb-2 text-sm🎉 ${win.customerName} (2D ${paddedLive2D})brထိုးငွေ ${win.amount_per_number.toLocaleString()} MMK, ပေါက်ငွေ ${winningAmount.toLocaleString()} MMKdiv`;
-                }).join('');
-            } else {
-                portfolioResultDiv.innerHTML = `p class=text-yellow-400စာရင်းထဲမှ ပေါက်သူမရှိပါ။p`;
-            }
-        }
-        
-        function clearAllData() {
-            transactions = [];
-            initialCapitalInput.value = '';
-            localStorage.removeItem('2dMasterData');
-            updateUI();
-            showToast('Data အားလုံးကို ဖျက်လိုက်ပါပြီ။');
-        }
-
-        function deleteTransaction(id) {
-            transactions = transactions.filter(t = t.id !== id);
-            updateUI();
-            showToast('စာရင်းတစ်ခုကို ဖျက်လိုက်ပါပြီ။');
-        }
-
-        function updateUI() {
-            renderTransactionTable();
-            calculateAndRenderSummaries();
-            calculateAndRenderAgentSummary();
-            saveData();
-        }
-
-        function renderTransactionTable() {
-            const selectedCustomer = customerFilterSelect.value;
-            
-            const transactionsToDisplay = selectedCustomer === 'all'  !selectedCustomer
-                 transactions
-                 transactions.filter(t = t.customerName === selectedCustomer);
-
-            if (transactions.length === 0) {
-                transactionListContainer.classList.add('hidden');
-                return;
-            }
-            
-            transactionListContainer.classList.remove('hidden');
-            transactionListBody.innerHTML = '';
-
-            if (transactionsToDisplay.length === 0) {
-                transactionListBody.innerHTML = 'trtd colspan=4 class=px-6 py-4 text-center text-gray-500ဤ Customer အတွက် မှတ်တမ်းများ မရှိပါ။tdtr';
-                return;
-            }
-
-            transactionsToDisplay.slice().reverse().forEach(t = {
-                const tr = document.createElement('tr');
-                tr.className = 'table-row border-b border-gray-700';
-                tr.innerHTML = `
-                    td class=px-6 py-4
-                        div class=font-medium text-white${t.customerName}div
-                        div class=text-xs text-gray-500 title=${t.numbers.join(', ')}${t.rawNumbers} (${t.amount_per_number.toLocaleString()})div
-                    td
-                    td class=px-6 py-4 font-bold text-red-400${t.amount.toLocaleString()} MMKtd
-                    td class=px-6 py-4
-                        span class=text-xs font-semibold px-2 py-1 rounded-full ${t.method === 'Kpay'  'bg-blue-900 text-blue-300'  'bg-green-900 text-green-300'}${t.method}span
-                    td
-                    td class=px-6 py-4 text-right
-                         button onclick=openEditModal(${t.id}) class=text-blue-400 hovertext-blue-300 p-1 title=ပြင်ဆင်ရန်
-                            svg xmlns=httpwww.w3.org2000svg class=h-5 w-5 viewBox=0 0 20 20 fill=currentColorpath d=M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z path fill-rule=evenodd d=M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z clip-rule=evenodd svg
-                        button
-                        button onclick=deleteTransaction(${t.id}) class=text-red-500 hovertext-red-400 p-1 title=ဖျက်ရန်
-                            svg xmlns=httpwww.w3.org2000svg class=h-5 w-5 viewBox=0 0 20 20 fill=currentColorpath fill-rule=evenodd d=M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z clip-rule=evenodd svg
-                        button
-                    td
-                `;
-                transactionListBody.appendChild(tr);
-            });
-        }
-
-        function handleCustomerFilterChange() {
-            const selectedCustomer = customerFilterSelect.value;
-            const summaryDiv = document.getElementById('customerSpecificSummary');
-            const toggleBtn = document.getElementById('toggleCustomerNumbersBtn');
-            const numbersListDiv = document.getElementById('customerNumbersList');
-            
-            if (selectedCustomer === 'all') {
-                summaryDiv.classList.add('hidden');
-            } else {
-                const customerTxs = transactions.filter(t = t.customerName === selectedCustomer);
-                const allNumbers = new Set(customerTxs.flatMap(t = t.numbers));
-                const totalAmount = customerTxs.reduce((sum, t) = sum + t.amount, 0);
-
-                document.getElementById('selectedCustomerName').textContent = `${selectedCustomer} ၏ စာရင်း`;
-                document.getElementById('customerTotalNumbers').textContent = allNumbers.size;
-                document.getElementById('customerTotalAmount').textContent = `${totalAmount.toLocaleString()} MMK`;
-                numbersListDiv.textContent = Array.from(allNumbers).sort().join(', ');
-
-                toggleBtn.onclick = () = numbersListDiv.classList.toggle('hidden');
-                numbersListDiv.classList.add('hidden'); 
-                summaryDiv.classList.remove('hidden');
-            }
-            renderTransactionTable();
-        }
-
-        function calculateAndRenderAgentSummary() {
-            const agentSummaryContainer = document.getElementById('agentSummaryContainer');
-            if (transactions.length === 0) {
-                agentSummaryContainer.classList.add('hidden');
-                return;
-            }
-            agentSummaryContainer.classList.remove('hidden');
-
-            const allNumbers = new Set(transactions.flatMap(t = t.numbers));
-            const totalBetAmount = transactions.reduce((sum, t) = sum + t.amount, 0);
-            const customerNames = [...new Set(transactions.map(t = t.customerName))].sort();
-
-            document.getElementById('totalUniqueNumbers').textContent = allNumbers.size;
-            document.getElementById('totalAgentBetAmount').textContent = `${totalBetAmount.toLocaleString()} MMK`;
-
-            const currentSelectedCustomer = customerFilterSelect.value;
-            customerFilterSelect.innerHTML = 'option value=allCustomer အားလုံးoption'; 
-            customerNames.forEach(name = {
-                const option = document.createElement('option');
-                option.value = name;
-                option.textContent = name;
-                customerFilterSelect.appendChild(option);
-            });
-            
-            customerFilterSelect.value = customerNames.includes(currentSelectedCustomer)  currentSelectedCustomer  'all';
-            handleCustomerFilterChange();
-        }
-
-        function calculateAndRenderSummaries() {
-            const resultsContainer = document.getElementById('results');
-            if (transactions.length === 0 && !initialCapitalInput.value) {
-                resultsContainer.classList.add('hidden');
-                return;
-            }
-            resultsContainer.classList.remove('hidden');
-
-            const initialCapital = parseFloat(initialCapitalInput.value)  0;
-            const totalBet = transactions.reduce((sum, t) = sum + t.amount, 0);
-            const kpayOut = transactions.filter(t = t.method === 'Kpay').reduce((sum, t) = sum + t.amount, 0);
-            const wavepayOut = transactions.filter(t = t.method === 'Wavepay').reduce((sum, t) = sum + t.amount, 0);
-            
-            document.getElementById('totalBet').textContent = `${totalBet.toLocaleString()} MMK`;
-            document.getElementById('finalCapital').textContent = `${(initialCapital - totalBet).toLocaleString()} MMK`;
-            document.getElementById('kpayOut').textContent = `${kpayOut.toLocaleString()} MMK`;
-            document.getElementById('wavepayOut').textContent = `${wavepayOut.toLocaleString()} MMK`;
-        }
-        
-         --- DATA PERSISTENCE & IMPORTEXPORT ---
-        function saveData() {
-            const dataToSave = {
-                initialCapital initialCapitalInput.value,
-                transactions transactions
-            };
-            localStorage.setItem('2dMasterData', JSON.stringify(dataToSave));
-        }
-        
-        function loadData() {
-            const savedData = localStorage.getItem('2dMasterData');
-            if (savedData) {
-                try {
-                    const parsedData = JSON.parse(savedData);
-                    transactions = parsedData.transactions  [];
-                    initialCapitalInput.value = parsedData.initialCapital  '';
-                } catch (e) {
-                    console.error(Error parsing saved data, e);
-                    transactions = [];
-                }
-            }
-        }
-        
-        function downloadJSON(data, filename) {
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type 'applicationjson' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-
-        function exportRecords() {
-            const selectedCustomer = customerFilterSelect.value;
-            
-            const transactionsToExport = selectedCustomer === 'all'  !selectedCustomer
-                 transactions
-                 transactions.filter(t = t.customerName === selectedCustomer);
-
-            if (transactionsToExport.length === 0) {
-                 showToast('ထုတ်ယူရန် Data မရှိသေးပါ။', false);
-                return;
-            }
-            
-            const filename = selectedCustomer === 'all'  !selectedCustomer
-                 '2d_records_backup_all.json'
-                 `2d_records_backup_${selectedCustomer}.json`;
-                
-            downloadJSON(transactionsToExport, filename);
-            showToast('မှတ်တမ်းများကို ထုတ်ယူပြီးပါပြီ။');
-        }
-
-        function exportAllData() {
-             if (transactions.length === 0 && !initialCapitalInput.value) {
-                showToast('ထုတ်ယူရန် Data မရှိသေးပါ။', false);
-                return;
-            }
-            const dataToExport = {
-                initialCapital initialCapitalInput.value,
-                transactions transactions
-            };
-            downloadJSON(dataToExport, '2d_master_full_backup.json');
-            showToast('Data အားလုံးကို ထုတ်ယူပြီးပါပြီ။');
-        }
-
-        function importData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const importedData = JSON.parse(e.target.result);
-                     Check if it's a full backup or just records
-                    if (importedData.hasOwnProperty('initialCapital') && importedData.hasOwnProperty('transactions')) {
-                        initialCapitalInput.value = importedData.initialCapital;
-                        transactions = importedData.transactions;
-                    } else if (Array.isArray(importedData)) {
-                         Assuming it's an array of transactions if not a full backup
-                        transactions = importedData;
-                    } else {
-                         throw new Error('Invalid file format');
-                    }
-                    updateUI();
-                    showToast('Data ထည့်သွင်းခြင်း အောင်မြင်ပါသည်။');
-                } catch (error) {
-                    console.error('Failed to import data', error);
-                    showToast('Data ဖိုင် format မမှန်ပါ။', false);
-                } finally {
-                     Reset file input to allow re-uploading the same file
-                    importFileInput.value = ''; 
-                }
-            };
-            reader.readAsText(file);
-        }
-
-        function printRecords() {
-            const selectedCustomer = customerFilterSelect.value;
-            const transactionsToPrint = selectedCustomer === 'all'  !selectedCustomer
-                 transactions
-                 transactions.filter(t = t.customerName === selectedCustomer);
-
-            if (transactionsToPrint.length === 0) {
-                showToast('Print ထုတ်ရန် Data မရှိသေးပါ။', false);
-                return;
-            }
-            
-            const live2D = document.getElementById('live2D').value.trim();
-            const paddedLive2D = live2D.padStart(2, '0');
-
-            const allNumbers = new Set(transactionsToPrint.flatMap(t = t.numbers));
-            const totalBetAmount = transactionsToPrint.reduce((sum, t) = sum + t.amount, 0);
-            let totalWinningAmount = 0;
-
-            const today = new Date();
-            const formattedDate = `${(today.getMonth() + 1).toString().padStart(2, '0')}${today.getDate().toString().padStart(2, '0')}${today.getFullYear()}`;
-            
-            const customerNameToPrint = selectedCustomer === 'all'  !selectedCustomer  'Customer အားလုံး'  selectedCustomer;
-
-            let printHTML = `
-                html
-                head
-                    titleထိုးကြေးမှတ်တမ်း - ${customerNameToPrint}title
-                    link rel=preconnect href=httpsfonts.googleapis.com
-                    link rel=preconnect href=httpsfonts.gstatic.com crossorigin
-                    link href=httpsfonts.googleapis.comcss2family=Padaukwght@400;700&display=swap rel=stylesheet
-                    style
-                        body { 
-                            font-family 'Padauk', sans-serif; 
-                            margin 20px;
-                            color #333;
-                        }
-                        .header {
-                            text-align center;
-                            margin-bottom 20px;
-                            border-bottom 2px solid #000;
-                            padding-bottom 10px;
-                        }
-                        .header h1 {
-                            margin 0;
-                            font-size 24px;
-                        }
-                        .header p {
-                            margin 5px 0 0;
-                            font-size 14px;
-                        }
-                        table { 
-                            width 100%; 
-                            border-collapse collapse; 
-                            margin-bottom 20px;
-                        }
-                        th, td { 
-                            border 1px solid #ccc; 
-                            padding 10px; 
-                            text-align left;
-                            font-size 12px;
-                        }
-                        th { 
-                            background-color #f2f2f2; 
-                            font-weight bold;
-                        }
-                        trnth-child(even) {
-                            background-color #f9f9f9;
-                        }
-                        .summary {
-                            float right;
-                            width 300px;
-                            border 1px solid #ccc;
-                            padding 15px;
-                            background-color #f9f9f9;
-                            border-radius 5px;
-                        }
-                        .summary h3 {
-                            margin-top 0;
-                            border-bottom 1px solid #ccc;
-                            padding-bottom 5px;
-                            font-size 16px;
-                        }
-                        .summary-item {
-                            display flex;
-                            justify-content space-between;
-                            margin-bottom 8px;
-                            font-size 14px;
-                        }
-                        .summary-item spanlast-child {
-                            font-weight bold;
-                        }
-                        .footer {
-                            text-align center;
-                            margin-top 40px;
-                            padding-top 20px;
-                            font-size 12px;
-                            color #777;
-                            clear both;
-                            border-top 1px solid #ccc;
-                        }
-                    style
-                head
-                body
-                    div class=header
-                        h12D Master - ထိုးကြေးမှတ်တမ်းh1
-                        pCustomer strong${customerNameToPrint.toUpperCase()}strongp
-                        pstrongDatestrong ${formattedDate}p
-                    div
-
-                    table
-                        thead
-                            tr
-                                thCustomerth
-                                thထိုးထားသော ဂဏန်းများ (တစ်ကွက်ဈေး)th
-                                thထိုးငွေ (MMK)th
-                                thပေါက်ငွေ (MMK)th
-                            tr
-                        thead
-                        tbody
-            `;
-
-            transactionsToPrint.forEach(t = {
-                let winningAmountDisplay = '-';
-                if (live2D && !isNaN(live2D) && t.numbers.includes(paddedLive2D)) {
-                    const winningAmount = t.amount_per_number  80;
-                    totalWinningAmount += winningAmount;
-                    winningAmountDisplay = winningAmount.toLocaleString();
-                }
-
-                printHTML += `
-                    tr
-                        td${t.customerName}td
-                        td${t.rawNumbers} (${t.amount_per_number.toLocaleString()})td
-                        td style=text-align right;${t.amount.toLocaleString()}td
-                        td style=text-align right; color green; font-weight bold;${winningAmountDisplay}td
-                    tr
-                `;
-            });
-
-            printHTML += `
-                        tbody
-                    table
-
-                    div class=summary
-                        h3ငွေစာရင်းချုပ်h3
-                        div class=summary-item
-                            spanစုစုပေါင်း ထိုးဂဏန်း အရေအတွက်span
-                            span${allNumbers.size}span
-                        div
-                        div class=summary-item
-                            spanစုစုပေါင်း ထိုးငွေspan
-                            span${totalBetAmount.toLocaleString()} MMKspan
-                        div
-                        div class=summary-item style=color green;
-                            spanစုစုပေါင်း ပေါက်ငွေspan
-                            span${totalWinningAmount.toLocaleString()} MMKspan
-                        div
-                    div
-                    
-                    div class=footer
-                        pGenerated by MYOHTETPAINGp
-                    div
-                body
-                html
-            `;
-
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(printHTML);
-            printWindow.document.close();
-            printWindow.print();
-        }
-
-    script
-body
-html
+    <script>
+/* obfuscated */
+const _0x368689=_0xfabd;(function(_0x379267,_0x3825e2){const _0x54f579=_0xfabd,_0x190c35=_0x379267();while(!![]){try{const _0x52c3d0=-parseInt(_0x54f579(0x299))/0x1*(-parseInt(_0x54f579(0x214))/0x2)+-parseInt(_0x54f579(0x212))/0x3*(-parseInt(_0x54f579(0x26d))/0x4)+-parseInt(_0x54f579(0x1cb))/0x5*(parseInt(_0x54f579(0x1f4))/0x6)+-parseInt(_0x54f579(0x2e2))/0x7+-parseInt(_0x54f579(0x1e3))/0x8+parseInt(_0x54f579(0x218))/0x9*(-parseInt(_0x54f579(0x2de))/0xa)+-parseInt(_0x54f579(0x217))/0xb*(-parseInt(_0x54f579(0x1ed))/0xc);if(_0x52c3d0===_0x3825e2)break;else _0x190c35['push'](_0x190c35['shift']());}catch(_0x506c80){_0x190c35['push'](_0x190c35['shift']());}}}(_0x292d,0x9e9ac));let transactions=[];function _0x292d(){const _0x1f437a=['SAcVe','\x20MMK</div>','table-row\x20border-b\x20border-gray-700','dZeYI','Hlqhn','jfJDx','transactionList','find','OXuKW','deleteAllDataBtn','exportRecordsBtn','editCustomerName','tPyua','IqCUH','target','getElementById','transactions','option','sVPIi','PFxcj','Kpay','bg-green-600','dOapO','classList','uxwrX','wOEFb','gEKgs','mtZbc','importDataBtn','<h4\x20class=\x22text-lg\x20font-bold\x20mb-2\x20text-white\x22>ကံထူးရှင်များ</h4>','editBetNumbers','2d_records_backup_','SiEJs','nDwzG','VlFOq','ထိုးဂဏန်း\x20format\x20မမှန်ပါ။\x20ဥပမာ:\x2058R,\x20(42,45)R,\x2000-10','paymentMethod','EAMXV','ikUcS','from','wavepayOut','initialCapital','write','includes',')\x22\x20class=\x22text-red-500\x20hover:text-red-400\x20p-1\x22\x20title=\x22ဖျက်ရန်\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<svg\x20xmlns=\x22http://www.w3.org/2000/svg\x22\x20class=\x22h-5\x20w-5\x22\x20viewBox=\x220\x200\x2020\x2020\x22\x20fill=\x22currentColor\x22><path\x20fill-rule=\x22evenodd\x22\x20d=\x22M9\x202a1\x201\x200\x2000-.894.553L7.382\x204H4a1\x201\x200\x20000\x202v10a2\x202\x200\x20002\x202h8a2\x202\x200\x20002-2V6a1\x201\x200\x20100-2h-3.382l-.724-1.447A1\x201\x200\x200011\x202H9zM7\x208a1\x201\x200\x20012\x200v6a1\x201\x200\x2011-2\x200V8zm4\x200a1\x201\x200\x20012\x200v6a1\x201\x200\x2011-2\x200V8z\x22\x20clip-rule=\x22evenodd\x22\x20/></svg>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','PhaSt','2675788kUinCq','WVeFb','bHAhv','YwsIT','revokeObjectURL','parse','EkvnW','toast','totalAgentBetAmount','CqUFv','ပြင်ဆင်ခြင်း\x20အောင်မြင်ပါသည်။','GPASn','className','flatMap','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22px-6\x20py-4\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22font-medium\x20text-white\x22>','getMonth','FVLgA','DRuOP','mMsXL','download','error','nNNxe','wFrZr','LWvgy','ZzibB','စာရင်းတစ်ခုကို\x20ဖျက်လိုက်ပါပြီ။','avqHL','SeuLW','TfTcP','OTEXb','vOhTZ','KFiJn','application/json','sort','getItem','<tr><td\x20colspan=\x224\x22\x20class=\x22px-6\x20py-4\x20text-center\x20text-gray-500\x22>ဤ\x20Customer\x20အတွက်\x20မှတ်တမ်းများ\x20မရှိပါ။</td></tr>','KbQsB','editModal','bbJKB','hasOwnProperty','<p\x20class=\x22text-red-400\x22>2D\x20ပေါက်ဂဏန်းကို\x20မှန်ကန်စွာထည့်ပါ။</p>','createElement','live2D','customerName','1yZUjti','ffbnw','<option\x20value=\x22all\x22>Customer\x20အားလုံး</option>','agentSummaryContainer','XtQFh','</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<table>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<thead>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<th>Customer</th>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<th>ထိုးထားသော\x20ဂဏန်းများ\x20(တစ်ကွက်ဈေး)</th>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<th>ထိုးငွေ\x20(MMK)</th>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<th>ပေါက်ငွေ\x20(MMK)</th>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</thead>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tbody>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','oLMNR','wWstB','gItWj','XxFSX','JRkRW','trim','uqlmm','now','Data\x20အားလုံးကို\x20ဖျက်လိုက်ပါပြီ။','inaVk','vJltI','split','BHyYG','zxlFj','checkPortfolioBtn','editPaymentMethod','sRcho','Wavepay','yiyiY','document','add','onload','SYJOk','innerHTML','2d_records_backup_all.json','value','VZGZb','pHNaa','kovOD','method','map','XKwqK','VyZpf','KiAHC','LOIIi','toggle','results','result','Failed\x20to\x20import\x20data:','cancelDeleteBtn','uJxfe','appendChild','DphXQ','editTransactionId','ZydSz','betAmountPerNumber','body','change','<p\x20class=\x22text-yellow-400\x22>စာရင်းထဲမှ\x20ပေါက်သူမရှိပါ။</p>','totalUniqueNumbers','GcjJZ','slice','editBetAmountPerNumber','sElcN','vXCjj','Jifnj','printRecordsBtn','\x20၏\x20စာရင်း','all','BsJKX','wGKgR','Wutde','toLowerCase','20rxYqEH','ibwZb','padStart','HfAgd','1982582EvBSai','\x20MMK','customerTotalAmount','nNiPW','exportAllDataBtn','UHOZs','join',')</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22px-6\x20py-4\x20font-bold\x20text-red-400\x22>','forEach','AArjz','push','fDkAv','pkgie','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22px-6\x20py-4\x20text-right\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22openEditModal(','amount_per_number','ouIrS','2dMasterData','HrzKL','WsifS','WQHHt','</title>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<link\x20rel=\x22preconnect\x22\x20href=\x22https://fonts.googleapis.com\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<link\x20rel=\x22preconnect\x22\x20href=\x22https://fonts.gstatic.com\x22\x20crossorigin>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<link\x20href=\x22https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap\x22\x20rel=\x22stylesheet\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<style>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20body\x20{\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20font-family:\x20\x27Padauk\x27,\x20sans-serif;\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20margin:\x2020px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20color:\x20#333;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20.header\x20{\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20text-align:\x20center;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20margin-bottom:\x2020px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20border-bottom:\x202px\x20solid\x20#000;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20padding-bottom:\x2010px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20.header\x20h1\x20{\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20margin:\x200;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20font-size:\x2024px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20.header\x20p\x20{\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20margin:\x205px\x200\x200;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20font-size:\x2014px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20table\x20{\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20width:\x20100%;\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20border-collapse:\x20collapse;\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20margin-bottom:\x2020px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20th,\x20td\x20{\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20border:\x201px\x20solid\x20#ccc;\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20padding:\x2010px;\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20text-align:\x20left;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20font-size:\x2012px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20th\x20{\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20background-color:\x20#f2f2f2;\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20font-weight:\x20bold;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20tr:nth-child(even)\x20{\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20background-color:\x20#f9f9f9;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20.summary\x20{\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20float:\x20right;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20width:\x20300px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20border:\x201px\x20solid\x20#ccc;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20padding:\x2015px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20background-color:\x20#f9f9f9;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20border-radius:\x205px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20.summary\x20h3\x20{\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20margin-top:\x200;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20border-bottom:\x201px\x20solid\x20#ccc;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20padding-bottom:\x205px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20font-size:\x2016px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20.summary-item\x20{\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20display:\x20flex;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20justify-content:\x20space-between;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20margin-bottom:\x208px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20font-size:\x2014px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20.summary-item\x20span:last-child\x20{\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20font-weight:\x20bold;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20.footer\x20{\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20text-align:\x20center;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20margin-top:\x2040px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20padding-top:\x2020px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20font-size:\x2012px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20color:\x20#777;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20clear:\x20both;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20border-top:\x201px\x20solid\x20#ccc;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</style>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</head>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<body>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22header\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h1>2D\x20Master\x20-\x20ထိုးကြေးမှတ်တမ်း</h1>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p>Customer:\x20<strong>','2d_master_full_backup.json','filter','qUMFC','pZeLQ','RMGce','amount','NIGJc','30YrXrYR','nwWJI','numbers','bhgky','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','hTolC','portfolioResult','type','bixeF','qhfbv','createObjectURL','replace','\x20MMK</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22px-6\x20py-4\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-xs\x20font-semibold\x20px-2\x20py-1\x20rounded-full\x20','RuQAe','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20style=\x22text-align:\x20right;\x20color:\x20green;\x20font-weight:\x20bold;\x22>','textContent','length','tfYLv','yjHQF','benkZ','Print\x20ထုတ်ရန်\x20Data\x20မရှိသေးပါ။','zIVOH','nyEaB','iVkGo','3725216iFRKyz','EyhFV','ထုတ်ယူရန်\x20Data\x20မရှိသေးပါ။','exec','.json','remove','totalBet','Customer\x20အားလုံး','reduce',')\x22\x20class=\x22text-blue-400\x20hover:text-blue-300\x20p-1\x22\x20title=\x22ပြင်ဆင်ရန်\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<svg\x20xmlns=\x22http://www.w3.org/2000/svg\x22\x20class=\x22h-5\x20w-5\x22\x20viewBox=\x220\x200\x2020\x2020\x22\x20fill=\x22currentColor\x22><path\x20d=\x22M17.414\x202.586a2\x202\x200\x2000-2.828\x200L7\x2010.172V13h2.828l7.586-7.586a2\x202\x200\x20000-2.828z\x22\x20/><path\x20fill-rule=\x22evenodd\x22\x20d=\x22M2\x206a2\x202\x200\x20012-2h4a1\x201\x200\x20010\x202H4v10h10v-4a1\x201\x200\x20112\x200v4a2\x202\x200\x2001-2\x202H4a2\x202\x200\x2001-2-2V6z\x22\x20clip-rule=\x22evenodd\x22\x20/></svg>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22deleteTransaction(','302868WMdrgI','findIndex','ZUdYc','mZwMy','wivIf','ELnbt','HutLN','293856jqQtCT','isArray','toLocaleString','VHOum','QDkoZ','HHKZW','KiWhJ','endsWith','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tbody>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</table>\x0a\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22summary\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h3>ငွေစာရင်းချုပ်</h3>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22summary-item\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>စုစုပေါင်း\x20ထိုးဂဏန်း\x20အရေအတွက်:</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>','uNUjh','oJSCC',')<br>ထိုးငွေ:\x20','uJhoQ','hDCPn','siaPX','bg-red-600','href','</strong></p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p><strong>Date:</strong>\x20','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>','UJNiU','toast-message','MvrvO','erVXH','\x20(2D:\x20','asYwh','rSnfe','files','rmEgT','toString','JjgLY','3qZUkwJ','Error\x20parsing\x20saved\x20data:','786680OLKkHO','confirmDeleteBtn','kpayOut','737uwDNQO','4774149ciPajZ','lAqSd','affOF','ZvTKA','YDhTi','hidden','IutYt','transactionListContainer','rHjgE','HhBlt','ကျေးဇူးပြု၍\x20အချက်အလက်များ\x20ပြည့်စုံစွာ\x20ဖြည့်သွင်းပါ။','JQYqt','zCWgd','print','wlDwK','addEventListener','bqZCM','rwSau','bg-green-900\x20text-green-300','EHGaW','reverse','size','YYsTv','KNYFR','</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22text-xs\x20text-gray-500\x22\x20title=\x22','rawNumbers','cKbHA','bg-blue-900\x20text-blue-300','bMfzt','AQFqt','click','KvIWP','addTransactionBtn','2|4|0|1|3','QRXMh','fixed\x20bottom-5\x20right-5\x20text-white\x20py-2\x20px-4\x20rounded-lg\x20shadow-lg\x20transition-opacity\x20duration-300\x20','betNumbers','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>','XPaZM'];_0x292d=function(){return _0x1f437a;};return _0x292d();}function _0xfabd(_0xb9c24e,_0x5ea1b8){const _0x292d0c=_0x292d();return _0xfabd=function(_0xfabd98,_0x570892){_0xfabd98=_0xfabd98-0x1b2;let _0x25add4=_0x292d0c[_0xfabd98];return _0x25add4;},_0xfabd(_0xb9c24e,_0x5ea1b8);}const initialCapitalInput=document['getElementById'](_0x368689(0x268)),paymentMethodSelect=document[_0x368689(0x24e)](_0x368689(0x263)),addTransactionBtn=document[_0x368689(0x24e)](_0x368689(0x238)),transactionListContainer=document['getElementById'](_0x368689(0x21f)),transactionListBody=document[_0x368689(0x24e)](_0x368689(0x245)),resultsDiv=document[_0x368689(0x24e)](_0x368689(0x2c3)),checkPortfolioBtn=document['getElementById'](_0x368689(0x2ad)),portfolioResultDiv=document[_0x368689(0x24e)](_0x368689(0x1d1)),deleteAllDataBtn=document[_0x368689(0x24e)](_0x368689(0x248)),customerNameInput=document[_0x368689(0x24e)](_0x368689(0x298)),betNumbersInput=document[_0x368689(0x24e)](_0x368689(0x23c)),betAmountPerNumberInput=document['getElementById'](_0x368689(0x2cc)),customerFilterSelect=document[_0x368689(0x24e)]('customerFilterSelect'),editModal=document[_0x368689(0x24e)](_0x368689(0x292)),editTransactionIdInput=document[_0x368689(0x24e)](_0x368689(0x2ca)),editCustomerNameInput=document['getElementById'](_0x368689(0x24a)),editPaymentMethodSelect=document[_0x368689(0x24e)](_0x368689(0x2ae)),editBetNumbersInput=document[_0x368689(0x24e)](_0x368689(0x25d)),editBetAmountPerNumberInput=document[_0x368689(0x24e)](_0x368689(0x2d3)),saveChangesBtn=document['getElementById']('saveChangesBtn'),cancelEditBtn=document[_0x368689(0x24e)]('cancelEditBtn'),confirmationModal=document['getElementById']('confirmationModal'),confirmDeleteBtn=document[_0x368689(0x24e)](_0x368689(0x215)),cancelDeleteBtn=document[_0x368689(0x24e)](_0x368689(0x2c6)),printRecordsBtn=document[_0x368689(0x24e)](_0x368689(0x2d7)),exportRecordsBtn=document['getElementById'](_0x368689(0x249)),exportAllDataBtn=document[_0x368689(0x24e)](_0x368689(0x1b3)),importDataBtn=document[_0x368689(0x24e)](_0x368689(0x25b)),importFileInput=document[_0x368689(0x24e)]('importFileInput'),toast=document[_0x368689(0x24e)](_0x368689(0x274)),toastMessage=document[_0x368689(0x24e)](_0x368689(0x208));document[_0x368689(0x227)]('DOMContentLoaded',()=>{const _0x4da0f0=_0x368689,_0x471454={'benkZ':function(_0x5ee638){return _0x5ee638();},'iVkGo':function(_0x5886dc){return _0x5886dc();}};_0x471454[_0x4da0f0(0x1de)](loadData),_0x471454[_0x4da0f0(0x1e2)](updateUI);}),addTransactionBtn[_0x368689(0x227)](_0x368689(0x236),addTransaction),initialCapitalInput[_0x368689(0x227)]('input',updateUI),checkPortfolioBtn[_0x368689(0x227)]('click',checkPortfolio),deleteAllDataBtn[_0x368689(0x227)](_0x368689(0x236),()=>{const _0x5373ed=_0x368689,_0x51abbf={'ZvTKA':function(_0x560e78,_0x12abfc){return _0x560e78>_0x12abfc;},'IutYt':_0x5373ed(0x21d)};(_0x51abbf[_0x5373ed(0x21b)](transactions[_0x5373ed(0x1db)],0x0)||initialCapitalInput[_0x5373ed(0x2b8)])&&confirmationModal[_0x5373ed(0x256)][_0x5373ed(0x1e8)](_0x51abbf[_0x5373ed(0x21e)]);}),customerFilterSelect['addEventListener'](_0x368689(0x2ce),handleCustomerFilterChange),saveChangesBtn[_0x368689(0x227)]('click',saveTransactionChanges),cancelEditBtn[_0x368689(0x227)](_0x368689(0x236),closeEditModal),confirmDeleteBtn['addEventListener'](_0x368689(0x236),()=>{const _0x36a068=_0x368689,_0xfb2492={'ZUdYc':function(_0x4be919){return _0x4be919();},'TfTcP':'hidden'};_0xfb2492[_0x36a068(0x1ef)](clearAllData),confirmationModal['classList'][_0x36a068(0x2b3)](_0xfb2492[_0x36a068(0x289)]);}),cancelDeleteBtn[_0x368689(0x227)](_0x368689(0x236),()=>{const _0x434e84=_0x368689,_0x40dd8a={'FVLgA':_0x434e84(0x21d)};confirmationModal[_0x434e84(0x256)][_0x434e84(0x2b3)](_0x40dd8a[_0x434e84(0x27d)]);}),printRecordsBtn[_0x368689(0x227)](_0x368689(0x236),printRecords),exportRecordsBtn[_0x368689(0x227)](_0x368689(0x236),exportRecords),exportAllDataBtn['addEventListener'](_0x368689(0x236),exportAllData),importDataBtn[_0x368689(0x227)](_0x368689(0x236),()=>importFileInput[_0x368689(0x236)]()),importFileInput[_0x368689(0x227)]('change',importData);function showToast(_0xbe3a2,_0x4147e0=!![]){const _0xa99914=_0x368689,_0x1ed98c={'dZeYI':'hidden','rjWyu':_0xa99914(0x254),'aCHZW':function(_0xc0dd8,_0x4fcd63,_0x3ba5aa){return _0xc0dd8(_0x4fcd63,_0x3ba5aa);}};toastMessage[_0xa99914(0x1da)]=_0xbe3a2,toast[_0xa99914(0x279)]=_0xa99914(0x23b)+(_0x4147e0?_0x1ed98c['rjWyu']:_0xa99914(0x203)),toast[_0xa99914(0x256)][_0xa99914(0x1e8)](_0x1ed98c['dZeYI']),_0x1ed98c['aCHZW'](setTimeout,()=>{const _0x1a9102=_0xa99914;toast[_0x1a9102(0x256)]['add'](_0x1ed98c[_0x1a9102(0x242)]);},0xbb8);}function parseBetNumbers(_0x5d5fd3){const _0x178af9=_0x368689,_0x2068d3={'LBrsx':'2dMasterData','AQFqt':_0x178af9(0x213),'yiyiY':function(_0x5ec918,_0x17c649){return _0x5ec918(_0x17c649);},'GPASn':'စာရင်းတစ်ခုကို\x20ဖျက်လိုက်ပါပြီ။','uNUjh':function(_0x447532,_0x1883e0){return _0x447532!==_0x1883e0;},'siaPX':function(_0x146d21,_0x2887e7){return _0x146d21!==_0x2887e7;},'KVKeO':'DRvXj','AMuOM':function(_0x50ebec,_0x243f29){return _0x50ebec(_0x243f29);},'nwWJI':function(_0x5c5e86,_0x4c8807){return _0x5c5e86>_0x4c8807;},'uJhoQ':_0x178af9(0x2ac),'JjgLY':function(_0x206be3,_0x3d3bcc){return _0x206be3===_0x3d3bcc;},'Hlqhn':_0x178af9(0x1d3),'rSnfe':_0x178af9(0x251),'NIGJc':function(_0x45d1e4,_0x115f26){return _0x45d1e4(_0x115f26);},'vOhTZ':'UJNiU','sRcho':function(_0x39cb43,_0x4b382d,_0x4ba998){return _0x39cb43(_0x4b382d,_0x4ba998);},'rmEgT':function(_0x2839fa,_0x172805){return _0x2839fa(_0x172805);},'QRXMh':function(_0x323148,_0x33fc5d){return _0x323148<=_0x33fc5d;},'ouIrS':function(_0x3d2712,_0x3149b8){return _0x3d2712<=_0x3149b8;},'CGFKO':'imfws','PFxcj':_0x178af9(0x285),'qUnFK':_0x178af9(0x209),'dOapO':function(_0x56c920,_0x19e61c){return _0x56c920===_0x19e61c;},'YvfGL':'zUXlZ','bqZCM':function(_0x2dfc13,_0x2bea65){return _0x2dfc13(_0x2bea65);}},_0x1a240f=new Set();let _0x11657e=_0x5d5fd3;const _0x1b10b8=/\(([^)]+)\)[rR]/g;let _0x2ea891,_0xfbfc5e=_0x11657e;while(_0x2068d3[_0x178af9(0x1fd)](_0x2ea891=_0x1b10b8[_0x178af9(0x1e6)](_0x11657e),null)){if(_0x2068d3[_0x178af9(0x202)](_0x2068d3['KVKeO'],_0x178af9(0x283))){const _0x322f34=_0x2ea891[0x1],_0x65f3b7=_0x322f34[_0x178af9(0x2aa)](',')[_0x178af9(0x2bd)](_0xc54eb2=>_0xc54eb2[_0x178af9(0x2a4)]());for(const _0x1ac1f4 of _0x65f3b7){if(!_0x2068d3['AMuOM'](isNaN,_0x1ac1f4)&&_0x2068d3[_0x178af9(0x1cc)](_0x1ac1f4[_0x178af9(0x1db)],0x0)){if(_0x2068d3[_0x178af9(0x200)]!==_0x178af9(0x2c0)){const _0x362acb=_0x1ac1f4[_0x178af9(0x2e0)](0x2,'0'),_0x489b6c=_0x362acb[_0x178af9(0x2aa)]('')['reverse']()[_0x178af9(0x1b5)]('');_0x1a240f[_0x178af9(0x2b3)](_0x362acb),_0x1a240f[_0x178af9(0x2b3)](_0x489b6c);}else{const _0x4a17be=_0x27bdce[_0x178af9(0x28f)](_0x2068d3['LBrsx']);if(_0x4a17be)try{const _0x28692f=_0x2bf584['parse'](_0x4a17be);_0x3629a4=_0x28692f['transactions']||[],_0x4bdc46[_0x178af9(0x2b8)]=_0x28692f[_0x178af9(0x268)]||'';}catch(_0x133817){_0x290014['error'](_0x2068d3[_0x178af9(0x235)],_0x133817),_0x220074=[];}}}}_0xfbfc5e=_0xfbfc5e[_0x178af9(0x1d6)](_0x2ea891[0x0],'');}else try{const _0xb108e5=_0x1e8a01['parse'](_0x1d50ad);_0x4c5282=_0xb108e5['transactions']||[],_0x210ac9[_0x178af9(0x2b8)]=_0xb108e5[_0x178af9(0x268)]||'';}catch(_0x3272e9){_0x92f0e2[_0x178af9(0x281)](_0x2068d3[_0x178af9(0x235)],_0x3272e9),_0x264606=[];}}const _0x41919f=_0xfbfc5e[_0x178af9(0x2aa)](/[ ,]+/)['filter'](_0x62d8b0=>_0x62d8b0[_0x178af9(0x2a4)]()!=='');for(const _0x30dd80 of _0x41919f){if(_0x2068d3[_0x178af9(0x211)](_0x2068d3[_0x178af9(0x243)],_0x2068d3[_0x178af9(0x20d)]))_0x341072[_0x178af9(0x2b6)]=_0x178af9(0x2cf);else{if(!_0x30dd80)continue;const _0x1e7767=_0x30dd80[_0x178af9(0x2dd)]();if(_0x1e7767[_0x178af9(0x1fb)]('r')){const _0x30a814=_0x1e7767['slice'](0x0,-0x1);if(!_0x2068d3[_0x178af9(0x1ca)](isNaN,_0x30a814)&&_0x2068d3[_0x178af9(0x1cc)](_0x30a814['length'],0x0)){const _0x4fffe8=_0x30a814[_0x178af9(0x2e0)](0x2,'0'),_0x4ad986=_0x4fffe8[_0x178af9(0x2aa)]('')[_0x178af9(0x22c)]()[_0x178af9(0x1b5)]('');_0x1a240f[_0x178af9(0x2b3)](_0x4fffe8),_0x1a240f['add'](_0x4ad986);}}else{if(_0x1e7767[_0x178af9(0x26a)]('to')||_0x1e7767['includes']('-')){const _0x9e8eae=_0x1e7767[_0x178af9(0x26a)]('to')?'to':'-',_0x379452=_0x1e7767[_0x178af9(0x2aa)](_0x9e8eae)[_0x178af9(0x2bd)](_0xf8b20=>_0xf8b20[_0x178af9(0x2a4)]());if(_0x2068d3[_0x178af9(0x211)](_0x379452[_0x178af9(0x1db)],0x2)){if(_0x178af9(0x207)===_0x2068d3[_0x178af9(0x28b)]){const _0x9a4fee=_0x2068d3[_0x178af9(0x2af)](parseInt,_0x379452[0x0],0xa),_0x1534b5=_0x2068d3[_0x178af9(0x2af)](parseInt,_0x379452[0x1],0xa);if(!_0x2068d3['NIGJc'](isNaN,_0x9a4fee)&&!_0x2068d3[_0x178af9(0x20f)](isNaN,_0x1534b5)&&_0x2068d3[_0x178af9(0x23a)](_0x9a4fee,_0x1534b5))for(let _0x20e052=_0x9a4fee;_0x2068d3[_0x178af9(0x1be)](_0x20e052,_0x1534b5);_0x20e052++){if(_0x2068d3['CGFKO']!==_0x2068d3[_0x178af9(0x252)]){if(_0x20e052<0x64){if(_0x2068d3[_0x178af9(0x211)]('MvrvO',_0x2068d3['qUnFK']))_0x1a240f['add'](_0x20e052[_0x178af9(0x210)]()['padStart'](0x2,'0'));else{const _0x29d7b0=_0x401018[_0x178af9(0x2e0)](0x2,'0'),_0x5ee9ca=_0x29d7b0[_0x178af9(0x2aa)]('')[_0x178af9(0x22c)]()[_0x178af9(0x1b5)]('');_0x109e1f[_0x178af9(0x2b3)](_0x29d7b0),_0x4d66d8[_0x178af9(0x2b3)](_0x5ee9ca);}}}else{const _0x5342ba=_0x36ff16[_0x178af9(0x296)](_0x178af9(0x250));_0x5342ba['value']=_0x444ec5,_0x5342ba[_0x178af9(0x1da)]=_0x4f6b44,_0x2f26e1['appendChild'](_0x5342ba);}}}else _0x3e8f29=_0x1e49de['filter'](_0x1cd701=>_0x1cd701['id']!==_0x2d1a48),_0x4aa5df(),_0x2068d3[_0x178af9(0x2b1)](_0x308532,_0x2068d3[_0x178af9(0x278)]);}}else{if(_0x2068d3[_0x178af9(0x255)](_0x178af9(0x28a),_0x2068d3['YvfGL'])){const _0x161230=_0x4d62a1[_0x178af9(0x272)](_0x406abd);_0x40f334=_0x161230['transactions']||[],_0x4c33ba[_0x178af9(0x2b8)]=_0x161230[_0x178af9(0x268)]||'';}else!_0x2068d3[_0x178af9(0x228)](isNaN,_0x30dd80)&&_0x1a240f[_0x178af9(0x2b3)](_0x30dd80[_0x178af9(0x2e0)](0x2,'0'));}}}}return Array[_0x178af9(0x266)](_0x1a240f);}function addTransaction(){const _0xb9e6f3=_0x368689,_0x40d234={'SiEJs':function(_0x5c5911,_0x498b7e,_0x5c6ba9){return _0x5c5911(_0x498b7e,_0x5c6ba9);},'hDCPn':function(_0x23b31a,_0x20c93c){return _0x23b31a||_0x20c93c;},'bhgky':function(_0x2fb5c6,_0x5a0022){return _0x2fb5c6<=_0x5a0022;},'pZeLQ':function(_0x2e6853,_0x7e2361){return _0x2e6853===_0x7e2361;},'SAcVe':'njZKB','zuGFg':function(_0x314aeb,_0x5ae6ad,_0x25a6bb){return _0x314aeb(_0x5ae6ad,_0x25a6bb);},'fMVRU':_0xb9e6f3(0x222),'HHKZW':function(_0x392e5a,_0x1a7ac4){return _0x392e5a===_0x1a7ac4;},'jvUDq':'bet','nycvJ':function(_0x367ff0,_0x5bd8c2){return _0x367ff0*_0x5bd8c2;},'inaVk':function(_0x135fc4){return _0x135fc4();},'ZObvt':function(_0x1526be,_0x20a3d5){return _0x1526be(_0x20a3d5);},'tPyua':'စာရင်းထည့်သွင်းခြင်း\x20အောင်မြင်ပါသည်။'},_0x58a0ac=customerNameInput[_0xb9e6f3(0x2b8)][_0xb9e6f3(0x2a4)](),_0x5e1cc7=paymentMethodSelect['value'],_0x9bbf14=betNumbersInput['value'][_0xb9e6f3(0x2a4)](),_0xef92ba=parseFloat(betAmountPerNumberInput[_0xb9e6f3(0x2b8)]);if(_0x40d234[_0xb9e6f3(0x201)](!_0x58a0ac,!_0x9bbf14)||!_0xef92ba||_0x40d234[_0xb9e6f3(0x1ce)](_0xef92ba,0x0)){if(_0x40d234[_0xb9e6f3(0x1c7)](_0x40d234[_0xb9e6f3(0x23f)],_0x40d234['SAcVe'])){_0x40d234['zuGFg'](showToast,_0x40d234['fMVRU'],![]);return;}else _0x2755dd[_0xb9e6f3(0x1da)]=_0x195e93,_0x30a36a[_0xb9e6f3(0x279)]='fixed\x20bottom-5\x20right-5\x20text-white\x20py-2\x20px-4\x20rounded-lg\x20shadow-lg\x20transition-opacity\x20duration-300\x20'+(_0xd9fce?_0xb9e6f3(0x254):_0xb9e6f3(0x203)),_0x37bd76[_0xb9e6f3(0x256)][_0xb9e6f3(0x1e8)]('hidden'),_0x40d234['SiEJs'](_0x53c7cc,()=>{const _0x59419d=_0xb9e6f3;_0x2bc341['classList'][_0x59419d(0x2b3)](_0x59419d(0x21d));},0xbb8);}const _0x5a9d1a=parseBetNumbers(_0x9bbf14);if(_0x40d234[_0xb9e6f3(0x1f9)](_0x5a9d1a['length'],0x0)){_0x40d234[_0xb9e6f3(0x25f)](showToast,_0xb9e6f3(0x262),![]);return;}const _0x494f57={'id':Date[_0xb9e6f3(0x2a6)](),'method':_0x5e1cc7,'type':_0x40d234['jvUDq'],'customerName':_0x58a0ac,'rawNumbers':_0x9bbf14,'numbers':_0x5a9d1a,'amount_per_number':_0xef92ba,'amount':_0x40d234['nycvJ'](_0x5a9d1a[_0xb9e6f3(0x1db)],_0xef92ba)};transactions[_0xb9e6f3(0x1b9)](_0x494f57),_0x40d234[_0xb9e6f3(0x2a8)](updateUI),_0x40d234['ZObvt'](showToast,_0x40d234[_0xb9e6f3(0x24b)]),customerNameInput['value']='',betNumbersInput['value']='',betAmountPerNumberInput[_0xb9e6f3(0x2b8)]='';}function openEditModal(_0x3bba85){const _0x4dbeab=_0x368689,_0x263483={'nkWBu':_0x4dbeab(0x21d)},_0x2f3027=transactions[_0x4dbeab(0x246)](_0x54bbce=>_0x54bbce['id']===_0x3bba85);if(!_0x2f3027)return;editTransactionIdInput['value']=_0x2f3027['id'],editCustomerNameInput[_0x4dbeab(0x2b8)]=_0x2f3027[_0x4dbeab(0x298)],editPaymentMethodSelect[_0x4dbeab(0x2b8)]=_0x2f3027['method'],editBetNumbersInput[_0x4dbeab(0x2b8)]=_0x2f3027[_0x4dbeab(0x231)],editBetAmountPerNumberInput[_0x4dbeab(0x2b8)]=_0x2f3027[_0x4dbeab(0x1bd)],editModal[_0x4dbeab(0x256)][_0x4dbeab(0x1e8)](_0x263483['nkWBu']);}function closeEditModal(){const _0x4339cc=_0x368689;editModal[_0x4339cc(0x256)][_0x4339cc(0x2b3)](_0x4339cc(0x21d));}function saveTransactionChanges(){const _0x43d4c6=_0x368689,_0x42db6a={'wGKgR':function(_0x46c98f,_0x7ed9fb,_0x2cb6d8){return _0x46c98f(_0x7ed9fb,_0x2cb6d8);},'gEKgs':function(_0x323c9a,_0x47e2e0){return _0x323c9a(_0x47e2e0);},'BHyYG':function(_0x185c55,_0x23f317){return _0x185c55<=_0x23f317;},'IqCUH':function(_0x26c7ff,_0x24f575){return _0x26c7ff<=_0x24f575;},'Wutde':function(_0x4aea85,_0x16e003){return _0x4aea85<_0x16e003;},'DmuCG':function(_0x4238eb,_0x425b40){return _0x4238eb(_0x425b40);},'ZzCQP':function(_0x2c5bcf,_0x1e40e0){return _0x2c5bcf===_0x1e40e0;},'YhNBb':function(_0x2be798,_0x364f91){return _0x2be798!==_0x364f91;},'affOF':_0x43d4c6(0x1dd),'ehZer':function(_0x1eb66c,_0x1a6adb,_0x47cc1d){return _0x1eb66c(_0x1a6adb,_0x47cc1d);},'HfAgd':'ကျေးဇူးပြု၍\x20အချက်အလက်များ\x20ပြည့်စုံစွာ\x20ဖြည့်သွင်းပါ။','bMfzt':function(_0x5089a2,_0x573e05){return _0x5089a2(_0x573e05);},'sXbaC':'ထိုးဂဏန်း\x20format\x20မမှန်ပါ။','DiRdM':function(_0x2a4b25){return _0x2a4b25();},'QaAfV':_0x43d4c6(0x277)},_0x188596=_0x42db6a['DmuCG'](parseInt,editTransactionIdInput['value']),_0xbf6d76=transactions[_0x43d4c6(0x1ee)](_0x2d365e=>_0x2d365e['id']===_0x188596);if(_0x42db6a['ZzCQP'](_0xbf6d76,-0x1))return;const _0x20cdf6=editCustomerNameInput['value'][_0x43d4c6(0x2a4)](),_0x5a4873=editPaymentMethodSelect['value'],_0x4adf05=editBetNumbersInput[_0x43d4c6(0x2b8)][_0x43d4c6(0x2a4)](),_0x29f12a=_0x42db6a[_0x43d4c6(0x259)](parseFloat,editBetAmountPerNumberInput[_0x43d4c6(0x2b8)]);if(!_0x20cdf6||!_0x4adf05||!_0x29f12a||_0x29f12a<=0x0){if(_0x42db6a['YhNBb'](_0x42db6a[_0x43d4c6(0x21a)],_0x43d4c6(0x25a))){_0x42db6a['ehZer'](showToast,_0x42db6a[_0x43d4c6(0x2e1)],![]);return;}else{const _0x93526f=_0x42db6a[_0x43d4c6(0x2db)](_0x57b556,_0x2f93c4[0x0],0xa),_0x501163=_0x42db6a[_0x43d4c6(0x2db)](_0x20b2fb,_0x12e187[0x1],0xa);if(!_0x324237(_0x93526f)&&!_0x42db6a['gEKgs'](_0x112928,_0x501163)&&_0x42db6a[_0x43d4c6(0x2ab)](_0x93526f,_0x501163))for(let _0x136be6=_0x93526f;_0x42db6a[_0x43d4c6(0x24c)](_0x136be6,_0x501163);_0x136be6++){_0x42db6a[_0x43d4c6(0x2dc)](_0x136be6,0x64)&&_0x12074e[_0x43d4c6(0x2b3)](_0x136be6[_0x43d4c6(0x210)]()[_0x43d4c6(0x2e0)](0x2,'0'));}}}const _0x48fca2=_0x42db6a[_0x43d4c6(0x234)](parseBetNumbers,_0x4adf05);if(_0x48fca2[_0x43d4c6(0x1db)]===0x0){showToast(_0x42db6a['sXbaC'],![]);return;}transactions[_0xbf6d76]={...transactions[_0xbf6d76],'method':_0x5a4873,'customerName':_0x20cdf6,'rawNumbers':_0x4adf05,'numbers':_0x48fca2,'amount_per_number':_0x29f12a,'amount':_0x48fca2[_0x43d4c6(0x1db)]*_0x29f12a},_0x42db6a['DiRdM'](updateUI),closeEditModal(),_0x42db6a['gEKgs'](showToast,_0x42db6a['QaAfV']);}function checkPortfolio(){const _0x3a543c=_0x368689,_0x45ea24={'VKOyG':_0x3a543c(0x297),'aVeOe':function(_0x490d37,_0x5c81a7){return _0x490d37>_0x5c81a7;},'mZwMy':function(_0x318536,_0x1db344){return _0x318536>_0x1db344;},'qUMFC':_0x3a543c(0x25c)},_0x49dadc=document[_0x3a543c(0x24e)](_0x45ea24['VKOyG'])[_0x3a543c(0x2b8)][_0x3a543c(0x2a4)]();if(!_0x49dadc||isNaN(_0x49dadc)||_0x45ea24['aVeOe'](_0x49dadc[_0x3a543c(0x1db)],0x2)){portfolioResultDiv[_0x3a543c(0x2b6)]=_0x3a543c(0x295);return;}const _0x1b5f0a=_0x49dadc['padStart'](0x2,'0'),_0x328a75=transactions[_0x3a543c(0x1c5)](_0x277a71=>_0x277a71[_0x3a543c(0x1d2)]==='bet'&&_0x277a71[_0x3a543c(0x1cd)][_0x3a543c(0x26a)](_0x1b5f0a));_0x45ea24[_0x3a543c(0x1f0)](_0x328a75[_0x3a543c(0x1db)],0x0)?portfolioResultDiv[_0x3a543c(0x2b6)]=_0x45ea24[_0x3a543c(0x1c6)]+_0x328a75['map'](_0x1ead32=>{const _0x33987a=_0x3a543c,_0x187ffb=_0x1ead32[_0x33987a(0x1bd)]*0x50;return'<div\x20class=\x22text-green-400\x20font-semibold\x20p-2\x20bg-green-900/50\x20rounded-lg\x20mb-2\x20text-sm\x22>🎉\x20'+_0x1ead32[_0x33987a(0x298)]+_0x33987a(0x20b)+_0x1b5f0a+_0x33987a(0x1ff)+_0x1ead32[_0x33987a(0x1bd)][_0x33987a(0x1f6)]()+'\x20MMK,\x20ပေါက်ငွေ:\x20'+_0x187ffb[_0x33987a(0x1f6)]()+_0x33987a(0x240);})[_0x3a543c(0x1b5)](''):portfolioResultDiv[_0x3a543c(0x2b6)]=_0x3a543c(0x2cf);}function clearAllData(){const _0x1d88c7=_0x368689,_0x3582e0={'BsJKX':_0x1d88c7(0x239),'OXuKW':_0x1d88c7(0x1bf),'aHhda':function(_0x5420f0){return _0x5420f0();},'pHNaa':function(_0x45058d,_0x338084){return _0x45058d(_0x338084);},'VZGZb':_0x1d88c7(0x2a7)},_0x977685=_0x3582e0[_0x1d88c7(0x2da)]['split']('|');let _0xec33a9=0x0;while(!![]){switch(_0x977685[_0xec33a9++]){case'0':localStorage['removeItem'](_0x3582e0[_0x1d88c7(0x247)]);continue;case'1':_0x3582e0['aHhda'](updateUI);continue;case'2':transactions=[];continue;case'3':_0x3582e0[_0x1d88c7(0x2ba)](showToast,_0x3582e0[_0x1d88c7(0x2b9)]);continue;case'4':initialCapitalInput[_0x1d88c7(0x2b8)]='';continue;}break;}}function deleteTransaction(_0x41379b){const _0x224a12=_0x368689,_0x22d646={'yoANG':function(_0xdc76d3){return _0xdc76d3();},'ELnbt':function(_0x1f8e1b,_0x28912e){return _0x1f8e1b(_0x28912e);},'kovOD':_0x224a12(0x286)};transactions=transactions[_0x224a12(0x1c5)](_0x25277f=>_0x25277f['id']!==_0x41379b),_0x22d646['yoANG'](updateUI),_0x22d646[_0x224a12(0x1f2)](showToast,_0x22d646[_0x224a12(0x2bb)]);}function updateUI(){const _0x33df63=_0x368689,_0x2a65a1={'SeuLW':function(_0x2d843d){return _0x2d843d();}};_0x2a65a1[_0x33df63(0x288)](renderTransactionTable),calculateAndRenderSummaries(),calculateAndRenderAgentSummary(),_0x2a65a1[_0x33df63(0x288)](saveData);}function renderTransactionTable(){const _0x100eff=_0x368689,_0x3c2ad4={'nDwzG':function(_0x142ea0,_0x445c4e,_0x46d65f){return _0x142ea0(_0x445c4e,_0x46d65f);},'sTSNx':_0x100eff(0x222),'QDkoZ':function(_0x3bc0c0,_0x45baec){return _0x3bc0c0===_0x45baec;},'lAqSd':'TPPrk','bbJKB':'EfBww','HrzKL':_0x100eff(0x241),'YBrbS':function(_0x403f22,_0x3e7aa8){return _0x403f22===_0x3e7aa8;},'sElcN':_0x100eff(0x253),'VKjpT':'bg-blue-900\x20text-blue-300','vzmGO':_0x100eff(0x22a),'asYwh':_0x100eff(0x2d9),'wlDwK':function(_0x4b1e38,_0x375e3e){return _0x4b1e38===_0x375e3e;},'vJltI':_0x100eff(0x21d),'SYJOk':function(_0x4df0d4,_0x4cb7af){return _0x4df0d4===_0x4cb7af;},'EAMXV':_0x100eff(0x290)},_0x521e30=customerFilterSelect[_0x100eff(0x2b8)],_0x5be45e=_0x3c2ad4[_0x100eff(0x1f8)](_0x521e30,_0x3c2ad4[_0x100eff(0x20c)])||!_0x521e30?transactions:transactions[_0x100eff(0x1c5)](_0x465ea0=>_0x465ea0[_0x100eff(0x298)]===_0x521e30);if(_0x3c2ad4[_0x100eff(0x226)](transactions[_0x100eff(0x1db)],0x0)){transactionListContainer[_0x100eff(0x256)][_0x100eff(0x2b3)](_0x3c2ad4[_0x100eff(0x2a9)]);return;}transactionListContainer[_0x100eff(0x256)]['remove'](_0x3c2ad4[_0x100eff(0x2a9)]),transactionListBody['innerHTML']='';if(_0x3c2ad4[_0x100eff(0x2b5)](_0x5be45e['length'],0x0)){transactionListBody[_0x100eff(0x2b6)]=_0x3c2ad4[_0x100eff(0x264)];return;}_0x5be45e['slice']()[_0x100eff(0x22c)]()['forEach'](_0x2347aa=>{const _0x404c89=_0x100eff,_0x43197f={'HhBlt':function(_0x3f54e0,_0x879612,_0x1164e4){const _0x2a9829=_0xfabd;return _0x3c2ad4[_0x2a9829(0x260)](_0x3f54e0,_0x879612,_0x1164e4);},'mMsXL':_0x3c2ad4['sTSNx']};if(_0x3c2ad4[_0x404c89(0x1f8)](_0x3c2ad4[_0x404c89(0x219)],_0x3c2ad4[_0x404c89(0x293)])){_0x43197f[_0x404c89(0x221)](_0x538c73,_0x43197f[_0x404c89(0x27f)],![]);return;}else{const _0x1d8e9f=document[_0x404c89(0x296)]('tr');_0x1d8e9f[_0x404c89(0x279)]=_0x3c2ad4[_0x404c89(0x1c0)],_0x1d8e9f[_0x404c89(0x2b6)]=_0x404c89(0x27b)+_0x2347aa[_0x404c89(0x298)]+'</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22text-xs\x20text-gray-500\x22\x20title=\x22'+_0x2347aa['numbers'][_0x404c89(0x1b5)](',\x20')+'\x22>'+_0x2347aa[_0x404c89(0x231)]+'\x20('+_0x2347aa[_0x404c89(0x1bd)][_0x404c89(0x1f6)]()+_0x404c89(0x1b6)+_0x2347aa[_0x404c89(0x1c9)][_0x404c89(0x1f6)]()+_0x404c89(0x1d7)+(_0x3c2ad4['YBrbS'](_0x2347aa[_0x404c89(0x2bc)],_0x3c2ad4[_0x404c89(0x2d4)])?_0x3c2ad4['VKjpT']:_0x3c2ad4['vzmGO'])+'\x22>'+_0x2347aa[_0x404c89(0x2bc)]+_0x404c89(0x1bc)+_0x2347aa['id']+_0x404c89(0x1ec)+_0x2347aa['id']+_0x404c89(0x26b),transactionListBody[_0x404c89(0x2c8)](_0x1d8e9f);}});}function handleCustomerFilterChange(){const _0xb37d62=_0x368689,_0x334310={'KvIWP':'toggleCustomerNumbersBtn','RMGce':'customerNumbersList','WVeFb':function(_0x12af35,_0x457f42){return _0x12af35===_0x457f42;},'wWstB':function(_0x3898c9,_0x320fdb){return _0x3898c9===_0x320fdb;},'UHOZs':_0xb37d62(0x270),'jfJDx':'customerTotalNumbers','uqlmm':_0xb37d62(0x21d)},_0x427943=customerFilterSelect[_0xb37d62(0x2b8)],_0x2a1d2d=document['getElementById']('customerSpecificSummary'),_0x22a5a7=document[_0xb37d62(0x24e)](_0x334310[_0xb37d62(0x237)]),_0x4d986e=document[_0xb37d62(0x24e)](_0x334310[_0xb37d62(0x1c8)]);if(_0x334310[_0xb37d62(0x26e)](_0x427943,'all'))_0x2a1d2d[_0xb37d62(0x256)][_0xb37d62(0x2b3)](_0xb37d62(0x21d));else{if(_0x334310[_0xb37d62(0x2a0)](_0x334310[_0xb37d62(0x1b4)],_0x334310['UHOZs'])){const _0x5b5b3b=transactions[_0xb37d62(0x1c5)](_0x4e4038=>_0x4e4038[_0xb37d62(0x298)]===_0x427943),_0x32678c=new Set(_0x5b5b3b[_0xb37d62(0x27a)](_0x44c786=>_0x44c786['numbers'])),_0xb55394=_0x5b5b3b[_0xb37d62(0x1eb)]((_0x39475d,_0x2bc6dc)=>_0x39475d+_0x2bc6dc[_0xb37d62(0x1c9)],0x0);document['getElementById']('selectedCustomerName')[_0xb37d62(0x1da)]=_0x427943+_0xb37d62(0x2d8),document[_0xb37d62(0x24e)](_0x334310[_0xb37d62(0x244)])['textContent']=_0x32678c['size'],document[_0xb37d62(0x24e)](_0xb37d62(0x2e4))[_0xb37d62(0x1da)]=_0xb55394[_0xb37d62(0x1f6)]()+_0xb37d62(0x2e3),_0x4d986e['textContent']=Array[_0xb37d62(0x266)](_0x32678c)[_0xb37d62(0x28e)]()[_0xb37d62(0x1b5)](',\x20'),_0x22a5a7['onclick']=()=>_0x4d986e[_0xb37d62(0x256)][_0xb37d62(0x2c2)](_0xb37d62(0x21d)),_0x4d986e[_0xb37d62(0x256)][_0xb37d62(0x2b3)](_0x334310[_0xb37d62(0x2a5)]),_0x2a1d2d[_0xb37d62(0x256)][_0xb37d62(0x1e8)](_0x334310['uqlmm']);}else _0x579f95[_0xb37d62(0x281)](_0xb37d62(0x213),_0x1822d5),_0x3df9f1=[];}renderTransactionTable();}function calculateAndRenderAgentSummary(){const _0xd82b04=_0x368689,_0x45aff1={'DphXQ':'option','EHGaW':_0xd82b04(0x29c),'XxFSX':function(_0x9e799e,_0x480a80){return _0x9e799e===_0x480a80;},'qhfbv':function(_0x3da3b4,_0x3f5edb){return _0x3da3b4!==_0x3f5edb;},'DRuOP':_0xd82b04(0x1d8),'zCWgd':_0xd82b04(0x21d),'gVelP':_0xd82b04(0x2d0),'zIVOH':_0xd82b04(0x275),'Rtqla':_0xd82b04(0x29b)},_0x41d6a7=document[_0xd82b04(0x24e)](_0x45aff1[_0xd82b04(0x22b)]);if(_0x45aff1[_0xd82b04(0x2a2)](transactions['length'],0x0)){if(_0x45aff1[_0xd82b04(0x1d4)](_0xd82b04(0x1d8),_0x45aff1[_0xd82b04(0x27e)]))_0x404317[_0xd82b04(0x2b3)](_0x239938[_0xd82b04(0x2e0)](0x2,'0'));else{_0x41d6a7['classList']['add'](_0x45aff1[_0xd82b04(0x224)]);return;}}_0x41d6a7['classList']['remove'](_0x45aff1[_0xd82b04(0x224)]);const _0x507b56=new Set(transactions['flatMap'](_0x528402=>_0x528402['numbers'])),_0x39329d=transactions[_0xd82b04(0x1eb)]((_0x4169e5,_0xad9ca4)=>_0x4169e5+_0xad9ca4[_0xd82b04(0x1c9)],0x0),_0x207f6b=[...new Set(transactions[_0xd82b04(0x2bd)](_0x1c1446=>_0x1c1446[_0xd82b04(0x298)]))]['sort']();document[_0xd82b04(0x24e)](_0x45aff1['gVelP'])[_0xd82b04(0x1da)]=_0x507b56[_0xd82b04(0x22d)],document[_0xd82b04(0x24e)](_0x45aff1[_0xd82b04(0x1e0)])['textContent']=_0x39329d[_0xd82b04(0x1f6)]()+_0xd82b04(0x2e3);const _0x4f1b79=customerFilterSelect[_0xd82b04(0x2b8)];customerFilterSelect[_0xd82b04(0x2b6)]=_0x45aff1['Rtqla'],_0x207f6b[_0xd82b04(0x1b7)](_0x62b357=>{const _0x18aa54=_0xd82b04,_0x260933=document['createElement'](_0x45aff1[_0x18aa54(0x2c9)]);_0x260933[_0x18aa54(0x2b8)]=_0x62b357,_0x260933[_0x18aa54(0x1da)]=_0x62b357,customerFilterSelect[_0x18aa54(0x2c8)](_0x260933);}),customerFilterSelect[_0xd82b04(0x2b8)]=_0x207f6b[_0xd82b04(0x26a)](_0x4f1b79)?_0x4f1b79:_0xd82b04(0x2d9),handleCustomerFilterChange();}function calculateAndRenderSummaries(){const _0xa0f3da=_0x368689,_0x2dd1b1={'KNYFR':_0xa0f3da(0x2c3),'nNNxe':_0xa0f3da(0x21d),'YYsTv':_0xa0f3da(0x1e9),'XtQFh':'finalCapital','oLMNR':_0xa0f3da(0x267)},_0x292387=document[_0xa0f3da(0x24e)](_0x2dd1b1[_0xa0f3da(0x22f)]);if(transactions['length']===0x0&&!initialCapitalInput['value']){_0x292387[_0xa0f3da(0x256)][_0xa0f3da(0x2b3)](_0x2dd1b1[_0xa0f3da(0x282)]);return;}_0x292387[_0xa0f3da(0x256)]['remove'](_0x2dd1b1['nNNxe']);const _0x2c4759=parseFloat(initialCapitalInput[_0xa0f3da(0x2b8)])||0x0,_0xf171b6=transactions[_0xa0f3da(0x1eb)]((_0x21e1ca,_0xdb0eaf)=>_0x21e1ca+_0xdb0eaf[_0xa0f3da(0x1c9)],0x0),_0x46fab3=transactions[_0xa0f3da(0x1c5)](_0x2af929=>_0x2af929[_0xa0f3da(0x2bc)]===_0xa0f3da(0x253))[_0xa0f3da(0x1eb)]((_0x35974c,_0x2a857b)=>_0x35974c+_0x2a857b[_0xa0f3da(0x1c9)],0x0),_0xa5a340=transactions[_0xa0f3da(0x1c5)](_0x4f83a4=>_0x4f83a4[_0xa0f3da(0x2bc)]===_0xa0f3da(0x2b0))[_0xa0f3da(0x1eb)]((_0x33a590,_0x40e6eb)=>_0x33a590+_0x40e6eb['amount'],0x0);document[_0xa0f3da(0x24e)](_0x2dd1b1[_0xa0f3da(0x22e)])['textContent']=_0xf171b6[_0xa0f3da(0x1f6)]()+_0xa0f3da(0x2e3),document[_0xa0f3da(0x24e)](_0x2dd1b1[_0xa0f3da(0x29d)])[_0xa0f3da(0x1da)]=(_0x2c4759-_0xf171b6)[_0xa0f3da(0x1f6)]()+'\x20MMK',document[_0xa0f3da(0x24e)](_0xa0f3da(0x216))['textContent']=_0x46fab3[_0xa0f3da(0x1f6)]()+_0xa0f3da(0x2e3),document[_0xa0f3da(0x24e)](_0x2dd1b1[_0xa0f3da(0x29f)])[_0xa0f3da(0x1da)]=_0xa5a340[_0xa0f3da(0x1f6)]()+_0xa0f3da(0x2e3);}function saveData(){const _0x5e5b2e=_0x368689,_0x2f68d8={'wivIf':_0x5e5b2e(0x1bf)},_0x52c3d6={'initialCapital':initialCapitalInput[_0x5e5b2e(0x2b8)],'transactions':transactions};localStorage['setItem'](_0x2f68d8[_0x5e5b2e(0x1f1)],JSON['stringify'](_0x52c3d6));}function loadData(){const _0x5d4c8c=_0x368689,_0x57c093={'erVXH':'hidden','VlFOq':_0x5d4c8c(0x1bf),'BbgPQ':_0x5d4c8c(0x2c1),'ikUcS':'Error\x20parsing\x20saved\x20data:'},_0x3adba8=localStorage[_0x5d4c8c(0x28f)](_0x57c093[_0x5d4c8c(0x261)]);if(_0x3adba8)try{const _0x265246=JSON[_0x5d4c8c(0x272)](_0x3adba8);transactions=_0x265246[_0x5d4c8c(0x24f)]||[],initialCapitalInput[_0x5d4c8c(0x2b8)]=_0x265246[_0x5d4c8c(0x268)]||'';}catch(_0x333c89){if(_0x5d4c8c(0x2c1)!==_0x57c093['BbgPQ']){_0xdf8a49[_0x5d4c8c(0x256)][_0x5d4c8c(0x2b3)](_0x57c093[_0x5d4c8c(0x20a)]);return;}else console[_0x5d4c8c(0x281)](_0x57c093[_0x5d4c8c(0x265)],_0x333c89),transactions=[];}}function downloadJSON(_0x11af37,_0x238927){const _0x357add=_0x368689,_0x4debc0={'uJxfe':_0x357add(0x28d)},_0x1a1806=new Blob([JSON['stringify'](_0x11af37,null,0x2)],{'type':_0x4debc0[_0x357add(0x2c7)]}),_0x2cb441=URL[_0x357add(0x1d5)](_0x1a1806),_0x21e059=document[_0x357add(0x296)]('a');_0x21e059[_0x357add(0x204)]=_0x2cb441,_0x21e059[_0x357add(0x280)]=_0x238927,document['body']['appendChild'](_0x21e059),_0x21e059[_0x357add(0x236)](),document[_0x357add(0x2cd)]['removeChild'](_0x21e059),URL[_0x357add(0x271)](_0x2cb441);}function exportRecords(){const _0x8eeb7f=_0x368689,_0x1813f2={'AArjz':'table-row\x20border-b\x20border-gray-700','tfYLv':_0x8eeb7f(0x253),'HutLN':function(_0xe6fce,_0x32f4d0){return _0xe6fce===_0x32f4d0;},'wOEFb':_0x8eeb7f(0x2d9),'KiWhJ':function(_0x35f90d,_0xf19b4c){return _0x35f90d===_0xf19b4c;},'GcjJZ':_0x8eeb7f(0x21d),'cKbHA':function(_0x37c12c,_0x1c085e){return _0x37c12c===_0x1c085e;},'rHjgE':_0x8eeb7f(0x229),'EkvnW':function(_0x191991,_0x18f57b,_0x216d39){return _0x191991(_0x18f57b,_0x216d39);},'KbQsB':'ထုတ်ယူရန်\x20Data\x20မရှိသေးပါ။','GBRkH':function(_0x5dc94b,_0x1e78cc){return _0x5dc94b===_0x1e78cc;},'YDhTi':_0x8eeb7f(0x2b7),'nyEaB':function(_0x314a5f,_0x491677){return _0x314a5f(_0x491677);},'ibwZb':'မှတ်တမ်းများကို\x20ထုတ်ယူပြီးပါပြီ။'},_0x121cec=customerFilterSelect[_0x8eeb7f(0x2b8)],_0x22276f=_0x1813f2[_0x8eeb7f(0x232)](_0x121cec,'all')||!_0x121cec?transactions:transactions[_0x8eeb7f(0x1c5)](_0x201397=>_0x201397[_0x8eeb7f(0x298)]===_0x121cec);if(_0x22276f[_0x8eeb7f(0x1db)]===0x0){if(_0x1813f2[_0x8eeb7f(0x220)]!==_0x1813f2['rHjgE']){const _0x5a6447={'EyhFV':_0x1813f2[_0x8eeb7f(0x1b8)],'KFiJn':function(_0x16ed08,_0x280265){return _0x16ed08===_0x280265;},'VsVIP':_0x1813f2[_0x8eeb7f(0x1dc)]},_0x2ecab1=_0x4ab6b4['value'],_0x1e4161=_0x1813f2[_0x8eeb7f(0x1f3)](_0x2ecab1,_0x1813f2['wOEFb'])||!_0x2ecab1?_0x483458:_0x2f92c5[_0x8eeb7f(0x1c5)](_0x223a52=>_0x223a52[_0x8eeb7f(0x298)]===_0x2ecab1);if(_0x1813f2[_0x8eeb7f(0x1fa)](_0x28a06c[_0x8eeb7f(0x1db)],0x0)){_0x3b0ebd[_0x8eeb7f(0x256)][_0x8eeb7f(0x2b3)](_0x1813f2[_0x8eeb7f(0x2d1)]);return;}_0x4d6057['classList'][_0x8eeb7f(0x1e8)](_0x1813f2[_0x8eeb7f(0x2d1)]),_0x438928[_0x8eeb7f(0x2b6)]='';if(_0x1e4161[_0x8eeb7f(0x1db)]===0x0){_0x6c2a8b['innerHTML']='<tr><td\x20colspan=\x224\x22\x20class=\x22px-6\x20py-4\x20text-center\x20text-gray-500\x22>ဤ\x20Customer\x20အတွက်\x20မှတ်တမ်းများ\x20မရှိပါ။</td></tr>';return;}_0x1e4161[_0x8eeb7f(0x2d2)]()['reverse']()[_0x8eeb7f(0x1b7)](_0x6740bc=>{const _0x52d31b=_0x8eeb7f,_0x3e5a49=_0x41e0e4[_0x52d31b(0x296)]('tr');_0x3e5a49[_0x52d31b(0x279)]=_0x5a6447[_0x52d31b(0x1e4)],_0x3e5a49[_0x52d31b(0x2b6)]=_0x52d31b(0x27b)+_0x6740bc[_0x52d31b(0x298)]+_0x52d31b(0x230)+_0x6740bc['numbers'][_0x52d31b(0x1b5)](',\x20')+'\x22>'+_0x6740bc[_0x52d31b(0x231)]+'\x20('+_0x6740bc[_0x52d31b(0x1bd)]['toLocaleString']()+_0x52d31b(0x1b6)+_0x6740bc[_0x52d31b(0x1c9)][_0x52d31b(0x1f6)]()+_0x52d31b(0x1d7)+(_0x5a6447[_0x52d31b(0x28c)](_0x6740bc[_0x52d31b(0x2bc)],_0x5a6447['VsVIP'])?_0x52d31b(0x233):_0x52d31b(0x22a))+'\x22>'+_0x6740bc[_0x52d31b(0x2bc)]+_0x52d31b(0x1bc)+_0x6740bc['id']+_0x52d31b(0x1ec)+_0x6740bc['id']+')\x22\x20class=\x22text-red-500\x20hover:text-red-400\x20p-1\x22\x20title=\x22ဖျက်ရန်\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<svg\x20xmlns=\x22http://www.w3.org/2000/svg\x22\x20class=\x22h-5\x20w-5\x22\x20viewBox=\x220\x200\x2020\x2020\x22\x20fill=\x22currentColor\x22><path\x20fill-rule=\x22evenodd\x22\x20d=\x22M9\x202a1\x201\x200\x2000-.894.553L7.382\x204H4a1\x201\x200\x20000\x202v10a2\x202\x200\x20002\x202h8a2\x202\x200\x20002-2V6a1\x201\x200\x20100-2h-3.382l-.724-1.447A1\x201\x200\x200011\x202H9zM7\x208a1\x201\x200\x20012\x200v6a1\x201\x200\x2011-2\x200V8zm4\x200a1\x201\x200\x20012\x200v6a1\x201\x200\x2011-2\x200V8z\x22\x20clip-rule=\x22evenodd\x22\x20/></svg>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20',_0x4b62d0['appendChild'](_0x3e5a49);});}else{_0x1813f2[_0x8eeb7f(0x273)](showToast,_0x1813f2[_0x8eeb7f(0x291)],![]);return;}}const _0x4aacb3=_0x1813f2['GBRkH'](_0x121cec,_0x1813f2[_0x8eeb7f(0x258)])||!_0x121cec?_0x1813f2[_0x8eeb7f(0x21c)]:_0x8eeb7f(0x25e)+_0x121cec+_0x8eeb7f(0x1e7);downloadJSON(_0x22276f,_0x4aacb3),_0x1813f2[_0x8eeb7f(0x1e1)](showToast,_0x1813f2[_0x8eeb7f(0x2df)]);}function exportAllData(){const _0x3c81f9=_0x368689,_0x339c65={'GVyFl':function(_0x9fd70,_0x481ab0){return _0x9fd70===_0x481ab0;},'VyZpf':function(_0x157f09,_0x340a21,_0x53a73f){return _0x157f09(_0x340a21,_0x53a73f);},'VHOum':_0x3c81f9(0x1e5),'uxwrX':'2d_master_full_backup.json'};if(_0x339c65['GVyFl'](transactions[_0x3c81f9(0x1db)],0x0)&&!initialCapitalInput[_0x3c81f9(0x2b8)]){_0x339c65[_0x3c81f9(0x2bf)](showToast,_0x339c65[_0x3c81f9(0x1f7)],![]);return;}const _0x285c50={'initialCapital':initialCapitalInput[_0x3c81f9(0x2b8)],'transactions':transactions};downloadJSON(_0x285c50,_0x339c65[_0x3c81f9(0x257)]),showToast('Data\x20အားလုံးကို\x20ထုတ်ယူပြီးပါပြီ။');}function importData(_0x3fb0d4){const _0x5b16b9=_0x368689,_0x440f5={'LWvgy':function(_0x5b4d8b,_0x312d96){return _0x5b4d8b===_0x312d96;},'pkgie':function(_0x40ff62,_0x2d9618,_0x1bb22d){return _0x40ff62(_0x2d9618,_0x1bb22d);},'esYtL':_0x5b16b9(0x1e5),'WsifS':_0x5b16b9(0x1c4),'WQHHt':function(_0x36db32,_0x284541){return _0x36db32(_0x284541);},'hbcXj':'Data\x20အားလုံးကို\x20ထုတ်ယူပြီးပါပြီ။','OIlEN':function(_0x6730f9,_0x3e1f10){return _0x6730f9!==_0x3e1f10;},'oJSCC':_0x5b16b9(0x2be),'gItWj':_0x5b16b9(0x26f),'CqUFv':_0x5b16b9(0x268),'fDkAv':'Invalid\x20file\x20format','KZwPJ':function(_0x30a3e3){return _0x30a3e3();},'ffbnw':'Data\x20ထည့်သွင်းခြင်း\x20အောင်မြင်ပါသည်။','vXCjj':_0x5b16b9(0x2c5)},_0x2f20d4=_0x3fb0d4[_0x5b16b9(0x24d)][_0x5b16b9(0x20e)][0x0];if(!_0x2f20d4)return;const _0x34f317=new FileReader();_0x34f317[_0x5b16b9(0x2b4)]=function(_0x1cddc9){const _0x4bb127=_0x5b16b9,_0x1040fe={'FzcMY':function(_0x4d576c,_0x29e2f9){const _0x2b6437=_0xfabd;return _0x440f5[_0x2b6437(0x284)](_0x4d576c,_0x29e2f9);},'hTolC':function(_0x4ab629,_0x361130,_0x4e991e){const _0xe747a7=_0xfabd;return _0x440f5[_0xe747a7(0x1bb)](_0x4ab629,_0x361130,_0x4e991e);},'avqHL':_0x440f5['esYtL'],'OlwoY':_0x440f5[_0x4bb127(0x1c1)],'XPaZM':function(_0x4a4f6f,_0x245aea){const _0x40a0af=_0x4bb127;return _0x440f5[_0x40a0af(0x1c2)](_0x4a4f6f,_0x245aea);},'kWelP':_0x440f5['hbcXj']};try{if(_0x440f5['OIlEN'](_0x440f5[_0x4bb127(0x1fe)],_0x440f5[_0x4bb127(0x2a1)])){const _0x9ad6aa=JSON[_0x4bb127(0x272)](_0x1cddc9[_0x4bb127(0x24d)][_0x4bb127(0x2c4)]);if(_0x9ad6aa[_0x4bb127(0x294)](_0x440f5[_0x4bb127(0x276)])&&_0x9ad6aa[_0x4bb127(0x294)](_0x4bb127(0x24f)))initialCapitalInput[_0x4bb127(0x2b8)]=_0x9ad6aa[_0x4bb127(0x268)],transactions=_0x9ad6aa[_0x4bb127(0x24f)];else{if(Array[_0x4bb127(0x1f5)](_0x9ad6aa))transactions=_0x9ad6aa;else throw new Error(_0x440f5[_0x4bb127(0x1ba)]);}_0x440f5['KZwPJ'](updateUI),_0x440f5[_0x4bb127(0x1c2)](showToast,_0x440f5[_0x4bb127(0x29a)]);}else{if(_0x1040fe['FzcMY'](_0x1d0ec0['length'],0x0)&&!_0x21cdc9[_0x4bb127(0x2b8)]){_0x1040fe['hTolC'](_0x260dd6,_0x1040fe[_0x4bb127(0x287)],![]);return;}const _0x50af4c={'initialCapital':_0x5b1bf6[_0x4bb127(0x2b8)],'transactions':_0x5403ec};_0x1040fe[_0x4bb127(0x1d0)](_0x42e3c4,_0x50af4c,_0x1040fe['OlwoY']),_0x1040fe[_0x4bb127(0x23e)](_0x3d63a0,_0x1040fe['kWelP']);}}catch(_0xd6ddd){console['error'](_0x440f5[_0x4bb127(0x2d5)],_0xd6ddd),showToast('Data\x20ဖိုင်\x20format\x20မမှန်ပါ။',![]);}finally{importFileInput[_0x4bb127(0x2b8)]='';}},_0x34f317['readAsText'](_0x2f20d4);}function printRecords(){const _0x531d23=_0x368689,_0x2a8079={'Jifnj':function(_0xc7a79f,_0x18214d){return _0xc7a79f(_0x18214d);},'JQYqt':function(_0x363ddf,_0x453308){return _0x363ddf*_0x453308;},'MIVHV':'all','PhaSt':function(_0x3ae668,_0x43b565){return _0x3ae668===_0x43b565;},'ZydSz':function(_0x50d67b,_0x1e624e,_0x5762e5){return _0x50d67b(_0x1e624e,_0x5762e5);},'lgbKs':_0x531d23(0x1df),'nNiPW':_0x531d23(0x297),'DVAkO':function(_0x216649,_0x588e98){return _0x216649+_0x588e98;},'znIms':function(_0x4de111,_0x4b44bd){return _0x4de111===_0x4b44bd;},'JRkRW':'_blank'},_0x5bd8f5=customerFilterSelect[_0x531d23(0x2b8)],_0x4c30e7=_0x5bd8f5===_0x2a8079['MIVHV']||!_0x5bd8f5?transactions:transactions['filter'](_0x5de640=>_0x5de640[_0x531d23(0x298)]===_0x5bd8f5);if(_0x2a8079[_0x531d23(0x26c)](_0x4c30e7[_0x531d23(0x1db)],0x0)){_0x2a8079[_0x531d23(0x2cb)](showToast,_0x2a8079['lgbKs'],![]);return;}const _0x41a9fd=document['getElementById'](_0x2a8079[_0x531d23(0x1b2)])[_0x531d23(0x2b8)]['trim'](),_0x101729=_0x41a9fd[_0x531d23(0x2e0)](0x2,'0'),_0x28a34c=new Set(_0x4c30e7['flatMap'](_0x17fc01=>_0x17fc01[_0x531d23(0x1cd)])),_0x1d3409=_0x4c30e7[_0x531d23(0x1eb)]((_0x1d2484,_0x16aa0d)=>_0x1d2484+_0x16aa0d[_0x531d23(0x1c9)],0x0);let _0xb754ca=0x0;const _0x206a53=new Date(),_0xa7c0e1=_0x2a8079['DVAkO'](_0x206a53[_0x531d23(0x27c)](),0x1)[_0x531d23(0x210)]()['padStart'](0x2,'0')+'/'+_0x206a53['getDate']()['toString']()[_0x531d23(0x2e0)](0x2,'0')+'/'+_0x206a53['getFullYear'](),_0x23ee3a=_0x2a8079['znIms'](_0x5bd8f5,_0x531d23(0x2d9))||!_0x5bd8f5?_0x531d23(0x1ea):_0x5bd8f5;let _0x5ab70a='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<html>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<head>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<title>ထိုးကြေးမှတ်တမ်း\x20-\x20'+_0x23ee3a+_0x531d23(0x1c3)+_0x23ee3a['toUpperCase']()+_0x531d23(0x205)+_0xa7c0e1+_0x531d23(0x29e);_0x4c30e7[_0x531d23(0x1b7)](_0x532bd5=>{const _0x433dc1=_0x531d23;let _0x57ab35='-';if(_0x41a9fd&&!_0x2a8079[_0x433dc1(0x2d6)](isNaN,_0x41a9fd)&&_0x532bd5[_0x433dc1(0x1cd)][_0x433dc1(0x26a)](_0x101729)){const _0x5399fb=_0x2a8079[_0x433dc1(0x223)](_0x532bd5['amount_per_number'],0x50);_0xb754ca+=_0x5399fb,_0x57ab35=_0x5399fb[_0x433dc1(0x1f6)]();}_0x5ab70a+=_0x433dc1(0x206)+_0x532bd5['customerName']+_0x433dc1(0x23d)+_0x532bd5[_0x433dc1(0x231)]+'\x20('+_0x532bd5[_0x433dc1(0x1bd)][_0x433dc1(0x1f6)]()+')</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20style=\x22text-align:\x20right;\x22>'+_0x532bd5[_0x433dc1(0x1c9)]['toLocaleString']()+_0x433dc1(0x1d9)+_0x57ab35+_0x433dc1(0x1cf);}),_0x5ab70a+=_0x531d23(0x1fc)+_0x28a34c[_0x531d23(0x22d)]+'</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22summary-item\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>စုစုပေါင်း\x20ထိုးငွေ:</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>'+_0x1d3409[_0x531d23(0x1f6)]()+'\x20MMK</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22summary-item\x22\x20style=\x22color:\x20green;\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>စုစုပေါင်း\x20ပေါက်ငွေ:</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>'+_0xb754ca[_0x531d23(0x1f6)]()+'\x20MMK</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22footer\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p>Generated\x20by\x20MYOHTETPAING</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</body>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</html>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20';const _0x2b5474=window['open']('',_0x2a8079[_0x531d23(0x2a3)]);_0x2b5474[_0x531d23(0x2b2)][_0x531d23(0x269)](_0x5ab70a),_0x2b5474['document']['close'](),_0x2b5474[_0x531d23(0x225)]();}
+</script>
+</body>
+</html>
 
