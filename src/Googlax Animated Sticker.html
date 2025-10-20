@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Googlax Animated Sticker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #202124; /* Google Dark Theme Background */
+        }
+        .googlax-logo span {
+            font-weight: 700;
+            font-size: 6rem; /* 96px */
+        }
+        .g { color: #4285F4; }
+        .o1 { color: #EA4335; }
+        .o2 { color: #FBBC05; }
+        .g2 { color: #4285F4; }
+        .l { color: #34A853; }
+        .a { color: #EA4335; }
+        .x { color: #FBBC05; }
+
+        .search-container {
+            border: 1px solid #5f6368;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.25rem;
+            width: 100%;
+            max-width: 580px;
+        }
+
+        .search-text {
+            color: #e8eaed;
+            font-size: 1rem;
+            min-height: 1.5rem; /* To prevent layout shift */
+        }
+
+        /* Blinking cursor effect */
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2rem;
+            background-color: #e8eaed;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            from, to { background-color: transparent; }
+            50% { background-color: #e8eaed; }
+        }
+
+        .action-button {
+            background-color: #303134;
+            color: #e8eaed;
+            border: 1px solid #303134;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .action-button:hover {
+            border-color: #5f6368;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center h-screen">
+
+    <div class="w-full max-w-2xl p-4 flex flex-col items-center">
+        <!-- Googlax Logo -->
+        <h1 class="googlax-logo mb-6">
+            <span class="g">G</span>
+            <span class="o1">o</span>
+            <span class="o2">o</span>
+            <span class="g2">g</span>
+            <span class="l">l</span>
+            <span class="a">a</span>
+            <span class="x">x</span>
+        </h1>
+
+        <!-- Search Bar -->
+        <div class="search-container mb-8">
+            <svg class="w-5 h-5 text-gray-400 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <span id="typing-text" class="search-text"></span>
+            <span class="cursor"></span>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex">
+            <button class="action-button">Googlax Search</button>
+            <button class="action-button">I'm Feeling Glaxy</button>
+        </div>
+    </div>
+
+    <script>
+        const textToType = "saw ma shi thu myr fighting pr";
+        const typingSpeed = 120; // milliseconds per character
+        const typingElement = document.getElementById('typing-text');
+        const cursorElement = document.querySelector('.cursor');
+        let charIndex = 0;
+
+        function typeWriter() {
+            if (charIndex < textToType.length) {
+                typingElement.textContent += textToType.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, typingSpeed);
+            } else {
+                // When typing is done, make cursor blink continuously
+                cursorElement.style.animation = 'blink 1s step-end infinite';
+            }
+        }
+
+        // Start animation on page load
+        window.onload = function() {
+            // Initially hide cursor until typing starts
+            cursorElement.style.animation = 'none';
+            setTimeout(() => {
+                 cursorElement.style.animation = 'blink 1s step-end infinite';
+                 typeWriter();
+            }, 500); // Small delay before starting
+        };
+    </script>
+
+</body>
+</html>
