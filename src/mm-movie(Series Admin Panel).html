@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Series Admin Panel</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- PapaParse CSV Library CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        /* Inter Font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', 'Pyidaungsu', sans-serif;
+        }
+        /* Custom scrollbar for table */
+        .table-container::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .table-container::-webkit-scrollbar-thumb {
+            background-color: #a0aec0;
+            border-radius: 3px;
+        }
+        .table-container::-webkit-scrollbar-track {
+            background-color: #edf2f7;
+        }
+        /* Hide number input arrows */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+        /* Toast Message Style */
+        #toast-message {
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <!-- Header -->
+        <header class="mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <h1 class="text-3xl font-bold text-gray-800 text-center md:text-left">Series Admin Panel (ဇာတ်လမ်းတွဲ စီမံခန့်ခွဲမှု)</h1>
+            <!-- Action Buttons -->
+            <div class="flex flex-shrink-0 flex-wrap items-center justify-center md:justify-end gap-2">
+                <!-- Add New Button (Primary) -->
+                <button id="add-new-btn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-700 transition duration-300 whitespace-nowrap">
+                    Series အသစ်ထည့်ရန်
+                </button>
+                
+                <!-- CSV Actions Dropdown (Secondary) -->
+                <div class="relative" id="csv-actions-dropdown">
+                    <!-- Dropdown Toggle Button -->
+                    <button id="csv-toggle-btn" class="bg-gray-700 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-800 transition duration-300 flex items-center gap-2 whitespace-nowrap">
+                        <span>CSV Actions</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    
+                    <!-- Dropdown Menu -->
+                    <div id="csv-menu" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-20 hidden">
+                        <!-- Import Item -->
+                        <label for="csv-import" class="cursor-pointer block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 rounded-t-lg">
+                            CSV Import လုပ်ရန်
+                        </label>
+                        <input type="file" id="csv-import" accept=".csv" class="hidden">
+                        
+                        <!-- Export Item -->
+                        <button id="export-csv-btn" class="w-full text-left block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 rounded-b-lg">
+                            CSV Export လုပ်ရန်
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Add/Edit Form (Generate) - Initially Hidden -->
+        <div id="series-form-container" class="bg-white p-6 rounded-lg shadow-lg mb-8 hidden">
+            <h2 id="form-title" class="text-2xl font-semibold text-gray-700 mb-6">Series အသစ်ထည့်ရန်</h2>
+            <form id="series-form">
+                <!-- Hidden fields for ID and action type -->
+                <input type="hidden" id="edit-id">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Column 1 -->
+                    <div>
+                        <label for="title" class="block text-sm font-medium text-gray-700 mb-1">ခေါင်းစဉ် (English)</label>
+                        <input type="text" id="title" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                    </div>
+                    <div>
+                        <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+                        <input type="url" id="image" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                    </div>
+                    
+                    <!-- Column 2 -->
+                    <div>
+                        <label for="rating" class="block text-sm font-medium text-gray-700 mb-1">Rating (e.g., 7.1)</label>
+                        <input type="number" id="rating" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label for="price" class="block text-sm font-medium text-gray-700 mb-1">စျေးနှုန်း (e.g., 1500)</label>
+                        <input type="number" id="price" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label for="episodes" class="block text-sm font-medium text-gray-700 mb-1">အပိုင်းများ (e.g., Episode 1 - 20)</label>
+                        <input type="text" id="episodes" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+
+                    <!-- Column 3 -->
+                    <div>
+                        <label for="memory" class="block text-sm font-medium text-gray-700 mb-1">Memory (e.g., 8 GB)</label>
+                        <input type="text" id="memory" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label for="release_date" class="block text-sm font-medium text-gray-700 mb-1">ထုတ်ဝေသည့်နှစ် (e.g., 2025)</label>
+                        <input type="number" id="release_date" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label for="runtime" class="block text-sm font-medium text-gray-700 mb-1">ကြာမြင့်ချိန် (e.g., 28 minutes)</label>
+                        <input type="text" id="runtime" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    
+                    <!-- Column 4 (Spanning more) -->
+                    <div>
+                        <label for="video_format" class="block text-sm font-medium text-gray-700 mb-1">Video Format (e.g., 1080 P)</label>
+                        <input type="text" id="video_format" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category (e.g., Asean Series)</label>
+                        <input type="text" id="category" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label for="genres" class="block text-sm font-medium text-gray-700 mb-1">Genres (e.g., Drama Series)</label>
+                        <input type="text" id="genres" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    
+                    <!-- Description (Full Width) -->
+                    <div class="md:col-span-2 lg:col-span-3">
+                        <label for="description" class="block text-sm font-medium text-gray-700 mb-1">အကြောင်းအရာ</label>
+                        <textarea id="description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                    </div>
+                </div>
+
+                <!-- Form Buttons -->
+                <div class="mt-6 flex justify-end gap-3">
+                    <button type="button" id="cancel-form-btn" class="bg-gray-500 text-white px-5 py-2 rounded-lg shadow hover:bg-gray-600 transition duration-300">
+                        မလုပ်တော့ပါ
+                    </button>
+                    <button type="submit" class="bg-indigo-600 text-white px-5 py-2 rounded-lg shadow hover:bg-indigo-700 transition duration-300">
+                        သိမ်းဆည်းရန်
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Data Table -->
+        <main class="bg-white rounded-lg shadow-lg">
+            <div class="table-container overflow-x-auto">
+                <table class="w-full min-w-max text-sm text-left text-gray-700">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-200">
+                        <tr>
+                            <th scope="col" class="px-4 py-3">ID</th>
+                            <th scope="col" class="px-4 py-3">ပုံ</th>
+                            <th scope="col" class="px-4 py-3">ခေါင်းစဉ် (Eng)</th>
+                            <th scope="col" class="px-4 py-3">Rating</th>
+                            <th scope="col" class="px-4 py-3">စျေးနှုန်း</th>
+                            <th scope="col" class="px-4 py-3">အပိုင်းများ</th>
+                            <th scope="col" class="px-4 py-3">Memory</th>
+                            <th scope="col" class="px-4 py-3">ခုနှစ်</th>
+                            <th scope="col" class="px-4 py-3">ကြာမြင့်ချိန်</th>
+                            <th scope="col" class="px-4 py-3">Format</th>
+                            <th scope="col" class="px-4 py-3">Category</th>
+                            <th scope="col" class="px-4 py-3">Genres</th>
+                            <th scope="col" class="px-4 py-3">အကြောင်းအရာ</th>
+                            <th scope="col" class="px-4 py-3">ဖန်တီးသည့်အချိန်</th>
+                            <th scope="col" class="px-4 py-3">ပြင်ဆင်သည့်အချိန်</th>
+                            <th scope="col" class="px-4 py-3">လုပ်ဆောင်ချက်များ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="series-table-body" class="divide-y divide-gray-200">
+                        <!-- Rows will be injected by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Deletion Confirmation Modal -->
+    <div id="delete-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-sm mx-4">
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">ဖျက်ရန် အတည်ပြုပါ</h3>
+            <p class="text-gray-600 mb-6">ဤဒေတာကို အမှန်တကယ် ဖျက်လိုပါသလား? ဤလုပ်ဆောင်ချက်ကို နောက်ပြန်လှည့်နိုင်မည် မဟုတ်ပါ။</p>
+            <div class="flex justify-end gap-3">
+                <button id="cancel-delete-btn" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 transition duration-300">
+                    မလုပ်တော့ပါ
+                </button>
+                <button id="confirm-delete-btn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300">
+                    အတည်ပြု ဖျက်မည်
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Message -->
+    <div id="toast-message" class="fixed bottom-5 right-5 bg-gray-900 text-white px-5 py-3 rounded-lg shadow-lg opacity-0 invisible">
+        <!-- Message will be set by JS -->
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- STATE ---
+            // Initial data from series_rows.csv snippet
+            let seriesData = [
+                {
+                    "id": "10b25410-b12e-4ba4-9619-1962baf1964e",
+                    "title": "The Jewel of Secret Love (2025)",
+                    "image": "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=400&h=600&fit=crop",
+                    "rating": "7.1",
+                    "price": "1500",
+                    "episodes": "Episode 1 - 20",
+                    "memory": "8 GB",
+                    "release_date": "2025",
+                    "runtime": "28 minutes",
+                    "video_format": "1080 P",
+                    "category": "Asean Series",
+                    "genres": "Drama Series",
+                    "description": "A compelling story of secret love and hidden desires in modern society.",
+                    "created_at": "2025-10-26 05:52:59.138719+00",
+                    "updated_at": "2025-10-26 05:52:59.138719+00"
+                },
+                {
+                    "id": "10b-7555-4370-9929-4f77a0faaa56",
+                    "title": "Ocean Dreams",
+                    "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop",
+                    "rating": "6.5",
+                    "price": "1200",
+                    "episodes": "Episode 1 - 14",
+                    "memory": "6 GB",
+                    "release_date": "2025",
+                    "runtime": "27 minutes",
+                    "video_format": "1080 P",
+                    "category": "Asean Series",
+                    "genres": "Adventure Series",
+                    "description": "An adventure series set against the backdrop of beautiful coastal scenery.",
+                    "created_at": "2025-10-26 05:52:59.138719+00",
+                    "updated_at": "2025-10-26 05:52:59.138719+00"
+                },
+                {
+                    "id": "9b5ba048-a390-49d9-ae2b-e45cce0bfb06",
+                    "title": "Bangkok Love Stories",
+                    "image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=600&fit=crop",
+                    "rating": "7.8",
+                    "price": "1800",
+                    "episodes": "Episode 1 - 22",
+                    "memory": "9 GB",
+                    "release_date": "2025",
+                    "runtime": "33 minutes",
+                    "video_format": "1080 P",
+                    "category": "Asean Series",
+                    "genres": "Romance, Drama",
+                    "description": "Multiple love stories intertwine in the vibrant city of Bangkok.",
+                    "created_at": "2025-10-26 05:52:59.138719+00",
+                    "updated_at": "2025-10-26 05:52:59.138719+00"
+                }
+            ];
+            
+            let idToDelete = null;
+
+            // --- DOM Elements ---
+            const tableBody = document.getElementById('series-table-body');
+            const formContainer = document.getElementById('series-form-container');
+            const form = document.getElementById('series-form');
+            const formTitle = document.getElementById('form-title');
+            const addNewBtn = document.getElementById('add-new-btn');
+            const cancelFormBtn = document.getElementById('cancel-form-btn');
+            const editIdField = document.getElementById('edit-id');
+            const importInput = document.getElementById('csv-import');
+            const exportBtn = document.getElementById('export-csv-btn');
+            const deleteModal = document.getElementById('delete-modal');
+            const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
+            const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
+            const toast = document.getElementById('toast-message');
+
+            // --- CSV Dropdown Elements ---
+            const csvActionsDropdown = document.getElementById('csv-actions-dropdown');
+            const csvToggleBtn = document.getElementById('csv-toggle-btn');
+            const csvMenu = document.getElementById('csv-menu');
+
+            // --- FORM FIELDS ---
+            const fields = [
+                'title', 'image', 'rating', 'price', 'episodes', 
+                'memory', 'release_date', 'runtime', 'video_format', 'category', 
+                'genres', 'description'
+            ];
+            const formInputs = {};
+            fields.forEach(id => {
+                formInputs[id] = document.getElementById(id);
+            });
+
+            // --- FUNCTIONS ---
+
+            /**
+             * Renders the data in the table
+             */
+            function renderTable() {
+                tableBody.innerHTML = '';
+                if (seriesData.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="16" class="text-center p-6 text-gray-500">ဒေတာ မရှိသေးပါ။ CSV Import (သို့) အသစ်ထည့်သွင်းပါ။</td></tr>`;
+                    return;
+                }
+
+                seriesData.forEach(item => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'bg-white hover:bg-gray-50';
+                    tr.innerHTML = `
+                        <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap" title="${item.id}">${item.id.split('-')[0]}...</td>
+                        <td class="px-4 py-3">
+                            <img src="${item.image}" alt="${item.title}" class="w-12 h-16 object-cover rounded" onerror="this.src='https://placehold.co/48x64/e2e8f0/94a3b8?text=No+Img'">
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap">${item.title}</td>
+                        <td class="px-4 py-3">${item.rating}</td>
+                        <td class="px-4 py-3">${item.price}</td>
+                        <td class="px-4 py-3 whitespace-nowrap">${item.episodes}</td>
+                        <td class="px-4 py-3">${item.memory}</td>
+                        <td class="px-4 py-3">${item.release_date}</td>
+                        <td class="px-4 py-3 whitespace-nowrap">${item.runtime}</td>
+                        <td class="px-4 py-3">${item.video_format}</td>
+                        <td class="px-4 py-3 whitespace-nowrap">${item.category}</td>
+                        <td class="px-4 py-3 whitespace-nowrap">${item.genres}</td>
+                        <td class="px-4 py-3 min-w-[200px] max-w-xs truncate" title="${item.description}">${item.description}</td>
+                        <td class="px-4 py-3 whitespace-nowrap">${item.created_at ? item.created_at.split('T')[0] : ''}</td>
+                        <td class="px-4 py-3 whitespace-nowrap">${item.updated_at ? item.updated_at.split('T')[0] : ''}</td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                            <button class="edit-btn text-indigo-600 hover:text-indigo-900 font-medium mr-3" data-id="${item.id}">ပြင်ဆင်ရန်</button>
+                            <button class="delete-btn text-red-600 hover:text-red-900 font-medium" data-id="${item.id}">ဖျက်ရန်</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+
+                // Add event listeners for new buttons
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', () => handleEdit(btn.dataset.id));
+                });
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', () => showDeleteModal(btn.dataset.id));
+                });
+            }
+
+            /**
+             * Shows the form for adding a new item
+             */
+            function showAddForm() {
+                formTitle.textContent = 'Series အသစ်ထည့်ရန်';
+                form.reset();
+                editIdField.value = '';
+                formContainer.classList.remove('hidden');
+            }
+
+            /**
+             * Hides the form
+             */
+            function hideForm() {
+                formContainer.classList.add('hidden');
+                form.reset();
+                editIdField.value = '';
+            }
+
+            /**
+             * Handles form submission (Add or Edit)
+             */
+            function handleFormSubmit(e) {
+                e.preventDefault();
+                
+                const now = new Date().toISOString();
+                const idToEdit = editIdField.value;
+
+                const formData = {};
+                fields.forEach(id => {
+                    formData[id] = formInputs[id].value;
+                });
+
+                if (idToEdit) {
+                    // --- EDIT LOGIC ---
+                    const index = seriesData.findIndex(item => item.id === idToEdit);
+                    if (index !== -1) {
+                        seriesData[index] = {
+                            ...seriesData[index], // Keep original created_at
+                            ...formData,
+                            id: idToEdit, // Ensure ID remains the same
+                            updated_at: now
+                        };
+                        showToast('ဒေတာကို အောင်မြင်စွာ ပြင်ဆင်ပြီးပါပြီ။');
+                    }
+                } else {
+                    // --- ADD LOGIC ---
+                    const newItem = {
+                        ...formData,
+                        id: crypto.randomUUID(),
+                        created_at: now,
+                        updated_at: now
+                    };
+                    seriesData.unshift(newItem); // Add to the beginning of the array
+                    showToast('ဒေတာအသစ်ကို အောင်မြင်စွာ ထည့်သွင်းပြီးပါပြီ။');
+                }
+
+                renderTable();
+                hideForm();
+            }
+
+            /**
+             * Handles editing an item
+             */
+            function handleEdit(id) {
+                const item = seriesData.find(item => item.id === id);
+                if (!item) return;
+
+                fields.forEach(fieldId => {
+                    formInputs[fieldId].value = item[fieldId] || '';
+                });
+
+                editIdField.value = id;
+                formTitle.textContent = 'Series ပြင်ဆင်ရန်';
+                formContainer.classList.remove('hidden');
+                window.scrollTo(0, 0); // Scroll to top
+            }
+
+            /**
+             * Shows the deletion confirmation modal
+             */
+            function showDeleteModal(id) {
+                idToDelete = id;
+                deleteModal.classList.remove('hidden');
+            }
+
+            /**
+             * Hides the deletion confirmation modal
+             */
+            function hideDeleteModal() {
+                idToDelete = null;
+                deleteModal.classList.add('hidden');
+            }
+
+            /**
+             * Confirms and performs deletion
+             */
+            function handleDelete() {
+                if (!idToDelete) return;
+
+                seriesData = seriesData.filter(item => item.id !== idToDelete);
+                renderTable();
+                hideDeleteModal();
+                showToast('ဒေတာကို အောင်မြင်စွာ ဖျက်လိုက်ပါပြီ။', 'error');
+            }
+
+            /**
+             * Handles CSV Import
+             */
+            function handleImport(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                Papa.parse(file, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: (results) => {
+                        // Check if imported data has the required 'id' field
+                        const importedData = results.data.map(row => ({
+                            ...row,
+                            id: row.id || crypto.randomUUID() // Ensure ID exists
+                        }));
+                        
+                        seriesData = importedData;
+                        renderTable();
+                        showToast(`CSV မှ ဒေတာ ${seriesData.length} ခုကို Import လုပ်ပြီးပါပြီ။`);
+                        e.target.value = null; // Reset file input
+                    },
+                    error: (err) => {
+                        console.error("CSV Parsing Error:", err);
+                        showToast('CSV file ကို ဖတ်ရာတွင် အမှားအယွင်း ဖြစ်ပေါ်ပါသည်။', 'error');
+                    }
+                });
+            }
+
+            /**
+             * Handles CSV Export
+             */
+            function handleExport() {
+                if (seriesData.length === 0) {
+                    showToast('Export လုပ်ရန် ဒေတာ မရှိပါ။', 'error');
+                    return;
+                }
+                
+                // Ensure all fields from the form are included in the CSV
+                const csvHeaders = ['id', ...fields, 'created_at', 'updated_at'];
+                
+                const dataToExport = seriesData.map(item => {
+                    const row = {};
+                    csvHeaders.forEach(header => {
+                        row[header] = item[header] || '';
+                    });
+                    return row;
+                });
+
+                const csv = Papa.unparse(dataToExport, {
+                    columns: csvHeaders,
+                    header: true
+                });
+
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', 'series_export.csv');
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showToast('CSV Export ကို အောင်မြင်စွာ ပြုလုပ်ပြီးပါပြီ။');
+            }
+
+            /**
+             * Shows a toast message
+             */
+            function showToast(message, type = 'success') {
+                toast.textContent = message;
+                toast.classList.remove('bg-gray-900', 'bg-red-600');
+                
+                if (type === 'error') {
+                    toast.classList.add('bg-red-600');
+                } else {
+                    toast.classList.add('bg-gray-900');
+                }
+                
+                toast.classList.remove('invisible', 'opacity-0');
+                
+                setTimeout(() => {
+                    toast.classList.add('invisible', 'opacity-0');
+                }, 3000);
+            }
+
+            // --- Event Listeners ---
+            addNewBtn.addEventListener('click', showAddForm);
+            cancelFormBtn.addEventListener('click', hideForm);
+            form.addEventListener('submit', handleFormSubmit);
+            
+            // CSV Dropdown Listeners
+            csvToggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent window listener from catching this
+                csvMenu.classList.toggle('hidden');
+            });
+
+            // Hide dropdown when clicking outside
+            window.addEventListener('click', (e) => {
+                if (!csvActionsDropdown.contains(e.target)) {
+                    csvMenu.classList.add('hidden');
+                }
+            });
+            
+            importInput.addEventListener('change', (e) => {
+                handleImport(e);
+                csvMenu.classList.add('hidden'); // Hide menu after import
+            });
+            
+            exportBtn.addEventListener('click', () => {
+                handleExport();
+                csvMenu.classList.add('hidden'); // Hide menu after export
+            });
+
+            cancelDeleteBtn.addEventListener('click', hideDeleteModal);
+            confirmDeleteBtn.addEventListener('click', handleDelete);
+
+            // --- INITIAL RENDER ---
+            renderTable();
+
+        });
+    </script>
+
+</body>
+</html>
+
+
