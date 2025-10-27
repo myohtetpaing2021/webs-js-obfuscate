@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en"> <!-- Language set to Burmese -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get in Touch</title> <!-- Title updated -->
+    <!-- Load Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Add Inter font family */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        /* Add Padauk font for Burmese */
+        
+        body {
+            /* Use Inter first, then Padauk for Burmese characters */
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Custom gradient for the body background */
+        body {
+            background-color: #0A0A0C; /* Dark base color */
+            background-image: linear-gradient(135deg, #1A1A2E 0%, #160D2D 50%, #0F0F0F 100%);
+        }
+
+        /* Custom gradient for the button */
+        .btn-custom-gradient {
+            background-image: linear-gradient(to right, #8000FF 0%, #B200FF 50%, #E600FF 100%);
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-custom-gradient:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px -6px rgba(178, 0, 255, 0.6);
+        }
+        .btn-custom-gradient:active {
+            transform: scale(0.98);
+        }
+
+        /* Input focus styles */
+        input:focus, textarea:focus {
+            border-color: #8000FF; /* Primary color for focus */
+            box-shadow: 0 0 0 2px rgba(128, 0, 255, 0.4);
+        }
+
+        /* Icon background styles removed as icon is removed */
+        
+        /* Animation for the card */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-card {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        /* Keyframes for spinning animation removed */
+        
+    </style>
+</head>
+<body class="antialiased text-gray-200">
+
+    <!-- Main Container --><div class="flex items-center justify-center min-h-screen p-4">
+        
+        <!-- Contact Form Card --><div class="w-full max-w-md p-8 space-y-6 bg-gray-800 rounded-xl shadow-2xl border border-gray-700 animate-card">
+            
+            <!-- Header Icon Removed -->
+
+            <!-- Header Text --><div class="text-center"> <!-- Removed mt-4 --><h1 class="text-3xl font-bold text-white">Send Message</h1>
+                <p class="text-gray-400 mt-2">Send us a message and we'll get back to you as soon as possible.</p>
+            </div>
+            
+            <!-- Form --><form id="contactForm" class="space-y-6">
+                
+                <!-- Full Name Field --><div>
+                    <label for="fullName" class="block text-sm font-medium text-gray-300 flex items-center mb-1">
+                        <svg class="h-4 w-4 mr-2 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                        </svg>
+                        Full Name
+                    </label>
+                    <input 
+                        type="text" 
+                        id="fullName" 
+                        name="fullName" 
+                        required 
+                        placeholder="Enter your full name"
+                        class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none text-white placeholder-gray-400 focus:border-purple-500 focus:shadow-outline-purple transition-colors duration-200"
+                    >
+                </div>
+                
+                <!-- Email Address Field --><div>
+                    <label for="email" class="block text-sm font-medium text-gray-300 flex items-center mb-1">
+                        <svg class="h-4 w-4 mr-2 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                        </svg>
+                        Email Address
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        required 
+                        placeholder="Enter your email address"
+                        class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none text-white placeholder-gray-400 focus:border-purple-500 focus:shadow-outline-purple transition-colors duration-200"
+                    >
+                </div>
+                
+                <!-- Message Field --><div>
+                    <label for="message" class="block text-sm font-medium text-gray-300 flex items-center mb-1">
+                        Message
+                    </label>
+                    <textarea 
+                        id="message" 
+                        name="message" 
+                        rows="4" 
+                        required
+                        placeholder="Tell us how we can help..."
+                        class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none text-white placeholder-gray-400 focus:border-purple-500 focus:shadow-outline-purple transition-colors duration-200"
+                    ></textarea>
+                </div>
+                
+                <!-- Submit Button --><div>
+                    <button 
+                        type="submit" 
+                        class="btn-custom-gradient w-full flex items-center justify-center py-3 px-4 font-semibold text-white rounded-lg shadow-md transition-all duration-300 ease-in-out"
+                    >
+                        Let's Talk
+                        <!-- Replaced arrow icon with a new paper airplane icon --><svg class="h-5 w-5 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.875L6 12z" />
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+
+    <!-- Custom Success Message Box (hidden by default) --><div id="successBox" class="fixed top-5 right-5 p-4 bg-green-600 text-white rounded-lg shadow-xl opacity-0 transition-all duration-300 pointer-events-none transform translate-x-10">
+        <span id="successMessage"></span>
+    </div>
+
+    <script>
+        // Get form and success message elements
+        const contactForm = document.getElementById('contactForm');
+        const successBox = document.getElementById('successBox');
+        const successMessage = document.getElementById('successMessage');
+        let hideTimeout; // To store the timeout ID
+
+        // Listen for form submission
+        contactForm.addEventListener('submit', function(event) {
+            // Prevent the default form submission
+            event.preventDefault(); 
+            
+            // --- In a real application, you would send the data to a server here ---
+            
+            // Clear any existing hide timeout
+            if (hideTimeout) {
+                clearTimeout(hideTimeout);
+            }
+
+            // Show the success message in Burmese
+            successMessage.textContent = 'Thank you! Your message has been sent.';
+            successBox.classList.remove('opacity-0', 'translate-x-10');
+            
+            // Reset the form fields
+            contactForm.reset();
+            
+            // Set a timeout to hide the message after 3 seconds
+            hideTimeout = setTimeout(() => {
+                successBox.classList.add('opacity-0', 'translate-x-10');
+            }, 3000);
+        });
+    </script>
+
+</body>
+</html>
+
+
