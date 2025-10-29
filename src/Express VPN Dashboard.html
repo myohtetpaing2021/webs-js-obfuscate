@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Express VPN Free - Admin System</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <!-- Icons (Lucide) -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+        }
+        
+        /* Glassmorphism base class */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Copy success animation */
+        .copy-success {
+            animation: fadeInOut 2.5s ease-in-out;
+        }
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; transform: translateY(-10px); }
+            10%, 90% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hide scrollbar for a cleaner look in the modal */
+        #adminPanel .overflow-y-auto::-webkit-scrollbar {
+            width: 6px;
+        }
+        #adminPanel .overflow-y-auto::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        #adminPanel .overflow-y-auto::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+        }
+        #adminPanel .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 text-white selection:bg-purple-500 selection:text-white">
+
+    <!-- Background Animated Blobs -->
+    <div class="fixed inset-0 overflow-hidden -z-10">
+        <div class="absolute -top-40 -right-40 w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse"></div>
+        <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style="animation-delay: 2s;"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-600 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style="animation-delay: 4s;"></div>
+    </div>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="fixed inset-0 flex items-center justify-center p-4 transition-opacity duration-500">
+        <div class="w-full max-w-md mx-auto">
+            <!-- Main Login Card -->
+            <div class="glass-card rounded-2xl p-8 shadow-2xl">
+                <!-- Logo Section -->
+                <div class="text-center mb-8">
+                    <div class="relative mx-auto w-24 h-24 mb-6">
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full animate-spin" style="animation-duration: 4s;"></div>
+                        <div class="absolute inset-1.5 bg-gray-900 rounded-full flex items-center justify-center">
+                            <i data-lucide="shield-check" class="w-12 h-12 text-blue-400"></i>
+                        </div>
+                    </div>
+                    <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">Express VPN</h1>
+                    <p class="text-gray-300 text-lg">Premium Access Portal</p>
+                </div>
+
+                <!-- User Credentials Display (REMOVED) -->
+
+                <!-- Login Form -->
+                <form onsubmit="handleLogin(event)" class="space-y-6 mt-8"> <!-- Added mt-8 here for spacing -->
+                    <div>
+                        <label class="text-gray-300 text-sm font-medium block mb-2" for="loginPassword">
+                            Enter Access Password
+                        </label>
+                        <div class="relative">
+                            <i data-lucide="key-round" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                            <input 
+                                type="password" 
+                                id="loginPassword" 
+                                class="w-full pl-12 pr-12 py-4 bg-black/30 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 focus:bg-black/40 transition-all text-lg font-mono tracking-wider"
+                                placeholder="••••••••"
+                                required
+                            >
+                            <button type="button" onclick="togglePasswordVisibility()" class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 hover:text-white" id="passToggle">
+                                <i data-lucide="eye" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button 
+                        type="submit" 
+                        class="w-full relative overflow-hidden bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-xl hover:shadow-2xl flex items-center justify-center space-x-2"
+                    >
+                        <i data-lucide="log-in" class="w-5 h-5"></i>
+                        <span>Access Dashboard</span>
+                    </button>
+                </form>
+
+                <!-- Error Message -->
+                <div id="loginError" class="mt-6 text-red-300 text-sm text-center hidden">
+                    <div class="bg-red-500/20 border border-red-400/40 rounded-xl p-3 backdrop-blur-sm flex items-center justify-center space-x-2">
+                        <i data-lucide="alert-triangle" class="w-5 h-5 text-red-400"></i>
+                        <span>Incorrect password. Please try again.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="text-center mt-8">
+                <p class="text-white/50 text-sm">Protected by advanced encryption</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main VPN Page -->
+    <div id="mainPage" class="hidden opacity-0 transition-opacity duration-500">
+        <div class="container mx-auto px-4 py-8 max-w-7xl">
+            <!-- Header with Logout Button -->
+            <header class="flex justify-between items-center mb-8">
+                <div class="text-left">
+                    <h1 class="text-3xl sm:text-4xl font-bold text-white">VPN Dashboard</h1>
+                    <p class="text-blue-300 text-lg">Free Premium VPN Credentials</p>
+                </div>
+                <button onclick="logout()" class="flex items-center space-x-2 bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-lg font-medium transition-colors transform hover:scale-105">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                    <span>Logout</span>
+                </button>
+            </header>
+
+            <!-- Success Message -->
+            <div id="successMessage" class="fixed top-6 right-6 glass-card px-6 py-3 rounded-lg shadow-lg hidden copy-success z-50 border-green-500">
+                <div class="flex items-center space-x-2 text-green-400">
+                    <i data-lucide="check-circle" class="w-5 h-5"></i>
+                    <span>Copied to clipboard!</span>
+                </div>
+            </div>
+
+            <!-- VPN Accounts Grid -->
+            <div class="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3" id="accountsContainer">
+                <!-- Account cards will be generated by JavaScript -->
+            </div>
+
+            <!-- Instructions -->
+            <div class="mt-10 glass-card rounded-2xl p-8">
+                <h3 class="text-2xl font-semibold text-white mb-6 flex items-center space-x-2">
+                    <i data-lucide="book-open" class="w-6 h-6 text-blue-400"></i>
+                    <span>How to Use</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-gray-300 text-base">
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-blue-500/20 text-blue-300 rounded-full w-8 h-8 flex-shrink-0 flex items-center justify-center font-bold">1</div>
+                        <p>Click the <i data-lucide="clipboard" class="w-4 h-4 inline-block -mt-1 mx-1"></i> icon or "Copy All" button to copy credentials.</p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-blue-500/20 text-blue-300 rounded-full w-8 h-8 flex-shrink-0 flex items-center justify-center font-bold">2</div>
+                        <p>Open your Express VPN app and sign in.</p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-blue-500/20 text-blue-300 rounded-full w-8 h-8 flex-shrink-0 flex items-center justify-center font-bold">3</div>
+                        <p>Paste the credentials and connect. Enjoy! 🔐</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="text-center mt-8 py-4">
+                <p class="text-blue-300/60 text-sm">🌟 Free VPN Access - Updated Daily</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div id="adminPanel" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 transition-opacity duration-300">
+        <div class="glass-card rounded-2xl shadow-xl max-w-4xl w-full max-h-[90vh] flex flex-col">
+            <header class="flex justify-between items-center p-6 border-b border-white/10">
+                <h2 class="text-3xl font-bold text-white flex items-center space-x-3">
+                    <i data-lucide="sliders-horizontal" class="w-7 h-7"></i>
+                    <span>Admin Panel</span>
+                </h2>
+                <button onclick="hideAdminPanel()" class="text-gray-400 hover:text-white transition-colors">
+                    <i data-lucide="x" class="w-8 h-8"></i>
+                </button>
+            </header>
+
+            <div class="p-6 space-y-4 overflow-y-auto" id="adminAccountsList">
+                <!-- Admin controls will be generated by JavaScript -->
+            </div>
+
+            <footer class="p-6 border-t border-white/10 mt-auto flex justify-between items-center">
+                 <button onclick="addNewAccountRow()" class="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-medium transition-colors">
+                    <i data-lucide="plus" class="w-5 h-5"></i>
+                    <span>Add New Account</span>
+                </button>
+                <button onclick="saveAllAccounts()" class="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-lg font-medium transition-colors">
+                    <i data-lucide="save" class="w-5 h-5"></i>
+                    <span>Save All Changes</span>
+                </button>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // --- DEFAULT DATA & CONFIG ---
+
+        const defaultAccounts = [
+            { id: 1, username: 'donation1@free.com', password: 'xZ5BHz8Y', pc: 'DONATE-CODE-2', startDate: '29-10-2025' },
+            { id: 2, username: 'donation2@free.com', password: '1yBW4hu2', pc: 'DONATE-CODE-3', startDate: '29-10-2025' }
+        ];
+
+        const USER_PASSWORD = 'user123';
+        const ADMIN_PASSWORD = 'Shayshay00$'; // Secret admin password
+
+        // --- DOM ELEMENTS ---
+        const loginPage = document.getElementById('loginPage');
+        const mainPage = document.getElementById('mainPage');
+        const loginPasswordInput = document.getElementById('loginPassword');
+        const loginError = document.getElementById('loginError');
+        const accountsContainer = document.getElementById('accountsContainer');
+        const successMessage = document.getElementById('successMessage');
+        const adminPanel = document.getElementById('adminPanel');
+        const adminAccountsList = document.getElementById('adminAccountsList');
+        const passToggle = document.getElementById('passToggle');
+
+        // --- STATE ---
+        let accounts = [];
+        let successTimeout;
+
+        // --- CORE FUNCTIONS ---
+
+        /**
+         * Initializes the application
+         */
+        function init() {
+            // Load accounts from localStorage or use defaults
+            const storedAccounts = localStorage.getItem('vpnAccounts');
+            accounts = storedAccounts ? JSON.parse(storedAccounts) : defaultAccounts;
+            if (!storedAccounts) {
+                localStorage.setItem('vpnAccounts', JSON.stringify(accounts));
+            }
+            
+            // Check session storage for login status
+            const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+            if (isLoggedIn === 'true') {
+                showMainPage();
+            } else {
+                showLoginPage();
+            }
+            
+            // Initialize Lucide icons
+            // Add a check for lucide to prevent errors if it fails to load
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            } else {
+                console.error('Lucide icons script failed to load.');
+            }
+        }
+
+        /**
+         * Handles the login form submission
+         */
+        function handleLogin(event) {
+            event.preventDefault();
+            const password = loginPasswordInput.value;
+
+            if (password === USER_PASSWORD || password === ADMIN_PASSWORD) {
+                sessionStorage.setItem('isLoggedIn', 'true');
+                if (password === ADMIN_PASSWORD) {
+                    sessionStorage.setItem('isAdmin', 'true');
+                }
+                showMainPage();
+                loginPasswordInput.value = '';
+                loginError.classList.add('hidden');
+            } else {
+                loginError.classList.remove('hidden');
+                // Shake animation for error
+                loginPage.querySelector('.glass-card').classList.add('animate-shake');
+                setTimeout(() => {
+                    loginPage.querySelector('.glass-card').classList.remove('animate-shake');
+                }, 500);
+            }
+        }
+        
+        /**
+         * Toggles password visibility in the login form
+         */
+        function togglePasswordVisibility() {
+            const isPassword = loginPasswordInput.type === 'password';
+            loginPasswordInput.type = isPassword ? 'text' : 'password';
+            passToggle.innerHTML = isPassword ? '<i data-lucide="eye-off" class="w-5 h-5"></i>' : '<i data-lucide="eye" class="w-5 h-5"></i>';
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        /**
+         * Logs the user out
+         */
+        function logout() {
+            sessionStorage.removeItem('isLoggedIn');
+            sessionStorage.removeItem('isAdmin');
+            showLoginPage();
+        }
+
+        /**
+         * Displays the login page and hides the main page
+         */
+        function showLoginPage() {
+            mainPage.classList.add('opacity-0');
+            setTimeout(() => {
+                mainPage.classList.add('hidden');
+                loginPage.classList.remove('hidden');
+                loginPage.classList.remove('opacity-0');
+            }, 500);
+        }
+
+        /**
+         * Displays the main page and hides the login page
+         */
+        function showMainPage() {
+            loginPage.classList.add('opacity-0');
+            renderAccounts(); // Render accounts before showing
+            
+            // Check for admin and add admin button if necessary
+            const isAdmin = sessionStorage.getItem('isAdmin') === 'true';
+            let adminButton = document.getElementById('adminButton');
+            if (isAdmin && !adminButton) {
+                adminButton = document.createElement('button');
+                adminButton.id = 'adminButton';
+                adminButton.onclick = showAdminPanel;
+                adminButton.className = 'fixed bottom-6 right-6 z-40 bg-purple-600 hover:bg-purple-700 text-white p-4 rounded-full shadow-lg transition-all transform hover:scale-110';
+                adminButton.innerHTML = '<i data-lucide="settings" class="w-6 h-6"></i>';
+                document.body.appendChild(adminButton);
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            } else if (!isAdmin && adminButton) {
+                adminButton.remove();
+            }
+
+            setTimeout(() => {
+                loginPage.classList.add('hidden');
+                mainPage.classList.remove('hidden');
+                mainPage.classList.remove('opacity-0');
+            }, 500);
+        }
+
+        /**
+         * Renders the list of VPN accounts on the main page
+         */
+        function renderAccounts() {
+            accountsContainer.innerHTML = '';
+            accounts.forEach(acc => {
+                const pcInfo = acc.pc ? `
+                    <div class="group">
+                        <label class="text-sm text-blue-300">Activation Code</label>
+                        <div class="flex items-center justify-between">
+                            <p class="text-lg text-white font-mono break-all">${acc.pc}</p>
+                            <button onclick="copyToClipboard('${acc.pc}', this)" class="copy-btn opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-white p-1">
+                                <i data-lucide="clipboard" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                ` : '';
+
+                // Ensure all values are strings before creating the template
+                const username = String(acc.username || '');
+                const password = String(acc.password || '');
+                const pc = String(acc.pc || '');
+                
+                // --- Expiry Date Logic ---
+                const startDate = String(acc.startDate || 'N/A');
+                let statusText = 'Active';
+                let statusClass = 'bg-green-500/20 text-green-300'; // Default to Active
+
+                if (startDate !== 'N/A' && startDate !== '') {
+                    const parts = startDate.split('-');
+                    if (parts.length === 3) {
+                        const month = parseInt(parts[0], 10) - 1; // Month is 0-indexed
+                        const day = parseInt(parts[1], 10);
+                        const year = parseInt(parts[2], 10);
+                        
+                        if (!isNaN(month) && !isNaN(day) && !isNaN(year)) {
+                            const expiryDate = new Date(year, month, day);
+                            expiryDate.setHours(23, 59, 59, 999); // Account expires at the end of this day
+                            const today = new Date();
+
+                            if (today > expiryDate) {
+                                statusText = 'Expired';
+                                statusClass = 'bg-red-500/20 text-red-300';
+                            }
+                        } else {
+                            // Invalid date components, but a date was provided
+                            statusText = 'Invalid';
+                            statusClass = 'bg-yellow-500/20 text-yellow-300';
+                        }
+                    } else {
+                        // Invalid date format
+                        statusText = 'Invalid';
+                        statusClass = 'bg-yellow-500/20 text-yellow-300';
+                    }
+                }
+                // If startDate is 'N/A' or empty, it just keeps the "Active" default.
+                // --- End Expiry Date Logic ---
+
+
+                const card = `
+                <div class="glass-card rounded-2xl shadow-lg overflow-hidden transform transition-all hover:shadow-2xl hover:-translate-y-1">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-xs font-medium ${statusClass} px-3 py-1 rounded-full">${statusText}</span>
+                            <span class="text-sm text-gray-400">Expires: ${startDate}</span>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="group">
+                                <label class="text-sm text-blue-300">Username</label>
+                                <div class="flex items-center justify-between">
+                                    <p class="text-lg text-white font-mono break-all">${username}</p>
+                                    <button onclick="copyToClipboard('${username.replace(/'/g, "\\'")}', this)" class="copy-btn opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-white p-1">
+                                        <i data-lucide="clipboard" class="w-5 h-5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="group">
+                                <label class="text-sm text-blue-300">Password</label>
+                                <div class="flex items-center justify-between">
+                                    <p class="text-lg text-white font-mono break-all">${password}</p>
+                                    <button onclick="copyToClipboard('${password.replace(/'/g, "\\'")}', this)" class="copy-btn opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-white p-1">
+                                        <i data-lucide="clipboard" class="w-5 h-5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            ${pcInfo.replace(/'/g, "\\'")}
+                        </div>
+                    </div>
+                    <!-- REMOVED the "Copy All Credentials" button that was here -->
+                </div>
+                `;
+                accountsContainer.innerHTML += card;
+            });
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        /**
+         * Copies text to the clipboard and shows a success message
+         */
+        function copyToClipboard(text, element, isCopyAll = false) {
+            // Use fallback for insecure contexts (like this snippet environment)
+            try {
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed'; // Prevent scrolling
+                textArea.style.opacity = 0;
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                
+                document.execCommand('copy');
+                
+                document.body.removeChild(textArea);
+
+                // Show success message
+                successMessage.classList.remove('hidden');
+                clearTimeout(successTimeout);
+                successTimeout = setTimeout(() => {
+                    successMessage.classList.add('hidden');
+                }, 2400);
+
+                // Visual feedback on button
+                if (element) {
+                    const icon = element.querySelector('i');
+                    
+                    if (!icon) {
+                        return; 
+                    }
+
+                    const originalIcon = icon.getAttribute('data-lucide');
+                    element.innerHTML = `<i data-lucide="check" class="w-5 h-5 text-green-400"></i>${isCopyAll ? '<span>Copied!</span>' : ''}`;
+                    if (typeof lucide !== 'undefined') {
+                        lucide.createIcons();
+                    }
+
+                    setTimeout(() => {
+                        element.innerHTML = `<i data-lucide="${originalIcon}" class="w-5 h-5"></i>${isCopyAll ? '<span>Copy All Credentials</span>' : ''}`;
+                        if (typeof lucide !== 'undefined') {
+                            lucide.createIcons();
+                        }
+                    }, 2000);
+                }
+
+            } catch (err) {
+                console.error('Fallback: Oops, unable to copy', err);
+            }
+        }
+
+        // --- ADMIN PANEL FUNCTIONS ---
+
+        /**
+         * Displays the admin panel
+         */
+        function showAdminPanel() {
+            renderAdminControls();
+            adminPanel.classList.remove('hidden');
+            adminPanel.classList.add('flex');
+        }
+
+        /**
+         * Hides the admin panel
+         */
+        function hideAdminPanel() {
+            adminPanel.classList.add('hidden');
+            adminPanel.classList.remove('flex');
+        }
+
+        /**
+         * Renders the controls for the admin panel
+         */
+        function renderAdminControls() {
+            adminAccountsList.innerHTML = '';
+            accounts.forEach(acc => {
+                const row = document.createElement('div');
+                row.className = 'glass-card p-4 rounded-lg flex flex-col md:flex-row items-center gap-3';
+                row.setAttribute('data-id', acc.id);
+                
+                // Ensure values are strings
+                const username = String(acc.username || '');
+                const password = String(acc.password || '');
+                const pc = String(acc.pc || '');
+                const startDate = String(acc.startDate || '');
+
+                row.innerHTML = `
+                    <input type="text" data-field="username" value="${username}" class="flex-1 w-full md:w-auto bg-black/30 border border-white/10 rounded-lg p-2.5 text-white placeholder-gray-400" placeholder="Username">
+                    <input type="text" data-field="password" value="${password}" class="flex-1 w-full md:w-auto bg-black/30 border border-white/10 rounded-lg p-2.5 text-white placeholder-gray-400" placeholder="Password">
+                    <input type="text" data-field="pc" value="${pc}" class="flex-1 w-full md:w-auto bg-black/30 border border-white/10 rounded-lg p-2.5 text-white placeholder-gray-400" placeholder="Activation Code (optional)">
+                    <input type="text" data-field="startDate" value="${startDate}" class="w-full md:w-36 bg-black/30 border border-white/10 rounded-lg p-2.5 text-white placeholder-gray-400" placeholder="Expiry Date">
+                    <button onclick="deleteAccount(${acc.id})" class="w-full md:w-auto bg-red-600 hover:bg-red-700 text-white p-2.5 rounded-lg transition-colors">
+                        <i data-lucide="trash-2" class="w-5 h-5"></i>
+                    </button>
+                `;
+                adminAccountsList.appendChild(row);
+            });
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        /**
+         * Adds a new, empty row to the admin panel
+         */
+        function addNewAccountRow() {
+            const newId = accounts.length > 0 ? Math.max(...accounts.map(a => a.id)) + 1 : 1;
+            const newAccount = { id: newId, username: '', password: '', pc: '', startDate: '' };
+            accounts.push(newAccount); // Add to in-memory list first
+            
+            const row = document.createElement('div');
+            row.className = 'glass-card p-4 rounded-lg flex flex-col md:flex-row items-center gap-3';
+            row.setAttribute('data-id', newId);
+            row.innerHTML = `
+                <input type="text" data-field="username" value="" class="flex-1 w-full md:w-auto bg-black/30 border border-white/10 rounded-lg p-2.5 text-white placeholder-gray-400" placeholder="Username">
+                <input type="text" data-field="password" value="" class="flex-1 w-full md:w-auto bg-black/30 border border-white/10 rounded-lg p-2.5 text-white placeholder-gray-400" placeholder="Password">
+                <input type="text" data-field="pc" value="" class="flex-1 w-full md:w-auto bg-black/30 border border-white/10 rounded-lg p-2.5 text-white placeholder-gray-400" placeholder="Activation Code (optional)">
+                <input type="text" data-field="startDate" value="" class="w-full md:w-36 bg-black/30 border border-white/10 rounded-lg p-2.5 text-white placeholder-gray-400" placeholder="Expiry Date (e.g., 12-12-2025)">
+                <button onclick="deleteAccount(${newId})" class="w-full md:w-auto bg-red-600 hover:bg-red-700 text-white p-2.5 rounded-lg transition-colors">
+                    <i data-lucide="trash-2" class="w-5 h-5"></i>
+                </button>
+            `;
+            adminAccountsList.appendChild(row);
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+
+        /**
+         * Deletes an account
+         */
+        function deleteAccount(id) {
+            accounts = accounts.filter(acc => acc.id !== id);
+            renderAdminControls(); // Re-render admin panel based on new in-memory 'accounts' list
+            saveAllAccounts(); // Save changes immediately
+        }
+
+        /**
+         * Saves all changes from the admin panel to localStorage
+         */
+        function saveAllAccounts() {
+            const updatedAccounts = [];
+            const rows = adminAccountsList.querySelectorAll('[data-id]');
+            
+            rows.forEach(row => {
+                const id = parseInt(row.getAttribute('data-id'));
+                const username = row.querySelector('[data-field="username"]').value;
+                const password = row.querySelector('[data-field="password"]').value;
+                const pc = row.querySelector('[data-field="pc"]').value;
+                const startDate = row.querySelector('[data-field="startDate"]').value;
+
+                // Don't save if all fields are empty (unless it's an existing one being cleared)
+                if (username || password || pc || startDate) {
+                    updatedAccounts.push({
+                        id,
+                        username,
+                        password,
+                        pc: pc || null, // Store empty as null
+                        startDate
+                    });
+                }
+            });
+
+            accounts = updatedAccounts;
+            localStorage.setItem('vpnAccounts', JSON.stringify(accounts));
+            renderAccounts(); // Re-render main page list
+            
+            // Show feedback on save button
+            const saveButton = adminPanel.querySelector('footer button:last-child');
+            saveButton.innerHTML = '<i data-lucide="check" class="w-5 h-5"></i> <span>Saved!</span>';
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            setTimeout(() => {
+                saveButton.innerHTML = '<i data-lucide="save" class="w-5 h-5"></i> <span>Save All Changes</span>';
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            }, 2000);
+        }
+        
+        // --- TAILWIND CONFIG (for shake animation) ---
+        tailwind.config = {
+            theme: {
+                extend: {
+                    keyframes: {
+                        shake: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '10%, 30%, 50%, 70%, 90%': { transform: 'translateX(-10px)' },
+                            '20%, 40%, 60%, 80%': { transform: 'translateX(10px)' },
+                        }
+                    },
+                    animation: {
+                        shake: 'shake 0.5s ease-in-out',
+                    }
+                }
+            }
+        }
+
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
+
