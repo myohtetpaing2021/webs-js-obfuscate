@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Series Admin Panel</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- PapaParse CSV Library CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        /* Inter Font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', 'Pyidaungsu', sans-serif;
+        }
+        /* Custom scrollbar for table */
+        .table-container::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .table-container::-webkit-scrollbar-thumb {
+            background-color: #4a5568; /* Darker scrollbar */
+            border-radius: 3px;
+        }
+        .table-container::-webkit-scrollbar-track {
+            background-color: #2d3748; /* Darker track */
+        }
+        /* Hide number input arrows */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+        /* Toast Message Style */
+        #toast-message {
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        /* Highlight for duplicate rows */
+        .duplicate-row {
+            background-color: #7c2d12; /* bg-orange-800 */
+        }
+        .duplicate-row:hover {
+            background-color: #9a3412; /* hover:bg-orange-700 */
+        }
+    </style>
+</head>
+<body class="bg-gray-900">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <!-- Header -->
+        <header class="mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <h1 class="text-3xl font-bold text-gray-100 text-center md:text-left">Series Admin Panel (ဇာတ်လမ်းတွဲ စီမံခန့်ခွဲမှု)</h1>
+            <!-- Action Buttons -->
+            <div class="flex flex-shrink-0 flex-wrap items-center justify-center md:justify-end gap-2">
+                <!-- Add New Button (Primary) -->
+                <button id="add-new-btn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-700 transition duration-300 whitespace-nowrap">
+                    Series အသစ်ထည့်ရန်
+                </button>
+                
+                <!-- CSV Actions Dropdown (Secondary) -->
+                <div class="relative" id="csv-actions-dropdown">
+                    <!-- Dropdown Toggle Button -->
+                    <button id="csv-toggle-btn" class="bg-gray-600 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-500 transition duration-300 flex items-center gap-2 whitespace-nowrap">
+                        <span>CSV Actions</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    
+                    <!-- Dropdown Menu -->
+                    <div id="csv-menu" class="absolute right-0 mt-2 w-48 bg-gray-700 rounded-lg shadow-xl z-20 hidden">
+                        <!-- Import Item -->
+                        <label for="csv-import" class="cursor-pointer block px-4 py-3 text-sm text-gray-200 hover:bg-gray-600 rounded-t-lg">
+                            CSV Import လုပ်ရန်
+                        </label>
+                        <input type="file" id="csv-import" accept=".csv" class="hidden">
+                        
+                        <!-- Export Item -->
+                        <button id="export-csv-btn" class="w-full text-left block px-4 py-3 text-sm text-gray-200 hover:bg-gray-600 rounded-b-lg">
+                            CSV Export လုပ်ရန်
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Settings Dropdown -->
+                <div class="relative" id="settings-dropdown">
+                    <!-- Dropdown Toggle Button -->
+                    <button id="settings-toggle-btn" class="bg-gray-600 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-500 transition duration-300 flex items-center gap-2 whitespace-nowrap">
+                        <!-- Settings Icon (CHANGED) -->
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+                        </svg>
+                    </button>
+                    <!-- Dropdown Menu (UPDATED) -->
+                    <div id="settings-menu" class="absolute right-0 mt-2 w-56 bg-gray-700 rounded-lg shadow-xl z-20 hidden">
+                        <button id="delete-duplicates-btn" class="w-full text-left block px-4 py-3 text-sm text-yellow-400 hover:bg-gray-600 hover:text-yellow-300 rounded-t-lg">
+                            Duplicate ဒေတာများဖျက်ရန်
+                        </button>
+                        <button id="delete-all-btn" class="w-full text-left block px-4 py-3 text-sm text-red-400 hover:bg-gray-600 hover:text-red-300 rounded-b-lg">
+                            ဒေတာအားလုံးဖျက်ရန်
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Add/Edit Form (Generate) - Initially Hidden -->
+        <div id="series-form-container" class="bg-gray-800 p-6 rounded-lg shadow-lg mb-8 hidden">
+            <h2 id="form-title" class="text-2xl font-semibold text-gray-200 mb-6">Series အသစ်ထည့်ရန်</h2>
+            <form id="series-form">
+                <!-- Hidden fields for ID and action type -->
+                <input type="hidden" id="edit-id">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Column 1 -->
+                    <div>
+                        <label for="title" class="block text-sm font-medium text-gray-300 mb-1">ခေါင်းစဉ် (English)</label>
+                        <input type="text" id="title" class="w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400" required>
+                    </div>
+                    <div>
+                        <label for="image" class="block text-sm font-medium text-gray-300 mb-1">Image URL</label>
+                        <input type="url" id="image" class="w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400" required>
+                    </div>
+                    
+                    <!-- Column 2 -->
+                    <div>
+                        <label for="rating" class="block text-sm font-medium text-gray-300 mb-1">Rating (e.g., 7.1)</label>
+                        <input type="number" id="rating" step="0.1" class="w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400">
+                    </div>
+                    <div>
+                        <label for="price" class="block text-sm font-medium text-gray-300 mb-1">စျေးနှုန်း (e.g., 1500)</label>
+                        <input type="number" id="price" class="w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400">
+                    </div>
+                    <div>
+                        <label for="episodes" class="block text-sm font-medium text-gray-300 mb-1">အပိုင်းများ (e.g., Episode 1 - 20)</label>
+                        <input type="text" id="episodes" class="w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400">
+                    </div>
+
+                    <!-- Column 3 -->
+                    <div>
+                        <label for="memory" class="block text-sm font-medium text-gray-300 mb-1">Memory (e.g., 8 GB)</label>
+                        <input type="text" id="memory" class="w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400">
+                    </div>
+                    <div>
+                        <label for="release_date" class="block text-sm font-medium text-gray-300 mb-1">ထုတ်ဝေသည့်နှစ် (e.g., 2025)</label>
+                        <input type="number" id="release_date" class="w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400">
+                    </div>
+                    <div>
+                        <label for="runtime" class="block text-sm font-medium text-gray-300 mb-1">ကြာမြင့်ချိန် (e.g., 28 minutes)</label>
+                        <input type="text" id="runtime" class="w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400">
+                    </div>
+                    
+                    <!-- Column 4 (Spanning more) -->
+                    <div>
+                        <label for="video_format" class="block text-sm font-medium text-gray-300 mb-1">Video Format (e.g., 1080 P)</label>
+                        <input type="text" id="video_format" class="w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400">
+                    </div>
+                    <div>
+                        <label for="category" class="block text-sm font-medium text-gray-300 mb-1">Category (e.g., Asean Series)</label>
+                        <input type="text" id="category" class="w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400">
+                    </div>
+                    <div>
+                        <label for="genres" class="block text-sm font-medium text-gray-300 mb-1">Genres (e.g., Drama Series)</label>
+                        <input type="text" id="genres" class="w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400">
+                    </div>
+                    
+                    <!-- Description (Full Width) -->
+                    <div class="md:col-span-2 lg:col-span-3">
+                        <label for="description" class="block text-sm font-medium text-gray-300 mb-1">အကြောင်းအရာ</label>
+                        <textarea id="description" rows="3" class="w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"></textarea>
+                    </div>
+                </div>
+
+                <!-- Form Buttons -->
+                <div class="mt-6 flex justify-end gap-3">
+                    <button type="button" id="cancel-form-btn" class="bg-gray-600 text-white px-5 py-2 rounded-lg shadow hover:bg-gray-500 transition duration-300">
+                        မလုပ်တော့ပါ
+                    </button>
+                    <button type="submit" class="bg-indigo-600 text-white px-5 py-2 rounded-lg shadow hover:bg-indigo-700 transition duration-300">
+                        သိမ်းဆည်းရန်
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Data Table -->
+        <main class="bg-gray-800 rounded-lg shadow-lg">
+            <div class="table-container overflow-x-auto">
+                <table class="w-full min-w-max text-sm text-left text-gray-300">
+                    <thead class="text-xs text-gray-300 uppercase bg-gray-700">
+                        <tr>
+                            <th scope="col" class="px-4 py-3">ID</th>
+                            <th scope="col" class="px-4 py-3">ပုံ</th>
+                            <th scope="col" class="px-4 py-3">ခေါင်းစဉ် (Eng)</th>
+                            <th scope="col" class="px-4 py-3">Rating</th>
+                            <th scope="col" class="px-4 py-3">စျေးနှုန်း</th>
+                            <th scope="col" class="px-4 py-3">အပိုင်းများ</th>
+                            <th scope="col" class="px-4 py-3">Memory</th>
+                            <th scope="col" class="px-4 py-3">ခုနှစ်</th>
+                            <th scope="col" class="px-4 py-3">ကြာမြင့်ချိန်</th>
+                            <th scope="col" class="px-4 py-3">Format</th>
+                            <th scope="col" class="px-4 py-3">Category</th>
+                            <th scope="col" class="px-4 py-3">Genres</th>
+                            <th scope="col" class="px-4 py-3">အကြောင်းအရာ</th>
+                            <th scope="col" class="px-4 py-3">ဖန်တီးသည့်အချိန်</th>
+                            <th scope="col" class="px-4 py-3">ပြင်ဆင်သည့်အချိန်</th>
+                            <th scope="col" class="px-4 py-3">လုပ်ဆောင်ချက်များ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="series-table-body" class="divide-y divide-gray-700">
+                        <!-- Rows will be injected by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Deletion Confirmation Modal -->
+    <div id="delete-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-gray-800 rounded-lg shadow-2xl p-6 w-full max-w-sm mx-4">
+            <h3 class="text-xl font-semibold text-gray-100 mb-4">ဖျက်ရန် အတည်ပြုပါ</h3>
+            <p class="text-gray-300 mb-6">ဤဒေတာကို အမှန်တကယ် ဖျက်လိုပါသလား? ဤလုပ်ဆောင်ချက်ကို နောက်ပြန်လှည့်နိုင်မည် မဟုတ်ပါ။</p>
+            <div class="flex justify-end gap-3">
+                <button id="cancel-delete-btn" class="bg-gray-600 text-gray-200 px-4 py-2 rounded-lg hover:bg-gray-500 transition duration-300">
+                    မလုပ်တော့ပါ
+                </button>
+                <button id="confirm-delete-btn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300">
+                    အတည်ပြု ဖျက်မည်
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete All Confirmation Modal -->
+    <div id="delete-all-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-gray-800 rounded-lg shadow-2xl p-6 w-full max-w-sm mx-4">
+            <h3 class="text-xl font-semibold text-red-500 mb-4">ဒေတာအားလုံး ဖျက်ရန် အတည်ပြုပါ</h3>
+            <p class="text-gray-300 mb-6">ဒေတာအားလုံးကို အမှန်တကယ် ဖျက်လိုပါသလား? ဤလုပ်ဆောင်ချက်ကို နောက်ပြန်လှည့်နိုင်မည် မဟုတ်ပါ။</p>
+            <div class="flex justify-end gap-3">
+                <button id="cancel-delete-all-btn" class="bg-gray-600 text-gray-200 px-4 py-2 rounded-lg hover:bg-gray-500 transition duration-300">
+                    မလုပ်တော့ပါ
+                </button>
+                <button id="confirm-delete-all-btn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300">
+                    အားလုံးကို ဖျက်မည်
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- (NEW) Delete Duplicates Confirmation Modal -->
+    <div id="delete-duplicates-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-gray-800 rounded-lg shadow-2xl p-6 w-full max-w-sm mx-4">
+            <h3 class="text-xl font-semibold text-yellow-500 mb-4">Duplicate ဒေတာများ ဖျက်ရန် အတည်ပြုပါ</h3>
+            <p class="text-gray-300 mb-6">Highlight (လိမ္မော်ရောင်) ပြထားသော ဒေတာများကိုသာ ဖျက်မည်ဖြစ်သည်။ အမှန်တကယ် ဖျက်လိုပါသလား?</p>
+            <div class="flex justify-end gap-3">
+                <button id="cancel-delete-duplicates-btn" class="bg-gray-600 text-gray-200 px-4 py-2 rounded-lg hover:bg-gray-500 transition duration-300">
+                    မလုပ်တော့ပါ
+                </button>
+                <button id="confirm-delete-duplicates-btn" class="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition duration-300">
+                    Duplicate များကို ဖျက်မည်
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Message -->
+    <div id="toast-message" class="fixed bottom-5 right-5 bg-green-600 text-white px-5 py-3 rounded-lg shadow-lg opacity-0 invisible">
+        <!-- Message will be set by JS -->
+    </div>
+
+    <script>
+/* obfuscated */
+function _0x5b9c(_0x23c850,_0x1c6cf6){const _0x4a9f88=_0x4a9f();return _0x5b9c=function(_0x5b9cd3,_0xf99129){_0x5b9cd3=_0x5b9cd3-0x130;let _0x4cc6cd=_0x4a9f88[_0x5b9cd3];return _0x4cc6cd;},_0x5b9c(_0x23c850,_0x1c6cf6);}const _0x1ce431=_0x5b9c;function _0x4a9f(){const _0x23bca3=['data','uKmvr','description','bg-gray-800\x20hover:bg-gray-700','ApBuD','series-table-body','filter','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22px-4\x20py-3\x20font-medium\x20text-gray-100\x20whitespace-nowrap\x22\x20title=\x22','body','has','export-csv-btn','kAmkZ','xqNSS','rating','0|1|3|4|2','RlDdy','nmRlV','DIzju','cxxHZ','createElement','stopPropagation','cwWOu','JsVBL','confirm-delete-all-btn','kZBTm','gfyrD','Series\x20အသစ်ထည့်ရန်','cDtbJ','mqHcD','settings-toggle-btn','bKXIf','ZzYuD','dataset','change','gLWai','IXxsM','GpDpp','confirm-delete-duplicates-btn','hidden','333282jurMsZ','WGezf','price','yCatK','DpYqS','csv-import','19001TTMdGl','MylGP','title','unparse','mqlyp','contains','innerHTML','isDuplicate','series-form-container','NZQoJ','episodes','RrzZM','<tr><td\x20colspan=\x2216\x22\x20class=\x22text-center\x20p-6\x20text-gray-400\x22>ဒေတာ\x20မရှိသေးပါ။\x20CSV\x20Import\x20(သို့)\x20အသစ်ထည့်သွင်းပါ။</td></tr>','target','setAttribute','qyFcH','remove','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22px-4\x20py-3\x22>','nmkhq','bg-red-600','cancel-delete-duplicates-btn','className','wLwie','settings-dropdown','fBwzx','visibility','duplicate-row','KKBZn','lHBNj','form-title','ddGjO','toISOString','ZtFlP','preventDefault','36pVlgDn','find','SEEQM','Brvxv','JLUTv','\x22\x20alt=\x22','3311520ZcPWyV','add','click','1275hEJsBo','split','hknnQ','wHvgE','submit','GMMmm','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22px-4\x20py-3\x20whitespace-nowrap\x22>','TarzE','confirm-delete-btn','yvcaB','18664bsfcio','DBYkx','YkrSr','GsESm','...</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22px-4\x20py-3\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<img\x20src=\x22','Rbltq','textContent','tmUPl','addEventListener','QEoJX','category','YQSgp','csv-actions-dropdown','bATZI','OyWjU','mkULf','CSV\x20file\x20ကို\x20ဖတ်ရာတွင်\x20အမှားအယွင်း\x20ဖြစ်ပေါ်ပါသည်။','JFNUy','uOpIu','getElementById','opacity-0','tfXAF','CSV\x20Export\x20ကို\x20အောင်မြင်စွာ\x20ပြုလုပ်ပြီးပါပြီ။','updated_at','CSV\x20Parsing\x20Error:','createObjectURL','KoecN','lUFsG','XEKVy','length','nyvti','ဒေတာကို\x20အောင်မြင်စွာ\x20ဖျက်လိုက်ပါပြီ။','classList','release_date','cancel-delete-all-btn','href','delete-duplicates-btn','ဤဒေတာ\x20(title)\x20သည်\x20ရှိပြီးသားဒေတာနှင့်\x20ထပ်နေပါသည်။','UpbNy','cancel-delete-btn','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22px-4\x20py-3\x20whitespace-nowrap\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22edit-btn\x20text-indigo-600\x20hover:text-indigo-900\x20font-medium\x20mr-3\x22\x20data-id=\x22','Nxzkb','sbOnh','WzmEu','TVhBd','WKZMr','lTcCk','runtime','Qfepg','success','oMsAa','4412nMuFwR','IkDbb','bg-green-600','XZjXP','Rincd','style','BLrSc','kmiMf','rtzlj','BAQIO','RUQqY','files','VbfKF','DOZwS','created_at','kpSVK','XlRoz','aKpsh','ssNbP','scrollTo','1177836gdkZSZ','TGryL','bGkTk','hSqki','\x22\x20class=\x22w-12\x20h-16\x20object-cover\x20rounded\x22\x20onerror=\x22this.src=\x27https://placehold.co/48x64/e2e8f0/94a3b8?text=No+Img\x27\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22px-4\x20py-3\x20whitespace-nowrap\x22>','genres','querySelectorAll','reset','VdIdZ','value','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22px-4\x20py-3\x20min-w-[200px]\x20max-w-xs\x20truncate\x22\x20title=\x22','NNVRT','oISpq','BEjZH','video_format','KHwvG','\x22>ပြင်ဆင်ရန်</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22delete-btn\x20text-red-600\x20hover:text-red-900\x20font-medium\x22\x20data-id=\x22','203967YjyEQB','UEPNj','GMxZL','AEQOd','Duplicate\x20ဒေတာ\x20','xYzUX','map','uDHJZ','text/csv;charset=utf-8;','\x20ခုမှာ\x20ထပ်နေပါသည်)','ဒေတာအသစ်ကို\x20အောင်မြင်စွာ\x20ထည့်သွင်းပြီးပါပြီ။','.delete-btn','toggle','settings-menu','pLfsg','unshift','RhjlG','\x20ခုကို\x20အောင်မြင်စွာ\x20ထည့်သွင်းပြီးပါပြီ။','appendChild','aFUXY','UFOBz','oepvl','removeChild','error','ixEHi','gufjW','GYLiv','\x22>ဖျက်ရန်</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','LtoMP','\x20ခုကို\x20အောင်မြင်စွာ\x20ဖျက်လိုက်ပါပြီ။','30UknZQm','49jMQfaC','DtBnU','forEach','SIvCT','cancel-form-btn','findIndex','eQueO','delete-all-modal','memory','uLqvG','UGYGD','sEFfy','0|1|2|3|4','add-new-btn','Series\x20ပြင်ဆင်ရန်','download','.edit-btn','DOMContentLoaded','wXJKA','parse','VdXPH','randomUUID','series_export.csv','378xhUwgf','delete-all-btn','CWTuq','KvEwB','YpkOh','Export\x20လုပ်ရန်\x20ဒေတာ\x20မရှိပါ။','XtrrK','toast-message'];_0x4a9f=function(){return _0x23bca3;};return _0x4a9f();}(function(_0x5a79ea,_0x3c4d70){const _0x4fd0d7=_0x5b9c,_0x5d3c80=_0x5a79ea();while(!![]){try{const _0x425538=parseInt(_0x4fd0d7(0x142))/0x1*(parseInt(_0x4fd0d7(0x1ed))/0x2)+-parseInt(_0x4fd0d7(0x1cf))/0x3+parseInt(_0x4fd0d7(0x1aa))/0x4*(parseInt(_0x4fd0d7(0x16d))/0x5)+-parseInt(_0x4fd0d7(0x13c))/0x6*(parseInt(_0x4fd0d7(0x1ee))/0x7)+parseInt(_0x4fd0d7(0x177))/0x8*(parseInt(_0x4fd0d7(0x205))/0x9)+-parseInt(_0x4fd0d7(0x16a))/0xa+-parseInt(_0x4fd0d7(0x1be))/0xb*(-parseInt(_0x4fd0d7(0x164))/0xc);if(_0x425538===_0x3c4d70)break;else _0x5d3c80['push'](_0x5d3c80['shift']());}catch(_0x11d611){_0x5d3c80['push'](_0x5d3c80['shift']());}}}(_0x4a9f,0x30394),document[_0x1ce431(0x17f)](_0x1ce431(0x1ff),()=>{const _0x4ac3e9=_0x1ce431,_0x75b9b9={'bzPKx':_0x4ac3e9(0x185),'ZQdAU':_0x4ac3e9(0x1ef),'tfXAF':_0x4ac3e9(0x19c),'wLwie':_0x4ac3e9(0x16c),'KHwvG':_0x4ac3e9(0x1da),'CWTuq':_0x4ac3e9(0x13b),'Brvxv':function(_0x4de0c5,_0x4ddb58){return _0x4de0c5===_0x4ddb58;},'zquQC':'GpRbP','yCatK':_0x4ac3e9(0x225),'TarzE':function(_0x41f450,_0x3f612f){return _0x41f450!==_0x3f612f;},'oISpq':_0x4ac3e9(0x218),'oAvuY':_0x4ac3e9(0x176),'cQxiU':'YfDsJ','gufjW':function(_0x2e4660,_0x28237c){return _0x2e4660!==_0x28237c;},'YLlLb':function(_0x4cdd6c,_0x4caff2){return _0x4cdd6c!==_0x4caff2;},'XdABZ':'PtSdb','sbOnh':function(_0x51f678,_0x189bb7){return _0x51f678(_0x189bb7);},'qyFcH':'ဒေတာကို\x20အောင်မြင်စွာ\x20ပြင်ဆင်ပြီးပါပြီ။','GMMmm':_0x4ac3e9(0x1e2),'ApBuD':_0x4ac3e9(0x1d9),'rtzlj':function(_0x19291e){return _0x19291e();},'xYzUX':function(_0x49b785){return _0x49b785();},'HVQcX':_0x4ac3e9(0x1fc),'gFGbG':_0x4ac3e9(0x137),'ZtFlP':_0x4ac3e9(0x21b),'bKXIf':function(_0xfd4bcc,_0x28388e,_0x4ba0b6){return _0xfd4bcc(_0x28388e,_0x4ba0b6);},'KvEwB':_0x4ac3e9(0x1e6),'tmUPl':function(_0x59051c){return _0x59051c();},'SEEQM':function(_0x414506){return _0x414506();},'NNVRT':function(_0x1afff9){return _0x1afff9();},'rIoVj':_0x4ac3e9(0x1f1),'cDtbJ':function(_0x440109,_0x1b1c78){return _0x440109(_0x1b1c78);},'vyySO':_0x4ac3e9(0x168),'FTWKo':_0x4ac3e9(0x1b3),'Qfepg':'ဒေတာအားလုံးကို\x20အောင်မြင်စွာ\x20ဖျက်လိုက်ပါပြီ။','xIzlq':_0x4ac3e9(0x1e7),'tiauZ':function(_0x1b85d4,_0x5d67d9){return _0x1b85d4===_0x5d67d9;},'XlRoz':function(_0x23cf11,_0x50b6fc){return _0x23cf11!==_0x50b6fc;},'YpkOh':'axQan','lHBNj':'ဖျက်ရန်\x20Duplicate\x20ဒေတာ\x20မရှိပါ။','UFOBz':function(_0x2cb33c,_0xc175db){return _0x2cb33c(_0xc175db);},'LETmi':function(_0x3b60cb,_0x44b4b8){return _0x3b60cb===_0x44b4b8;},'uDHJZ':_0x4ac3e9(0x1b9),'KKBZn':'StdVK','RhjlG':function(_0x52e20f,_0x4665f8){return _0x52e20f-_0x4665f8;},'kJwQG':function(_0xf653c6){return _0xf653c6();},'coufx':function(_0x37b634){return _0x37b634();},'Nxzkb':_0x4ac3e9(0x16f),'wXJKA':function(_0x54ab32,_0x4ea328){return _0x54ab32>_0x4ea328;},'JsVBL':function(_0x397352,_0x2b7e11){return _0x397352(_0x2b7e11);},'mmpgu':'Series\x20အသစ်ထည့်ရန်','pLfsg':_0x4ac3e9(0x18f),'ERPjs':_0x4ac3e9(0x1fa),'eQueO':_0x4ac3e9(0x196),'VdXPH':function(_0x1304dc,_0x5c05fa){return _0x1304dc===_0x5c05fa;},'XZjXP':function(_0x29344f,_0x4276bb){return _0x29344f!==_0x4276bb;},'TGryL':'Export\x20လုပ်ရန်\x20ဒေတာ\x20မရှိပါ။','lUFsG':_0x4ac3e9(0x1b8),'sEFfy':_0x4ac3e9(0x18e),'jEjZG':_0x4ac3e9(0x19a),'oMsAa':_0x4ac3e9(0x1fd),'nyvti':function(_0x4bea8a,_0x416413){return _0x4bea8a(_0x416413);},'ENYBW':_0x4ac3e9(0x18d),'FleiO':_0x4ac3e9(0x15c),'MylGP':_0x4ac3e9(0x210),'wYNWv':function(_0x3d08c7,_0x411586,_0x28e6f6){return _0x3d08c7(_0x411586,_0x28e6f6);},'nmRlV':_0x4ac3e9(0x18b),'WzmEu':function(_0x2949e7,_0x59bb42){return _0x2949e7===_0x59bb42;},'IXxsM':_0x4ac3e9(0x1c6),'uKmvr':_0x4ac3e9(0x1ac),'LtoMP':_0x4ac3e9(0x155),'mqlyp':function(_0x271e61,_0x5db77e){return _0x271e61===_0x5db77e;},'GpDpp':function(_0x5d392c,_0x54e640){return _0x5d392c===_0x54e640;},'KoecN':_0x4ac3e9(0x1e9),'UpbNy':function(_0xfc64,_0x5e35cb){return _0xfc64!==_0x5e35cb;},'DBYkx':_0x4ac3e9(0x21e),'aKpsh':'yCFzL','xHZUe':_0x4ac3e9(0x1a3),'VbfKF':_0x4ac3e9(0x1c1),'XEKVy':'BQjSI','UGYGD':_0x4ac3e9(0x212),'DOZwS':_0x4ac3e9(0x14a),'nmkhq':_0x4ac3e9(0x1fb),'RlDdy':_0x4ac3e9(0x1f2),'fBwzx':'edit-id','bATZI':_0x4ac3e9(0x141),'WKZMr':_0x4ac3e9(0x217),'PqBBf':_0x4ac3e9(0x19e),'ssNbP':_0x4ac3e9(0x175),'BEjZH':_0x4ac3e9(0x1f5),'JFNUy':'delete-duplicates-modal','bGkTk':_0x4ac3e9(0x156),'hiOBj':_0x4ac3e9(0x13a),'BeyIZ':_0x4ac3e9(0x183),'QEoJX':'csv-menu','UEPNj':_0x4ac3e9(0x159),'ddGjO':_0x4ac3e9(0x132),'dhepl':_0x4ac3e9(0x1dc),'wHvgE':_0x4ac3e9(0x19b),'NZQoJ':_0x4ac3e9(0x206),'OGOZy':_0x4ac3e9(0x144),'mqHcD':'image','Rincd':_0x4ac3e9(0x13e),'oepvl':_0x4ac3e9(0x14c),'gfyrD':_0x4ac3e9(0x1f6),'lTcCk':_0x4ac3e9(0x198),'YkrSr':_0x4ac3e9(0x1a6),'uLqvG':_0x4ac3e9(0x1cc),'mkULf':'category','DpYqS':'description','wskFF':_0x4ac3e9(0x171),'RrzZM':_0x4ac3e9(0x136),'RUQqY':function(_0x205589){return _0x205589();}};let _0x3fd783=[],_0x9da440=null;const _0x3ceb6d=document[_0x4ac3e9(0x18a)](_0x75b9b9[_0x4ac3e9(0x1f8)]),_0x9bb369=document['getElementById'](_0x75b9b9[_0x4ac3e9(0x1b7)]),_0xb2afbb=document[_0x4ac3e9(0x18a)]('series-form'),_0x341082=document[_0x4ac3e9(0x18a)](_0x4ac3e9(0x15f)),_0x18a6b3=document[_0x4ac3e9(0x18a)](_0x75b9b9[_0x4ac3e9(0x154)]),_0x158060=document[_0x4ac3e9(0x18a)](_0x75b9b9[_0x4ac3e9(0x21c)]),_0x92ac3c=document[_0x4ac3e9(0x18a)](_0x75b9b9[_0x4ac3e9(0x15a)]),_0x33b17b=document[_0x4ac3e9(0x18a)](_0x75b9b9[_0x4ac3e9(0x184)]),_0x40a35e=document[_0x4ac3e9(0x18a)](_0x75b9b9[_0x4ac3e9(0x1a4)]),_0x4adee3=document[_0x4ac3e9(0x18a)]('delete-modal'),_0x6573e9=document['getElementById'](_0x75b9b9['PqBBf']),_0x1af2f2=document[_0x4ac3e9(0x18a)](_0x75b9b9[_0x4ac3e9(0x1bc)]),_0xa387f3=document[_0x4ac3e9(0x18a)](_0x4ac3e9(0x20c)),_0x153907=document[_0x4ac3e9(0x18a)](_0x75b9b9[_0x4ac3e9(0x1cb)]),_0x2672b6=document[_0x4ac3e9(0x18a)](_0x4ac3e9(0x199)),_0x5374e7=document[_0x4ac3e9(0x18a)](_0x4ac3e9(0x224)),_0x29d069=document['getElementById'](_0x75b9b9[_0x4ac3e9(0x188)]),_0x418877=document['getElementById'](_0x75b9b9[_0x4ac3e9(0x1c0)]),_0xa819e3=document[_0x4ac3e9(0x18a)](_0x75b9b9['hiOBj']),_0x3d3100=document[_0x4ac3e9(0x18a)](_0x75b9b9['BeyIZ']),_0x2f2335=document[_0x4ac3e9(0x18a)]('csv-toggle-btn'),_0x3cde88=document['getElementById'](_0x75b9b9[_0x4ac3e9(0x180)]),_0x312a32=document[_0x4ac3e9(0x18a)](_0x75b9b9[_0x4ac3e9(0x1d0)]),_0x355c3a=document[_0x4ac3e9(0x18a)](_0x75b9b9[_0x4ac3e9(0x160)]),_0x154877=document[_0x4ac3e9(0x18a)](_0x75b9b9['dhepl']),_0x2406ce=document[_0x4ac3e9(0x18a)](_0x75b9b9[_0x4ac3e9(0x170)]),_0x5d76ca=document[_0x4ac3e9(0x18a)](_0x75b9b9[_0x4ac3e9(0x14b)]),_0x3900dd=[_0x75b9b9['OGOZy'],_0x75b9b9[_0x4ac3e9(0x131)],'rating',_0x75b9b9[_0x4ac3e9(0x1ae)],_0x75b9b9[_0x4ac3e9(0x1e4)],_0x75b9b9[_0x4ac3e9(0x226)],_0x75b9b9[_0x4ac3e9(0x1a5)],_0x75b9b9[_0x4ac3e9(0x179)],_0x75b9b9[_0x4ac3e9(0x1f7)],_0x75b9b9[_0x4ac3e9(0x186)],_0x4ac3e9(0x1c3),_0x75b9b9[_0x4ac3e9(0x140)]],_0x2bd0c2={};_0x3900dd['forEach'](_0x5a24bb=>{const _0x52c16a=_0x4ac3e9;_0x75b9b9['bzPKx']===_0x75b9b9['ZQdAU']?_0xb90c5c[_0x52c16a(0x197)][_0x52c16a(0x16b)](_0x52c16a(0x13b)):_0x2bd0c2[_0x5a24bb]=document[_0x52c16a(0x18a)](_0x5a24bb);});function _0x5de413(){const _0x4395aa=_0x4ac3e9,_0xa3499b={'IkDbb':_0x75b9b9[_0x4395aa(0x158)]};_0x3ceb6d[_0x4395aa(0x148)]='';if(_0x3fd783[_0x4395aa(0x194)]===0x0){_0x3ceb6d[_0x4395aa(0x148)]=_0x4395aa(0x14e);return;}_0x3fd783[_0x4395aa(0x1f0)](_0x547a44=>{const _0x9585f4=_0x4395aa,_0x1a206f=document[_0x9585f4(0x220)]('tr');_0x1a206f[_0x9585f4(0x157)]=_0x547a44['isDuplicate']?'duplicate-row':_0x9585f4(0x210),_0x547a44['isDuplicate']&&(_0x1a206f[_0x9585f4(0x144)]=_0x75b9b9[_0x9585f4(0x18c)]),_0x1a206f[_0x9585f4(0x148)]='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22px-4\x20py-3\x20font-medium\x20text-gray-100\x20whitespace-nowrap\x22\x20title=\x22'+_0x547a44['id']+'\x22>'+_0x547a44['id'][_0x9585f4(0x16e)]('-')[0x0]+_0x9585f4(0x17b)+_0x547a44['image']+_0x9585f4(0x169)+_0x547a44[_0x9585f4(0x144)]+_0x9585f4(0x1c2)+_0x547a44[_0x9585f4(0x144)]+_0x9585f4(0x153)+_0x547a44[_0x9585f4(0x21a)]+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22px-4\x20py-3\x22>'+_0x547a44[_0x9585f4(0x13e)]+_0x9585f4(0x173)+_0x547a44[_0x9585f4(0x14c)]+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22px-4\x20py-3\x22>'+_0x547a44[_0x9585f4(0x1f6)]+_0x9585f4(0x153)+_0x547a44[_0x9585f4(0x198)]+_0x9585f4(0x173)+_0x547a44[_0x9585f4(0x1a6)]+_0x9585f4(0x153)+_0x547a44[_0x9585f4(0x1cc)]+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22px-4\x20py-3\x20whitespace-nowrap\x22>'+_0x547a44['category']+_0x9585f4(0x173)+_0x547a44[_0x9585f4(0x1c3)]+_0x9585f4(0x1c8)+_0x547a44['description']+'\x22>'+_0x547a44[_0x9585f4(0x20f)]+_0x9585f4(0x173)+(_0x547a44[_0x9585f4(0x1b8)]?_0x547a44['created_at'][_0x9585f4(0x16e)]('T')[0x0]:'')+_0x9585f4(0x173)+(_0x547a44[_0x9585f4(0x18e)]?_0x547a44[_0x9585f4(0x18e)]['split']('T')[0x0]:'')+_0x9585f4(0x19f)+_0x547a44['id']+_0x9585f4(0x1ce)+_0x547a44['id']+'\x22>ဖျက်ရန်</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20',_0x3ceb6d[_0x9585f4(0x1e1)](_0x1a206f);}),document[_0x4395aa(0x1c4)](_0x4395aa(0x1fe))[_0x4395aa(0x1f0)](_0x2c99ea=>{const _0xc50ef8=_0x4395aa;_0x2c99ea['addEventListener'](_0xc50ef8(0x16c),()=>_0x37edc6(_0x2c99ea[_0xc50ef8(0x135)]['id']));}),document[_0x4395aa(0x1c4)](_0x75b9b9[_0x4395aa(0x1cd)])[_0x4395aa(0x1f0)](_0x5ddafa=>{const _0x536b14=_0x4395aa;_0x5ddafa[_0x536b14(0x17f)](_0xa3499b[_0x536b14(0x1ab)],()=>_0x500ca6(_0x5ddafa[_0x536b14(0x135)]['id']));});}function _0x3028da(){const _0x1d0a50=_0x4ac3e9;_0x341082[_0x1d0a50(0x17d)]=_0x1d0a50(0x227),_0xb2afbb[_0x1d0a50(0x1c5)](),_0x92ac3c[_0x1d0a50(0x1c7)]='',_0x9bb369[_0x1d0a50(0x197)]['remove']('hidden');}function _0x2e0247(){const _0x3cf2b4=_0x4ac3e9;_0x75b9b9[_0x3cf2b4(0x167)](_0x75b9b9['zquQC'],_0x75b9b9[_0x3cf2b4(0x13f)])?(_0x24ed25[_0x3cf2b4(0x221)](),_0x29ac31[_0x3cf2b4(0x197)]['add'](_0x75b9b9[_0x3cf2b4(0x207)]),_0x487972['classList']['toggle'](_0x3cf2b4(0x13b))):(_0x9bb369[_0x3cf2b4(0x197)][_0x3cf2b4(0x16b)](_0x75b9b9[_0x3cf2b4(0x207)]),_0xb2afbb[_0x3cf2b4(0x1c5)](),_0x92ac3c[_0x3cf2b4(0x1c7)]='');}function _0x31894b(_0xb3246c){const _0x1c78de=_0x4ac3e9,_0x4b8b0e={'XtrrK':function(_0x25ea9e,_0x4be7a0){const _0x5d7c0c=_0x5b9c;return _0x75b9b9[_0x5d7c0c(0x174)](_0x25ea9e,_0x4be7a0);},'uOpIu':function(_0x5354ca,_0x75164b){return _0x5354ca(_0x75164b);},'GMxZL':_0x1c78de(0x13b),'cwWOu':_0x75b9b9[_0x1c78de(0x158)]};if(_0x75b9b9[_0x1c78de(0x174)](_0x75b9b9['oISpq'],_0x75b9b9[_0x1c78de(0x1ca)])){const _0x5c41fd=_0x474ff8[_0x1c78de(0x1f3)](_0x28df65=>_0x28df65['id']===_0x8e5f19);_0x4b8b0e[_0x1c78de(0x20b)](_0x5c41fd,-0x1)&&(_0x50cdcf[_0x5c41fd]={..._0x4e9aac[_0x5c41fd],..._0x55c1b4,'id':_0x4b7d2c,'updated_at':_0xe789fe,'isDuplicate':![]},_0x4b8b0e[_0x1c78de(0x189)](_0x207845,'ဒေတာကို\x20အောင်မြင်စွာ\x20ပြင်ဆင်ပြီးပါပြီ။'));}else{_0xb3246c[_0x1c78de(0x163)]();const _0x184d9a=new Date()[_0x1c78de(0x161)](),_0x6e6870=_0x92ac3c[_0x1c78de(0x1c7)],_0x2d428a={};_0x3900dd[_0x1c78de(0x1f0)](_0xa0fab1=>{const _0xcc6820=_0x1c78de;_0x2d428a[_0xa0fab1]=_0x2bd0c2[_0xa0fab1][_0xcc6820(0x1c7)];});if(_0x6e6870){if(_0x75b9b9[_0x1c78de(0x167)](_0x75b9b9['oAvuY'],_0x75b9b9['cQxiU']))_0x55af45[_0x1c78de(0x197)][_0x1c78de(0x16b)](_0x4b8b0e[_0x1c78de(0x1d1)]);else{const _0x3ea78b=_0x3fd783[_0x1c78de(0x1f3)](_0x428772=>_0x428772['id']===_0x6e6870);if(_0x75b9b9[_0x1c78de(0x1e8)](_0x3ea78b,-0x1)){if(_0x75b9b9['YLlLb'](_0x1c78de(0x1b0),_0x75b9b9['XdABZ']))_0x3fd783[_0x3ea78b]={..._0x3fd783[_0x3ea78b],..._0x2d428a,'id':_0x6e6870,'updated_at':_0x184d9a,'isDuplicate':![]},_0x75b9b9[_0x1c78de(0x1a1)](_0x5a8f6f,_0x75b9b9[_0x1c78de(0x151)]);else{_0x512c40[_0x1c78de(0x148)]=_0x1c78de(0x14e);return;}}}}else{if(_0x75b9b9[_0x1c78de(0x167)](_0x75b9b9[_0x1c78de(0x172)],_0x1c78de(0x1e2))){const _0x591d7c={..._0x2d428a,'id':crypto['randomUUID'](),'created_at':_0x184d9a,'updated_at':_0x184d9a};_0x3fd783[_0x1c78de(0x1de)](_0x591d7c),_0x75b9b9[_0x1c78de(0x1a1)](_0x5a8f6f,_0x75b9b9[_0x1c78de(0x211)]);}else _0x65b182[_0x1c78de(0x17f)](_0x4b8b0e[_0x1c78de(0x222)],()=>_0x4f9403(_0x77b42d[_0x1c78de(0x135)]['id']));}_0x75b9b9[_0x1c78de(0x1b2)](_0x5de413),_0x75b9b9[_0x1c78de(0x1d4)](_0x2e0247);}}function _0x37edc6(_0x2b92cf){const _0x43dbe9=_0x4ac3e9,_0x55f2d2=_0x3fd783[_0x43dbe9(0x165)](_0x26e13f=>_0x26e13f['id']===_0x2b92cf);if(!_0x55f2d2)return;_0x3900dd['forEach'](_0x34e91a=>{const _0x12d926=_0x43dbe9;_0x2bd0c2[_0x34e91a][_0x12d926(0x1c7)]=_0x55f2d2[_0x34e91a]||'';}),_0x92ac3c['value']=_0x2b92cf,_0x341082[_0x43dbe9(0x17d)]=_0x75b9b9['HVQcX'],_0x9bb369['classList'][_0x43dbe9(0x152)](_0x43dbe9(0x13b)),window[_0x43dbe9(0x1bd)](0x0,0x0);}function _0x500ca6(_0x26e42a){const _0x1488ae=_0x4ac3e9;_0x9da440=_0x26e42a,_0x4adee3[_0x1488ae(0x197)][_0x1488ae(0x152)](_0x75b9b9[_0x1488ae(0x207)]);}function _0x47be5f(){const _0x381afa=_0x4ac3e9;_0x9da440=null,_0x4adee3['classList'][_0x381afa(0x16b)](_0x75b9b9[_0x381afa(0x207)]);}function _0x503f73(){const _0x1fe6d4=_0x4ac3e9;if(_0x75b9b9['Brvxv']('yUyoK',_0x75b9b9['gFGbG']))_0x1534d2++;else{const _0x3aa60d=_0x75b9b9[_0x1fe6d4(0x162)][_0x1fe6d4(0x16e)]('|');let _0x5d8342=0x0;while(!![]){switch(_0x3aa60d[_0x5d8342++]){case'0':if(!_0x9da440)return;continue;case'1':_0x3fd783=_0x3fd783[_0x1fe6d4(0x213)](_0x414450=>_0x414450['id']!==_0x9da440);continue;case'2':_0x75b9b9[_0x1fe6d4(0x133)](_0x5a8f6f,_0x1fe6d4(0x196),_0x75b9b9[_0x1fe6d4(0x208)]);continue;case'3':_0x75b9b9[_0x1fe6d4(0x17e)](_0x5de413);continue;case'4':_0x75b9b9[_0x1fe6d4(0x166)](_0x47be5f);continue;}break;}}}function _0x64eaa(){const _0x3aeff0=_0x4ac3e9;'SIvCT'!==_0x75b9b9['rIoVj']?(_0x75b9b9[_0x3aeff0(0x1c9)](_0x17ad2b),_0x5d3c16['classList'][_0x3aeff0(0x16b)](_0x75b9b9[_0x3aeff0(0x207)])):(_0x154877[_0x3aeff0(0x197)][_0x3aeff0(0x16b)](_0x75b9b9[_0x3aeff0(0x207)]),_0x153907[_0x3aeff0(0x197)][_0x3aeff0(0x152)](_0x3aeff0(0x13b)));}function _0x199f9c(){const _0x100d07=_0x4ac3e9;_0x75b9b9[_0x100d07(0x1e8)](_0x75b9b9['vyySO'],_0x75b9b9['FTWKo'])?_0x153907[_0x100d07(0x197)][_0x100d07(0x16b)](_0x100d07(0x13b)):(_0x361b5b[_0x291a90]={..._0x3b60b2[_0x3583f0],..._0x29e027,'id':_0x5a8c28,'updated_at':_0x2e0410,'isDuplicate':![]},_0x75b9b9[_0x100d07(0x130)](_0x3baa9b,_0x75b9b9['qyFcH']));}function _0x45e1d0(){const _0x109a1e=_0x4ac3e9;_0x3fd783=[],_0x75b9b9[_0x109a1e(0x1b2)](_0x5de413),_0x199f9c(),_0x5a8f6f(_0x75b9b9[_0x109a1e(0x1a7)],_0x75b9b9['KvEwB']);}function _0x1c5b08(){const _0x1764d3=_0x4ac3e9;if(_0x75b9b9[_0x1764d3(0x1e8)](_0x75b9b9['xIzlq'],_0x1764d3(0x1e7)))_0x2a5b8b[_0x3a6ea3][_0x1764d3(0x1c7)]=_0x43adec[_0x209771]||'';else{_0x154877['classList']['add'](_0x75b9b9[_0x1764d3(0x207)]);const _0x3d5f6e=_0x3fd783[_0x1764d3(0x213)](_0x46a54a=>_0x46a54a[_0x1764d3(0x149)])['length'];if(_0x75b9b9['tiauZ'](_0x3d5f6e,0x0)){if(_0x75b9b9[_0x1764d3(0x1ba)](_0x1764d3(0x1d2),_0x75b9b9[_0x1764d3(0x209)])){_0x5a8f6f(_0x75b9b9[_0x1764d3(0x15e)],_0x75b9b9[_0x1764d3(0x208)]);return;}else _0x56a893[_0x1764d3(0x197)][_0x1764d3(0x16b)](_0x75b9b9[_0x1764d3(0x207)]),_0x28bfbc[_0x1764d3(0x197)][_0x1764d3(0x152)](_0x75b9b9['CWTuq']);}_0x29d069[_0x1764d3(0x197)][_0x1764d3(0x152)]('hidden');}}function _0xbc1faa(){const _0x2f07f6=_0x4ac3e9;_0x29d069[_0x2f07f6(0x197)][_0x2f07f6(0x16b)](_0x2f07f6(0x13b));}function _0x2e64fe(){const _0x4d95a3=_0x4ac3e9;if(_0x75b9b9['LETmi'](_0x75b9b9[_0x4d95a3(0x1d6)],_0x75b9b9[_0x4d95a3(0x15d)]))_0x75b9b9[_0x4d95a3(0x1e3)](_0xed0382,_0x28e78a),_0x2a6477[_0x4d95a3(0x197)][_0x4d95a3(0x16b)](_0x75b9b9[_0x4d95a3(0x207)]);else{const _0x1b8734=_0x3fd783[_0x4d95a3(0x194)];_0x3fd783=_0x3fd783[_0x4d95a3(0x213)](_0x310547=>!_0x310547[_0x4d95a3(0x149)]);const _0x24c80e=_0x75b9b9[_0x4d95a3(0x1df)](_0x1b8734,_0x3fd783[_0x4d95a3(0x194)]);_0x75b9b9['kJwQG'](_0x5de413),_0x75b9b9['coufx'](_0xbc1faa),_0x75b9b9[_0x4d95a3(0x133)](_0x5a8f6f,_0x4d95a3(0x1d3)+_0x24c80e+_0x4d95a3(0x1ec),_0x75b9b9[_0x4d95a3(0x208)]);}}function _0x597e33(_0x238179){const _0x36ac35=_0x4ac3e9,_0x477da0={'lNvei':_0x75b9b9['mmpgu'],'HNocY':_0x75b9b9[_0x36ac35(0x207)],'UgBRm':_0x75b9b9[_0x36ac35(0x1dd)],'kmiMf':_0x75b9b9[_0x36ac35(0x208)]},_0x49f63=_0x238179[_0x36ac35(0x14f)][_0x36ac35(0x1b5)][0x0];if(!_0x49f63)return;_0x3fd783=_0x3fd783['map'](_0x47dce3=>({..._0x47dce3,'isDuplicate':![]}));const _0x5979a7=new Set(_0x3fd783['map'](_0x510284=>_0x510284[_0x36ac35(0x144)]));Papa[_0x36ac35(0x201)](_0x49f63,{'header':!![],'skipEmptyLines':!![],'complete':_0x1c8363=>{const _0x534a3f=_0x36ac35;if(_0x534a3f(0x16f)===_0x75b9b9[_0x534a3f(0x1a0)]){let _0x185c42=0x0;const _0x38343c=_0x1c8363[_0x534a3f(0x20d)]['map'](_0x49a467=>{const _0x5825c3=_0x534a3f,_0x1263b8=_0x5979a7[_0x5825c3(0x216)](_0x49a467[_0x5825c3(0x144)]);return _0x1263b8&&_0x185c42++,{..._0x49a467,'id':_0x49a467['id']||crypto[_0x5825c3(0x203)](),'isDuplicate':_0x1263b8};});_0x3fd783=[..._0x38343c,..._0x3fd783],_0x75b9b9[_0x534a3f(0x1c9)](_0x5de413);let _0x2e306d='CSV\x20မှ\x20ဒေတာ\x20'+_0x38343c[_0x534a3f(0x194)]+_0x534a3f(0x1e0);_0x75b9b9[_0x534a3f(0x200)](_0x185c42,0x0)&&(_0x2e306d+='\x20('+_0x185c42+_0x534a3f(0x1d8)),_0x75b9b9[_0x534a3f(0x223)](_0x5a8f6f,_0x2e306d),_0x238179['target'][_0x534a3f(0x1c7)]=null;}else _0x1ef1ea[_0x534a3f(0x17d)]=_0x477da0['lNvei'],_0x219d5c[_0x534a3f(0x1c5)](),_0x54cb0e['value']='',_0x5515ac[_0x534a3f(0x197)][_0x534a3f(0x152)](_0x477da0['HNocY']);},'error':_0x4aa59d=>{const _0x596e29=_0x36ac35;console['error'](_0x477da0['UgBRm'],_0x4aa59d),_0x5a8f6f(_0x596e29(0x187),_0x477da0[_0x596e29(0x1b1)]);}});}function _0x281ce5(){const _0x101e81=_0x4ac3e9;if(_0x75b9b9[_0x101e81(0x202)](_0x3fd783[_0x101e81(0x194)],0x0)){if(_0x75b9b9[_0x101e81(0x1ad)](_0x101e81(0x219),_0x101e81(0x21f))){_0x5a8f6f(_0x75b9b9[_0x101e81(0x1bf)],_0x75b9b9[_0x101e81(0x208)]);return;}else{const _0x4c7052=_0x75b9b9['ERPjs'][_0x101e81(0x16e)]('|');let _0x78899e=0x0;while(!![]){switch(_0x4c7052[_0x78899e++]){case'0':if(!_0x398d27)return;continue;case'1':_0x4f7ebf=_0x2612a4[_0x101e81(0x213)](_0x58196c=>_0x58196c['id']!==_0x78808a);continue;case'2':_0x4712b2();continue;case'3':_0x75b9b9[_0x101e81(0x166)](_0x3065ee);continue;case'4':_0x75b9b9[_0x101e81(0x133)](_0x9286ad,_0x75b9b9[_0x101e81(0x1f4)],_0x101e81(0x1e6));continue;}break;}}}const _0x44cc5c=['id',..._0x3900dd,_0x75b9b9[_0x101e81(0x192)],_0x75b9b9[_0x101e81(0x1f9)]],_0x44c1fb=_0x3fd783[_0x101e81(0x1d5)](_0x4a07f9=>{const _0x30e3d8={};return _0x44cc5c['forEach'](_0x1a447f=>{_0x30e3d8[_0x1a447f]=_0x4a07f9[_0x1a447f]||'';}),_0x30e3d8;}),_0x1395ca=Papa[_0x101e81(0x145)](_0x44c1fb,{'columns':_0x44cc5c,'header':!![]}),_0x1a81c4=new Blob([_0x1395ca],{'type':_0x101e81(0x1d7)}),_0x42581c=document[_0x101e81(0x220)]('a'),_0x1974a1=URL[_0x101e81(0x190)](_0x1a81c4);_0x42581c[_0x101e81(0x150)](_0x75b9b9['jEjZG'],_0x1974a1),_0x42581c[_0x101e81(0x150)](_0x75b9b9[_0x101e81(0x1a9)],_0x101e81(0x204)),_0x42581c[_0x101e81(0x1af)][_0x101e81(0x15b)]=_0x75b9b9[_0x101e81(0x207)],document['body']['appendChild'](_0x42581c),_0x42581c[_0x101e81(0x16c)](),document[_0x101e81(0x215)][_0x101e81(0x1e5)](_0x42581c),_0x75b9b9[_0x101e81(0x195)](_0x5a8f6f,_0x75b9b9['ENYBW']);}function _0x5a8f6f(_0x286c23,_0x3500e6=_0x4ac3e9(0x1a8)){const _0x21f9fa=_0x4ac3e9,_0x2776c7={'Rbltq':function(_0x4d7ddb,_0x253534,_0xfd65f9){return _0x75b9b9['wYNWv'](_0x4d7ddb,_0x253534,_0xfd65f9);},'WGezf':_0x75b9b9[_0x21f9fa(0x21d)]};if(_0x75b9b9[_0x21f9fa(0x1a2)](_0x75b9b9[_0x21f9fa(0x138)],'VdIdZ')){_0xa387f3[_0x21f9fa(0x17d)]=_0x286c23,_0xa387f3['classList'][_0x21f9fa(0x152)](_0x75b9b9[_0x21f9fa(0x20e)],_0x75b9b9[_0x21f9fa(0x1eb)]);if(_0x75b9b9[_0x21f9fa(0x146)](_0x3500e6,_0x75b9b9[_0x21f9fa(0x208)]))_0xa387f3[_0x21f9fa(0x197)][_0x21f9fa(0x16b)](_0x75b9b9[_0x21f9fa(0x1eb)]);else{if(_0x75b9b9[_0x21f9fa(0x139)](_0x21f9fa(0x1e9),_0x75b9b9[_0x21f9fa(0x191)]))_0xa387f3[_0x21f9fa(0x197)][_0x21f9fa(0x16b)]('bg-green-600');else{_0x2776c7[_0x21f9fa(0x17c)](_0x42442d,_0x21f9fa(0x20a),_0x21f9fa(0x1e6));return;}}_0xa387f3['classList']['remove']('invisible',_0x75b9b9['nmRlV']),_0x75b9b9['wYNWv'](setTimeout,()=>{const _0x85c635=_0x21f9fa;_0xa387f3[_0x85c635(0x197)]['add']('invisible',_0x2776c7[_0x85c635(0x13d)]);},0xbb8);}else{const _0x26f6cf=_0x58dcee[_0x21f9fa(0x220)]('tr');_0x26f6cf[_0x21f9fa(0x157)]=_0x22ceea['isDuplicate']?_0x75b9b9['FleiO']:_0x75b9b9[_0x21f9fa(0x143)],_0x20362c['isDuplicate']&&(_0x26f6cf['title']=_0x75b9b9[_0x21f9fa(0x18c)]),_0x26f6cf[_0x21f9fa(0x148)]=_0x21f9fa(0x214)+_0x46d6e0['id']+'\x22>'+_0x44765e['id'][_0x21f9fa(0x16e)]('-')[0x0]+_0x21f9fa(0x17b)+_0x5c93fc['image']+'\x22\x20alt=\x22'+_0xf347af[_0x21f9fa(0x144)]+_0x21f9fa(0x1c2)+_0x26f071['title']+_0x21f9fa(0x153)+_0x597061[_0x21f9fa(0x21a)]+_0x21f9fa(0x153)+_0x49fef3[_0x21f9fa(0x13e)]+_0x21f9fa(0x173)+_0x785bc1[_0x21f9fa(0x14c)]+_0x21f9fa(0x153)+_0x34d9f2[_0x21f9fa(0x1f6)]+_0x21f9fa(0x153)+_0x4440b2[_0x21f9fa(0x198)]+_0x21f9fa(0x173)+_0x1becf8[_0x21f9fa(0x1a6)]+_0x21f9fa(0x153)+_0x4a70df[_0x21f9fa(0x1cc)]+_0x21f9fa(0x173)+_0x267b21[_0x21f9fa(0x181)]+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22px-4\x20py-3\x20whitespace-nowrap\x22>'+_0x39f0b7[_0x21f9fa(0x1c3)]+_0x21f9fa(0x1c8)+_0x4bd588['description']+'\x22>'+_0x176306[_0x21f9fa(0x20f)]+_0x21f9fa(0x173)+(_0x348098[_0x21f9fa(0x1b8)]?_0x1d1232[_0x21f9fa(0x1b8)][_0x21f9fa(0x16e)]('T')[0x0]:'')+_0x21f9fa(0x173)+(_0x1ae718[_0x21f9fa(0x18e)]?_0x14ab26[_0x21f9fa(0x18e)][_0x21f9fa(0x16e)]('T')[0x0]:'')+_0x21f9fa(0x19f)+_0x520f5b['id']+'\x22>ပြင်ဆင်ရန်</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22delete-btn\x20text-red-600\x20hover:text-red-900\x20font-medium\x22\x20data-id=\x22'+_0x3f9b81['id']+_0x21f9fa(0x1ea),_0x437640[_0x21f9fa(0x1e1)](_0x26f6cf);}}_0x18a6b3[_0x4ac3e9(0x17f)](_0x75b9b9[_0x4ac3e9(0x158)],_0x3028da),_0x158060['addEventListener'](_0x75b9b9[_0x4ac3e9(0x158)],_0x2e0247),_0xb2afbb[_0x4ac3e9(0x17f)](_0x75b9b9['wskFF'],_0x31894b),_0x2f2335[_0x4ac3e9(0x17f)](_0x75b9b9[_0x4ac3e9(0x158)],_0x14a7d2=>{const _0x14a3bc=_0x4ac3e9;_0x14a7d2[_0x14a3bc(0x221)](),_0x154877['classList'][_0x14a3bc(0x16b)](_0x14a3bc(0x13b)),_0x3cde88[_0x14a3bc(0x197)][_0x14a3bc(0x1db)]('hidden');}),_0x355c3a[_0x4ac3e9(0x17f)](_0x75b9b9[_0x4ac3e9(0x158)],_0x1b60cb=>{const _0x2caedf=_0x4ac3e9,_0x486f17={'GsESm':_0x75b9b9['CWTuq'],'qitzD':function(_0xb3a0f2,_0x1ef7f6,_0x62efd9){return _0x75b9b9['wYNWv'](_0xb3a0f2,_0x1ef7f6,_0x62efd9);},'YQSgp':_0x75b9b9['lHBNj'],'ZzYuD':_0x75b9b9[_0x2caedf(0x208)]};if(_0x75b9b9[_0x2caedf(0x19d)](_0x75b9b9[_0x2caedf(0x178)],_0x75b9b9[_0x2caedf(0x1bb)]))_0x1b60cb[_0x2caedf(0x221)](),_0x3cde88[_0x2caedf(0x197)][_0x2caedf(0x16b)](_0x75b9b9[_0x2caedf(0x207)]),_0x154877['classList'][_0x2caedf(0x1db)](_0x2caedf(0x13b));else{_0x2d588d[_0x2caedf(0x197)][_0x2caedf(0x16b)](_0x486f17['GsESm']);const _0x5e1021=_0x14327d['filter'](_0x40b225=>_0x40b225[_0x2caedf(0x149)])['length'];if(_0x5e1021===0x0){_0x486f17['qitzD'](_0x119fdf,_0x486f17[_0x2caedf(0x182)],_0x486f17[_0x2caedf(0x134)]);return;}_0xe863b3[_0x2caedf(0x197)][_0x2caedf(0x152)](_0x486f17[_0x2caedf(0x17a)]);}}),window[_0x4ac3e9(0x17f)](_0x75b9b9[_0x4ac3e9(0x158)],_0x2f7693=>{const _0x32c11f=_0x4ac3e9;!_0x3d3100[_0x32c11f(0x147)](_0x2f7693['target'])&&(_0x75b9b9['XlRoz'](_0x75b9b9['xHZUe'],_0x75b9b9[_0x32c11f(0x1b6)])?_0x3cde88[_0x32c11f(0x197)]['add'](_0x75b9b9[_0x32c11f(0x207)]):_0x21e6d7[_0x54e0a7]=_0x333a81[_0x3ceef8]||''),!_0x312a32['contains'](_0x2f7693['target'])&&_0x154877[_0x32c11f(0x197)]['add'](_0x32c11f(0x13b));}),_0x33b17b[_0x4ac3e9(0x17f)](_0x75b9b9[_0x4ac3e9(0x14d)],_0x44d022=>{const _0x3c2657=_0x4ac3e9;_0x597e33(_0x44d022),_0x3cde88[_0x3c2657(0x197)]['add'](_0x75b9b9['CWTuq']);}),_0x40a35e['addEventListener'](_0x75b9b9['wLwie'],()=>{const _0x4a32cd=_0x4ac3e9;'ZHvKt'===_0x75b9b9[_0x4a32cd(0x193)]?_0x5b57db[_0x4a32cd(0x197)][_0x4a32cd(0x16b)](_0x4a32cd(0x1ac)):(_0x281ce5(),_0x3cde88[_0x4a32cd(0x197)][_0x4a32cd(0x16b)](_0x75b9b9['CWTuq']));}),_0x2406ce[_0x4ac3e9(0x17f)]('click',_0x1c5b08),_0x5d76ca[_0x4ac3e9(0x17f)](_0x75b9b9[_0x4ac3e9(0x158)],_0x64eaa),_0x6573e9[_0x4ac3e9(0x17f)]('click',_0x47be5f),_0x1af2f2[_0x4ac3e9(0x17f)](_0x75b9b9[_0x4ac3e9(0x158)],_0x503f73),_0x2672b6[_0x4ac3e9(0x17f)](_0x75b9b9[_0x4ac3e9(0x158)],_0x199f9c),_0x5374e7['addEventListener'](_0x75b9b9[_0x4ac3e9(0x158)],_0x45e1d0),_0x418877[_0x4ac3e9(0x17f)](_0x4ac3e9(0x16c),_0xbc1faa),_0xa819e3[_0x4ac3e9(0x17f)](_0x75b9b9[_0x4ac3e9(0x158)],_0x2e64fe),_0x75b9b9[_0x4ac3e9(0x1b4)](_0x5de413);}));
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
