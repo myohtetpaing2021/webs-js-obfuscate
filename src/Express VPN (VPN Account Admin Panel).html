@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<!-- Dark mode ကို အမြဲတမ်း activate လုပ်ရန် class="dark" ထည့်ထားပါသည် -->
+<html lang="my" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VPN Account Admin Panel</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Padauk:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Padauk font ကို မြန်မာစာအတွက် အဓိကထား အသုံးပြုပါမယ် */
+        body {
+            font-family: 'Inter', 'Padauk', sans-serif;
+        }
+        /* Custom scrollbar for table (Dark mode) */
+        .table-container::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .table-container::-webkit-scrollbar-thumb {
+            background-color: #4b5563; /* dark:gray-600 */
+            border-radius: 10px;
+        }
+        .table-container::-webkit-scrollbar-track {
+            background-color: #1f2937; /* dark:gray-800 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 p-4 md:p-8">
+
+    <!-- Main Container -->
+    <div class="container mx-auto max-w-7xl bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4 sm:p-6 md:p-8">
+        
+        <!-- Header Section -->
+        <div class="border-b border-gray-200 dark:border-gray-700 pb-5 mb-6">
+            <!-- Responsive header text -->
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">VPN Account Admin Panel</h1>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">အကောင့်များကို စီမံခန့်ခွဲပါ၊ Import/Export လုပ်ပါ။</p>
+        </div>
+
+        <!-- Action Bar: Responsive (stacked on mobile, row on desktop) -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+            
+            <!-- Generate Button: w-full on mobile, w-auto on desktop -->
+            <div>
+                <button id="openGenerateModalBtn" class="flex w-full md:w-auto items-center justify-center gap-2 bg-blue-600 text-white px-5 py-2.5 rounded-lg shadow-md font-medium hover:bg-blue-700 transition duration-300 transform hover:-translate-y-0.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                    အကောင့်သစ်ဖန်တီးမည် (Generate)
+                </button>
+            </div>
+            
+            <!-- Right-side Buttons: w-full on mobile, justified-end -->
+            <div class="flex items-center gap-3 w-full md:w-auto justify-end">
+                <!-- Import/Export Dropdown -->
+                <div class="relative" id="importExportDropdown">
+                    <button id="dropdownBtn" class="flex items-center gap-2 bg-gray-700 dark:bg-gray-600 text-white px-5 py-2.5 rounded-lg shadow-md font-medium hover:bg-gray-800 dark:hover:bg-gray-500 transition duration-300">
+                        Import / Export
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <!-- Dropdown Menu (Dark) -->
+                    <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-56 bg-white dark:bg-gray-700 rounded-lg shadow-2xl z-10 overflow-hidden border border-gray-100 dark:border-gray-600">
+                        <!-- Import Button -->
+                        <label for="csvImport" class="flex items-center gap-3 w-full px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-t-lg cursor-pointer transition duration-150">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                            </svg>
+                            CSV Import လုပ်မည်
+                        </label>
+                        <input type="file" id="csvImport" class="hidden" accept=".csv">
+                        
+                        <!-- Export Button -->
+                        <button id="csvExport" class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-b-lg cursor-pointer transition duration-150 border-t border-gray-100 dark:border-gray-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 9.293a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                            CSV Export လုပ်မည်
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Settings Dropdown -->
+                <div class="relative" id="settingsDropdown">
+                    <button id="openSettingsBtn" class="p-2.5 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg shadow-md hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </button>
+                    <!-- Settings Dropdown Menu (Dark) -->
+                    <div id="settingsMenu" class="hidden absolute right-0 mt-2 w-56 bg-white dark:bg-gray-700 rounded-lg shadow-2xl z-10 overflow-hidden border border-gray-100 dark:border-gray-600">
+                        
+                        <!-- NEW Delete Duplicates Button -->
+                        <button id="deleteDuplicatesBtn" class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/50 rounded-t-lg cursor-pointer transition duration-150">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-6.857 2.143L12 21l-2.143-6.857L3 12l6.857-2.143L12 3z" />
+                            </svg>
+                            Duplicate Data ဖျက်မည်
+                        </button>
+
+                        <!-- Delete All Button (rounding class changed) -->
+                        <button id="deleteAllBtn" class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/50 rounded-b-lg cursor-pointer transition duration-150 border-t border-gray-100 dark:border-gray-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            </svg>
+                            Data အားလုံးဖျက်မည်
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Table Section (Dark) -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+            <!-- Responsive Table: Horizontal scroll on small screens -->
+            <div class="overflow-x-auto table-container rounded-t-lg">
+                <table class="w-full min-w-max">
+                    <thead class="bg-gray-50 dark:bg-gray-700">
+                        <tr>
+                            <th class="p-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">ID</th>
+                            <th class="p-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Username</th>
+                            <th class="p-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Password</th>
+                            <th class="p-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Activation Code</th>
+                            <th class="p-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Start Date</th>
+                            <th class="p-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Created At</th>
+                            <th class="p-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Updated At</th>
+                            <th class="p-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">လုပ်ဆောင်ချက်များ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="accountTableBody" class="divide-y divide-gray-200 dark:divide-gray-600">
+                        <!-- Empty State (Dark) -->
+                        <tr>
+                            <td colspan="8" class="p-6 text-center text-gray-500 dark:text-gray-400" id="emptyStateRow">
+                                Data မရှိသေးပါ။ CSV Import လုပ်ပါ သို့မဟုတ် အကောင့်သစ်ဖန်တီးပါ။
+                            </td>
+                        </tr>
+                        <!-- Account data rows will be injected here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Generate/Edit Account Modal (Dark) -->
+    <div id="generateModal" class="hidden fixed inset-0 bg-black bg-opacity-70 z-40 flex items-center justify-center p-4 transition-opacity duration-300">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95 opacity-0" id="modalContent">
+            <!-- Modal Header (Dark) -->
+            <div class="flex justify-between items-center p-5 border-b border-gray-200 dark:border-gray-700">
+                <h3 id="modalTitle" class="text-xl font-semibold text-gray-900 dark:text-white">အကောင့်သစ်ဖန်တီးမည်</h3>
+                <button id="closeModalBtn" class="text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition duration-150">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Modal Body: Form (Dark) -->
+            <form id="generateForm" class="p-6 space-y-4">
+                <!-- Username -->
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Username (Email)</label>
+                    <input type="email" id="username" name="username" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:placeholder-gray-400" placeholder="user@example.com" required>
+                </div>
+                
+                <!-- Password -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="password" name="password" class="flex-grow w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                        <button type="button" id="autoGenPassword" class="px-3 py-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-md hover:bg-gray-300 dark:hover:bg-gray-500">Auto</button>
+                    </div>
+                </div>
+
+                <!-- Activation Code -->
+                <div>
+                    <label for="activation_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Activation Code (Optional)</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="activation_code" name="activation_code" class="flex-grow w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <button type="button" id="autoGenCode" class="px-3 py-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-md hover:bg-gray-300 dark:hover:bg-gray-500">Auto</button>
+                    </div>
+                </div>
+
+                <!-- Start Date -->
+                <div>
+                    <label for="start_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Start Date (DD-MM-YYYY)</label>
+                    <input type="text" id="start_date" name="start_date" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:placeholder-gray-400" placeholder="DD-MM-YYYY" required>
+                </div>
+                
+                <!-- Modal Footer: Submit Button (Dark) -->
+                <div class="pt-4 border-t border-gray-200 dark:border-gray-700 mt-6">
+                    <button type="submit" id="modalSubmitBtn" class="w-full bg-blue-600 text-white px-5 py-2.5 rounded-lg shadow font-medium hover:bg-blue-700 transition duration-300">
+                        ဖန်တီးမည် (Create Account)
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete All Confirmation Modal (Dark) -->
+    <div id="confirmDeleteModal" class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 transition-opacity duration-300">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-2xl w-full max-w-md p-6 transform transition-all duration-300 scale-95 opacity-0" id="confirmModalContent">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">အတည်ပြုပါ</h3>
+            <p class="mt-2 text-gray-600 dark:text-gray-300">Data အားလုံးကို ဖျက်မှာ သေချာပါသလား? ဤလုပ်ဆောင်ချက်ကို နောက်ပြန်ပြင်၍ ရနိုင်တော့မည် မဟုတ်ပါ။</p>
+            <div class="mt-6 flex justify-end gap-3">
+                <button id="cancelDeleteBtn" class="px-5 py-2 bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-100 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 font-medium transition duration-150">
+                    မလုပ်တော့ပါ
+                </button>
+                <button id="confirmDeleteBtn" class="px-5 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium transition duration-150">
+                    သေချာသည်၊ ဖျက်မည်
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Custom Message Box -->
+    <div id="messageBox" class="hidden fixed bottom-5 right-5 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 transform translate-y-10 opacity-0">
+        <span id="messageText"></span>
+    </div>
+
+
+    <script>
+        // --- Global State ---
+        let accountsData = [];
+        let editingAccountId = null; // Edit mode အတွက် ID ကို မှတ်ထားရန်
+
+        // --- DOM Elements ---
+        const tableBody = document.getElementById('accountTableBody');
+        const emptyStateRow = document.getElementById('emptyStateRow');
+        
+        // Modal elements
+        const openModalBtn = document.getElementById('openGenerateModalBtn');
+        const modal = document.getElementById('generateModal');
+        const modalContent = document.getElementById('modalContent');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalSubmitBtn = document.getElementById('modalSubmitBtn');
+        
+        // Form elements
+        const generateForm = document.getElementById('generateForm');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const codeInput = document.getElementById('activation_code');
+        const dateInput = document.getElementById('start_date');
+        const autoGenPasswordBtn = document.getElementById('autoGenPassword');
+        const autoGenCodeBtn = document.getElementById('autoGenCode');
+
+        // Import/Export elements
+        const dropdownBtn = document.getElementById('dropdownBtn');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const importInput = document.getElementById('csvImport');
+        const exportBtn = document.getElementById('csvExport');
+
+        // Settings elements
+        const openSettingsBtn = document.getElementById('openSettingsBtn');
+        const settingsMenu = document.getElementById('settingsMenu');
+        const deleteAllBtn = document.getElementById('deleteAllBtn');
+        const deleteDuplicatesBtn = document.getElementById('deleteDuplicatesBtn'); // NEW
+
+        // Delete All Modal elements
+        const confirmDeleteModal = document.getElementById('confirmDeleteModal');
+        const confirmModalContent = document.getElementById('confirmModalContent');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+        // Message box elements
+        const messageBox = document.getElementById('messageBox');
+        const messageText = document.getElementById('messageText');
+
+        // --- Utility Functions ---
+
+        function generateRandomString(length, isUpper = false) {
+            let chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            if (isUpper) {
+                chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            }
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        function getTodayDate() {
+            const today = new Date();
+            const d = String(today.getDate()).padStart(2, '0');
+            const m = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            const y = today.getFullYear();
+            return `${d}-${m}-${y}`;
+        }
+
+        function showMessage(message, isError = false) {
+            messageText.innerText = message;
+            messageBox.classList.remove(isError ? 'bg-green-600' : 'bg-red-600');
+            messageBox.classList.add(isError ? 'bg-red-600' : 'bg-green-600');
+            messageBox.classList.remove('hidden', 'translate-y-10', 'opacity-0');
+
+            setTimeout(() => {
+                messageBox.classList.add('translate-y-10', 'opacity-0');
+                setTimeout(() => messageBox.classList.add('hidden'), 300);
+            }, 3000);
+        }
+
+        /**
+         * *** NEW: Helper function to check all data for duplicates ***
+         * username တူနေတဲ့ data တွေ အားလုံးကို ရှာပြီး isDuplicate = true လို့ set လုပ်ပါမယ်။
+         */
+        function updateDuplicateFlags() {
+            const usernameCounts = new Map();
+            // username တစ်ခုချင်းစီ ဘယ်နှခါ ပါလဲ ရေတွက်ပါ
+            for (const account of accountsData) {
+                if (account.username) {
+                    usernameCounts.set(account.username, (usernameCounts.get(account.username) || 0) + 1);
+                }
+            }
+            
+            // duplicate flag ကို သတ်မှတ်ပါ
+            for (const account of accountsData) {
+                if (account.username && usernameCounts.get(account.username) > 1) {
+                    account.isDuplicate = true;
+                } else {
+                    account.isDuplicate = false;
+                }
+            }
+        }
+
+        /**
+         * accountsData array ကို အခြေခံပြီး table ကို ပြန်လည်ရေးဆွဲပါမည်။
+         */
+        function renderTable() {
+            tableBody.innerHTML = '';
+
+            if (accountsData.length === 0) {
+                tableBody.appendChild(emptyStateRow);
+                return;
+            }
+
+            accountsData.forEach(account => {
+                const tr = document.createElement('tr');
+                
+                // *** CHANGE: duplicate ဖြစ်နေရင် row ကို အရောင်ခြယ်ပါ ***
+                let rowClass = 'hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-150';
+                if (account.isDuplicate) {
+                    rowClass += ' bg-yellow-400/30 dark:bg-yellow-600/40'; // Warning color
+                }
+                tr.className = rowClass;
+                
+                tr.innerHTML = `
+                    <td class="p-4 text-sm text-gray-800 dark:text-gray-100 font-medium">${account.id || '-'}</td>
+                    <td class="p-4 text-sm text-gray-600 dark:text-gray-300">${account.username || '-'}</td>
+                    <td class="p-4 text-sm text-gray-600 dark:text-gray-300">${account.password || '-'}</td>
+                    <td class="p-4 text-sm text-gray-600 dark:text-gray-300 font-mono">${account.activation_code || '-'}</td>
+                    <td class="p-4 text-sm text-gray-600 dark:text-gray-300">${account.start_date || '-'}</td>
+                    <td class="p-4 text-sm text-gray-600 dark:text-gray-300">${account.created_at ? new Date(account.created_at).toLocaleString('en-GB') : '-'}</td>
+                    <td class="p-4 text-sm text-gray-600 dark:text-gray-300">${account.updated_at ? new Date(account.updated_at).toLocaleString('en-GB') : '-'}</td>
+                    <td class="p-4 text-sm whitespace-nowrap space-x-3">
+                        <button class="edit-btn text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium" data-id="${account.id}">
+                            ပြင်ဆင်မည်
+                        </button>
+                        <button class="delete-btn text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 font-medium" data-id="${account.id}">
+                            ဖျက်မည်
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+        
+        // --- Event Listeners ---
+
+        document.addEventListener('DOMContentLoaded', renderTable);
+
+        // --- Dropdowns Logic (Import/Export & Settings) ---
+        dropdownBtn.addEventListener('click', () => {
+            dropdownMenu.classList.toggle('hidden');
+            settingsMenu.classList.add('hidden'); // Settings ကို ပိတ်ပါ
+        });
+        
+        openSettingsBtn.addEventListener('click', () => {
+            settingsMenu.classList.toggle('hidden');
+            dropdownMenu.classList.add('hidden'); // Import/Export ကို ပိတ်ပါ
+        });
+
+        // dropdown အပြင်ကို နှိပ်လျှင် dropdown များကို ပိတ်မည်
+        window.addEventListener('click', (e) => {
+            if (!document.getElementById('importExportDropdown').contains(e.target)) {
+                dropdownMenu.classList.add('hidden');
+            }
+            if (!document.getElementById('settingsDropdown').contains(e.target)) {
+                settingsMenu.classList.add('hidden');
+            }
+        });
+
+        // --- Generate/Edit Modal Logic ---
+        function openModal() {
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+            }, 10);
+        }
+
+        function closeModal() {
+            modalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+            editingAccountId = null; // Modal ပိတ်တိုင်း editing ID ကို reset လုပ်ပါ
+        }
+
+        // "Generate" button click
+        openModalBtn.addEventListener('click', () => {
+            editingAccountId = null; // Create mode
+            modalTitle.innerText = 'အကောင့်သစ်ဖန်တီးမည်';
+            modalSubmitBtn.innerText = 'ဖန်တီးမည် (Create Account)';
+            
+            generateForm.reset();
+            dateInput.value = getTodayDate(); // ယနေ့ရက်စွဲကို auto ဖြည့်ပါ
+            openModal();
+        });
+
+        closeModalBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // --- Generator Buttons ---
+        autoGenPasswordBtn.addEventListener('click', () => {
+            passwordInput.value = generateRandomString(8);
+        });
+
+        autoGenCodeBtn.addEventListener('click', () => {
+            let code = `${generateRandomString(4, true)}-${generateRandomString(4, true)}-${generateRandomString(4, true)}-${generateRandomString(4, true)}`;
+            codeInput.value = code;
+        });
+
+        // --- Form Submit (Create or Edit) ---
+        generateForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(generateForm);
+            const now = new Date().toISOString();
+
+            if (editingAccountId) {
+                // --- Edit Mode ---
+                const accountIndex = accountsData.findIndex(a => a.id == editingAccountId);
+                if (accountIndex > -1) {
+                    accountsData[accountIndex].username = formData.get('username');
+                    accountsData[accountIndex].password = formData.get('password');
+                    accountsData[accountIndex].activation_code = formData.get('activation_code');
+                    accountsData[accountIndex].start_date = formData.get('start_date');
+                    accountsData[accountIndex].updated_at = now;
+                    
+                    showMessage('အကောင့်ကို ပြင်ဆင်ပြီးပါပြီ။', false);
+                }
+            } else {
+                // --- Create Mode ---
+                // *** CHANGE: ID အစဉ်လိုက် သတ်မှတ်ပါ ***
+                const newId = accountsData.length > 0 
+                    ? Math.max(...accountsData.map(a => parseInt(a.id) || 0)) + 1 
+                    : 1;
+
+                const newAccount = {
+                    id: newId,
+                    username: formData.get('username'),
+                    password: formData.get('password'),
+                    activation_code: formData.get('activation_code'),
+                    start_date: formData.get('start_date'),
+                    created_at: now,
+                    updated_at: now
+                    // isDuplicate flag ကို updateDuplicateFlags() က စီမံပါလိမ့်မယ်
+                };
+                
+                accountsData.push(newAccount);
+                showMessage('အကောင့်သစ် ဖန်တီးပြီးပါပြီ။', false);
+            }
+            
+            // *** NEW: Data အားလုံးကို duplicate ပြန်စစ်ပါ ***
+            updateDuplicateFlags();
+            renderTable();
+            closeModal();
+        });
+
+        // --- CSV Import Logic ---
+        importInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const text = e.target.result;
+                    const rows = text.split('\n').filter(row => row.trim() !== '');
+                    if (rows.length < 2) throw new Error('CSV file တွင် data မရှိပါ သို့မဟုတ် header မပါရှိပါ။');
+                    
+                    const headers = rows[0].trim().split(',').map(h => h.trim());
+                    
+                    const newlyImportedData = []; 
+                    
+                    // *** NEW: ID အစဉ်လိုက် သတ်မှတ်ရန် လက်ရှိအကြီးဆုံး ID ကို ယူပါ ***
+                    let highestId = accountsData.length > 0 
+                        ? Math.max(...accountsData.map(a => parseInt(a.id) || 0)) 
+                        : 0;
+                    
+                    for (let i = 1; i < rows.length; i++) {
+                        const values = rows[i].trim().split(',');
+                        const account = {};
+                        headers.forEach((header, index) => {
+                            // CSV က id ကို မယူပါ
+                            if (header !== 'id') {
+                                account[header] = values[index] ? values[index].trim() : '';
+                            }
+                        });
+                        
+                        // *** NEW: ID အသစ် အစဉ်လိုက် တပ်ပါ ***
+                        highestId++;
+                        account.id = highestId;
+
+                        newlyImportedData.push(account);
+                    }
+                    
+                    // လက်ရှိ data ထဲကို data အသစ်တွေ ပေါင်းထည့်ပါ (append)
+                    accountsData.push(...newlyImportedData);
+                    
+                    // *** NEW: Data အားလုံးကို duplicate ပြန်စစ်ပါ ***
+                    updateDuplicateFlags();
+                    renderTable();
+                    
+                    showMessage(`CSV file မှ data ${newlyImportedData.length} ခု ထပ်ပေါင်းထည့်ပြီးပါပြီ။`, false);
+
+                } catch (error) {
+                    console.error('CSV Import Error:', error);
+                    showMessage(`CSV Import လုပ်ရာတွင် အမှားအယွင်း ဖြစ်ပွားပါသည်: ${error.message}`, true);
+                } finally {
+                    event.target.value = null;
+                    dropdownMenu.classList.add('hidden');
+                }
+            };
+            reader.onerror = () => showMessage('File ကို ဖတ်မရပါ။', true);
+            reader.readAsText(file);
+        });
+
+        // --- CSV Export Logic ---
+        exportBtn.addEventListener('click', () => {
+            if (accountsData.length === 0) {
+                showMessage('Export လုပ်ရန် data မရှိပါ။', true);
+                return;
+            }
+            try {
+                // Export လုပ်မည့် column များကို သတ်မှတ်ပါ (user တောင်းဆိုသည့်အတိုင်း)
+                const headers = ['id', 'username', 'password', 'activation_code', 'start_date'];
+                
+                let csvContent = headers.join(',') + '\n';
+                
+                accountsData.forEach(account => {
+                    const row = headers.map(header => {
+                        let value = account[header] || '';
+                        if (typeof value === 'string' && value.includes(',')) return `"${value}"`;
+                        return value;
+                    });
+                    csvContent += row.join(',') + '\n';
+                });
+                
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', 'vpn_accounts_export.csv');
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showMessage('CSV Export လုပ်ပြီးပါပြီ။', false);
+            } catch (error) {
+                console.error('CSV Export Error:', error);
+                showMessage('CSV Export လုပ်ရာတွင် အမှားအယွင်း ဖြစ်ပွားပါသည်။', true);
+            } finally {
+                dropdownMenu.classList.add('hidden');
+            }
+        });
+        
+        // --- Table Actions (Delete & Edit) ---
+        tableBody.addEventListener('click', (e) => {
+            const deleteButton = e.target.closest('.delete-btn');
+            const editButton = e.target.closest('.edit-btn');
+
+            if (deleteButton) {
+                const idToDelete = deleteButton.dataset.id;
+                accountsData = accountsData.filter(account => account.id != idToDelete);
+                
+                // *** NEW: Data အားလုံးကို duplicate ပြန်စစ်ပါ ***
+                updateDuplicateFlags();
+                renderTable();
+                showMessage(`ID ${idToDelete} ကို ဖျက်လိုက်ပါပြီ။`, true);
+            }
+
+            if (editButton) {
+                const idToEdit = editButton.dataset.id;
+                const account = accountsData.find(a => a.id == idToEdit);
+                
+                if (account) {
+                    editingAccountId = idToEdit; // Set edit mode
+                    
+                    // Populate form
+                    usernameInput.value = account.username;
+                    passwordInput.value = account.password;
+                    codeInput.value = account.activation_code;
+                    dateInput.value = account.start_date;
+                    
+                    // Update modal UI
+                    modalTitle.innerText = 'အကောင့် ပြင်ဆင်မည်';
+                    modalSubmitBtn.innerText = 'သိမ်းဆည်းမည် (Save Changes)';
+                    
+                    openModal();
+                }
+            }
+        });
+
+        // *** NEW: Delete Duplicates Logic ***
+        deleteDuplicatesBtn.addEventListener('click', () => {
+            settingsMenu.classList.add('hidden'); // Dropdown ကို ပိတ်ပါ
+            
+            const originalCount = accountsData.length;
+            
+            // Duplicate ရှိမရှိ အရင်စစ်ပါ
+            const hasDuplicates = accountsData.some(account => account.isDuplicate);
+
+            if (!hasDuplicates) {
+                showMessage('Duplicate data မရှိပါ။', false);
+                return;
+            }
+
+            const seenUsernames = new Set();
+            
+            // Filter logic: ပထမဆုံးတွေ့တဲ့ username ကို ချန်ပြီး၊ နောက်ထပ်တွေ့တာတွေကို ဖျက်ပါ
+            accountsData = accountsData.filter(account => {
+                // username မရှိရင် အမြဲချန်ထားပါ
+                if (!account.username || account.username.trim() === '') {
+                    return true; 
+                }
+                
+                if (!seenUsernames.has(account.username)) {
+                    seenUsernames.add(account.username);
+                    return true; // ပထမဆုံးတစ်ခုကို ချန်ပါ
+                }
+                
+                return false; // Duplicate ကို ဖယ်ထုတ် (ဖျက်) ပါ
+            });
+
+            const deletedCount = originalCount - accountsData.length;
+
+            if (deletedCount > 0) {
+                // Duplicates တွေ ဖျက်ပြီးပါက duplicate flag တွေကို ပြန်စစ်ပါ (ဒါမှ အဝါရောင်တွေ ပျောက်ပါမယ်)
+                updateDuplicateFlags(); 
+                renderTable();
+                showMessage(`Duplicate data ${deletedCount} ခုကို ဖျက်လိုက်ပါပြီ။`, false);
+            }
+            // else case ကို hasDuplicates check မှာ ဖမ်းထားပြီးသား
+        });
+
+
+        // --- Delete All Logic ---
+        deleteAllBtn.addEventListener('click', () => {
+            settingsMenu.classList.add('hidden'); // Dropdown ကို ပိတ်ပါ
+            if (accountsData.length === 0) {
+                showMessage('ဖျက်ရန် Data မရှိပါ။', true);
+                return;
+            }
+            // Confirmation modal ကို ဖွင့်ပါ
+            confirmDeleteModal.classList.remove('hidden');
+            setTimeout(() => {
+                confirmModalContent.classList.remove('scale-95', 'opacity-0');
+            }, 10);
+        });
+
+        cancelDeleteBtn.addEventListener('click', () => {
+            // Confirmation modal ကို ပိတ်ပါ
+            confirmModalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                confirmDeleteModal.classList.add('hidden');
+            }, 300);
+        });
+
+        confirmDeleteBtn.addEventListener('click', () => {
+            // Data အားလုံးကို ဖျက်ပါ
+            accountsData = [];
+            
+            // *** NEW: Data မရှိတော့သဖြင့် duplicate check မလိုသော်လည်း renderTable() ခေါ်ပါမည် ***
+            // updateDuplicateFlags(); // မလိုပါ
+            renderTable();
+            
+            // Confirmation modal ကို ပိတ်ပါ
+            confirmModalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                confirmDeleteModal.classList.add('hidden');
+            }, 300);
+            
+            showMessage('Data အားလုံးကို ဖျက်လိုက်ပါပြီ။', true);
+        });
+
+    </script>
+
+</body>
+</html>
+
+
+
