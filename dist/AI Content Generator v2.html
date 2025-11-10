@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Myanmar AI Content Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Padauk', 'Inter', sans-serif;
+            background-color: #111827;
+            color: #d1d5db;
+        }
+        .form-select, .form-input, .form-textarea {
+            background-color: #1f2937;
+            border-color: #4b5563;
+            color: #d1d5db;
+            border-radius: 0.5rem;
+        }
+        .form-select:focus, .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px #3b82f6;
+        }
+        .glassmorphism {
+            background: rgba(31, 41, 55, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+        }
+        .loader {
+            border: 4px solid #4b5563;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .action-btn {
+            background-color: #4b5563;
+            color: #d1d5db;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s, opacity 0.3s;
+        }
+        .action-btn:hover:not(:disabled) {
+            background-color: #6b7280;
+        }
+        .action-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .action-btn.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        #output[contenteditable="true"] {
+            outline: 2px solid #3b82f6;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            margin: -0.5rem; /* to offset padding */
+        }
+        .tab-btn {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+        }
+        .history-item, .bot-item {
+            padding: 0.75rem;
+            background-color: rgba(75, 85, 99, 0.2);
+            border-radius: 0.5rem;
+            border: 1px solid #4b5563;
+            transition: background-color 0.3s;
+        }
+        .history-item:hover, .bot-item:hover {
+            background-color: rgba(75, 85, 99, 0.4);
+        }
+        .bot-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .history-item {
+            cursor: pointer;
+        }
+        .small-btn {
+            background-color: #4b5563;
+            color: #d1d5db;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            transition: background-color 0.3s;
+        }
+        .small-btn:hover {
+            background-color: #6b7280;
+        }
+        .small-btn.danger {
+            background-color: #dc2626;
+            color: white;
+        }
+        .small-btn.danger:hover {
+            background-color: #ef4444;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <main class="w-full max-w-7xl mx-auto">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-white">AI Content Generator</h1>
+            <p class="text-gray-400 mt-2">သင့်ရဲ့ Content Marketing အတွက် အားလုံး တစ်နေရာတည်းမှာ</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Input Form Section -->
+            <div class="glassmorphism p-6 space-y-4">
+                <h2 class="text-2xl font-bold text-white border-b border-gray-600 pb-2">အချက်အလက်များဖြည့်သွင်းပါ</h2>
+                
+                <div id="botSelectorContainer">
+                    <label for="botSelector" class="block mb-2 text-sm font-medium">AI Bot ကိုရွေးပါ</label>
+                    <select id="botSelector" class="form-select w-full p-2.5">
+                        <option value="default">Default Content Generator</option>
+                        <!-- Custom bots will be loaded here -->
+                    </select>
+                </div>
+
+                <div id="contentNameContainer">
+                    <label for="contentName" class="block mb-2 text-sm font-medium">အကြောင်းအရာအမည် (မှတ်တမ်းအတွက်)</label>
+                    <input type="text" id="contentName" class="form-input w-full p-2.5" placeholder="ဥပမာ - AI နည်းပညာရဲ့ အနာဂတ်">
+                </div>
+                
+                <div id="contentDetailsContainer">
+                    <label for="contentDetails" class="block mb-2 text-sm font-medium">Content အကြောင်းအရာထည့်ပါ</label>
+                    <textarea id="contentDetails" rows="4" class="form-textarea w-full p-2.5" placeholder="Content ရဲ့ အဓိကရည်ရွယ်ချက်၊ Key points တွေထည့်ပါ"></textarea>
+                </div>
+
+                <!-- Wrapper for default generator fields -->
+                <div id="defaultFieldsWrapper" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="platform" class="block mb-2 text-sm font-medium">ပလက်ဖောင်း (Platform)</label>
+                            <select id="platform" class="form-select w-full p-2.5">
+                                <option>Facebook Post</option>
+                                <option>Instagram Post</option>
+                                <option>Telegram Post</option>
+                                <option>Twitter (X) Post</option>
+                                <option>LinkedIn Post</option>
+                                <option>Tiktok Caption</option>
+                                <option>YouTube Community Post</option>
+                                <option>Pinterest Post</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="audience" class="block mb-2 text-sm font-medium">Target Audience</label>
+                            <select id="audience" class="form-select w-full p-2.5">
+                                <option>General Audience (Myanmar)</option>
+                                <option>Student (Myanmar)</option>
+                                <option>Entrepreneurs (Myanmar)</option>
+                                <option>Tech Enthusiasts (Myanmar)</option>
+                                <option>Business Professionals (Myanmar)</option>
+                                <option>Investors (Myanmar)</option>
+                                <option>Lifestyle & Health Audience (Myanmar)</option>
+                                <option>General Audience (International)</option>
+                                <option>Tech Audience (Global)</option>
+                                <option>Investors (SEA)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="category" class="block mb-2 text-sm font-medium">Topic Category</label>
+                            <select id="category" class="form-select w-full p-2.5">
+                                <option>2D Cartoon Animation</option>
+                                <option>360 Degree Video</option>
+                                <option>3D Mechanical Animation</option>
+                                <option>Abstract</option>
+                                <option>Adventure</option>
+                                <option>Anime</option>
+                                <option>Animated Infographic</option>
+                                <option>Animated Stick Figures</option>
+                                <option>ASMR</option>
+                                <option>Avant-grade</option>
+                                <option>Beauty Tutorial</option>
+                                <option>Biopic</option>
+                                <option>Brand Film</option>
+                                <option>Business & Entrepreneurship</option>
+                                <option>Chalkboard</option>
+                                <option>Cinematic</option>
+                                <option>Cinemagraph</option>
+                                <option>Claymation</option>
+                                <option>Collage Animation</option>
+                                <option>Comedy</option>
+                                <option>Concept</option>
+                                <option>Cooking Show</option>
+                                <option>Corporate</option>
+                                <option>Crime</option>
+                                <option>Culture & Society</option>
+                                <option>Dance Video</option>
+                                <option>Digital Cutout Animation</option>
+                                <option>Documentary</option>
+                                <option>Drone Footage</option>
+                                <option>E-commerce & Shopping</option>
+                                <option>Education</option>
+                                <option>Entertainment</option>
+                                <option>Experimental</option>
+                                <option>Explainer</option>
+                                <option>Fantasy</option>
+                                <option>Fashion</option>
+                                <option>Film Noir</option>
+                                <option>Fitness Video</option>
+                                <option>Flipbook Animation</option>
+                                <option>Food & Cooking</option>
+                                <option>Found Footage</option>
+                                <option>Futuristic</option>
+                                <option>Gaming</option>
+                                <option>Gothic</option>
+                                <option>Hand-drawn</option>
+                                <option>Health & Fitness</option>
+                                <option>Historical</option>
+                                <option>Horror</option>
+                                <option>How-to</option>
+                                <option>Hybrid 2D/3D</option>
+                                <option>Hyperlapse</option>
+                                <option>Interview</option>
+                                <option>Investing</option>
+                                <option>Kinetic Typography</option>
+                                <option>Lifestyle</option>
+                                <option>Line Art Animation</option>
+                                <option>Live Stream</option>
+                                <option>Live-Animated Video</option>
+                                <option>Lyric Video</option>
+                                <option>Marketing & Branding</option>
+                                <option>Minimalist</option>
+                                <option>Mixed Media</option>
+                                <option>Motion Capture</option>
+                                <option>Motion Graphic Animation</option>
+                                <option>Motivation & Inspiration</option>
+                                <option>Musical</option>
+                                <option>Music Video</option>
+                                <option>Mystery</option>
+                                <option>Narrative</option>
+                                <option>Nature</option>
+                                <option>News & Current Affairs (Myanmar)</option>
+                                <option>Paper Cutout Animation</option>
+                                <option>Parody</option>
+                                <option>Performance</option>
+                                <option>Photo Animation</option>
+                                <option>Pixel Art</option>
+                                <option>Product Review</option>
+                                <option>Product Showcase</option>
+                                <option>Promo</option>
+                                <option>Psychedelic</option>
+                                <option>Romantic</option>
+                                <option>Rotoscope</option>
+                                <option>Satire</option>
+                                <option>Sci-fi</option>
+                                <option>Screencast Animation</option>
+                                <option>Silhouette Animation</option>
+                                <option>Silent Film</option>
+                                <option>Slow Motion</option>
+                                <option>Social Media Story</option>
+                                <option>Sports</option>
+                                <option>Sports Documentary</option>
+                                <option>Steampunk</option>
+                                <option>Stop Motion</option>
+                                <option>Stop Motion Animation</option>
+                                <option>Surreal</option>
+                                <option>Tech Review</option>
+                                <option>Technology</option>
+                                <option>Testimonial</option>
+                                <option>Thriller</option>
+                                <option>Time-lapse</option>
+                                <option>Trailer</option>
+                                <option>Training Video</option>
+                                <option>Travel</option>
+                                <option>Travelogue</option>
+                                <option>Unboxing</option>
+                                <option>Vintage</option>
+                                <option>Vlog</option>
+                                <option>VR (Virtual Reality)</option>
+                                <option>War</option>
+                                <option>Webinar</option>
+                                <option>Western</option>
+                                <option>Whiteboard Animation</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="contentType" class="block mb-2 text-sm font-medium">အကြောင်းအရာအမျိုးအစား</label>
+                            <select id="contentType" class="form-select w-full p-2.5">
+                                <option>ဆိုရှယ်မီဒီယာပို့စ် (Social Media Post)</option>
+                                <option>ကြော်ငြာစာသား (Ad Copy)</option>
+                                <option>ဘလော့ပိုစ် (Blog Post)</option>
+                                <option>ဆောင်းပါး (Article)</option>
+                                <option>အီးမေးလ် (Email)</option>
+                                <option>ကဗျာ (Poem)</option>
+                                <option>ဇာတ်လမ်းတို (Short Story)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="language" class="block mb-2 text-sm font-medium">ဘာသာစကား</label>
+                        <select id="language" class="form-select w-full p-2.5">
+                            <option>Burmese</option>
+                            <option>English</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="moreInfo" class="block mb-2 text-sm font-medium">အသေးစိတ်အချက်အလက်များ (ကုန်ကြမ်း)</label>
+                        <textarea id="moreInfo" rows="4" class="form-textarea w-full p-2.5" placeholder="Keywords, links, statistics (or) အခြားထည့်သွင်းလိုသော အချက်အလက်များ"></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="tone" class="block mb-2 text-sm font-medium">Tone</label>
+                            <select id="tone" class="form-select w-full p-2.5">
+                                <option>Analytical</option>
+                                <option>Authoritative / Confident</option>
+                                <option>Calm & Reassuring</option>
+                                <option>Casual</option>
+                                <option>Casual & Conversational</option>
+                                <option>Conversational</option>
+                                <option>Creative</option>
+                                <option>Descriptive / Visual</option>
+                                <option>Dramatic & Theatrical</option>
+                                <option>Educational</option>
+                                <option>Emotional</option>
+                                <option>Empathetic / Caring</option>
+                                <option>Formal</option>
+                                <option>Formal & Professional</option>
+                                <option>Friendly</option>
+                                <option>Humorous / Funny</option>
+                                <option>Humorous & Lighthearted</option>
+                                <option>Informal</option>
+                                <option>Inspirational</option>
+                                <option>Inspiring & Uplifting</option>
+                                <option>Luxury</option>
+                                <option>Minimalist & Crisp</option>
+                                <option>Motivational / Encouraging</option>
+                                <option>Mysterious & Suspenseful</option>
+                                <option>Neutral</option>
+                                <option>Nostalgic & Reflective</option>
+                                <option>Objective & Neutral</option>
+                                <option>Optimistic & Hopeful</option>
+                                <option>Pessimistic & Cynical</option>
+                                <option>Persuasive</option>
+                                <option>Playful</option>
+                                <option>Playful & Witty</option>
+                                <option>Professional</option>
+                                <option>Quirky & Offbeat</option>
+                                <option>Romantic</option>
+                                <option>Romantic & Passionate</option>
+                                <option>Sarcastic / Witty</option>
+                                <option>Serious</option>
+                                <option>Serious & Grave</option>
+                                <option>Sincere & Heartfelt</option>
+                                <option>Storytelling</option>
+                                <option>Technical</option>
+                                <option>Urgent</option>
+                                <option>Urgent & Direct</option>
+                                <option>Warm & Empathetic</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="length" class="block mb-2 text-sm font-medium">Length</label>
+                            <select id="length" class="form-select w-full p-2.5">
+                                <option>Very Short (1-70 words)</option>
+                                <option>Short (70-150 words)</option>
+                                <option>Medium (150-250 words)</option>
+                                <option>Long (250-500 words)</option>
+                                <option>Very Long (500+ words)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="autoTranslate" class="block mb-2 text-sm font-medium">Auto-translate to (Optional)</label>
+                        <select id="autoTranslate" class="form-select w-full p-2.5">
+                            <option>Keep Original</option>
+                            <option>Burmese</option>
+                            <option>English</option>
+                            <option>Thai</option>
+                            <option>Chinese</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- End of wrapper -->
+
+                <button id="generateBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center">
+                    <svg id="generateIcon" class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                    <span>Content ဖန်တီးမည်</span>
+                </button>
+            </div>
+
+            <!-- Output Section -->
+            <div id="output-container" class="glassmorphism p-6 flex flex-col">
+                <!-- Tabs -->
+                <div class="flex border-b border-gray-600 mb-4">
+                    <button id="contentTab" class="tab-btn active">လက်ရှိအကြောင်းအရာ</button>
+                    <button id="historyTab" class="tab-btn">မှတ်တမ်း</button>
+                    <button id="botsTab" class="tab-btn">Custom Bots</button>
+                </div>
+
+                <!-- Content Pane -->
+                <div id="contentPane" class="flex flex-col flex-grow">
+                    <div class="flex justify-between items-center pb-2 mb-4">
+                        <h2 class="text-2xl font-bold text-white">Generated Content</h2>
+                        <div id="action-buttons" class="flex items-center space-x-2">
+                             <button id="editBtn" title="စာသားပြင်ဆင်ရန်" class="action-btn" disabled>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" /><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" /></svg>
+                            </button>
+                            <button id="copyBtn" title="စာသားကူးယူရန်" class="action-btn" disabled>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M4 3a2 2 0 012-2h6a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V3z" /></svg>
+                            </button>
+                            <button id="csvBtn" title="CSV Export" class="action-btn" disabled>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" /></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="output" class="flex-grow overflow-y-auto whitespace-pre-wrap text-gray-300 pr-2">
+                        <div id="placeholder" class="h-full flex flex-col items-center justify-center text-center text-gray-500">
+                             <svg class="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            <p class="text-lg">သင်၏ content ရလဒ်များကို ဤနေရာတွင် ပြသပါမည်။</p>
+                            <p class="text-sm">စတင်ရန် ဘယ်ဘက်ရှိ form ကိုဖြည့်ပြီး generate လုပ်ပါ။</p>
+                        </div>
+                         <div id="loading" class="hidden h-full flex flex-col items-center justify-center text-center text-gray-400">
+                            <div class="loader mb-4"></div>
+                            <p class="text-lg">Content ဖန်တီးနေပါသည်။</p>
+                            <p>ခေတ္တစောင့်ဆိုင်းပေးပါ...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Pane -->
+                <div id="historyPane" class="hidden flex-col flex-grow">
+                    <div class="flex justify-between items-center pb-2 mb-4">
+                        <h2 class="text-2xl font-bold text-white">မှတ်တမ်း</h2>
+                        <button id="clearHistoryBtn" class="text-sm text-red-400 hover:text-red-500 transition">မှတ်တမ်းရှင်းလင်းရန်</button>
+                    </div>
+                    <div id="historyList" class="flex-grow overflow-y-auto space-y-2 pr-2">
+                        <!-- History items will be injected here -->
+                    </div>
+                </div>
+
+                <!-- Custom Bots Pane -->
+                <div id="botsPane" class="hidden flex-col flex-grow">
+                    <div class="pb-2 mb-4 border-b border-gray-600">
+                        <h2 class="text-2xl font-bold text-white">Custom Bots</h2>
+                    </div>
+                    
+                    <!-- Form to add new bot -->
+                    <div class="space-y-4 mb-6">
+                        <h3 class="text-lg font-semibold text-white">Bot အသစ်ထည့်မည်</h3>
+                        <input type="hidden" id="botIdInput"> <!-- For editing -->
+                        <div>
+                            <label for="botName" class="block mb-2 text-sm font-medium">Bot Name</label>
+                            <input type="text" id="botName" class="form-input w-full p-2.5" placeholder="ဥပမာ - Facebook Marketing Bot">
+                        </div>
+                        <div>
+                            <label for="botPrompt" class="block mb-2 text-sm font-medium">Custom Prompt (System Instruction)</label>
+                            <textarea id="botPrompt" rows="4" class="form-textarea w-full p-2.5" placeholder="ဥပမာ - You are an expert Facebook marketer. Write an engaging post for the following topic..."></textarea>
+                        </div>
+                        <button id="saveBotBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                            Bot ကို သိမ်းမည်
+                        </button>
+                    </div>
+
+                    <!-- List of saved bots -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">သိမ်းထားသော Bots များ</h3>
+                        <div id="botList" class="flex-grow overflow-y-auto space-y-2 pr-2 max-h-60">
+                            <!-- Bot items will be injected here -->
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Custom Confirmation Modal -->
+    <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-70 z-50 hidden items-center justify-center p-4">
+        <div class="glassmorphism p-6 rounded-lg shadow-xl w-full max-w-sm text-center">
+            <h3 class="text-lg font-bold text-white mb-4" id="modalTitle">သေချာပါသလား?</h3>
+            <p class="text-gray-300 mb-6" id="modalMessage">မှတ်တမ်းအားလုံးကို အမှန်တကယ် ဖျက်လိုပါသလား? ဤလုပ်ဆောင်ချက်ကို နောက်ပြန်ပြင်၍မရပါ။</p>
+            <div class="flex justify-end space-x-4">
+                <button id="modalCancel" class="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded-lg transition">မလုပ်တော့ပါ</button>
+                <button id="modalConfirm" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg transition">ဟုတ်ကဲ့, ဖျက်မည်</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+/* obfuscated */
+function _0x112a(_0x21c1a9,_0x56e0fc){const _0x215065=_0x2150();return _0x112a=function(_0x112ae4,_0x1396a8){_0x112ae4=_0x112ae4-0xc5;let _0x5270f0=_0x215065[_0x112ae4];return _0x5270f0;},_0x112a(_0x21c1a9,_0x56e0fc);}const _0x1a7252=_0x112a;function _0x2150(){const _0x28d7cd=['style','moreInfo','text','WWPfi','copyBtn','dTPVH','NEHhI','startsWith','PCRRD','history-item','iBcEn','FyEpR','dataset','ShKmK','TTjlm','GmkiX','EgIen','confirmModal','candidates','KHzkq','cVfaz','yHMNR','ပြင်ဆင်မှု\x20သိမ်းမည်','parts','edit','oqchK','<p\x20class=\x22text-gray-500\x20text-center\x20mt-4\x22>Custom\x20Bots\x20မရှိသေးပါ။</p>','\x0a*\x20**Topic\x20Category:**\x20','innerHTML','AyLrr','getItem','BnVPS','historyTab','nckIu','dNvth','GnaTn','click','push','JGHMb','createElement','contentDetails','FNBuM','pqPvU','length','adizY','appendChild','IOwWP','8840216PHAGEB','\x22\x20bot\x20ကို\x20အမှန်တကယ်\x20ဖျက်လိုပါသလား?','szYAQ','xVcTq','757AaKDfq','GGwtX','div','aKrNi','LFBuu','text/csv;charset=utf-8;','csvBtn','vwsSt','target','opacity-70','DNPWu','59611662WJaJhB','vVTUc','ISfEt','tVBUW','WIrrv','Pqlud','platform','scxYc','botsPane','focus','Hjfzc','body','DYsVf','default','Title,Content\x0a\x22','RCPwG','action','lZxTM','toggle','TQDhG','DtRJl','contentName','Error:\x20','getElementById','puLmT','စာသားပြင်ဆင်ရန်','trim','2|0|8|7|4|1|6|5|3','split','cursor-not-allowed','modalCancel','JLbzv','copy','TtLEo','FZUxV','RFqTb','mwrqK','timestamp','hidden','dlZYe','jZQjD','pop','textContent','KCsjo','status','AcLZl','forEach','abrNf','lyfJG','removeChild','Untitled\x20Content','visibility','baFwy','ISGiL','bot-item','3382BfnHaF','className','13365890mfGrNs','\x0a\x0aYour\x20task\x20is\x20to\x20generate\x20compelling\x20content\x20based\x20on\x20the\x20following\x20specifications.\x0a*\x20**Content\x20Title/Topic:**\x20\x22','TGJfe','1638808UkOcSy','3|0|1|4|2|5','DSure','Error:\x20The\x20request\x20failed\x20after\x20multiple\x20retries.','toISOString','rJERM','editBtn','rnfXz','NHsJj','bbceA','VfvKh','select','category','\x0a*\x20**Additional\x20Information/Raw\x20Material:**\x20\x22','tqCZn','tCdZL','DaYWm','0|2|3|1|7|5|8|6|4','rQDJA','createObjectURL','\x0a*\x20**Desired\x20Tone\x20of\x20Voice:**\x20','LLHrp','FHKEK','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22font-bold\x20truncate\x22>','eTlCc','awCFa','BfpBf','Error:\x20Could\x20not\x20extract\x20text\x20from\x20response.','nVEaG','ESLoY','tBUxx','lEgMu','SsBwm','CSIaF','3|4|2|0|1','VzllP','ttXUT','tqfTN','VIFml','oLkKN','contentEditable','QxmPu','hTmMI','\x0a\x0a**Translation\x20Request:**\x20After\x20generating\x20the\x20content\x20in\x20the\x20primary\x20language,\x20please\x20provide\x20a\x20translation\x20of\x20the\x20final\x20content\x20into\x20','remove','USpJd','bcVLZ','<svg\x20xmlns=\x22http://www.w3.org/2000/svg\x22\x20class=\x22h-5\x20w-5\x22\x20viewBox=\x220\x200\x2020\x2020\x22\x20fill=\x22currentColor\x22><path\x20d=\x22M17.414\x202.586a2\x202\x200\x2000-2.828\x200L7\x2010.172V13h2.828l7.586-7.586a2\x202\x200\x20000-2.828z\x22\x20/><path\x20fill-rule=\x22evenodd\x22\x20d=\x22M2\x206a2\x202\x200\x20012-2h4a1\x201\x200\x20010\x202H4v10h10v-4a1\x201\x200\x20112\x200v4a2\x202\x200\x2001-2\x202H4a2\x202\x200\x2001-2-2V6z\x22\x20clip-rule=\x22evenodd\x22\x20/></svg>','dbkdJ','botSelector','3606FzXfti','FXWHP','classList','gnmMw','Error!','botList','You\x20are\x20a\x20professional\x20content\x20creator\x20specializing\x20in\x20the\x20Myanmar\x20market.\x20Your\x20task\x20is\x20to\x20generate\x20compelling\x20content\x20based\x20on\x20the\x20following\x20specifications.\x0a*\x20**Content\x20Title/Topic:**\x20\x22','NfJMU','uZWXD','SYbTg','ieeCB','<svg\x20xmlns=\x22http://www.w3.org/2000/svg\x22\x20class=\x22h-5\x20w-5\x22\x20viewBox=\x220\x200\x2020\x2020\x22\x20fill=\x22currentColor\x22><path\x20fill-rule=\x22evenodd\x22\x20d=\x22M16.707\x205.293a1\x201\x200\x20010\x201.414l-8\x208a1\x201\x200\x2001-1.414\x200l-4-4a1\x201\x200\x20011.414-1.414L8\x2012.586l7.293-7.293a1\x201\x200\x20011.414\x200z\x22\x20clip-rule=\x22evenodd\x22\x20/></svg>','placeholder','TxHcJ','HnEuV','EGmXR','Xvkxh','false','defaultFieldsWrapper','language','\x22\x0a*\x20**Target\x20Platform:**\x20','clearHistoryBtn','cVRfP','aooEB','vQwax','hvkAP','Tfkep','4|0|1|2|3','add','API\x20Error:','3242547dcUMIH','twZSI','မှတ်တမ်းရှင်းလင်းမည်?','KuENq','Bot\x20ကို\x20ဖျက်မည်လား?','MZogO','removeItem','findIndex','ကူးယူပြီးပါပြီ!','statusText','fPupL','9xySCKS','QsLoo','\x22\x20data-action=\x22delete\x22>ဖျက်မည်</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','OuCTr','rZjGv','ULXVR','botPrompt','name','download','3|5|0|6|4|2|1|7|8','blGvo','Keep\x20Original','contentPane','RamYh','kyCts','wLZrq','မှတ်တမ်းအားလုံးကို\x20အမှန်တကယ်\x20ဖျက်လိုပါသလား?\x20ဤလုပ်ဆောင်ချက်ကို\x20နောက်ပြန်ပြင်၍မရပါ။','oFUqW','message','ပြင်ဆင်မှုများ\x20သိမ်းမည်','loading','HaQMx','BjFWz','delete','qVQfT','\x22,\x22','\x22\x20data-action=\x22edit\x22>ပြင်ဆင်မည်</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22small-btn\x20danger\x22\x20data-id=\x22','find','ESMOk','contentGeneratorBots','JbOuP','DHxUC','error','contentTab','historyPane','ThdtN','</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-xs\x20text-gray-400\x22>','addEventListener','autoTranslate','qbfdj','gdLcC','tone','generateBtn','title','\x22\x0a*\x20**Core\x20Idea/Main\x20Points:**\x20\x22','generated-content.csv','IOZpl','Error:','16BKFbWA','contentGeneratorHistory','LiKpi','aREnM','OjbiC','filter','</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22space-x-2\x20flex-shrink-0\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22small-btn\x22\x20data-id=\x22','jenvz','option','PXEXN','eHLjq','Bot\x20ကို\x20သိမ်းမည်','wCCLY','AAWyL','botName','pwBRa','TRKuN','DTtFM','yctzU','DkBrH','\x0a*\x20**Target\x20Audience:**\x20','setItem','\x0a*\x20**Desired\x20Length:**\x20','\x0a*\x20**Content\x20Type:**\x20','aquEa','CdZtG','BOvBA','botIdInput','iOihH','DOMContentLoaded','kEJyc','2|4|0|1|3','DUXqx','modalMessage','qhNlZ','textarea','\x0a*\x20**Primary\x20Language:**\x20','ESkqY','Error:\x20Network\x20request\x20failed.\x20Please\x20check\x20your\x20connection.\x20Details:\x20','hTdZj','FSaSK','TMnWa','<p\x20class=\x22text-gray-500\x20text-center\x20mt-8\x22>မှတ်တမ်းမရှိသေးပါ။</p>','KhhXG','MSAax','execCommand','UcZMf','setAttribute','ZNmPT','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22font-semibold\x20truncate\x22>','HUAWu','pxkWQ','DCQpr','disabled','NGUpC','oeLeN','value','tvNje','YmSoJ','prompt','uDtnl','EIrGG','QoNJL','</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','tITeh','\x22\x0aPlease\x20generate\x20the\x20content\x20now.\x20Make\x20sure\x20it\x20is\x20well-structured,\x20engaging,\x20and\x20perfectly\x20suited\x20for\x20the\x20specified\x20platform\x20and\x20audience.\x20Use\x20relevant\x20hashtags\x20for\x20social\x20media\x20posts\x20if\x20applicable.','MSLJw','AGcOz','BvPrR','mSjkf','MyQyU','wzRQe','CroiI','NlTSB','active','cwtRM','randomUUID','zqwCF','nDSWI','output','HeAkW','laKYT','innerText','saveBotBtn','tnwQu','uwSav','zijRL','Unknown\x20API\x20error','botsTab','replace','ကျေးဇူးပြု၍\x20Bot\x20Name\x20နှင့်\x20Custom\x20Prompt\x20ကို\x20ဖြည့်သွင်းပါ။','href','ylfpo','parse','LXUlH','<option\x20value=\x22default\x22>Default\x20Content\x20Generator</option>','flex','wSOOn','unshift','stringify','KeMLG','jPnwT','FyUJt','BPmLL','contentType','10215QtwxWu','KHWjI','JMvlh','SGQjh','toLocaleString','gVmSO','mZvGf','uuRBV','PRrMV','IkPXS','xIJnv','NNyRV'];_0x2150=function(){return _0x28d7cd;};return _0x2150();}(function(_0x39520f,_0x1c8956){const _0x35b1bf=_0x112a,_0x1b2397=_0x39520f();while(!![]){try{const _0x2a1120=-parseInt(_0x35b1bf(0x208))/0x1*(parseInt(_0x35b1bf(0xd0))/0x2)+-parseInt(_0x35b1bf(0x130))/0x3*(parseInt(_0x35b1bf(0xd5))/0x4)+parseInt(_0x35b1bf(0x1c9))/0x5*(parseInt(_0x35b1bf(0x107))/0x6)+-parseInt(_0x35b1bf(0x204))/0x7+parseInt(_0x35b1bf(0x160))/0x8*(-parseInt(_0x35b1bf(0x125))/0x9)+-parseInt(_0x35b1bf(0xd2))/0xa+parseInt(_0x35b1bf(0x213))/0xb;if(_0x2a1120===_0x1c8956)break;else _0x1b2397['push'](_0x1b2397['shift']());}catch(_0x57896c){_0x1b2397['push'](_0x1b2397['shift']());}}}(_0x2150,0xc7ab9),document[_0x1a7252(0x155)](_0x1a7252(0x17d),()=>{const _0x39d510=_0x1a7252,_0x4d94a8={'ShKmK':_0x39d510(0x239),'uuRBV':'flex','IvvPK':'QxmPu','MSLJw':_0x39d510(0x1d4),'BvPrR':function(_0x55e356){return _0x55e356();},'YmSoJ':function(_0x35addc){return _0x35addc();},'akWHW':function(_0x3c33a5,_0x2ce276,_0x176dbb,_0x415677){return _0x3c33a5(_0x2ce276,_0x176dbb,_0x415677);},'CroiI':_0x39d510(0x129),'aooEB':function(_0x55f02c,_0x8c8b5a){return _0x55f02c!==_0x8c8b5a;},'wLZrq':_0x39d510(0x207),'VIFml':'SwpTn','KQekl':_0x39d510(0x14d),'rQDJA':_0x39d510(0xe5),'ucJsY':function(_0x22bc85,_0x369d0e){return _0x22bc85(_0x369d0e);},'IkPXS':'Error:\x20Custom\x20bot\x20ကို\x20ရှာမတွေ့ပါ။','UcZMf':_0x39d510(0x230),'ESkqY':_0x39d510(0x211),'rnfXz':function(_0x1befb6,_0x55444d){return _0x1befb6!==_0x55444d;},'JGHMb':_0x39d510(0x13e),'kEJyc':_0x39d510(0x1bf),'IeWLG':_0x39d510(0x237),'BnVPS':_0x39d510(0x1aa),'ZNmPT':function(_0x2c26d4,_0x3396b5){return _0x2c26d4||_0x3396b5;},'baFwy':function(_0x1f7883,_0x29f6cc){return _0x1f7883!==_0x29f6cc;},'OHyzX':'GmkiX','FZUxV':_0x39d510(0x1ba),'PRrMV':function(_0x323e6c,_0x40b018){return _0x323e6c>_0x40b018;},'mZvGf':_0x39d510(0x16b),'DSure':_0x39d510(0x183),'FHKEK':_0x39d510(0x233),'pwBRa':_0x39d510(0x12d),'uZWXD':function(_0x34fbe0,_0x5006d2,_0x2ceea6){return _0x34fbe0(_0x5006d2,_0x2ceea6);},'tCdZL':'Failed\x20to\x20copy\x20text:\x20','VzllP':function(_0x30b20c,_0x42ff93){return _0x30b20c===_0x42ff93;},'IFUkg':'rZkVS','LFBuu':_0x39d510(0x145),'nckIu':function(_0x5b93f0){return _0x5b93f0();},'tvNje':_0x39d510(0x1ed),'JPYOr':_0x39d510(0x122),'PCRRD':function(_0x496c49,_0x505e1f){return _0x496c49===_0x505e1f;},'ieeCB':_0x39d510(0x147),'FSaSK':_0x39d510(0x161),'BjFWz':function(_0x4b6b8b){return _0x4b6b8b();},'ISGiL':function(_0x3d884c){return _0x3d884c();},'AyLrr':_0x39d510(0x20a),'LiKpi':_0x39d510(0x1de),'MyQyU':_0x39d510(0x1f9),'qbfdj':'contentName','abrNf':'Untitled\x20Content','CIasp':'href','MZogO':_0x39d510(0x138),'KeMLG':_0x39d510(0x15d),'EgIen':function(_0x1dba03,_0x640ce8){return _0x1dba03===_0x640ce8;},'oLkKN':_0x39d510(0x203),'vwsSt':_0x39d510(0x134),'ugFIk':function(_0xe857a,_0x67465b){return _0xe857a===_0x67465b;},'DYsVf':function(_0x118e34){return _0x118e34();},'DNPWu':function(_0x490294,_0x728960){return _0x490294!==_0x728960;},'LpflU':'QsLoo','bOMDr':function(_0x3857ff,_0x2e0d33,_0x4aa99e,_0x5901ba){return _0x3857ff(_0x2e0d33,_0x4aa99e,_0x5901ba);},'nDSWI':_0x39d510(0x127),'qVQfT':_0x39d510(0x140),'rJERM':_0x39d510(0x168),'puLmT':function(_0x44cb5b,_0x424ffa){return _0x44cb5b!==_0x424ffa;},'iBcEn':'fgphx','vQwax':_0x39d510(0x139),'NfJMU':_0x39d510(0xe6),'SsBwm':_0x39d510(0x22e),'oqchK':function(_0xb084ae,_0x1ce08,_0x156f6b,_0x5210ca){return _0xb084ae(_0x1ce08,_0x156f6b,_0x5210ca);},'cVRfP':function(_0x40db0b,_0x3ba5dd){return _0x40db0b===_0x3ba5dd;},'yctzU':_0x39d510(0x126),'KuENq':_0x39d510(0x118),'gVmSO':'2|8|1|5|0|4|6|7|3','OKadV':function(_0x5e3113,_0x245680){return _0x5e3113<_0x245680;},'wSOOn':_0x39d510(0x222),'eovZo':'POST','DHxUC':'application/json','NlTSB':_0x39d510(0xf0),'EIrGG':function(_0x455b11,_0x26f6b7){return _0x455b11>=_0x26f6b7;},'TtLEo':_0x39d510(0x110),'TGJfe':_0x39d510(0x23e),'Pqlud':_0x39d510(0x1b7),'AhSwd':'Fetch\x20Error:','CdZtG':function(_0x866590,_0x488762){return _0x866590<_0x488762;},'kmDaF':_0x39d510(0xd8),'tVBUW':_0x39d510(0x22c),'KHWjI':function(_0x3265f7,_0x12f854){return _0x3265f7===_0x12f854;},'QzkEN':_0x39d510(0xf7),'aKrNi':'ပြင်ဆင်မှု\x20သိမ်းမည်','ULXVR':function(_0x4367aa,_0x502aab,_0x5de720,_0xc48ffd){return _0x4367aa(_0x502aab,_0x5de720,_0xc48ffd);},'tqfTN':_0x39d510(0x20d),'cntKG':_0x39d510(0x1fd),'hTdZj':function(_0x314c44,_0x276c4c){return _0x314c44(_0x276c4c);},'bbceA':'ကျေးဇူးပြု၍\x20\x27အကြောင်းအရာအမည်\x27\x20နှင့်\x20\x27Content\x20အကြောင်းအရာ\x27\x20ကို\x20ဖြည့်သွင်းပါ။','hTmMI':function(_0x56f2fe,_0xaf3c16){return _0x56f2fe(_0xaf3c16);},'AGcOz':'audience','WWPfi':_0x39d510(0x1c8),'TRKuN':_0x39d510(0x11a),'lZxTM':_0x39d510(0x1d6),'UPVTI':_0x39d510(0x159),'JLbzv':_0x39d510(0x200),'tnwQu':_0x39d510(0x156),'NEHhI':_0x39d510(0x220),'bSNCV':function(_0xe8f6ef,_0x45cd27){return _0xe8f6ef!==_0x45cd27;},'HUAWu':'ZKXlO','PXEXN':'StuRr','pFeim':_0x39d510(0x167),'IOkll':function(_0x39f472,_0x6e8d74){return _0x39f472===_0x6e8d74;},'IOZpl':_0x39d510(0x196),'LXUlH':'EZNcm','KHzkq':_0x39d510(0x206),'cwtRM':function(_0x23a023,_0x7a63b){return _0x23a023(_0x7a63b);},'dbkdJ':_0x39d510(0x13b),'KhhXG':_0x39d510(0x15f),'uiYsF':_0x39d510(0x18c),'HnEuV':function(_0xafcbf3,_0x5a0b1f){return _0xafcbf3(_0x5a0b1f);},'adizY':_0x39d510(0x1ff),'BPmLL':_0x39d510(0x197),'fPupL':_0x39d510(0x143),'MejOi':function(_0x13dcd6,_0x2693e6){return _0x13dcd6!==_0x2693e6;},'ylfpo':_0x39d510(0x236),'JbOuP':_0x39d510(0x1ad),'oFUqW':function(_0x20ed25,_0x5a0e11){return _0x20ed25!==_0x5a0e11;},'FyEpR':_0x39d510(0x1d3),'xIbgd':_0x39d510(0x17f),'DIHJa':_0x39d510(0xcf),'SGQjh':function(_0x1668b2,_0xea7988){return _0x1668b2===_0xea7988;},'ESMOk':_0x39d510(0x1fe),'CSIaF':_0x39d510(0x1ea),'ggdJC':_0x39d510(0x178),'RamYh':_0x39d510(0x103),'DkBrH':_0x39d510(0x10b),'qhNlZ':_0x39d510(0x15a),'NHsJj':_0x39d510(0x1af),'FXWHP':_0x39d510(0x144),'nVEaG':_0x39d510(0x113),'OjbiC':_0x39d510(0x1d9),'jZQjD':_0x39d510(0xdb),'zKoey':_0x39d510(0x151),'DCQpr':_0x39d510(0x1f5),'ThdtN':_0x39d510(0x1b8),'mSjkf':_0x39d510(0x13c),'lyfJG':_0x39d510(0x21b),'RVqvF':'historyList','dNvth':_0x39d510(0x11c),'EGmXR':_0x39d510(0x136),'laKYT':_0x39d510(0x17b),'sOzvG':_0x39d510(0x1b3),'WIrrv':_0x39d510(0x10c),'YHheO':_0x39d510(0x1e6),'AcLZl':'modalTitle','QOLzd':_0x39d510(0x181),'MKwli':'modalConfirm','evXBw':_0x39d510(0x231)},_0x461c12=document['getElementById'](_0x4d94a8[_0x39d510(0x182)]),_0x2e822b=document[_0x39d510(0x22a)](_0x4d94a8[_0x39d510(0xdd)]),_0x27a692=document['getElementById'](_0x4d94a8[_0x39d510(0x108)]),_0x54a937=document['getElementById'](_0x4d94a8[_0x39d510(0xf1)]),_0x30b5da=document['getElementById'](_0x4d94a8[_0x39d510(0x164)]),_0x17d969=document[_0x39d510(0x22a)](_0x4d94a8[_0x39d510(0x23b)]),_0x329ae7=document[_0x39d510(0x22a)](_0x39d510(0x20e)),_0x44c274=[_0x30b5da,_0x17d969,_0x329ae7];let _0x48f45d=![];const _0x4107b3=document[_0x39d510(0x22a)](_0x4d94a8['zKoey']),_0x154b97=document[_0x39d510(0x22a)](_0x4d94a8[_0x39d510(0x194)]),_0xea188=document[_0x39d510(0x22a)](_0x4d94a8[_0x39d510(0x153)]),_0xc4f3be=document['getElementById'](_0x4d94a8[_0x39d510(0x1a5)]),_0x22211d=document[_0x39d510(0x22a)](_0x39d510(0x152)),_0x415a82=document[_0x39d510(0x22a)](_0x4d94a8[_0x39d510(0xc9)]),_0x11961f=document[_0x39d510(0x22a)](_0x4d94a8['RVqvF']),_0x5e1d75=document[_0x39d510(0x22a)](_0x4d94a8[_0x39d510(0x1f7)]);let _0x4bc452=[];const _0x221d1d=document[_0x39d510(0x22a)](_0x39d510(0x106)),_0x48b5b0=document[_0x39d510(0x22a)](_0x39d510(0x119)),_0x33d519=document[_0x39d510(0x22a)](_0x39d510(0x16e)),_0x45d14a=document['getElementById'](_0x4d94a8[_0x39d510(0x116)]),_0x120533=document[_0x39d510(0x22a)](_0x4d94a8[_0x39d510(0x1b1)]),_0x5ec6df=document[_0x39d510(0x22a)](_0x4d94a8['sOzvG']),_0x5ef963=document['getElementById'](_0x4d94a8[_0x39d510(0x217)]);let _0x51784c=[],_0x2621a5=null;const _0x32bec0=document['getElementById'](_0x4d94a8['YHheO']),_0x25e2b8=document[_0x39d510(0x22a)](_0x4d94a8[_0x39d510(0xc6)]),_0x77c0df=document['getElementById'](_0x4d94a8['QOLzd']),_0x44bd7c=document[_0x39d510(0x22a)](_0x4d94a8['MKwli']),_0x234cd2=document['getElementById'](_0x4d94a8['evXBw']);function _0x2f9e40(_0x2850b,_0x32368d,_0x256183){const _0x136b9f=_0x39d510,_0x4247f7='2|1|3|0|4'[_0x136b9f(0x22f)]('|');let _0xcf6d59=0x0;while(!![]){switch(_0x4247f7[_0xcf6d59++]){case'0':_0x32bec0[_0x136b9f(0x109)]['remove'](_0x4d94a8[_0x136b9f(0x1e2)]);continue;case'1':_0x77c0df[_0x136b9f(0x1b2)]=_0x32368d;continue;case'2':_0x25e2b8['innerText']=_0x2850b;continue;case'3':_0x2621a5=_0x256183;continue;case'4':_0x32bec0[_0x136b9f(0x109)][_0x136b9f(0x123)](_0x4d94a8[_0x136b9f(0x1d0)]);continue;}break;}}_0x234cd2['addEventListener'](_0x4d94a8[_0x39d510(0x1a6)],()=>{const _0x3653cc=_0x39d510;if(_0x3653cc(0xfe)===_0x4d94a8['IvvPK'])_0x32bec0[_0x3653cc(0x109)][_0x3653cc(0x123)](_0x3653cc(0x239)),_0x32bec0[_0x3653cc(0x109)]['remove'](_0x3653cc(0x1c0)),_0x2621a5=null;else{const _0x424c3a=_0x4cdfd7[_0x3653cc(0x1fc)](_0x3653cc(0x168));_0x424c3a[_0x3653cc(0x198)]=_0x21a568['id'],_0x424c3a[_0x3653cc(0x23d)]=_0x2f9767[_0x3653cc(0x137)],_0x2913f1[_0x3653cc(0x202)](_0x424c3a);}}),_0x44bd7c[_0x39d510(0x155)](_0x4d94a8[_0x39d510(0x1a6)],()=>{const _0x283940=_0x39d510,_0x4c7986={'DTtFM':_0x283940(0x239)};if(_0x2621a5){if('QsGZv'===_0x4d94a8[_0x283940(0x1a2)]){const _0x2328b8='0|3|1|4|2'[_0x283940(0x22f)]('|');let _0x5d10b4=0x0;while(!![]){switch(_0x2328b8[_0x5d10b4++]){case'0':_0x2be5d3['innerText']=_0x3dbe35;continue;case'1':_0x12011a=_0x560b14;continue;case'2':_0x133ba6[_0x283940(0x109)][_0x283940(0x123)](_0x283940(0x1c0));continue;case'3':_0x1fd04e['innerText']=_0xf0c5f;continue;case'4':_0x16f535[_0x283940(0x109)][_0x283940(0x101)](_0x4c7986[_0x283940(0x171)]);continue;}break;}}else _0x4d94a8[_0x283940(0x1a4)](_0x2621a5);}_0x32bec0['classList'][_0x283940(0x123)](_0x4d94a8[_0x283940(0x1e2)]),_0x32bec0[_0x283940(0x109)]['remove'](_0x4d94a8[_0x283940(0x1d0)]),_0x2621a5=null;});const _0x197422=()=>{const _0x5498d6=_0x39d510;if(_0x4d94a8[_0x5498d6(0x11e)](_0x4d94a8[_0x5498d6(0x13f)],_0x4d94a8[_0x5498d6(0xfb)])){const _0x39b0e6=localStorage[_0x5498d6(0x1f3)](_0x4d94a8['KQekl']);_0x51784c=_0x39b0e6?JSON[_0x5498d6(0x1bd)](_0x39b0e6):[],_0x1fce44(),_0x4d94a8[_0x5498d6(0x19a)](_0x49dd93);}else{const _0x29b9c7={'TQDhG':_0x5498d6(0x14d),'QoNJL':function(_0x5c6fa6){const _0x1e7c1f=_0x5498d6;return _0x4d94a8[_0x1e7c1f(0x19a)](_0x5c6fa6);}};_0x4d94a8['akWHW'](_0x272b0b,_0x4d94a8[_0x5498d6(0x1a8)],'\x22'+_0x5daf44[_0x5498d6(0x137)]+_0x5498d6(0x205),()=>{const _0x19b354=_0x5498d6;_0x101abe=_0xd18724[_0x19b354(0x165)](_0xb4758=>_0xb4758['id']!==_0x551c5d),_0x3f91df[_0x19b354(0x175)](_0x29b9c7[_0x19b354(0x226)],_0x324fbb['stringify'](_0x45b62e)),_0x29b9c7[_0x19b354(0x19e)](_0x468799);});}},_0x49dd93=()=>{const _0x166dd2=_0x39d510,_0x269e2e={'uwSav':function(_0x1fcaa5,_0x3febf7){return _0x4d94a8['ucJsY'](_0x1fcaa5,_0x3febf7);},'qiAiZ':_0x4d94a8[_0x166dd2(0x1d2)],'dTPVH':_0x4d94a8[_0x166dd2(0x1e2)],'wzRQe':_0x4d94a8[_0x166dd2(0x18e)],'dlZYe':_0x4d94a8[_0x166dd2(0x185)]};if(_0x4d94a8[_0x166dd2(0xdc)]('kyCts',_0x4d94a8[_0x166dd2(0x1fb)])){const _0x345c4b=_0x36fe1f[_0x166dd2(0x14b)](_0x264dd7=>_0x264dd7['id']===_0x54cab0);if(_0x345c4b)_0x212c40=_0x345c4b[_0x166dd2(0x19b)]+_0x166dd2(0xd3)+_0x12bb0b+_0x166dd2(0x15c)+_0x5e9036+_0x166dd2(0x11b)+_0x3e4f62+_0x166dd2(0x174)+_0x1258fb+'\x0a*\x20**Topic\x20Category:**\x20'+_0x14dc23+_0x166dd2(0x177)+_0x853953+'\x0a*\x20**Primary\x20Language:**\x20'+_0x551b42+_0x166dd2(0xe9)+_0x18c9fa+'\x0a*\x20**Desired\x20Length:**\x20'+_0xfebe36+_0x166dd2(0xe2)+_0x3755d0+_0x166dd2(0x1a1);else{_0x269e2e[_0x166dd2(0x1b5)](_0x5cbe99,_0x269e2e['qiAiZ']),_0x5d958c[_0x166dd2(0x109)][_0x166dd2(0x123)](_0x269e2e[_0x166dd2(0x1da)]),_0x16a27f[_0x166dd2(0x109)][_0x166dd2(0x101)]('hidden'),_0x202fb5[_0x166dd2(0x195)]=![],_0x5c6255[_0x166dd2(0x109)][_0x166dd2(0x101)](_0x269e2e[_0x166dd2(0x1a7)],_0x269e2e[_0x166dd2(0x23a)]);return;}}else _0x221d1d['innerHTML']=_0x4d94a8[_0x166dd2(0x17e)],_0x51784c['forEach'](_0x2ff035=>{const _0x1e79f0=_0x166dd2;if(_0x4d94a8['aooEB'](_0x1e79f0(0x1b6),_0x4d94a8[_0x1e79f0(0xe7)])){const _0x3ab61d=document[_0x1e79f0(0x1fc)](_0x1e79f0(0x168));_0x3ab61d['value']=_0x2ff035['id'],_0x3ab61d['textContent']=_0x2ff035[_0x1e79f0(0x137)],_0x221d1d[_0x1e79f0(0x202)](_0x3ab61d);}else{const _0x363cf2=_0x1a9605[_0x1e79f0(0x1bd)](_0x3cae6d);_0x23f6e7=_0x363cf2[_0x1e79f0(0x150)]?.['message']||_0x5d3d2e[_0x1e79f0(0x1c3)](_0x363cf2);}});},_0x1fce44=()=>{const _0x9ddb08=_0x39d510,_0x87a403={'pxkWQ':function(_0xff0571,_0x31bdf0){return _0xff0571(_0x31bdf0);}};_0x5ef963[_0x9ddb08(0x1f1)]='',_0x51784c[_0x9ddb08(0x200)]===0x0?_0x5ef963['innerHTML']=_0x9ddb08(0x1ef):_0x4d94a8['IeWLG']!==_0x9ddb08(0x16a)?_0x51784c['forEach'](_0x377a8d=>{const _0x2b20fa=_0x9ddb08,_0x22c9c4=document[_0x2b20fa(0x1fc)](_0x2b20fa(0x20a));_0x22c9c4[_0x2b20fa(0xd1)]=_0x2b20fa(0xcf),_0x22c9c4[_0x2b20fa(0x1f1)]=_0x2b20fa(0x191)+_0x377a8d[_0x2b20fa(0x137)]+_0x2b20fa(0x166)+_0x377a8d['id']+_0x2b20fa(0x14a)+_0x377a8d['id']+_0x2b20fa(0x132),_0x5ef963['appendChild'](_0x22c9c4);}):_0x87a403[_0x9ddb08(0x193)](_0xc78bbf,![]);};_0x5ec6df[_0x39d510(0x155)](_0x4d94a8[_0x39d510(0x1a6)],()=>{const _0x3beb78=_0x39d510,_0x17fe01={'uMlRL':_0x4d94a8[_0x3beb78(0x1f4)]};if(_0x4d94a8[_0x3beb78(0x11e)](_0x3beb78(0x102),_0x3beb78(0x16d))){const _0xea85e3=_0x33d519[_0x3beb78(0x198)][_0x3beb78(0x22d)](),_0x38e55c=_0x45d14a[_0x3beb78(0x198)][_0x3beb78(0x22d)](),_0x222bec=_0x120533[_0x3beb78(0x198)];if(_0x4d94a8['ZNmPT'](!_0xea85e3,!_0x38e55c)){if(_0x4d94a8[_0x3beb78(0xcd)](_0x4d94a8['OHyzX'],_0x3beb78(0x1e4)))_0x58564d['classList']['remove'](_0x17fe01['uMlRL']),_0x3e3029[_0x3beb78(0x15b)]=_0x4019da;else{alert(_0x4d94a8[_0x3beb78(0x235)]);return;}}if(_0x222bec){const _0x17041e=_0x51784c[_0x3beb78(0x12c)](_0x1f8cef=>_0x1f8cef['id']===_0x222bec);_0x4d94a8[_0x3beb78(0x1d1)](_0x17041e,-0x1)&&(_0x51784c[_0x17041e]={..._0x51784c[_0x17041e],'name':_0xea85e3,'prompt':_0x38e55c});}else _0x51784c[_0x3beb78(0x1fa)]({'id':crypto[_0x3beb78(0x1ac)](),'name':_0xea85e3,'prompt':_0x38e55c});localStorage['setItem'](_0x3beb78(0x14d),JSON['stringify'](_0x51784c)),_0x197422(),_0x33d519[_0x3beb78(0x198)]='',_0x45d14a['value']='',_0x120533[_0x3beb78(0x198)]='',_0x5ec6df[_0x3beb78(0x1b2)]=_0x4d94a8[_0x3beb78(0x1cf)];}else return _0x3beb78(0x186)+_0x1ea009[_0x3beb78(0x142)];}),_0x5ef963[_0x39d510(0x155)](_0x4d94a8['MyQyU'],_0x222f44=>{const _0x8e1694=_0x39d510,_0x5256ef=_0x222f44['target'],_0x554d8c=_0x5256ef[_0x8e1694(0x1e1)][_0x8e1694(0x223)],_0x4f5b1b=_0x5256ef['dataset']['id'];if(_0x4d94a8['ZNmPT'](!_0x554d8c,!_0x4f5b1b))return;const _0x42cb2a=_0x51784c['find'](_0x3f0e46=>_0x3f0e46['id']===_0x4f5b1b);if(!_0x42cb2a)return;if(_0x4d94a8['VzllP'](_0x554d8c,_0x4d94a8[_0x8e1694(0x199)])){const _0x41e5f6=_0x4d94a8['JPYOr'][_0x8e1694(0x22f)]('|');let _0x5c42d0=0x0;while(!![]){switch(_0x41e5f6[_0x5c42d0++]){case'0':_0x33d519[_0x8e1694(0x198)]=_0x42cb2a['name'];continue;case'1':_0x45d14a['value']=_0x42cb2a['prompt'];continue;case'2':_0x5ec6df[_0x8e1694(0x1b2)]=_0x8e1694(0x1eb);continue;case'3':_0x33d519[_0x8e1694(0x21c)]();continue;case'4':_0x120533[_0x8e1694(0x198)]=_0x42cb2a['id'];continue;}break;}}else _0x4d94a8['PCRRD'](_0x554d8c,_0x4d94a8[_0x8e1694(0x111)])&&_0x2f9e40(_0x4d94a8[_0x8e1694(0x1a8)],'\x22'+_0x42cb2a[_0x8e1694(0x137)]+_0x8e1694(0x205),()=>{const _0x2f7281=_0x8e1694,_0x1975d7={'DUXqx':_0x4d94a8[_0x2f7281(0xd7)],'HVcLj':_0x4d94a8[_0x2f7281(0xeb)],'THnoy':_0x4d94a8['BnVPS'],'QpopU':_0x4d94a8[_0x2f7281(0x16f)],'LLHrp':function(_0x2c44fb,_0x4af6e0,_0x2ddb08){const _0x38bfd5=_0x2f7281;return _0x4d94a8[_0x38bfd5(0x10f)](_0x2c44fb,_0x4af6e0,_0x2ddb08);},'JJgoK':_0x4d94a8[_0x2f7281(0xe4)]};if(_0x4d94a8[_0x2f7281(0xf8)](_0x4d94a8['IFUkg'],_0x4d94a8[_0x2f7281(0x20c)])){const _0x297311=_0x500294[_0x2f7281(0x15b)],_0x1c4c51=_0x57367f[_0x2f7281(0x1b2)],_0x4e147d=_0xa208f[_0x2f7281(0x1fc)](_0x1975d7[_0x2f7281(0x180)]);_0x4e147d[_0x2f7281(0x198)]=_0x1c4c51,_0x138e5d[_0x2f7281(0x21e)][_0x2f7281(0x202)](_0x4e147d),_0x4e147d[_0x2f7281(0xe0)]();try{_0x4e613a[_0x2f7281(0x18d)](_0x1975d7['HVcLj']),_0x4db653['classList'][_0x2f7281(0x123)](_0x1975d7['THnoy']),_0x9a53f6['title']=_0x1975d7['QpopU'],_0x1975d7[_0x2f7281(0xea)](_0x48ca79,()=>{const _0x3b6e8b=_0x2f7281;_0x321d0d[_0x3b6e8b(0x109)][_0x3b6e8b(0x101)](_0x3b6e8b(0x1aa)),_0x3f0242[_0x3b6e8b(0x15b)]=_0x297311;},0x7d0);}catch(_0x2014e7){_0x4fae23[_0x2f7281(0x150)](_0x1975d7['JJgoK'],_0x2014e7),_0x18bbed['title']=_0x2f7281(0x10b);}_0x362a69[_0x2f7281(0x21e)][_0x2f7281(0xca)](_0x4e147d);}else _0x51784c=_0x51784c[_0x2f7281(0x165)](_0x42d508=>_0x42d508['id']!==_0x4f5b1b),localStorage[_0x2f7281(0x175)](_0x4d94a8['KQekl'],JSON[_0x2f7281(0x1c3)](_0x51784c)),_0x4d94a8[_0x2f7281(0x1f6)](_0x197422);});});const _0xdbda81=()=>{const _0x1af064=_0x39d510,_0x4e2d58=localStorage['getItem'](_0x4d94a8[_0x1af064(0x188)]);_0x4bc452=_0x4e2d58?JSON[_0x1af064(0x1bd)](_0x4e2d58):[],_0x4d94a8[_0x1af064(0x146)](_0x4bcd6b);},_0x50d0dd=(_0x2a74a6,_0x351128)=>{const _0x1054ff=_0x39d510;if(_0x4d94a8[_0x1054ff(0x190)](!_0x2a74a6,!_0x351128))return;const _0x445171=new Date()[_0x1054ff(0xd9)]();_0x4bc452[_0x1054ff(0x1c2)]({'title':_0x2a74a6,'content':_0x351128,'timestamp':_0x445171});if(_0x4d94a8[_0x1054ff(0x1d1)](_0x4bc452[_0x1054ff(0x200)],0x32))_0x4bc452[_0x1054ff(0x23c)]();localStorage[_0x1054ff(0x175)](_0x4d94a8[_0x1054ff(0x188)],JSON[_0x1054ff(0x1c3)](_0x4bc452)),_0x4d94a8[_0x1054ff(0xce)](_0x4bcd6b);},_0x4bcd6b=()=>{const _0x421870=_0x39d510,_0x9f28ea={'Tfkep':_0x4d94a8[_0x421870(0x157)],'jPnwT':_0x4d94a8[_0x421870(0xc8)],'ybQPY':_0x4d94a8['CIasp'],'RMWEE':_0x4d94a8['MZogO'],'TMnWa':_0x4d94a8[_0x421870(0x1c4)],'Hjfzc':'hidden','oGfph':_0x421870(0xd6)};if(_0x4d94a8[_0x421870(0x1e5)](_0x4d94a8[_0x421870(0xfc)],_0x4d94a8[_0x421870(0x20f)])){const _0x4bbfec=_0x4170c4['getElementById'](_0x9f28ea['Tfkep'])[_0x421870(0x198)]||_0x9f28ea[_0x421870(0x1c5)],_0x6b0de3=_0x200d71['innerText'],_0x4f8230=_0x6b0de3[_0x421870(0x1b9)](/"/g,'\x22\x22'),_0x4afb7f=_0x421870(0x221)+_0x4bbfec+_0x421870(0x149)+_0x4f8230+'\x22',_0x360083=new _0x47ac82([_0x4afb7f],{'type':_0x421870(0x20d)}),_0x38b1ee=_0x9c1e68[_0x421870(0x1fc)]('a'),_0x6483eb=_0x3541ec[_0x421870(0xe8)](_0x360083);_0x38b1ee[_0x421870(0x18f)](_0x9f28ea['ybQPY'],_0x6483eb),_0x38b1ee[_0x421870(0x18f)](_0x9f28ea['RMWEE'],_0x9f28ea[_0x421870(0x189)]),_0x38b1ee[_0x421870(0x1d5)][_0x421870(0xcc)]=_0x9f28ea[_0x421870(0x21d)],_0x4a43ef[_0x421870(0x21e)][_0x421870(0x202)](_0x38b1ee),_0x38b1ee[_0x421870(0x1f9)](),_0x2c021c['body'][_0x421870(0xca)](_0x38b1ee);}else _0x11961f['innerHTML']='',_0x4d94a8['ugFIk'](_0x4bc452[_0x421870(0x200)],0x0)?(_0x11961f[_0x421870(0x1f1)]=_0x421870(0x18a),_0x5e1d75[_0x421870(0x109)][_0x421870(0x123)](_0x4d94a8[_0x421870(0x1e2)])):(_0x5e1d75[_0x421870(0x109)][_0x421870(0x101)](_0x4d94a8[_0x421870(0x1e2)]),_0x4bc452[_0x421870(0xc7)](_0x105d42=>{const _0x2d2007=_0x421870,_0x2613ad=document[_0x2d2007(0x1fc)](_0x4d94a8['AyLrr']);_0x2613ad[_0x2d2007(0xd1)]=_0x4d94a8[_0x2d2007(0x162)],_0x2613ad[_0x2d2007(0x1f1)]=_0x2d2007(0xec)+_0x105d42[_0x2d2007(0x15b)]+_0x2d2007(0x154)+new Date(_0x105d42[_0x2d2007(0x238)])[_0x2d2007(0x1cd)]()+_0x2d2007(0x19f),_0x2613ad[_0x2d2007(0x155)](_0x4d94a8[_0x2d2007(0x1a6)],()=>{const _0x28e7dd=_0x2d2007,_0x2dfc8c=_0x9f28ea['oGfph'][_0x28e7dd(0x22f)]('|');let _0x315582=0x0;while(!![]){switch(_0x2dfc8c[_0x315582++]){case'0':document['getElementById'](_0x9f28ea[_0x28e7dd(0x121)])[_0x28e7dd(0x198)]=_0x105d42['title'];continue;case'1':_0x54a937[_0x28e7dd(0x109)][_0x28e7dd(0x123)](_0x9f28ea[_0x28e7dd(0x21d)]);continue;case'2':_0x438308(!![]);continue;case'3':_0x2e822b[_0x28e7dd(0x1b2)]=_0x105d42['content'];continue;case'4':_0x27a692[_0x28e7dd(0x109)][_0x28e7dd(0x123)](_0x9f28ea['Hjfzc']);continue;case'5':_0x459b1d();continue;}break;}}),_0x11961f[_0x2d2007(0x202)](_0x2613ad);}));};_0x5e1d75[_0x39d510(0x155)]('click',()=>{const _0x564ea6=_0x39d510,_0x227cb2={'aREnM':function(_0x120de4){return _0x120de4();}};_0x4d94a8['DNPWu'](_0x564ea6(0x131),_0x4d94a8['LpflU'])?_0x227cb2[_0x564ea6(0x163)](_0x4ee284):_0x4d94a8['bOMDr'](_0x2f9e40,_0x4d94a8[_0x564ea6(0x1ae)],_0x4d94a8[_0x564ea6(0x148)],()=>{const _0x27efca=_0x564ea6;_0x4bc452=[],localStorage[_0x27efca(0x12b)](_0x4d94a8['FSaSK']),_0x4d94a8[_0x27efca(0x21f)](_0x4bcd6b);});});const _0x459b1d=()=>{const _0x553839=_0x39d510,_0x29d8c9={'FyUJt':_0x4d94a8[_0x553839(0xda)],'gnmMw':_0x4d94a8['kEJyc']};if(_0x4d94a8[_0x553839(0x22b)](_0x4d94a8[_0x553839(0x1df)],_0x4d94a8[_0x553839(0x1df)]))_0x4c1dd8['innerHTML']=_0x29d8c9[_0x553839(0x10a)],_0xd2ef63[_0x553839(0xc7)](_0x5c382c=>{const _0xd50dc7=_0x553839,_0x1f561d=_0x918c74[_0xd50dc7(0x1fc)](_0x29d8c9[_0xd50dc7(0x1c6)]);_0x1f561d['value']=_0x5c382c['id'],_0x1f561d[_0xd50dc7(0x23d)]=_0x5c382c[_0xd50dc7(0x137)],_0x2e33a7[_0xd50dc7(0x202)](_0x1f561d);});else{const _0xb6f1b3=_0x4d94a8[_0x553839(0x11f)][_0x553839(0x22f)]('|');let _0x3c9c17=0x0;while(!![]){switch(_0xb6f1b3[_0x3c9c17++]){case'0':_0x22211d[_0x553839(0x109)][_0x553839(0x123)](_0x4d94a8[_0x553839(0x1e2)]);continue;case'1':_0x4107b3[_0x553839(0x109)][_0x553839(0x123)](_0x4d94a8[_0x553839(0x1f4)]);continue;case'2':_0x415a82[_0x553839(0x109)][_0x553839(0x101)](_0x4d94a8[_0x553839(0x1d0)]);continue;case'3':_0xc4f3be[_0x553839(0x109)][_0x553839(0x101)](_0x553839(0x239));continue;case'4':_0x415a82[_0x553839(0x109)]['add'](_0x4d94a8[_0x553839(0x1e2)]);continue;case'5':_0xc4f3be[_0x553839(0x109)][_0x553839(0x123)](_0x4d94a8[_0x553839(0x1d0)]);continue;case'6':_0x22211d[_0x553839(0x109)][_0x553839(0x101)](_0x553839(0x1c0));continue;case'7':_0x154b97[_0x553839(0x109)][_0x553839(0x101)](_0x4d94a8[_0x553839(0x1f4)]);continue;case'8':_0xea188[_0x553839(0x109)][_0x553839(0x101)](_0x4d94a8[_0x553839(0x1f4)]);continue;}break;}}},_0x133397=()=>{const _0x5edd79=_0x39d510,_0x54a0d0=_0x4d94a8[_0x5edd79(0x10e)][_0x5edd79(0x22f)]('|');let _0x5d643a=0x0;while(!![]){switch(_0x54a0d0[_0x5d643a++]){case'0':_0x22211d[_0x5edd79(0x109)][_0x5edd79(0x101)](_0x4d94a8['ShKmK']);continue;case'1':_0xc4f3be[_0x5edd79(0x109)][_0x5edd79(0x101)](_0x4d94a8[_0x5edd79(0x1d0)]);continue;case'2':_0x22211d[_0x5edd79(0x109)][_0x5edd79(0x123)](_0x4d94a8[_0x5edd79(0x1d0)]);continue;case'3':_0xc4f3be[_0x5edd79(0x109)][_0x5edd79(0x123)](_0x4d94a8['ShKmK']);continue;case'4':_0xea188[_0x5edd79(0x109)]['remove'](_0x4d94a8[_0x5edd79(0x1f4)]);continue;case'5':_0x415a82[_0x5edd79(0x109)][_0x5edd79(0x101)](_0x4d94a8[_0x5edd79(0x1d0)]);continue;case'6':_0x4107b3[_0x5edd79(0x109)][_0x5edd79(0x101)](_0x4d94a8[_0x5edd79(0x1f4)]);continue;case'7':_0x415a82[_0x5edd79(0x109)][_0x5edd79(0x123)](_0x4d94a8[_0x5edd79(0x1e2)]);continue;case'8':_0x154b97['classList']['add'](_0x5edd79(0x1aa));continue;}break;}},_0x4a95cd=()=>{const _0x584913=_0x39d510,_0x34cd24=_0x4d94a8[_0x584913(0xf5)][_0x584913(0x22f)]('|');let _0x180cfb=0x0;while(!![]){switch(_0x34cd24[_0x180cfb++]){case'0':_0x415a82[_0x584913(0x109)][_0x584913(0x123)](_0x4d94a8['uuRBV']);continue;case'1':_0x22211d['classList'][_0x584913(0x101)](_0x584913(0x1c0));continue;case'2':_0x415a82[_0x584913(0x109)]['remove'](_0x4d94a8[_0x584913(0x1e2)]);continue;case'3':_0x154b97[_0x584913(0x109)][_0x584913(0x101)](_0x584913(0x1aa));continue;case'4':_0x22211d['classList'][_0x584913(0x123)](_0x4d94a8[_0x584913(0x1e2)]);continue;case'5':_0x4107b3[_0x584913(0x109)][_0x584913(0x101)](_0x4d94a8[_0x584913(0x1f4)]);continue;case'6':_0xea188['classList'][_0x584913(0x123)](_0x4d94a8[_0x584913(0x1f4)]);continue;case'7':_0xc4f3be[_0x584913(0x109)][_0x584913(0x101)]('flex');continue;case'8':_0xc4f3be[_0x584913(0x109)][_0x584913(0x123)](_0x584913(0x239));continue;}break;}};_0x4107b3['addEventListener'](_0x39d510(0x1f9),_0x459b1d),_0x154b97[_0x39d510(0x155)](_0x4d94a8[_0x39d510(0x1a6)],_0x133397),_0xea188['addEventListener'](_0x4d94a8['MyQyU'],_0x4a95cd);function _0x438308(_0x5ade90){const _0xf53cdc=_0x39d510,_0x3ed031={'GGwtX':_0xf53cdc(0x239),'GnaTn':_0x4d94a8[_0xf53cdc(0x1d0)],'OuCTr':_0xf53cdc(0xef),'Xvkxh':_0x4d94a8[_0xf53cdc(0x188)],'TxHcJ':function(_0xfe4b5d,_0x557efa,_0x533d7b,_0x4ab649){const _0x564dc0=_0xf53cdc;return _0x4d94a8[_0x564dc0(0x1ee)](_0xfe4b5d,_0x557efa,_0x533d7b,_0x4ab649);},'iOihH':_0x4d94a8[_0xf53cdc(0x1ae)],'hvkAP':_0x4d94a8['qVQfT']};_0x4d94a8['cVRfP']('twZSI',_0x4d94a8[_0xf53cdc(0x172)])?_0x44c274[_0xf53cdc(0xc7)](_0x2f5fc6=>{const _0x484f7a=_0xf53cdc;_0x484f7a(0xef)===_0x3ed031[_0x484f7a(0x133)]?_0x2f5fc6[_0x484f7a(0x195)]=!_0x5ade90:(_0x1c953b[_0x484f7a(0x109)][_0x484f7a(0x123)](_0x3ed031[_0x484f7a(0x209)]),_0x2b96b7[_0x484f7a(0x109)][_0x484f7a(0x101)](_0x3ed031[_0x484f7a(0x1f8)]),_0xb82efe=null);}):_0x3ed031[_0xf53cdc(0x114)](_0x78c1de,_0x3ed031[_0xf53cdc(0x17c)],_0x3ed031[_0xf53cdc(0x120)],()=>{const _0x2d3194=_0xf53cdc;_0x30bda7=[],_0x16d644['removeItem'](_0x3ed031[_0x2d3194(0x117)]),_0x1ade8d();});}async function _0x5e700e(_0x6b9c07){const _0x2f344e=_0x39d510,_0x282cac={'awCFa':_0x4d94a8[_0x2f344e(0x1ce)],'tBUxx':'hidden','wCCLY':_0x4d94a8[_0x2f344e(0x1f4)],'DgKyw':_0x4d94a8[_0x2f344e(0x1d0)]},_0x5c33d5='',_0x29825c='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key='+_0x5c33d5,_0x547ff5={'contents':[{'parts':[{'text':_0x6b9c07}]}]};let _0x17a9ce,_0x361bb3=0x3e8;for(let _0x258a59=0x0;_0x4d94a8['OKadV'](_0x258a59,0x5);_0x258a59++){try{if(_0x4d94a8[_0x2f344e(0x1c1)]===_0x2f344e(0x222)){_0x17a9ce=await _0x4d94a8[_0x2f344e(0x10f)](fetch,_0x29825c,{'method':_0x4d94a8['eovZo'],'headers':{'Content-Type':_0x4d94a8[_0x2f344e(0x14f)]},'body':JSON['stringify'](_0x547ff5)});if(_0x17a9ce['ok']){const _0x99c9e6=await _0x17a9ce['json']();return _0x99c9e6[_0x2f344e(0x1e7)]?.[0x0]?.['content']?.[_0x2f344e(0x1ec)]?.[0x0]?.[_0x2f344e(0x1d7)]||_0x4d94a8[_0x2f344e(0x1a9)];}else{if(_0x17a9ce[_0x2f344e(0xc5)]===0x1ad||_0x4d94a8[_0x2f344e(0x19d)](_0x17a9ce[_0x2f344e(0xc5)],0x1f4)){if(_0x4d94a8[_0x2f344e(0x11e)](_0x4d94a8[_0x2f344e(0x234)],_0x2f344e(0xf9)))await new Promise(_0x2485e6=>setTimeout(_0x2485e6,_0x361bb3)),_0x361bb3*=0x2;else{if(_0x4d94a8[_0x2f344e(0x190)](!_0x3744c1,!_0x4f6b3b))return;const _0x5817ba=new _0x25403b()[_0x2f344e(0xd9)]();_0x57ad7c['unshift']({'title':_0x5b6d87,'content':_0x424c0e,'timestamp':_0x5817ba});if(_0x3834cf[_0x2f344e(0x200)]>0x32)_0x2faa9a[_0x2f344e(0x23c)]();_0x14c454['setItem'](_0x4d94a8[_0x2f344e(0x188)],_0x196ce8[_0x2f344e(0x1c3)](_0x53be2a)),_0x4d94a8[_0x2f344e(0x19a)](_0x37e86b);}}else{if(_0x4d94a8[_0x2f344e(0xd4)]===_0x4d94a8[_0x2f344e(0xd4)]){const _0x1a7e9d=await _0x17a9ce['text']();let _0x37abe4;try{const _0x329214=JSON[_0x2f344e(0x1bd)](_0x1a7e9d);_0x37abe4=_0x329214[_0x2f344e(0x150)]?.[_0x2f344e(0x142)]||JSON['stringify'](_0x329214);}catch(_0xd644cc){_0x37abe4=_0x1a7e9d||_0x17a9ce[_0x2f344e(0x12e)]||_0x4d94a8[_0x2f344e(0x218)];}return console['error'](_0x2f344e(0x124),_0x37abe4),_0x2f344e(0x229)+_0x17a9ce[_0x2f344e(0xc5)]+'\x20-\x20'+_0x37abe4;}else{const _0x4f864a=_0x282cac[_0x2f344e(0xee)][_0x2f344e(0x22f)]('|');let _0x5e8601=0x0;while(!![]){switch(_0x4f864a[_0x5e8601++]){case'0':_0x5c9f5a[_0x2f344e(0x109)][_0x2f344e(0x123)](_0x2f344e(0x239));continue;case'1':_0x5f4753[_0x2f344e(0x109)]['add'](_0x282cac[_0x2f344e(0xf3)]);continue;case'2':_0x4610ac[_0x2f344e(0x109)][_0x2f344e(0x101)](_0x282cac[_0x2f344e(0xf3)]);continue;case'3':_0x196d8f[_0x2f344e(0x109)][_0x2f344e(0x101)](_0x282cac[_0x2f344e(0x16c)]);continue;case'4':_0x489f0a[_0x2f344e(0x109)]['remove'](_0x282cac['DgKyw']);continue;case'5':_0x116206['classList'][_0x2f344e(0x101)](_0x2f344e(0x1c0));continue;case'6':_0xe8f2ca[_0x2f344e(0x109)]['add'](_0x2f344e(0x1aa));continue;case'7':_0x4b2abe[_0x2f344e(0x109)][_0x2f344e(0x101)](_0x282cac[_0x2f344e(0x16c)]);continue;case'8':_0x25a8e0['classList'][_0x2f344e(0x123)](_0x2f344e(0x1c0));continue;}break;}}}}}else _0x184b51=![],_0x4eee3c[_0x2f344e(0xfd)]=_0x4d94a8[_0x2f344e(0x128)],_0x12d753[_0x2f344e(0x109)]['remove'](_0x4d94a8[_0x2f344e(0x1f4)]),_0x3a716f['innerHTML']=_0x2f344e(0x104);}catch(_0x4cf808){console[_0x2f344e(0x150)](_0x4d94a8['AhSwd'],_0x4cf808);if(_0x4d94a8[_0x2f344e(0x179)](_0x258a59,0x4))await new Promise(_0xdb7eda=>setTimeout(_0xdb7eda,_0x361bb3)),_0x361bb3*=0x2;else return'Error:\x20Network\x20request\x20failed.\x20Please\x20check\x20your\x20connection.\x20Details:\x20'+_0x4cf808[_0x2f344e(0x142)];}}return _0x4d94a8['kmDaF'];}_0x461c12[_0x39d510(0x155)](_0x4d94a8[_0x39d510(0x1a6)],async()=>{const _0x192b05=_0x39d510,_0x153f75={'BOvBA':function(_0x36e11c){const _0x18bd99=_0x112a;return _0x4d94a8[_0x18bd99(0x1f6)](_0x36e11c);},'uDtnl':_0x4d94a8['ShKmK'],'tITeh':function(_0x3c5d3e,_0x683be3){return _0x3c5d3e||_0x683be3;},'scxYc':function(_0x20f844,_0x59213b){const _0x53a21b=_0x112a;return _0x4d94a8[_0x53a21b(0x1ca)](_0x20f844,_0x59213b);},'eTlCc':_0x4d94a8['QzkEN'],'JMvlh':_0x4d94a8[_0x192b05(0x20b)],'xkdAt':_0x4d94a8[_0x192b05(0x111)],'SVtmC':function(_0xdbcc16,_0x3c4a08,_0x5d54b4,_0x59e178){const _0x18f9be=_0x192b05;return _0x4d94a8[_0x18f9be(0x135)](_0xdbcc16,_0x3c4a08,_0x5d54b4,_0x59e178);},'ESLoY':_0x4d94a8['CroiI'],'AwSql':_0x4d94a8[_0x192b05(0x157)],'lEgMu':_0x4d94a8[_0x192b05(0xfa)],'gdLcC':_0x192b05(0x138),'TTjlm':_0x4d94a8[_0x192b05(0x1c4)]},_0x389a0f=_0x221d1d[_0x192b05(0x198)],_0x335fc0=document[_0x192b05(0x22a)]('contentName')['value'],_0x45fcbe=document['getElementById'](_0x4d94a8['cntKG'])[_0x192b05(0x198)];if(!_0x335fc0[_0x192b05(0x22d)]()||!_0x45fcbe['trim']()){_0x4d94a8[_0x192b05(0x187)](alert,_0x4d94a8[_0x192b05(0xde)]);return;}_0x4d94a8['nckIu'](_0x459b1d),_0x54a937[_0x192b05(0x109)][_0x192b05(0x123)](_0x4d94a8[_0x192b05(0x1e2)]),_0x27a692['classList'][_0x192b05(0x101)](_0x4d94a8[_0x192b05(0x1e2)]),_0x2e822b['innerText']='',_0x461c12['disabled']=!![],_0x461c12['classList'][_0x192b05(0x123)](_0x192b05(0x230),_0x4d94a8[_0x192b05(0x185)]),_0x4d94a8[_0x192b05(0xff)](_0x438308,![]);_0x48f45d&&(_0x48f45d=![],_0x2e822b['contentEditable']=_0x4d94a8[_0x192b05(0x128)],_0x17d969[_0x192b05(0x109)][_0x192b05(0x101)](_0x4d94a8[_0x192b05(0x1f4)]),_0x17d969['innerHTML']='<svg\x20xmlns=\x22http://www.w3.org/2000/svg\x22\x20class=\x22h-5\x20w-5\x22\x20viewBox=\x220\x200\x2020\x2020\x22\x20fill=\x22currentColor\x22><path\x20d=\x22M17.414\x202.586a2\x202\x200\x2000-2.828\x200L7\x2010.172V13h2.828l7.586-7.586a2\x202\x200\x20000-2.828z\x22\x20/><path\x20fill-rule=\x22evenodd\x22\x20d=\x22M2\x206a2\x202\x200\x20012-2h4a1\x201\x200\x20010\x202H4v10h10v-4a1\x201\x200\x20112\x200v4a2\x202\x200\x2001-2\x202H4a2\x202\x200\x2001-2-2V6z\x22\x20clip-rule=\x22evenodd\x22\x20/></svg>');let _0x3968bc='';const _0x5dd3df=document[_0x192b05(0x22a)](_0x192b05(0x219))[_0x192b05(0x198)],_0x57af6f=document[_0x192b05(0x22a)](_0x4d94a8[_0x192b05(0x1a3)])[_0x192b05(0x198)],_0x29212f=document[_0x192b05(0x22a)](_0x192b05(0xe1))[_0x192b05(0x198)],_0x21aac7=document[_0x192b05(0x22a)](_0x4d94a8[_0x192b05(0x1d8)])['value'],_0x1b2f1e=document[_0x192b05(0x22a)](_0x4d94a8[_0x192b05(0x170)])['value'],_0x3818e0=document[_0x192b05(0x22a)](_0x4d94a8[_0x192b05(0x224)])[_0x192b05(0x198)],_0x2e0792=document[_0x192b05(0x22a)](_0x4d94a8['UPVTI'])[_0x192b05(0x198)],_0x440f10=document['getElementById'](_0x4d94a8[_0x192b05(0x232)])[_0x192b05(0x198)],_0xc53685=document[_0x192b05(0x22a)](_0x4d94a8[_0x192b05(0x1b4)])[_0x192b05(0x198)];if(_0x4d94a8['VzllP'](_0x389a0f,_0x4d94a8[_0x192b05(0x1db)]))_0x4d94a8['bSNCV'](_0x4d94a8[_0x192b05(0x192)],_0x4d94a8[_0x192b05(0x169)])?_0x3968bc=_0x192b05(0x10d)+_0x335fc0+_0x192b05(0x15c)+_0x45fcbe+_0x192b05(0x11b)+_0x5dd3df+_0x192b05(0x174)+_0x57af6f+_0x192b05(0x1f0)+_0x29212f+_0x192b05(0x177)+_0x21aac7+_0x192b05(0x184)+_0x1b2f1e+_0x192b05(0xe9)+_0x2e0792+_0x192b05(0x176)+_0x440f10+_0x192b05(0xe2)+_0x3818e0+_0x192b05(0x1a1):(_0x4e97a2&&_0x153f75[_0x192b05(0x17a)](_0x245c04),_0x33f122['classList'][_0x192b05(0x123)](_0x153f75['uDtnl']),_0x5c54df['classList'][_0x192b05(0x101)]('flex'),_0x50480f=null);else{if(_0x4d94a8[_0x192b05(0x22b)](_0x4d94a8['pFeim'],_0x192b05(0x167)))_0x1f41b4=!_0x2b7dec,_0x4200ed['contentEditable']=_0x44a7e6,_0x2debd8[_0x192b05(0x109)][_0x192b05(0x225)](_0x4d94a8['BnVPS']),_0x2cbb5d?(_0x5af6c3['focus'](),_0x2f0c23[_0x192b05(0x15b)]=_0x192b05(0x143),_0x20e502['innerHTML']='<svg\x20xmlns=\x22http://www.w3.org/2000/svg\x22\x20class=\x22h-5\x20w-5\x22\x20viewBox=\x220\x200\x2020\x2020\x22\x20fill=\x22currentColor\x22><path\x20fill-rule=\x22evenodd\x22\x20d=\x22M16.707\x205.293a1\x201\x200\x20010\x201.414l-8\x208a1\x201\x200\x2001-1.414\x200l-4-4a1\x201\x200\x20011.414-1.414L8\x2012.586l7.293-7.293a1\x201\x200\x20011.414\x200z\x22\x20clip-rule=\x22evenodd\x22\x20/></svg>'):(_0x4f9a71['title']=_0x4d94a8[_0x192b05(0x216)],_0x47c595[_0x192b05(0x1f1)]=_0x192b05(0x104));else{const _0x307948=_0x51784c[_0x192b05(0x14b)](_0x20044e=>_0x20044e['id']===_0x389a0f);if(_0x307948)_0x4d94a8['IOkll'](_0x4d94a8[_0x192b05(0x15e)],_0x4d94a8[_0x192b05(0x1be)])?_0x3e6f2a[_0x4ef01c]={..._0xe7396e[_0x5918ae],'name':_0x6de940,'prompt':_0x2c3a5b}:_0x3968bc=_0x307948['prompt']+_0x192b05(0xd3)+_0x335fc0+_0x192b05(0x15c)+_0x45fcbe+_0x192b05(0x11b)+_0x5dd3df+_0x192b05(0x174)+_0x57af6f+'\x0a*\x20**Topic\x20Category:**\x20'+_0x29212f+_0x192b05(0x177)+_0x21aac7+_0x192b05(0x184)+_0x1b2f1e+_0x192b05(0xe9)+_0x2e0792+_0x192b05(0x176)+_0x440f10+_0x192b05(0xe2)+_0x3818e0+_0x192b05(0x1a1);else{if(_0x4d94a8[_0x192b05(0x1dd)](_0x4d94a8[_0x192b05(0x1e8)],_0x192b05(0x206))){_0x4d94a8[_0x192b05(0x1ab)](alert,_0x4d94a8[_0x192b05(0x1d2)]),_0x27a692['classList'][_0x192b05(0x123)](_0x4d94a8[_0x192b05(0x1e2)]),_0x54a937['classList'][_0x192b05(0x101)](_0x4d94a8[_0x192b05(0x1e2)]),_0x461c12[_0x192b05(0x195)]=![],_0x461c12[_0x192b05(0x109)][_0x192b05(0x101)](_0x4d94a8['UcZMf'],_0x4d94a8[_0x192b05(0x185)]);return;}else _0x290756[_0x192b05(0x18d)](_0x4d94a8[_0x192b05(0xeb)]),_0x184cb4['classList'][_0x192b05(0x123)](_0x4d94a8[_0x192b05(0x1f4)]),_0x4805d6['title']=_0x4d94a8[_0x192b05(0x16f)],_0x519c81(()=>{const _0x269c05=_0x192b05;_0x39fa9c[_0x269c05(0x109)][_0x269c05(0x101)](_0x269c05(0x1aa)),_0x3fa16f[_0x269c05(0x15b)]=_0x56c8b8;},0x7d0);}}}_0x4d94a8['aooEB'](_0xc53685,_0x4d94a8[_0x192b05(0x105)])&&(_0x3968bc+=_0x192b05(0x100)+_0xc53685+'.\x20Label\x20the\x20original\x20and\x20the\x20translation\x20clearly.');const _0x1a704f=await _0x4d94a8[_0x192b05(0xff)](_0x5e700e,_0x3968bc);_0x27a692[_0x192b05(0x109)]['add'](_0x4d94a8[_0x192b05(0x1e2)]),_0x2e822b['innerText']=_0x1a704f,_0x461c12['disabled']=![],_0x461c12['classList'][_0x192b05(0x101)](_0x4d94a8[_0x192b05(0x18e)],_0x4d94a8['ESkqY']);if(_0x1a704f&&!_0x1a704f[_0x192b05(0x1dc)](_0x4d94a8[_0x192b05(0x18b)])){if(_0x4d94a8['rnfXz'](_0x192b05(0x18c),_0x4d94a8['uiYsF'])){const _0x3d5235={'ISfEt':'contentGeneratorBots','tqCZn':function(_0x214442){return _0x153f75['BOvBA'](_0x214442);}},_0x24bc35=_0x4e5b24[_0x192b05(0x210)],_0x465761=_0x24bc35[_0x192b05(0x1e1)][_0x192b05(0x223)],_0x386a12=_0x24bc35[_0x192b05(0x1e1)]['id'];if(_0x153f75[_0x192b05(0x1a0)](!_0x465761,!_0x386a12))return;const _0x330719=_0x1512c4[_0x192b05(0x14b)](_0x2cbabc=>_0x2cbabc['id']===_0x386a12);if(!_0x330719)return;if(_0x153f75[_0x192b05(0x21a)](_0x465761,_0x192b05(0x1ed))){const _0x17df33=_0x153f75[_0x192b05(0xed)][_0x192b05(0x22f)]('|');let _0x202e97=0x0;while(!![]){switch(_0x17df33[_0x202e97++]){case'0':_0x2c04de[_0x192b05(0x1b2)]=_0x153f75[_0x192b05(0x1cb)];continue;case'1':_0x3a4695['focus']();continue;case'2':_0x2723a9['value']=_0x330719['prompt'];continue;case'3':_0x57da17[_0x192b05(0x198)]=_0x330719['id'];continue;case'4':_0x1f3d6f[_0x192b05(0x198)]=_0x330719['name'];continue;}break;}}else _0x153f75['scxYc'](_0x465761,_0x153f75['xkdAt'])&&_0x153f75['SVtmC'](_0x16534d,_0x153f75[_0x192b05(0xf2)],'\x22'+_0x330719['name']+_0x192b05(0x205),()=>{const _0x2e4077=_0x192b05;_0x4e2ed1=_0x3ad478[_0x2e4077(0x165)](_0x40bafb=>_0x40bafb['id']!==_0x386a12),_0x48616e['setItem'](_0x3d5235[_0x2e4077(0x215)],_0x30288f[_0x2e4077(0x1c3)](_0x2282bd)),_0x3d5235[_0x2e4077(0xe3)](_0x403cbf);});}else _0x4d94a8[_0x192b05(0x115)](_0x438308,!![]),_0x50d0dd(_0x335fc0,_0x1a704f);}else{if(_0x4d94a8[_0x192b05(0x201)]===_0x4d94a8[_0x192b05(0x1c7)]){if(!_0x4b20e3[_0x192b05(0x195)]){const _0x145cd6=_0x12e968[_0x192b05(0x22a)](_0x153f75['AwSql'])[_0x192b05(0x198)]||_0x192b05(0xcb),_0x42f644=_0x94d93b[_0x192b05(0x1b2)],_0x3fefad=_0x42f644['replace'](/"/g,'\x22\x22'),_0x2717fb='Title,Content\x0a\x22'+_0x145cd6+_0x192b05(0x149)+_0x3fefad+'\x22',_0x51a06a=new _0x5cb8b8([_0x2717fb],{'type':_0x153f75[_0x192b05(0xf4)]}),_0x1b7384=_0x17296b['createElement']('a'),_0x4a9f3d=_0x41a490[_0x192b05(0xe8)](_0x51a06a);_0x1b7384['setAttribute'](_0x192b05(0x1bb),_0x4a9f3d),_0x1b7384[_0x192b05(0x18f)](_0x153f75[_0x192b05(0x158)],_0x153f75[_0x192b05(0x1e3)]),_0x1b7384['style']['visibility']=_0x153f75[_0x192b05(0x19c)],_0x44a6f1['body'][_0x192b05(0x202)](_0x1b7384),_0x1b7384[_0x192b05(0x1f9)](),_0x139f59[_0x192b05(0x21e)][_0x192b05(0xca)](_0x1b7384);}}else _0x4d94a8[_0x192b05(0x115)](_0x438308,![]);}}),_0x17d969['addEventListener']('click',()=>{const _0x44afe8=_0x39d510,_0x1a59ce={'vVTUc':_0x4d94a8[_0x44afe8(0x12f)],'HeAkW':function(_0x42d2f8,_0x3e38f9){const _0x1bef4a=_0x44afe8;return _0x4d94a8[_0x1bef4a(0x187)](_0x42d2f8,_0x3e38f9);}};_0x4d94a8['MejOi'](_0x44afe8(0x236),_0x4d94a8[_0x44afe8(0x1bc)])?(_0xe63ebd[_0x44afe8(0x21c)](),_0x570262['title']=_0x1a59ce[_0x44afe8(0x214)],_0x353bf1[_0x44afe8(0x1f1)]=_0x44afe8(0x112)):(_0x48f45d=!_0x48f45d,_0x2e822b[_0x44afe8(0xfd)]=_0x48f45d,_0x17d969[_0x44afe8(0x109)][_0x44afe8(0x225)](_0x4d94a8[_0x44afe8(0x1f4)]),_0x48f45d?(_0x2e822b[_0x44afe8(0x21c)](),_0x17d969[_0x44afe8(0x15b)]=_0x4d94a8[_0x44afe8(0x12f)],_0x17d969[_0x44afe8(0x1f1)]=_0x44afe8(0x112)):_0x4d94a8[_0x44afe8(0x11d)](_0x4d94a8[_0x44afe8(0x14e)],'zqwCF')?(_0x17d969[_0x44afe8(0x15b)]=_0x4d94a8[_0x44afe8(0x216)],_0x17d969['innerHTML']='<svg\x20xmlns=\x22http://www.w3.org/2000/svg\x22\x20class=\x22h-5\x20w-5\x22\x20viewBox=\x220\x200\x2020\x2020\x22\x20fill=\x22currentColor\x22><path\x20d=\x22M17.414\x202.586a2\x202\x200\x2000-2.828\x200L7\x2010.172V13h2.828l7.586-7.586a2\x202\x200\x20000-2.828z\x22\x20/><path\x20fill-rule=\x22evenodd\x22\x20d=\x22M2\x206a2\x202\x200\x20012-2h4a1\x201\x200\x20010\x202H4v10h10v-4a1\x201\x200\x20112\x200v4a2\x202\x200\x2001-2\x202H4a2\x202\x200\x2001-2-2V6z\x22\x20clip-rule=\x22evenodd\x22\x20/></svg>'):(_0x1a59ce[_0x44afe8(0x1b0)](_0xbaa36e,!![]),_0x526a4d(_0x5573b4,_0x446938)));}),_0x329ae7[_0x39d510(0x155)](_0x39d510(0x1f9),()=>{const _0x56ffdf=_0x39d510;if(_0x4d94a8[_0x56ffdf(0x141)](_0x4d94a8['FyEpR'],_0x4d94a8[_0x56ffdf(0x1e0)]))_0x379ef3=_0x56ffdf(0x10d)+_0x1944f6+_0x56ffdf(0x15c)+_0x558083+_0x56ffdf(0x11b)+_0x38889a+_0x56ffdf(0x174)+_0x3d822d+_0x56ffdf(0x1f0)+_0x6252cc+'\x0a*\x20**Content\x20Type:**\x20'+_0xa7620a+_0x56ffdf(0x184)+_0x111519+_0x56ffdf(0xe9)+_0x30a8ee+'\x0a*\x20**Desired\x20Length:**\x20'+_0x15aa00+_0x56ffdf(0xe2)+_0x4c15c8+_0x56ffdf(0x1a1);else{if(!_0x329ae7['disabled']){const _0xaccd8=document['getElementById'](_0x56ffdf(0x228))[_0x56ffdf(0x198)]||_0x4d94a8['abrNf'],_0x34054c=_0x2e822b['innerText'],_0x514bf1=_0x34054c[_0x56ffdf(0x1b9)](/"/g,'\x22\x22'),_0x59f281='Title,Content\x0a\x22'+_0xaccd8+_0x56ffdf(0x149)+_0x514bf1+'\x22',_0xffc1d8=new Blob([_0x59f281],{'type':_0x4d94a8[_0x56ffdf(0xfa)]}),_0x716554=document['createElement']('a'),_0x109b2c=URL[_0x56ffdf(0xe8)](_0xffc1d8);_0x716554['setAttribute'](_0x56ffdf(0x1bb),_0x109b2c),_0x716554[_0x56ffdf(0x18f)](_0x4d94a8[_0x56ffdf(0x12a)],_0x56ffdf(0x15d)),_0x716554['style']['visibility']=_0x4d94a8[_0x56ffdf(0x1e2)],document[_0x56ffdf(0x21e)][_0x56ffdf(0x202)](_0x716554),_0x716554[_0x56ffdf(0x1f9)](),document[_0x56ffdf(0x21e)][_0x56ffdf(0xca)](_0x716554);}}}),_0x30b5da[_0x39d510(0x155)](_0x4d94a8[_0x39d510(0x1a6)],()=>{const _0x571595=_0x39d510,_0x154cf1={'puLWP':_0x4d94a8['xIbgd'],'DtRJl':_0x571595(0x1eb),'cVfaz':_0x4d94a8[_0x571595(0x1f4)],'KIGZO':_0x4d94a8[_0x571595(0x1f2)],'blGvo':_0x4d94a8['DIHJa']};if(_0x4d94a8[_0x571595(0x1cc)](_0x4d94a8[_0x571595(0x14c)],_0x4d94a8[_0x571595(0xf6)])){const _0x313b37=_0x154cf1['puLWP'][_0x571595(0x22f)]('|');let _0x109452=0x0;while(!![]){switch(_0x313b37[_0x109452++]){case'0':_0xe7a448[_0x571595(0x198)]=_0x3a6d67[_0x571595(0x19b)];continue;case'1':_0x1ba28b['innerText']=_0x154cf1[_0x571595(0x227)];continue;case'2':_0x342409[_0x571595(0x198)]=_0x26db8a['id'];continue;case'3':_0x35cd99[_0x571595(0x21c)]();continue;case'4':_0x15d3b9[_0x571595(0x198)]=_0xb89297[_0x571595(0x137)];continue;}break;}}else{if(!_0x30b5da[_0x571595(0x195)]){if(_0x4d94a8[_0x571595(0x212)](_0x4d94a8['ggdJC'],_0x571595(0xdf))){const _0xe845f7=_0x30b5da[_0x571595(0x15b)],_0x12409d=_0x2e822b[_0x571595(0x1b2)],_0x5b4c6d=document[_0x571595(0x1fc)](_0x4d94a8[_0x571595(0xd7)]);_0x5b4c6d[_0x571595(0x198)]=_0x12409d,document['body']['appendChild'](_0x5b4c6d),_0x5b4c6d[_0x571595(0xe0)]();try{document[_0x571595(0x18d)](_0x4d94a8['FHKEK']),_0x30b5da[_0x571595(0x109)]['add'](_0x4d94a8[_0x571595(0x1f4)]),_0x30b5da[_0x571595(0x15b)]=_0x4d94a8[_0x571595(0x16f)],_0x4d94a8[_0x571595(0x10f)](setTimeout,()=>{const _0x391f95=_0x571595;_0x30b5da[_0x391f95(0x109)][_0x391f95(0x101)](_0x154cf1[_0x391f95(0x1e9)]),_0x30b5da[_0x391f95(0x15b)]=_0xe845f7;},0x7d0);}catch(_0x5a3378){_0x4d94a8[_0x571595(0xcd)](_0x4d94a8[_0x571595(0x13d)],_0x4d94a8[_0x571595(0x13d)])?_0x2d48da[_0x571595(0x1f1)]='<p\x20class=\x22text-gray-500\x20text-center\x20mt-4\x22>Custom\x20Bots\x20မရှိသေးပါ။</p>':(console['error']('Failed\x20to\x20copy\x20text:\x20',_0x5a3378),_0x30b5da[_0x571595(0x15b)]=_0x4d94a8[_0x571595(0x173)]);}document['body'][_0x571595(0xca)](_0x5b4c6d);}else{const _0x1ea76d=_0x22beda[_0x571595(0x1fc)](_0x154cf1['KIGZO']);_0x1ea76d[_0x571595(0xd1)]=_0x154cf1[_0x571595(0x13a)],_0x1ea76d[_0x571595(0x1f1)]=_0x571595(0x191)+_0x7c327e[_0x571595(0x137)]+_0x571595(0x166)+_0x392766['id']+_0x571595(0x14a)+_0x12f833['id']+_0x571595(0x132),_0x544949[_0x571595(0x202)](_0x1ea76d);}}}}),_0x4d94a8[_0x39d510(0x1a4)](_0xdbda81),_0x197422();}));
+</script>
+
+</body>
+</html>
