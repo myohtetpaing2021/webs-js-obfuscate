@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Premium Gold Tracker</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Html2Canvas for Receipt Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+/* obfuscated */
+function _0x291d(){var _0x4b65bd=['#8E6803','#FCEFC7','#4B3503','28983roDrkh','#B58704','#D9A507','#020617','config','600jlfLae','#0f172a','156njuZnP','#F0BD1A','72153ikgCTG','#FFFAEB','#F4CD4D','1233910wCdJKM','12522gbMrKs','947520BrChET','Padauk','267636UWhZlF','2618385ytQEca','1730lRTgit','sans-serif','#6B4D03','#F8DE8A','2xIvXDr','88VHLgKv'];_0x291d=function(){return _0x4b65bd;};return _0x291d();}function _0x4a1b(_0x4e74bd,_0x22f062){_0x4e74bd=_0x4e74bd-0x188;var _0x291d6e=_0x291d();var _0x4a1bbc=_0x291d6e[_0x4e74bd];return _0x4a1bbc;}var _0x46b7c0=_0x4a1b;(function(_0x4e66ec,_0x5ac270){var _0x3368b5=_0x4a1b,_0x4bb80b=_0x4e66ec();while(!![]){try{var _0x5204f5=parseInt(_0x3368b5(0x1a1))/0x1*(parseInt(_0x3368b5(0x18c))/0x2)+-parseInt(_0x3368b5(0x191))/0x3*(-parseInt(_0x3368b5(0x198))/0x4)+parseInt(_0x3368b5(0x188))/0x5*(parseInt(_0x3368b5(0x19e))/0x6)+parseInt(_0x3368b5(0x1a2))/0x7+-parseInt(_0x3368b5(0x196))/0x8*(parseInt(_0x3368b5(0x19a))/0x9)+-parseInt(_0x3368b5(0x19d))/0xa+parseInt(_0x3368b5(0x18d))/0xb*(-parseInt(_0x3368b5(0x19f))/0xc);if(_0x5204f5===_0x5ac270)break;else _0x4bb80b['push'](_0x4bb80b['shift']());}catch(_0x551f02){_0x4bb80b['push'](_0x4bb80b['shift']());}}}(_0x291d,0x5dce2),tailwind[_0x46b7c0(0x195)]={'theme':{'extend':{'colors':{'gold':{0x32:_0x46b7c0(0x19b),0x64:_0x46b7c0(0x18f),0xc8:_0x46b7c0(0x18b),0x12c:_0x46b7c0(0x19c),0x190:_0x46b7c0(0x199),0x1f4:_0x46b7c0(0x193),0x258:_0x46b7c0(0x192),0x2bc:_0x46b7c0(0x18e),0x320:_0x46b7c0(0x18a),0x384:_0x46b7c0(0x190)},'royal':{0x320:'#1e293b',0x384:_0x46b7c0(0x197),0x3b6:_0x46b7c0(0x194)}},'fontFamily':{'sans':[_0x46b7c0(0x1a0),_0x46b7c0(0x189)],'num':['Inter',_0x46b7c0(0x189)]}}}});
+</script>
+
+    <style>
+        :root {
+            --bg-primary: #111827;
+            --text-primary: #F9FAFB;
+            --accent-yellow: #FBBF24;
+        }
+
+        body {
+            font-family: 'Padauk', sans-serif;
+            background-color: #0f172a;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(217, 165, 7, 0.08) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(217, 165, 7, 0.05) 0%, transparent 20%);
+            color: var(--text-primary);
+            scroll-behavior: smooth;
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        .font-num { font-family: 'Inter', sans-serif; }
+
+        .glass-card {
+            background: rgba(31, 41, 55, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn { transition: all 0.3s ease; }
+        .btn:hover { transform: translateY(-2px); }
+        .btn:active { transform: translateY(0); }
+
+        .input-field {
+            background-color: #374151;
+            border: 1px solid transparent;
+            color: white;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .input-field:focus {
+            border-color: #FBBF24;
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.3);
+            outline: none;
+        }
+
+        /* Modal transition */
+        .modal.hidden { opacity: 0; pointer-events: none; }
+        .modal { transition: opacity 0.3s ease-in-out; }
+
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        
+        .tooltip-enter { animation: tooltipSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes tooltipSlide {
+            from { opacity: 0; transform: translate(-50%, 10px) scale(0.95); }
+            to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .history-item { animation: slideIn 0.3s ease-out forwards; }
+
+        /* --- PRELOADER STYLES --- */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0f172a;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+        }
+
+        .loader-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+        }
+
+        .loader-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            border-top-color: #FBBF24; /* Gold 400 */
+            animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+        }
+
+        .loader-ring:nth-child(2) {
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border-top-color: #D9A507; /* Gold 600 */
+            animation-duration: 2s;
+            animation-direction: reverse;
+        }
+
+        .loader-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #FBBF24;
+            animation: pulse 2s infinite;
+        }
+
+        .loader-text {
+            margin-top: 2rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            background: linear-gradient(to right, #FBBF24, #FFF, #FBBF24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.7; }
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+    </style>
+</head>
+<body class="antialiased pb-12 overflow-hidden" onload="hidePreloader()">
+
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <div class="loader-container">
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+            <div class="loader-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+        </div>
+        <div class="loader-text">PREMIUM GOLD TRACKER</div>
+    </div>
+
+    <div class="container mx-auto max-w-5xl p-4 md:p-6">
+
+        <!-- Header -->
+        <header class="text-center my-8">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500 py-2 leading-relaxed">Premium Gold Tracker</h1>
+            <p class="text-md md:text-lg text-gray-400 mt-2">တိကျမြန်ဆန် စိတ်ချရသော Premium Gold Calculator</p>
+        </header>
+
+        <!-- Gold Price Section -->
+        <section id="gold-price-section" class="mb-8">
+            <div class="glass-card p-6 rounded-2xl shadow-2xl border-2 border-yellow-400/30 bg-gradient-to-br from-yellow-900/20 via-gray-900 to-gray-900">
+                <div class="max-w-2xl mx-auto text-center">
+                    <label for="goldPrice" class="block mb-3 font-bold text-lg text-yellow-400 uppercase tracking-widest leading-loose">
+                        ယနေ့ ရွှေပေါက်စျေး (၁ ကျပ်သား)
+                    </label>
+                    <div class="relative">
+                        <input type="number" id="goldPrice" class="input-field text-white text-3xl md:text-4xl font-bold rounded-xl w-full p-4 text-center font-num shadow-lg leading-normal" placeholder="0" oninput="calculate()">
+                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">MMK</span>
+                    </div>
+                    
+                    <div class="flex justify-center gap-4 mt-4 text-sm text-gray-400 font-num">
+                        <div class="bg-gray-800/50 px-4 py-2 rounded-lg border border-gray-700" id="pricePerPaeDisplay">၁ ပဲ = ၀</div>
+                        <div class="bg-gray-800/50 px-4 py-2 rounded-lg border border-gray-700" id="pricePerYwayDisplay">၁ ရွေး = ၀</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Calculation Inputs -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            
+            <!-- Weight -->
+            <div class="glass-card p-6 rounded-2xl shadow-2xl flex flex-col border-t-4 border-green-400">
+                <h3 class="text-xl font-bold text-green-400 mb-6 flex items-center gap-2 leading-relaxed">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+                    </svg>
+                    ရွှေထည် အလေးချိန်
+                </h3>
+                <div class="grid grid-cols-3 gap-4">
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1 text-center leading-loose">ကျပ်</label>
+                        <input type="number" id="prodKyat" class="input-field w-full p-3 rounded-lg text-center font-bold text-lg font-num leading-normal" placeholder="0" oninput="calculate()">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1 text-center leading-loose">ပဲ</label>
+                        <input type="number" id="prodPae" class="input-field w-full p-3 rounded-lg text-center font-bold text-lg font-num leading-normal" placeholder="0" oninput="calculate()">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1 text-center leading-loose">ရွေး</label>
+                        <input type="number" id="prodYway" class="input-field w-full p-3 rounded-lg text-center font-bold text-lg font-num leading-normal" placeholder="0" oninput="calculate()">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Wastage -->
+            <div class="glass-card p-6 rounded-2xl shadow-2xl flex flex-col border-t-4 border-red-400">
+                <h3 class="text-xl font-bold text-red-400 mb-6 flex items-center gap-2 leading-relaxed">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    အလျော့တွက် (လက်ခ)
+                </h3>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="opacity-50">
+                        <label class="text-xs text-gray-500 block mb-1 text-center leading-loose">ကျပ်</label>
+                        <div class="input-field w-full p-3 rounded-lg text-center font-bold text-lg text-gray-500 bg-gray-800 border-gray-700 leading-normal">-</div>
+                    </div>
+                    <div>
+                        <label class="text-xs text-red-300 block mb-1 text-center leading-loose">ပဲ</label>
+                        <input type="number" id="alyotPae" class="input-field w-full p-3 rounded-lg text-center font-bold text-lg font-num text-red-400 focus:border-red-400 focus:ring-red-400 leading-normal" placeholder="0" oninput="calculate()">
+                    </div>
+                    <div>
+                        <label class="text-xs text-red-300 block mb-1 text-center leading-loose">ရွေး</label>
+                        <input type="number" id="alyotYway" class="input-field w-full p-3 rounded-lg text-center font-bold text-lg font-num text-red-400 focus:border-red-400 focus:ring-red-400 leading-normal" placeholder="0" oninput="calculate()">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Result Section -->
+        <section class="mb-8">
+            <div class="glass-card p-6 md:p-8 rounded-2xl shadow-2xl bg-gradient-to-r from-gray-900 to-gray-800 border border-gray-700 relative overflow-hidden group">
+                 <div class="absolute top-0 right-0 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
+
+                <div class="flex flex-col md:flex-row justify-between items-center border-b border-gray-700 pb-6 mb-6 relative z-10 gap-4">
+                    <span class="text-gray-400 font-medium uppercase tracking-wide leading-relaxed">စုစုပေါင်း အလေးချိန်</span>
+                    <div class="px-5 py-2 bg-gray-800 rounded-full border border-gray-600">
+                        <span class="text-white font-bold text-lg md:text-xl tracking-wide font-num leading-relaxed" id="totalWeightDisplay">၀ ကျပ် ၀ ပဲ ၀ ရွေး</span>
+                    </div>
+                </div>
+
+                <div class="text-center relative z-10">
+                    <p class="text-yellow-400 text-xs font-bold uppercase tracking-[0.2em] mb-4">Total Amount</p>
+                    
+                    <div class="inline-block relative cursor-pointer select-none group/tooltip w-full" onclick="toggleCostText()">
+                        <div id="costFloatingBox" class="hidden absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-max max-w-[90vw] md:max-w-md bg-gray-800 text-white p-4 rounded-xl shadow-xl border border-yellow-500/50 text-center tooltip-enter z-50">
+                            <span id="costTextContent" class="block font-bold leading-loose text-base md:text-lg">...</span>
+                            <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-gray-800 border-b border-r border-yellow-500/50 rotate-45"></div>
+                        </div>
+
+                        <div class="inline-block relative px-6 py-2 rounded-2xl transition-transform active:scale-95 duration-200 hover:bg-white/5">
+                            <span class="text-4xl md:text-6xl font-num font-extrabold text-white tracking-tight drop-shadow-2xl text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400 leading-normal" id="totalCost">0</span>
+                            <span class="absolute top-2 -right-2 md:-right-6 text-sm text-gray-500 font-bold">MMK</span>
+                            <div class="text-[10px] text-gray-500 mt-2 font-medium opacity-70 group-hover/tooltip:opacity-100 transition-opacity flex items-center justify-center gap-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                                </svg>
+                                စာသားဖြင့်ကြည့်ရန် နှိပ်ပါ
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Buttons -->
+        <section class="grid grid-cols-2 gap-6 mb-10">
+            <button onclick="addToHistory()" class="btn w-full text-gray-900 bg-yellow-400 hover:bg-yellow-500 font-bold rounded-xl text-md px-5 py-4 text-center shadow-lg shadow-yellow-500/20 flex justify-center items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
+                <span class="leading-relaxed">မှတ်တမ်းတင်မည်</span>
+            </button>
+            <button onclick="resetForm()" class="btn w-full text-white bg-gray-700 hover:bg-gray-600 font-bold rounded-xl text-md px-5 py-4 text-center border border-gray-600 flex justify-center items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                <span class="leading-relaxed">ရှင်းမည်</span>
+            </button>
+        </section>
+
+        <!-- History Section with Action Buttons -->
+        <section id="historySection" class="hidden mb-8">
+            <div class="glass-card p-6 rounded-2xl shadow-2xl border border-gray-700/50">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                    <h2 class="text-xl font-bold text-yellow-400 flex items-center gap-3 leading-relaxed">
+                         <span class="flex h-3 w-3 relative">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-yellow-500"></span>
+                        </span>
+                        မှတ်တမ်းများ
+                    </h2>
+                    
+                    <!-- Only Data Export Button Remains -->
+                    <div class="flex space-x-2">
+                        <button onclick="exportRecords()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg text-xs flex items-center gap-1 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" /></svg>
+                            Data ထုတ်မည်
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="historyListBody" class="space-y-4 max-h-[500px] overflow-y-auto pr-2 custom-scroll">
+                    <!-- History Items will be injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settingsSection" class="glass-card p-6 rounded-2xl shadow-2xl border border-gray-700/50 mb-8">
+            <h2 class="flex items-center text-xl font-bold text-gray-200 mb-4 gap-2 leading-relaxed">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0 3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                Settings
+            </h2>
+            
+            <div class="space-y-3">
+                <div class="flex justify-between items-center p-4 bg-gray-800/50 rounded-xl border border-gray-700 hover:bg-gray-800 transition-colors">
+                    <div>
+                        <p class="text-sm font-semibold text-blue-300 leading-relaxed">Data ထုတ်/ထည့် ပြုလုပ်ရန်</p>
+                        <p class="text-xs text-gray-500 leading-relaxed">Backup အတွက် သို့မဟုတ် Device ပြောင်းသုံးရန်</p>
+                    </div>
+                    <div class="flex space-x-2">
+                         <button onclick="exportAllData()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg flex-shrink-0 text-xs transition-colors">All Data ထုတ်မည်</button>
+                         <button onclick="document.getElementById('importFileInput').click()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg flex-shrink-0 text-xs transition-colors">All Data ထည့်မည်</button>
+                         <input type="file" id="importFileInput" class="hidden" accept=".json" onchange="importData(event)">
+                    </div>
+                </div>
+                
+                <div class="flex justify-between items-center p-4 bg-gray-800/50 rounded-xl border border-gray-700 hover:bg-gray-800 transition-colors">
+                    <div>
+                        <p class="text-sm font-semibold text-red-400 leading-relaxed">Data အားလုံးဖျက်ရန်</p>
+                        <p class="text-xs text-gray-500 leading-relaxed">ဤလုပ်ဆောင်ချက်ကို ပြန်ပြင်၍မရပါ။</p>
+                    </div>
+                    <button onclick="confirmClearHistory()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg flex-shrink-0 text-xs transition-colors">ဖျက်မည်</button>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center text-gray-600 text-sm mt-8">
+            <p>&copy; 2025 Premium Gold Tracker</p>
+        </footer>
+
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal hidden fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div class="glass-card p-6 rounded-2xl shadow-2xl w-full max-w-md text-center border border-red-500/30">
+            <svg class="mx-auto h-16 w-16 text-red-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+            </svg>
+            <h3 class="text-xl font-bold text-white mb-2 leading-relaxed">မှတ်တမ်းအားလုံး ဖျက်မည်?</h3>
+            <p class="text-gray-400 mb-6 leading-relaxed">သိမ်းဆည်းထားသော တွက်ချက်မှု မှတ်တမ်းများအားလုံးကို အပြီးတိုင် ဖျက်လိုက်ပါမည်။ ပြန်ယူ၍မရနိုင်ပါ။</p>
+            <div class="flex justify-center gap-4">
+                <button onclick="closeModal()" class="btn text-gray-300 bg-gray-700 hover:bg-gray-600 font-bold rounded-lg text-md px-6 py-2.5 text-center border border-gray-600 leading-relaxed">မလုပ်တော့ပါ</button>
+                <button onclick="performClearHistory()" class="btn text-white bg-red-600 hover:bg-red-700 font-bold rounded-lg text-md px-6 py-2.5 text-center shadow-lg shadow-red-600/20 leading-relaxed">ဖျက်မည်</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-green-600 text-white py-3 px-6 rounded-xl shadow-2xl hidden transition-all duration-300 z-50 flex items-center gap-3 border border-white/10">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <p id="toast-message" class="font-bold">Success</p>
+    </div>
+
+    <script>
+/* obfuscated */
+(function(_0x3f05a5,_0x2eb28f){const _0x4ef0c6=_0x34f6,_0x1af2ec=_0x3f05a5();while(!![]){try{const _0x4a8578=parseInt(_0x4ef0c6(0x238))/0x1+parseInt(_0x4ef0c6(0x261))/0x2*(parseInt(_0x4ef0c6(0x1e0))/0x3)+parseInt(_0x4ef0c6(0x276))/0x4+parseInt(_0x4ef0c6(0x1c6))/0x5*(parseInt(_0x4ef0c6(0x23a))/0x6)+-parseInt(_0x4ef0c6(0x265))/0x7*(-parseInt(_0x4ef0c6(0x281))/0x8)+parseInt(_0x4ef0c6(0x230))/0x9*(parseInt(_0x4ef0c6(0x29a))/0xa)+parseInt(_0x4ef0c6(0x1d5))/0xb*(-parseInt(_0x4ef0c6(0x278))/0xc);if(_0x4a8578===_0x2eb28f)break;else _0x1af2ec['push'](_0x1af2ec['shift']());}catch(_0x86347f){_0x1af2ec['push'](_0x1af2ec['shift']());}}}(_0x1eb2,0x7d036));let currentTotalCost=0x0,currentTotalWeightText='';function hidePreloader(){const _0x48c6b1=_0x34f6,_0x1ae56f={'BliEZ':_0x48c6b1(0x1c2),'deajy':_0x48c6b1(0x233),'OstDE':function(_0x513a05){return _0x513a05();},'PYYNp':_0x48c6b1(0x1db),'ZcxiR':function(_0x195f09,_0x347848){return _0x195f09===_0x347848;},'bRQLR':_0x48c6b1(0x23c),'pwNjU':_0x48c6b1(0x1b9),'lBKsb':'preloader','UkqpI':function(_0x5aa75e,_0x41fca1,_0x4e7196){return _0x5aa75e(_0x41fca1,_0x4e7196);}},_0x1a44e6=document['getElementById'](_0x1ae56f[_0x48c6b1(0x1fd)]),_0x20756d=document['body'];_0x1ae56f['UkqpI'](setTimeout,()=>{const _0x5f2c35=_0x48c6b1;_0x1ae56f[_0x5f2c35(0x26c)](_0x1ae56f[_0x5f2c35(0x287)],'TSOAC')?(_0x1a44e6[_0x5f2c35(0x1bf)]['opacity']='0',_0x1a44e6[_0x5f2c35(0x1bf)][_0x5f2c35(0x277)]=_0x1ae56f[_0x5f2c35(0x1bb)],_0x20756d[_0x5f2c35(0x1bf)][_0x5f2c35(0x291)]=_0x5f2c35(0x1e2)):(_0x423b2f['getElementById'](_0x5f2c35(0x290))[_0x5f2c35(0x1ff)]='',_0x5ba104['getElementById'](_0x1ae56f['BliEZ'])[_0x5f2c35(0x1ff)]='',_0x220fe0['getElementById'](_0x1ae56f['deajy'])[_0x5f2c35(0x1ff)]='',_0x161fce[_0x5f2c35(0x23f)](_0x5f2c35(0x235))[_0x5f2c35(0x1ff)]='',_0x9ef319[_0x5f2c35(0x23f)](_0x5f2c35(0x1e9))[_0x5f2c35(0x1ff)]='',_0x2391d5['getElementById']('alyotYway')[_0x5f2c35(0x1ff)]='',_0x1ae56f[_0x5f2c35(0x1fc)](_0x21342f),_0x57f123[_0x5f2c35(0x23f)](_0x1ae56f[_0x5f2c35(0x223)])['classList']['add']('hidden'));},0x708);}function calculate(){const _0x247e80=_0x34f6,_0x3aba8b={'fvkfx':function(_0x46fbb6,_0x373e40){return _0x46fbb6(_0x373e40);},'tOoJv':_0x247e80(0x290),'aMgVp':'prodKyat','lumNG':_0x247e80(0x233),'JREso':function(_0x27cf5f,_0x1b51bb){return _0x27cf5f/_0x1b51bb;},'Agyto':'pricePerPaeDisplay','dcRqC':_0x247e80(0x1fa),'pCUAN':_0x247e80(0x28f),'GUpIF':function(_0x186646,_0x2bf14b){return _0x186646+_0x2bf14b;},'rGTMR':function(_0x1e3d1d,_0x62ee6){return _0x1e3d1d*_0x62ee6;},'WhYBz':function(_0x1a5a63,_0x15d35c){return _0x1a5a63%_0x15d35c;},'WVSUY':function(_0x392261,_0x1444d6){return _0x392261/_0x1444d6;},'kwDrM':function(_0x59960f,_0x4e2a64){return _0x59960f===_0x4e2a64;},'nABqX':function(_0x2c6c13,_0x212f60){return _0x2c6c13%_0x212f60;},'nWjhY':_0x247e80(0x1fe),'TIDBx':'costFloatingBox','PYQRq':_0x247e80(0x1b9)};let _0x1e5dbb=_0x3aba8b[_0x247e80(0x22e)](parseFloat,document['getElementById'](_0x3aba8b[_0x247e80(0x1cc)])[_0x247e80(0x1ff)])||0x0,_0x24252e=_0x3aba8b['fvkfx'](parseFloat,document['getElementById'](_0x3aba8b[_0x247e80(0x1d2)])[_0x247e80(0x1ff)])||0x0,_0x2b3087=parseFloat(document[_0x247e80(0x23f)](_0x3aba8b[_0x247e80(0x21c)])[_0x247e80(0x1ff)])||0x0,_0x299bad=_0x3aba8b['fvkfx'](parseFloat,document[_0x247e80(0x23f)](_0x247e80(0x235))[_0x247e80(0x1ff)])||0x0,_0x282cd6=parseFloat(document['getElementById']('alyotPae')['value'])||0x0,_0xa701e6=_0x3aba8b[_0x247e80(0x22e)](parseFloat,document['getElementById']('alyotYway')['value'])||0x0,_0x45207b=_0x3aba8b[_0x247e80(0x246)](_0x1e5dbb,0x10),_0x4ff025=_0x3aba8b[_0x247e80(0x246)](_0x45207b,0x8);document[_0x247e80(0x23f)](_0x3aba8b['Agyto'])[_0x247e80(0x243)]=_0x247e80(0x222)+Math[_0x247e80(0x1c3)](_0x45207b)['toLocaleString'](_0x3aba8b[_0x247e80(0x21b)]),document[_0x247e80(0x23f)](_0x3aba8b[_0x247e80(0x282)])['innerText']=_0x247e80(0x1c0)+Math[_0x247e80(0x1c3)](_0x4ff025)[_0x247e80(0x1bd)](_0x3aba8b[_0x247e80(0x21b)]);let _0x59ac5e=_0x3aba8b[_0x247e80(0x1f1)](_0x3aba8b[_0x247e80(0x260)](_0x24252e,0x80),_0x3aba8b['rGTMR'](_0x2b3087,0x8))+_0x299bad,_0x422de1=_0x3aba8b['GUpIF'](_0x3aba8b[_0x247e80(0x260)](_0x282cd6,0x8),_0xa701e6),_0x5760a6=_0x3aba8b[_0x247e80(0x1f1)](_0x59ac5e,_0x422de1),_0x3f64da=Math[_0x247e80(0x206)](_0x3aba8b[_0x247e80(0x246)](_0x5760a6,0x80)),_0x369f14=_0x3aba8b['WhYBz'](_0x5760a6,0x80),_0x1cb534=Math['floor'](_0x3aba8b[_0x247e80(0x229)](_0x369f14,0x8)),_0x130baf=_0x3aba8b['WhYBz'](_0x369f14,0x8);_0x130baf=_0x3aba8b[_0x247e80(0x22e)](parseFloat,_0x130baf['toFixed'](0x2));if(_0x3aba8b['kwDrM'](_0x3aba8b[_0x247e80(0x27b)](_0x130baf,0x1),0x0))_0x130baf=Math[_0x247e80(0x206)](_0x130baf);currentTotalWeightText=_0x3f64da+_0x247e80(0x251)+_0x1cb534+'\x20ပဲ\x20'+_0x130baf+'\x20ရွေး',document[_0x247e80(0x23f)](_0x247e80(0x21a))['innerText']=currentTotalWeightText;let _0x52f0bf=_0x5760a6*_0x4ff025;currentTotalCost=Math[_0x247e80(0x1c3)](_0x52f0bf),document[_0x247e80(0x23f)](_0x3aba8b[_0x247e80(0x255)])[_0x247e80(0x243)]=currentTotalCost['toLocaleString'](_0x3aba8b[_0x247e80(0x21b)]),document[_0x247e80(0x23f)](_0x3aba8b[_0x247e80(0x24e)])[_0x247e80(0x252)][_0x247e80(0x234)](_0x3aba8b[_0x247e80(0x20f)]);}function resetForm(){const _0x57f3cb=_0x34f6,_0x557815={'kzuUu':_0x57f3cb(0x235),'wGUGP':'alyotPae','zIuxn':'costFloatingBox','hmnST':'hidden','htzRD':'goldPrice','Iqpph':function(_0x5c7c6c){return _0x5c7c6c();},'HKgPb':_0x57f3cb(0x26b)},_0x8ef1e0='3|5|7|0|1|6|4|2'[_0x57f3cb(0x219)]('|');let _0xbe076e=0x0;while(!![]){switch(_0x8ef1e0[_0xbe076e++]){case'0':document['getElementById'](_0x557815[_0x57f3cb(0x247)])['value']='';continue;case'1':document[_0x57f3cb(0x23f)](_0x557815['wGUGP'])[_0x57f3cb(0x1ff)]='';continue;case'2':document[_0x57f3cb(0x23f)](_0x557815[_0x57f3cb(0x22f)])['classList'][_0x57f3cb(0x234)](_0x557815['hmnST']);continue;case'3':document[_0x57f3cb(0x23f)](_0x557815['htzRD'])[_0x57f3cb(0x1ff)]='';continue;case'4':_0x557815['Iqpph'](calculate);continue;case'5':document[_0x57f3cb(0x23f)](_0x57f3cb(0x1c2))['value']='';continue;case'6':document[_0x57f3cb(0x23f)](_0x557815[_0x57f3cb(0x20e)])['value']='';continue;case'7':document[_0x57f3cb(0x23f)](_0x57f3cb(0x233))['value']='';continue;}break;}}function toBurmeseNum(_0x274ff6){const _0x31c371=_0x34f6,_0x5568fe=['၀','၁','၂','၃','၄','၅','၆','၇','၈','၉'];return _0x274ff6[_0x31c371(0x24a)]()['split']('')['map'](_0x2a2006=>/\d/[_0x31c371(0x299)](_0x2a2006)?_0x5568fe[parseInt(_0x2a2006)]:_0x2a2006)[_0x31c371(0x250)]('');}function convertToBurmeseSpokenText(_0x3d78d1){const _0xc8128d=_0x34f6,_0x586dcc={'vBPzB':function(_0xd64bbb,_0x25acff){return _0xd64bbb(_0x25acff);},'CQISs':function(_0x350ede,_0x148995){return _0x350ede>_0x148995;},'ZbGuB':function(_0x17dd81,_0x361185,_0x26df2a){return _0x17dd81(_0x361185,_0x26df2a);},'pPzBg':_0xc8128d(0x218),'Wectt':'toast-message','oXbLf':'bg-green-600','JZqTT':_0xc8128d(0x212),'kwhnP':_0xc8128d(0x1b9),'cwBvY':function(_0x5b3d03,_0x390a2a,_0x2d5953){return _0x5b3d03(_0x390a2a,_0x2d5953);},'IaAZP':function(_0x3aeefa,_0x22bda6){return _0x3aeefa===_0x22bda6;},'vOgGD':'သုည\x20ကျပ်','YodRn':_0xc8128d(0x1df),'LvcPr':function(_0x3c614d,_0x1aacef){return _0x3c614d/_0x1aacef;},'wVYMj':function(_0xbd0d5d,_0x191f06){return _0xbd0d5d%_0x191f06;},'QuGtw':function(_0x4218e3,_0x2f6756){return _0x4218e3>_0x2f6756;},'ITRHJ':'bsKhL','gAqgD':function(_0x4831c9,_0x488509){return _0x4831c9+_0x488509;},'kjNwb':'\x20သိန်း','exZsx':function(_0x168db1,_0x3af3ec){return _0x168db1>_0x3af3ec;},'IVkOY':function(_0x4b6442,_0x426722){return _0x4b6442>_0x426722;},'ZIxeI':function(_0x4260fb,_0x21e713){return _0x4260fb<_0x21e713;},'yAPUz':function(_0x31bf18,_0x23ed08){return _0x31bf18===_0x23ed08;},'FsNda':'SQyrT','HTZPW':function(_0x2b6777,_0x22464f){return _0x2b6777-_0x22464f;},'FHJvX':function(_0x2bd39,_0x44d48a){return _0x2bd39(_0x44d48a);},'ssdBA':_0xc8128d(0x22a),'KxJwt':_0xc8128d(0x1b8),'wXpky':_0xc8128d(0x21f)};if(_0x586dcc[_0xc8128d(0x28e)](_0x3d78d1,0x0))return _0x586dcc['vOgGD'];const _0x3c5703=['',_0xc8128d(0x254),'ရာ',_0x586dcc['YodRn'],_0xc8128d(0x262)];let _0x559cee=Math['floor'](_0x586dcc[_0xc8128d(0x1be)](_0x3d78d1,0x186a0)),_0x30629f=_0x586dcc[_0xc8128d(0x24f)](_0x3d78d1,0x186a0),_0x3f5fdb='';if(_0x586dcc[_0xc8128d(0x1dc)](_0x559cee,0x0)){if(_0x586dcc[_0xc8128d(0x28e)](_0x586dcc[_0xc8128d(0x298)],_0xc8128d(0x244))){_0x2d88f2+=_0x586dcc[_0xc8128d(0x26f)](_0x27d157,_0x5e0832)+'\x20သိန်း';if(_0x586dcc[_0xc8128d(0x1dd)](_0x37f58d,0x0))_0x5ebfc2+='၊\x20';}else{_0x3f5fdb+=_0x586dcc[_0xc8128d(0x24c)](toBurmeseNum(_0x559cee),_0x586dcc[_0xc8128d(0x1d4)]);if(_0x586dcc[_0xc8128d(0x21e)](_0x30629f,0x0))_0x3f5fdb+='၊\x20';}}if(_0x586dcc[_0xc8128d(0x207)](_0x30629f,0x0)){let _0x4c375f=_0x30629f[_0xc8128d(0x24a)](),_0xf57312=_0x4c375f[_0xc8128d(0x27f)];for(let _0x88be1a=0x0;_0x586dcc[_0xc8128d(0x225)](_0x88be1a,_0xf57312);_0x88be1a++){if(_0x586dcc[_0xc8128d(0x1e1)](_0x586dcc[_0xc8128d(0x25e)],_0x586dcc[_0xc8128d(0x25e)])){let _0x180cac=parseInt(_0x4c375f[_0x88be1a]),_0xfd7b4f=_0x586dcc[_0xc8128d(0x1ce)](_0x586dcc['HTZPW'](_0xf57312,0x1),_0x88be1a);if(_0x180cac!==0x0){_0x3f5fdb+=_0x586dcc['FHJvX'](toBurmeseNum,_0x180cac);if(_0x586dcc[_0xc8128d(0x28e)](_0xfd7b4f,0x4))_0x3f5fdb+=_0xc8128d(0x1d9);else{if(_0x586dcc['IaAZP'](_0xfd7b4f,0x3))_0x3f5fdb+=_0x586dcc[_0xc8128d(0x211)];else{if(_0xfd7b4f===0x2)_0x3f5fdb+=_0x586dcc[_0xc8128d(0x1fb)];else{if(_0xfd7b4f===0x1)_0x3f5fdb+=_0xc8128d(0x241);}}}}}else{const _0x73f40={'hNCMU':function(_0x1452cf,_0xc4808c,_0xff9d39){const _0x4508c0=_0xc8128d;return _0x586dcc[_0x4508c0(0x294)](_0x1452cf,_0xc4808c,_0xff9d39);}},_0x4ad972=_0x13a8e1[_0xc8128d(0x23f)](_0x586dcc[_0xc8128d(0x231)]),_0x4d8b95=_0x44521f[_0xc8128d(0x23f)](_0x586dcc['Wectt']);_0x4d8b95[_0xc8128d(0x243)]=_0x591896,_0x4ad972[_0xc8128d(0x252)][_0xc8128d(0x20c)](_0x586dcc[_0xc8128d(0x22d)],_0xc8128d(0x212)),_0x4ad972[_0xc8128d(0x252)][_0xc8128d(0x234)](_0x3d884e?_0x586dcc[_0xc8128d(0x27e)]:_0x586dcc['oXbLf']),_0x4ad972[_0xc8128d(0x252)][_0xc8128d(0x20c)](_0x586dcc[_0xc8128d(0x28a)]),_0x4ad972[_0xc8128d(0x1bf)]['opacity']='1',_0x586dcc['cwBvY'](_0x21ae71,()=>{const _0x117d16=_0xc8128d;_0x4ad972['style'][_0x117d16(0x203)]='0',_0x73f40['hNCMU'](_0x172eb3,()=>_0x4ad972['classList'][_0x117d16(0x234)](_0x117d16(0x1b9)),0x12c);},0xbb8);}}_0x3f5fdb=_0x3f5fdb['trim']();if(_0x3f5fdb['endsWith']('၊'))_0x3f5fdb=_0x3f5fdb['slice'](0x0,-0x1);}return _0x3f5fdb+=_0x586dcc[_0xc8128d(0x1e6)],_0x3f5fdb;}function toggleCostText(){const _0x216f55=_0x34f6,_0x2ce6e5={'CVNBQ':function(_0xaa5469,_0x49a57a){return _0xaa5469-_0x49a57a;},'wlulJ':function(_0x34fbf8,_0x209729){return _0x34fbf8-_0x209729;},'qHyaj':function(_0x239b5a,_0x1c7e9e){return _0x239b5a!==_0x1c7e9e;},'jnszg':function(_0xd1e88e,_0x27cdaf){return _0xd1e88e(_0x27cdaf);},'PVlPa':_0x216f55(0x1d9),'EZgcL':function(_0x123562,_0x1e41c0){return _0x123562===_0x1e41c0;},'wGqLw':'\x20ဆယ်\x20','HfOVp':_0x216f55(0x1db),'khSTC':_0x216f55(0x289),'AXOUq':function(_0x56ce13,_0x518d86){return _0x56ce13(_0x518d86);},'aYtkb':_0x216f55(0x1b9),'jmHRl':_0x216f55(0x217)},_0x621f3d=document[_0x216f55(0x23f)](_0x2ce6e5['HfOVp']),_0x4566d9=document[_0x216f55(0x23f)](_0x2ce6e5['khSTC']);if(_0x621f3d[_0x216f55(0x252)][_0x216f55(0x284)](_0x216f55(0x1b9))){let _0x45d943=_0x2ce6e5[_0x216f55(0x245)](convertToBurmeseSpokenText,currentTotalCost);_0x4566d9[_0x216f55(0x243)]=_0x45d943,_0x621f3d['classList'][_0x216f55(0x20c)](_0x2ce6e5[_0x216f55(0x1da)]);}else{if(_0x2ce6e5[_0x216f55(0x1d8)](_0x2ce6e5['jmHRl'],_0x2ce6e5[_0x216f55(0x288)]))_0x621f3d[_0x216f55(0x252)][_0x216f55(0x234)](_0x2ce6e5[_0x216f55(0x1da)]);else{let _0x3d2f3b=_0x2f35a5(_0x59df69[_0x4e9726]),_0x4402b8=_0x2ce6e5[_0x216f55(0x214)](_0x2ce6e5[_0x216f55(0x1c9)](_0x58726a,0x1),_0x3b67ab);if(_0x2ce6e5[_0x216f55(0x201)](_0x3d2f3b,0x0)){_0x46bfa3+=_0x2ce6e5[_0x216f55(0x1c7)](_0x176ffc,_0x3d2f3b);if(_0x4402b8===0x4)_0x15b431+=_0x2ce6e5['PVlPa'];else{if(_0x4402b8===0x3)_0x25bc64+=_0x216f55(0x22a);else{if(_0x2ce6e5['EZgcL'](_0x4402b8,0x2))_0x1ed2d8+=_0x216f55(0x1b8);else{if(_0x4402b8===0x1)_0x3f5f04+=_0x2ce6e5[_0x216f55(0x1cf)];}}}}}}}let history=[];function addToHistory(){const _0x2c0967=_0x34f6,_0x5bd3c9={'HNeBj':function(_0x414bad,_0x215056){return _0x414bad(_0x215056);},'vScQv':function(_0x2aedab,_0x85639d){return _0x2aedab+_0x85639d;},'brZMh':_0x2c0967(0x1fa),'LOsCv':'numeric','LyKJY':_0x2c0967(0x29d),'UYLmp':function(_0x25140d,_0x5158c2){return _0x25140d(_0x5158c2);},'HBzBQ':function(_0x26a1b8){return _0x26a1b8();},'yejim':'hidden','TdJIc':_0x2c0967(0x1de),'KOKnG':'smooth','RYeXA':_0x2c0967(0x25f)};if(currentTotalCost===0x0)return;const _0x1220d9=new Date(),_0x4ed99d=_0x5bd3c9[_0x2c0967(0x204)](String,_0x5bd3c9['vScQv'](_0x1220d9[_0x2c0967(0x249)](),0x1))[_0x2c0967(0x259)](0x2,'0'),_0x335c7c=_0x5bd3c9[_0x2c0967(0x204)](String,_0x1220d9[_0x2c0967(0x285)]())[_0x2c0967(0x259)](0x2,'0'),_0x12d2d7=_0x1220d9[_0x2c0967(0x27a)](),_0x3abf3a=_0x4ed99d+'/'+_0x335c7c+'/'+_0x12d2d7,_0x5b5621=_0x1220d9['toLocaleTimeString'](_0x5bd3c9[_0x2c0967(0x280)],{'hour':_0x5bd3c9['LOsCv'],'minute':_0x5bd3c9[_0x2c0967(0x1c4)],'hour12':!![]}),_0x506487=_0x5bd3c9['UYLmp'](convertToBurmeseSpokenText,currentTotalCost),_0x2cf8cc={'id':Date['now'](),'date':_0x3abf3a,'time':_0x5b5621,'weight':currentTotalWeightText,'cost':currentTotalCost[_0x2c0967(0x1bd)](_0x5bd3c9[_0x2c0967(0x280)]),'rawCost':currentTotalCost,'costText':_0x506487};history[_0x2c0967(0x267)](_0x2cf8cc),_0x5bd3c9[_0x2c0967(0x1f3)](renderHistory),document[_0x2c0967(0x23f)]('historySection')[_0x2c0967(0x252)]['remove'](_0x5bd3c9[_0x2c0967(0x1d0)]);const _0x3065f8=document[_0x2c0967(0x23f)](_0x5bd3c9['TdJIc']);_0x3065f8[_0x2c0967(0x248)]({'behavior':_0x5bd3c9[_0x2c0967(0x236)],'block':'nearest'}),showToast(_0x5bd3c9[_0x2c0967(0x20d)]);}function renderHistory(){const _0x502a78=_0x34f6,_0x217cbb={'BbkCV':function(_0x5d9322,_0x5d80cd){return _0x5d9322!==_0x5d80cd;},'iiHDe':_0x502a78(0x1f7),'IrvBh':_0x502a78(0x26a)},_0x19dbd1=document['getElementById'](_0x217cbb[_0x502a78(0x22c)]);_0x19dbd1[_0x502a78(0x1d7)]='',history[_0x502a78(0x1eb)]((_0x25c299,_0x2c9b16)=>{const _0x1e0115=_0x502a78;if(_0x217cbb[_0x1e0115(0x28d)](_0x1e0115(0x275),'eSzSE'))_0x243a75=_0x5ea271[_0x1e0115(0x1f5)];else{const _0xb0c5cd=document[_0x1e0115(0x21d)](_0x217cbb['iiHDe']);_0xb0c5cd[_0x1e0115(0x27c)]=_0x1e0115(0x293),_0xb0c5cd[_0x1e0115(0x1d7)]='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex-shrink-0\x20mt-1\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22w-10\x20h-10\x20rounded-full\x20bg-yellow-500/20\x20flex\x20items-center\x20justify-center\x20text-yellow-400\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<svg\x20xmlns=\x22http://www.w3.org/2000/svg\x22\x20class=\x22h-6\x20w-6\x22\x20fill=\x22none\x22\x20viewBox=\x220\x200\x2024\x2024\x22\x20stroke=\x22currentColor\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<path\x20stroke-linecap=\x22round\x22\x20stroke-linejoin=\x22round\x22\x20stroke-width=\x222\x22\x20d=\x22M9\x207h6m0\x2010v-3m-3\x203h.01M9\x2017h.01M9\x2014h.01M12\x2014h.01M15\x2011h.01M12\x2011h.01M9\x2011h.01M7\x2021h10a2\x202\x200\x20002-2V5a2\x202\x200\x2000-2-2H7a2\x202\x200\x2000-2\x202v14a2\x202\x200\x20002\x202z\x22\x20/>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</svg>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex-grow\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20flex-wrap\x20items-center\x20gap-2\x20mb-2\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-xs\x20font-semibold\x20px-2\x20py-0.5\x20rounded\x20bg-gray-600\x20text-gray-300\x20font-num\x22>'+_0x25c299['date']+'</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-xs\x20font-semibold\x20px-2\x20py-0.5\x20rounded\x20bg-gray-600\x20text-gray-300\x20font-num\x22>'+_0x25c299[_0x1e0115(0x228)]+'</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22mb-2\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-sm\x20text-gray-400\x20mb-1\x20leading-relaxed\x22>အလေးချိန်</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-white\x20font-bold\x20leading-relaxed\x22>'+_0x25c299[_0x1e0115(0x1ec)]+_0x1e0115(0x274)+_0x25c299[_0x1e0115(0x257)]+_0x1e0115(0x279)+_0x25c299[_0x1e0115(0x1c5)]+_0x1e0115(0x286)+_0x2c9b16+_0x1e0115(0x266),_0x19dbd1['appendChild'](_0xb0c5cd);}});}function deleteHistoryItem(_0x347116){const _0x2fb63c=_0x34f6,_0x264e3f={'UsUYa':function(_0x16656a){return _0x16656a();},'NmBES':function(_0x43e559,_0xaa3696){return _0x43e559===_0xaa3696;},'AjxxT':_0x2fb63c(0x1b9)};history[_0x2fb63c(0x1c1)](_0x347116,0x1),_0x264e3f[_0x2fb63c(0x215)](renderHistory),_0x264e3f[_0x2fb63c(0x1f2)](history['length'],0x0)&&document['getElementById'](_0x2fb63c(0x1de))[_0x2fb63c(0x252)]['add'](_0x264e3f['AjxxT']);}function showToast(_0x1ddff7,_0x40f038=![]){const _0x4a6e2b=_0x34f6,_0x11a0a={'acdaB':'toast','zsLRh':_0x4a6e2b(0x1f6),'WIOyY':_0x4a6e2b(0x212),'oHkjB':function(_0x990c61,_0x2166e3,_0x113d69){return _0x990c61(_0x2166e3,_0x113d69);}},_0x300a49=document['getElementById'](_0x11a0a[_0x4a6e2b(0x1f0)]),_0x105cb7=document[_0x4a6e2b(0x23f)](_0x11a0a[_0x4a6e2b(0x1f8)]);_0x105cb7['innerText']=_0x1ddff7,_0x300a49[_0x4a6e2b(0x252)][_0x4a6e2b(0x20c)](_0x4a6e2b(0x1ee),_0x11a0a[_0x4a6e2b(0x208)]),_0x300a49[_0x4a6e2b(0x252)][_0x4a6e2b(0x234)](_0x40f038?_0x11a0a[_0x4a6e2b(0x208)]:'bg-green-600'),_0x300a49['classList']['remove'](_0x4a6e2b(0x1b9)),_0x300a49[_0x4a6e2b(0x1bf)][_0x4a6e2b(0x203)]='1',_0x11a0a['oHkjB'](setTimeout,()=>{const _0x2bce8a=_0x4a6e2b;_0x300a49[_0x2bce8a(0x1bf)][_0x2bce8a(0x203)]='0',setTimeout(()=>_0x300a49['classList']['add'](_0x2bce8a(0x1b9)),0x12c);},0xbb8);}function downloadJSON(_0x4b94b1,_0x52006c){const _0x2ec4f9=_0x34f6,_0x22aa10={'PYINp':_0x2ec4f9(0x253)},_0x50f126=new Blob([JSON['stringify'](_0x4b94b1,null,0x2)],{'type':_0x22aa10[_0x2ec4f9(0x202)]}),_0xa13afa=URL[_0x2ec4f9(0x200)](_0x50f126),_0x5778ef=document[_0x2ec4f9(0x21d)]('a');_0x5778ef['href']=_0xa13afa,_0x5778ef[_0x2ec4f9(0x210)]=_0x52006c,document[_0x2ec4f9(0x226)][_0x2ec4f9(0x271)](_0x5778ef),_0x5778ef[_0x2ec4f9(0x263)](),document[_0x2ec4f9(0x226)][_0x2ec4f9(0x1e5)](_0x5778ef),URL['revokeObjectURL'](_0xa13afa);}function exportRecords(){const _0x2a9850=_0x34f6,_0x1f11b6={'CZxjb':function(_0x4e2609,_0x5d3a4b){return _0x4e2609===_0x5d3a4b;},'jsHZd':function(_0x34ede1,_0xe6a4ed,_0x5cd6e6){return _0x34ede1(_0xe6a4ed,_0x5cd6e6);},'ZIWbs':function(_0x4a90be,_0x230b80,_0xd6c3ca){return _0x4a90be(_0x230b80,_0xd6c3ca);},'iplVz':_0x2a9850(0x264)};if(_0x1f11b6['CZxjb'](history[_0x2a9850(0x27f)],0x0)){_0x1f11b6[_0x2a9850(0x292)](showToast,_0x2a9850(0x23b),!![]);return;}_0x1f11b6[_0x2a9850(0x25a)](downloadJSON,history,_0x2a9850(0x1ef)+Date[_0x2a9850(0x29b)]()+'.json'),showToast(_0x1f11b6[_0x2a9850(0x28b)]);}function exportAllData(){const _0x964075=_0x34f6,_0x68c5={'uBvDg':function(_0x563b0f,_0x2de1d0){return _0x563b0f===_0x2de1d0;},'ssqBj':function(_0x4621c1,_0x2a33ef,_0x22eff9){return _0x4621c1(_0x2a33ef,_0x22eff9);},'XxvCI':'ထုတ်ယူရန်\x20Data\x20မရှိသေးပါ','fTUnE':function(_0x1c80f6,_0x11de07){return _0x1c80f6===_0x11de07;},'tBZmw':_0x964075(0x1b7),'iOWTD':_0x964075(0x1d6),'KHguP':function(_0x1a0e4d,_0x5e7195){return _0x1a0e4d(_0x5e7195);},'PBhVS':'Full\x20Backup\x20Exported\x20Successfully'};if(_0x68c5['fTUnE'](history[_0x964075(0x27f)],0x0)){if(_0x68c5['tBZmw']===_0x68c5['iOWTD']){if(_0x68c5[_0x964075(0x295)](_0x5c54cf[_0x964075(0x27f)],0x0)){_0x68c5['ssqBj'](_0x7feab0,_0x68c5[_0x964075(0x220)],!![]);return;}_0x39111f(_0x5bd2e4,_0x964075(0x1ef)+_0x2b4c88[_0x964075(0x29b)]()+_0x964075(0x1cb)),_0x415da4(_0x964075(0x264));}else{_0x68c5[_0x964075(0x1ca)](showToast,_0x68c5[_0x964075(0x220)],!![]);return;}}const _0x168ae9={'app':_0x964075(0x242),'version':_0x964075(0x29e),'backupDate':new Date()[_0x964075(0x1e7)](),'history':history};downloadJSON(_0x168ae9,_0x964075(0x283)+Date['now']()+_0x964075(0x1cb)),_0x68c5[_0x964075(0x22b)](showToast,_0x68c5[_0x964075(0x25d)]);}function importData(_0x3aac3f){const _0x2dc471=_0x34f6,_0x31dafb={'zfGZr':function(_0x361efb,_0x3f1c8e){return _0x361efb(_0x3f1c8e);},'rbaBu':function(_0x408869,_0x10885b){return _0x408869===_0x10885b;},'TAqRG':_0x2dc471(0x1d9),'bsUUC':_0x2dc471(0x22a),'VIvmF':function(_0x8e04ee,_0x7da554){return _0x8e04ee===_0x7da554;},'Nswmy':'\x20ရာ၊\x20','nzReP':function(_0x186713,_0x4bafe9){return _0x186713===_0x4bafe9;},'NKIIy':_0x2dc471(0x1b9),'DjRyj':function(_0x5be515,_0x54b898){return _0x5be515!==_0x54b898;},'zDGyp':_0x2dc471(0x224),'NQQbE':_0x2dc471(0x209),'KSvva':_0x2dc471(0x221),'iCGrh':_0x2dc471(0x29c),'RRUfp':_0x2dc471(0x256),'nViWc':'Invalid\x20format','upjoG':function(_0x305816){return _0x305816();},'ieBoJ':function(_0x1fb77a,_0x440425){return _0x1fb77a>_0x440425;},'Okdzy':function(_0x17cbc5,_0x281f96){return _0x17cbc5(_0x281f96);},'Gdlsc':_0x2dc471(0x237),'FySZd':function(_0x110aa2,_0x16db57,_0x36f942){return _0x110aa2(_0x16db57,_0x36f942);},'zyJqe':_0x2dc471(0x20b)},_0x4a9d08=_0x3aac3f[_0x2dc471(0x1bc)][_0x2dc471(0x239)][0x0];if(!_0x4a9d08)return;const _0x5c7992=new FileReader();_0x5c7992[_0x2dc471(0x1f4)]=function(_0x1c4dee){const _0x352e1b=_0x2dc471,_0xc0f3b7={'gzgEM':function(_0x48a0cf,_0x596cb2){const _0x70f210=_0x34f6;return _0x31dafb[_0x70f210(0x296)](_0x48a0cf,_0x596cb2);},'dBXDl':'confirmationModal','fXUIY':_0x31dafb[_0x352e1b(0x25b)],'rJQxG':function(_0x2fb87e,_0x3f7fc8){return _0x31dafb['zfGZr'](_0x2fb87e,_0x3f7fc8);}};if(_0x31dafb[_0x352e1b(0x23e)](_0x31dafb[_0x352e1b(0x1cd)],_0x31dafb[_0x352e1b(0x28c)]))try{if(_0x31dafb[_0x352e1b(0x216)]!==_0x31dafb[_0x352e1b(0x216)]){let _0x387bd5=_0xc0f3b7[_0x352e1b(0x1d1)](_0x200c3d,_0x190464);_0xd983d9['innerText']=_0x387bd5,_0x5a5aa0[_0x352e1b(0x252)][_0x352e1b(0x20c)]('hidden');}else{const _0x10d804=JSON[_0x352e1b(0x1e4)](_0x1c4dee[_0x352e1b(0x1bc)][_0x352e1b(0x232)]);if(Array[_0x352e1b(0x26d)](_0x10d804)){if('rQQOt'===_0x352e1b(0x269))history=_0x10d804;else{const _0x39b59a=_0x47e888[_0x352e1b(0x23f)](_0xc0f3b7[_0x352e1b(0x26e)]);_0x39b59a[_0x352e1b(0x252)]['add'](_0xc0f3b7['fXUIY']);}}else{if(_0x10d804[_0x352e1b(0x1f5)]&&Array[_0x352e1b(0x26d)](_0x10d804[_0x352e1b(0x1f5)])){if(_0x31dafb[_0x352e1b(0x23e)](_0x31dafb[_0x352e1b(0x270)],_0x31dafb[_0x352e1b(0x23d)]))history=_0x10d804['history'];else{_0x58b444+=_0x31dafb['zfGZr'](_0x2e9573,_0x38687f);if(_0x31dafb[_0x352e1b(0x1f9)](_0xdb330d,0x4))_0x107f98+=_0x31dafb['TAqRG'];else{if(_0x31dafb['rbaBu'](_0x35de6b,0x3))_0x2243c2+=_0x31dafb[_0x352e1b(0x1ba)];else{if(_0x31dafb[_0x352e1b(0x268)](_0x22234a,0x2))_0x2d56b4+=_0x31dafb[_0x352e1b(0x1ed)];else{if(_0x31dafb[_0x352e1b(0x1c8)](_0x400575,0x1))_0x576e11+=_0x352e1b(0x241);}}}}}else throw new Error(_0x31dafb[_0x352e1b(0x227)]);}_0x31dafb[_0x352e1b(0x297)](renderHistory);if(_0x31dafb['ieBoJ'](history[_0x352e1b(0x27f)],0x0))document[_0x352e1b(0x23f)](_0x352e1b(0x1de))[_0x352e1b(0x252)]['remove'](_0x31dafb[_0x352e1b(0x25b)]);_0x31dafb[_0x352e1b(0x272)](showToast,_0x31dafb[_0x352e1b(0x273)]);}}catch(_0x1d3bbb){_0x31dafb[_0x352e1b(0x1ea)](showToast,_0x31dafb[_0x352e1b(0x205)],!![]);}else{const _0x544721=_0xd5c00[_0x352e1b(0x23f)](_0x352e1b(0x1db)),_0x42bf7c=_0x5f1a95[_0x352e1b(0x23f)](_0x352e1b(0x289));if(_0x544721['classList']['contains'](_0xc0f3b7[_0x352e1b(0x24b)])){let _0x6ae4f3=_0xc0f3b7[_0x352e1b(0x1d3)](_0xe1f8a3,_0x3ba34d);_0x42bf7c[_0x352e1b(0x243)]=_0x6ae4f3,_0x544721['classList']['remove'](_0xc0f3b7[_0x352e1b(0x24b)]);}else _0x544721[_0x352e1b(0x252)][_0x352e1b(0x234)](_0x352e1b(0x1b9));}},_0x5c7992[_0x2dc471(0x1e8)](_0x4a9d08),_0x3aac3f[_0x2dc471(0x1bc)]['value']='';}function confirmClearHistory(){const _0x51e056=_0x34f6,_0xcf1e33={'EVDHx':_0x51e056(0x1e3),'rHHlJ':_0x51e056(0x1b9)};if(history[_0x51e056(0x27f)]===0x0)return;const _0x48fd56=document[_0x51e056(0x23f)](_0xcf1e33[_0x51e056(0x27d)]);_0x48fd56[_0x51e056(0x252)][_0x51e056(0x20c)](_0xcf1e33[_0x51e056(0x240)]);}function _0x34f6(_0x4ab3d1,_0x3cc78c){_0x4ab3d1=_0x4ab3d1-0x1b7;const _0x1eb289=_0x1eb2();let _0x34f603=_0x1eb289[_0x4ab3d1];return _0x34f603;}function closeModal(){const _0x5aeaa1=_0x34f6,_0x4758c0={'oyUwc':'confirmationModal','xFnAY':_0x5aeaa1(0x1b9)},_0x4baec4=document[_0x5aeaa1(0x23f)](_0x4758c0['oyUwc']);_0x4baec4[_0x5aeaa1(0x252)]['add'](_0x4758c0[_0x5aeaa1(0x258)]);}function _0x1eb2(){const _0x8c7c5c=['totalWeightDisplay','dcRqC','lumNG','createElement','exZsx','\x20ကျပ်','XxvCI','uQahC','၁\x20ပဲ\x20=\x20','PYYNp','ZLdbR','ZIxeI','body','nViWc','time','WVSUY','\x20ထောင်၊\x20','KHguP','IrvBh','oXbLf','fvkfx','zIuxn','9BolHjm','pPzBg','result','prodPae','add','prodYway','KOKnG','Data\x20Import\x20Successful','486183ChLeYa','files','18AvSvik','ထုတ်ယူရန်\x20Data\x20မရှိသေးပါ','TSOAC','RRUfp','DjRyj','getElementById','rHHlJ','\x20ဆယ်\x20','Premium\x20Gold\x20Tracker','innerText','CTPcg','AXOUq','JREso','kzuUu','scrollIntoView','getMonth','toString','fXUIY','gAqgD','All\x20Data\x20Cleared','TIDBx','wVYMj','join','\x20ကျပ်\x20','classList','application/json','ဆယ်','nWjhY','RBOov','cost','xFnAY','padStart','ZIWbs','NKIIy','qcPdm','PBhVS','FsNda','မှတ်တမ်း\x20သိမ်းဆည်းပြီးပါပြီ','rGTMR','454hvbibI','သောင်း','click','Records\x20Exported\x20Successfully','21LncSLM',')\x22\x20class=\x22text-gray-500\x20hover:text-red-400\x20p-2\x20rounded-full\x20hover:bg-gray-600/50\x20transition-colors\x22\x20title=\x22Delete\x20Record\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<svg\x20xmlns=\x22http://www.w3.org/2000/svg\x22\x20class=\x22h-5\x20w-5\x22\x20fill=\x22none\x22\x20viewBox=\x220\x200\x2024\x2024\x22\x20stroke=\x22currentColor\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<path\x20stroke-linecap=\x22round\x22\x20stroke-linejoin=\x22round\x22\x20stroke-width=\x222\x22\x20d=\x22M19\x207l-.867\x2012.142A2\x202\x200\x200116.138\x2021H7.862a2\x202\x200\x2001-1.995-1.858L5\x207m5\x204v6m4-6v6m1-10V4a1\x201\x200\x2000-1-1h-4a1\x201\x200\x2000-1\x201v3M4\x207h16\x22\x20/>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</svg>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','unshift','VIvmF','rQQOt','historyListBody','alyotYway','ZcxiR','isArray','dBXDl','vBPzB','iCGrh','appendChild','Okdzy','Gdlsc','</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22bg-gray-800/80\x20rounded-lg\x20p-3\x20border\x20border-gray-600\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-sm\x20text-gray-400\x20mb-1\x20leading-relaxed\x22>ကျသင့်ငွေ</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-xl\x20font-bold\x20text-yellow-400\x20font-num\x20leading-none\x20mb-1\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','eSzSE','1883524cOpHGS','visibility','9316824aSRJAH','\x20<span\x20class=\x22text-sm\x20font-normal\x20text-gray-500\x22>MMK</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-xs\x20text-gray-400\x20font-medium\x20leading-relaxed\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20(','getFullYear','nABqX','className','EVDHx','JZqTT','length','brZMh','2726864VqddDI','pCUAN','Gold_Full_Backup_','contains','getDate',')\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22deleteHistoryItem(','bRQLR','jmHRl','costTextContent','kwhnP','iplVz','NQQbE','BbkCV','IaAZP','pricePerYwayDisplay','goldPrice','overflowY','jsHZd','bg-gray-700/50\x20p-4\x20rounded-xl\x20flex\x20items-start\x20gap-4\x20history-item\x20border\x20border-gray-600/50\x20hover:border-yellow-500/30\x20transition-colors','ZbGuB','uBvDg','zfGZr','upjoG','ITRHJ','test','976090aKNGYm','now','iaUpJ','2-digit','1.0','yxrBN','\x20ရာ၊\x20','hidden','bsUUC','pwNjU','target','toLocaleString','LvcPr','style','၁\x20ရွေး\x20=\x20','splice','prodKyat','round','LyKJY','costText','492475cOLgeK','jnszg','nzReP','wlulJ','ssqBj','.json','tOoJv','zDGyp','HTZPW','wGqLw','yejim','gzgEM','aMgVp','rJQxG','kjNwb','33LJglaL','iZwMQ','innerHTML','EZgcL','\x20သောင်း၊\x20','aYtkb','costFloatingBox','QuGtw','CQISs','historySection','ထောင်','6192RLvcMZ','yAPUz','auto','confirmationModal','parse','removeChild','wXpky','toISOString','readAsText','alyotPae','FySZd','forEach','weight','Nswmy','bg-green-600','Gold_Records_','acdaB','GUpIF','NmBES','HBzBQ','onload','history','toast-message','div','zsLRh','rbaBu','en-US','KxJwt','OstDE','lBKsb','totalCost','value','createObjectURL','qHyaj','PYINp','opacity','HNeBj','zyJqe','floor','IVkOY','WIOyY','OfgHX','bHzTj','Invalid\x20File\x20Format','remove','RYeXA','HKgPb','PYQRq','download','ssdBA','bg-red-600','igCXw','CVNBQ','UsUYa','KSvva','LcDfT','toast','split'];_0x1eb2=function(){return _0x8c7c5c;};return _0x1eb2();}function performClearHistory(){const _0x16f43b=_0x34f6,_0x2a870b={'qcPdm':_0x16f43b(0x1de),'bHzTj':_0x16f43b(0x1b9),'igCXw':function(_0xfd6ff4){return _0xfd6ff4();},'aPLvS':function(_0x26d7e9,_0xf9b2d2){return _0x26d7e9(_0xf9b2d2);},'dzETM':_0x16f43b(0x24d)};history=[],renderHistory(),document[_0x16f43b(0x23f)](_0x2a870b[_0x16f43b(0x25c)])[_0x16f43b(0x252)][_0x16f43b(0x234)](_0x2a870b[_0x16f43b(0x20a)]),_0x2a870b[_0x16f43b(0x213)](closeModal),_0x2a870b['aPLvS'](showToast,_0x2a870b['dzETM']);}calculate();
+</script>
+</body>
+</html>
