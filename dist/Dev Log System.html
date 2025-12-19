@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dev Log System Pro</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <script>
+/* obfuscated */
+function _0x4b52(){var _0xfe542f=['sans-serif','267830fggenu','6dyYYGw','#FBBF24','306OAaBDo','Tailwind\x20config\x20skipped\x20due\x20to\x20loading\x20error:','158917RfshtA','1633974shUnop','#1e293b','2151474uqhCUp','61216SDKDxV','config','3181900NUoRil','Inter','6093941MDMcsV','warn','#D97706'];_0x4b52=function(){return _0xfe542f;};return _0x4b52();}var _0x27f0ef=_0x1559;(function(_0x2d0cc4,_0x7b13b5){var _0xd4e223=_0x1559,_0x4d7cdd=_0x2d0cc4();while(!![]){try{var _0x4980c9=-parseInt(_0xd4e223(0x145))/0x1*(parseInt(_0xd4e223(0x141))/0x2)+-parseInt(_0xd4e223(0x146))/0x3+parseInt(_0xd4e223(0x13a))/0x4+parseInt(_0xd4e223(0x140))/0x5+-parseInt(_0xd4e223(0x137))/0x6+parseInt(_0xd4e223(0x13c))/0x7+-parseInt(_0xd4e223(0x138))/0x8*(-parseInt(_0xd4e223(0x143))/0x9);if(_0x4980c9===_0x7b13b5)break;else _0x4d7cdd['push'](_0x4d7cdd['shift']());}catch(_0x3e42fd){_0x4d7cdd['push'](_0x4d7cdd['shift']());}}}(_0x4b52,0x926e8));function _0x1559(_0x20fa4c,_0x4a7745){_0x20fa4c=_0x20fa4c-0x137;var _0x4b52cf=_0x4b52();var _0x155945=_0x4b52cf[_0x20fa4c];return _0x155945;}try{tailwind[_0x27f0ef(0x139)]={'theme':{'extend':{'colors':{'gold':{0x190:_0x27f0ef(0x142),0x1f4:'#F59E0B',0x258:_0x27f0ef(0x13e)},'dark':{0x320:_0x27f0ef(0x147),0x384:'#0f172a'}},'fontFamily':{'sans':['Padauk',_0x27f0ef(0x13f)],'num':[_0x27f0ef(0x13b),_0x27f0ef(0x13f)]}}}};}catch(_0x4933dc){console[_0x27f0ef(0x13d)](_0x27f0ef(0x144),_0x4933dc);}
+</script>
+
+    <style>
+        body {
+            font-family: 'Padauk', sans-serif;
+            background-color: #0f172a;
+            /* Premium Dark Gradient Background */
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(251, 191, 36, 0.05) 0%, transparent 20%);
+            color: #F9FAFB;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .font-num { font-family: 'Inter', sans-serif; }
+
+        /* Glassmorphism Card Style */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .input-field {
+            background-color: #334155;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            background-color: #1e293b;
+            border-color: #FBBF24;
+            box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.2);
+            outline: none;
+        }
+
+        /* --- PROFESSIONAL PRELOADER (From ui.html) --- */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background: #0f172a;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
+        }
+
+        .loader-ring {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            border-top-color: #FBBF24; /* Gold */
+            animation: spin 1s linear infinite;
+        }
+        .loader-ring::before {
+            content: "";
+            position: absolute;
+            top: 5px; left: 5px; right: 5px; bottom: 5px;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            border-top-color: #38bdf8; /* Blue */
+            animation: spin 2s linear infinite reverse;
+        }
+        .loader-text {
+            margin-top: 1.5rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            color: #FBBF24;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes pulse { 50% { opacity: 0.5; } }
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #1e293b; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #FBBF24; }
+    </style>
+</head>
+<body class="antialiased pb-12 overflow-x-hidden" onload="initApp()">
+
+    <!-- 1. PRELOADER -->
+    <div id="preloader">
+        <div class="relative">
+            <div class="loader-ring"></div>
+            <i class="fas fa-laptop-code absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-xl"></i>
+        </div>
+        <div class="loader-text text-sm">DEV SYSTEM</div>
+    </div>
+
+    <div class="container mx-auto max-w-6xl p-4 md:p-6 fade-in">
+
+        <!-- Header -->
+        <header class="flex justify-between items-center my-6 md:my-8 border-b border-gray-700 pb-4">
+            <div class="flex items-center gap-4">
+                <div class="bg-gray-800 p-3 rounded-xl border border-yellow-500/20 shadow-lg shadow-yellow-500/10">
+                    <i class="fas fa-code-branch text-3xl text-yellow-400"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-600">
+                        Dev Log System
+                    </h1>
+                    <p class="text-xs md:text-sm text-gray-400">Version Control & Issue Tracker</p>
+                </div>
+            </div>
+            <!-- Real-time Clock -->
+            <div class="text-right hidden md:block">
+                <div id="real-time" class="text-lg font-num font-bold text-white">00:00:00</div>
+                <div id="real-date" class="text-xs text-gray-400 font-num">Loading...</div>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <!-- LEFT PANEL: Inputs & Info (4 Columns) -->
+            <div class="lg:col-span-4 space-y-6">
+                
+                <!-- Project Info Card -->
+                <div class="glass-card p-6 rounded-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl -mr-8 -mt-8"></div>
+                    <h2 class="text-lg font-bold mb-4 flex items-center text-blue-400">
+                        <i class="fas fa-folder-open mr-2"></i> Project Details
+                    </h2>
+                    <div class="space-y-4 relative z-10">
+                        <div>
+                            <label class="text-xs text-gray-500 uppercase tracking-wide block mb-1">Current Project Name</label>
+                            <input type="text" id="projectNameInput" value="Premium Gold Tracker v1" 
+                                class="w-full bg-transparent font-bold text-lg text-white border-b border-gray-600 focus:border-yellow-400 focus:outline-none placeholder-gray-600 transition-colors pb-1"
+                                placeholder="Enter Project Name...">
+                        </div>
+                        <div class="flex gap-4">
+                             <div class="flex-1">
+                                <label class="text-xs text-gray-500 uppercase block mb-1">Version</label>
+                                <input type="text" value="1.0.0" class="w-full bg-transparent text-gray-300 font-num text-sm focus:outline-none">
+                            </div>
+                            <div class="flex-1">
+                                <label class="text-xs text-gray-500 uppercase block mb-1">Status</label>
+                                <div class="text-sm font-bold text-green-400 flex items-center">
+                                    <span class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span> Active
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add New Log Form -->
+                <div class="glass-card p-6 rounded-2xl border-t-4 border-yellow-500">
+                    <h2 class="text-lg font-bold mb-4 flex items-center text-yellow-400">
+                        <i class="fas fa-plus-circle mr-2"></i> New Log Entry
+                    </h2>
+                    <form id="logForm" class="space-y-4">
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1 uppercase">Log Type</label>
+                            <div class="relative">
+                                <select id="logType" class="input-field w-full p-2.5 rounded-lg text-sm appearance-none cursor-pointer">
+                                    <option value="upgrade">✨ Feature Upgrade</option>
+                                    <option value="error">🐞 Error / Bug Fix</option>
+                                    <option value="maintenance">🔧 Maintenance</option>
+                                    <option value="design">🎨 UI/Design Change</option>
+                                    <option value="info">ℹ️ General Info</option>
+                                </select>
+                                <i class="fas fa-chevron-down absolute right-3 top-3 text-gray-500 text-xs pointer-events-none"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1 uppercase">Description</label>
+                            <textarea id="logDesc" rows="3" placeholder="Explain what changed..." class="input-field w-full p-3 rounded-lg text-sm"></textarea>
+                        </div>
+                        <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-gray-900 font-bold py-3 rounded-xl shadow-lg shadow-yellow-500/20 transition-all active:scale-95 flex items-center justify-center gap-2">
+                            <i class="fas fa-save"></i> Add to History
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Settings Section -->
+                <section id="settingsSection" class="glass-card p-6 rounded-2xl shadow-2xl border border-gray-700/50">
+                    <h2 class="flex items-center text-lg font-bold text-gray-200 mb-6 gap-2 leading-relaxed border-b border-gray-700 pb-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0 3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        Settings
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <!-- Data Management -->
+                        <div class="flex flex-col gap-3 p-4 bg-gray-800/50 rounded-xl border border-gray-700 hover:bg-gray-800 transition-colors">
+                            <div class="mb-1">
+                                <p class="text-sm font-semibold text-blue-300 leading-relaxed flex items-center gap-2">
+                                    <i class="fas fa-database"></i> Data Management
+                                </p>
+                                <p class="text-xs text-gray-500 leading-relaxed mt-1">Backup or restore dev logs</p>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                 <button onclick="exportAllData()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-3 rounded-lg text-xs transition-colors shadow-lg shadow-blue-600/20">
+                                    <i class="fas fa-download mr-1"></i> Export
+                                 </button>
+                                 <button onclick="document.getElementById('importFileInput').click()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 px-3 rounded-lg text-xs transition-colors shadow-lg shadow-green-600/20">
+                                    <i class="fas fa-upload mr-1"></i> Import
+                                 </button>
+                                 <input type="file" id="importFileInput" class="hidden" accept=".json" onchange="importData(event)">
+                            </div>
+                        </div>
+                        
+                        <!-- Danger Zone -->
+                        <div class="flex flex-col gap-3 p-4 bg-gray-800/50 rounded-xl border border-gray-700 hover:bg-gray-800 transition-colors group">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <p class="text-sm font-semibold text-red-400 leading-relaxed flex items-center gap-2 group-hover:text-red-300">
+                                        <i class="fas fa-trash-alt"></i> Reset System
+                                    </p>
+                                    <p class="text-xs text-gray-500 leading-relaxed mt-1">Delete all logs permanently.</p>
+                                </div>
+                                <button onclick="confirmClearHistory()" class="bg-red-500/10 hover:bg-red-600 text-red-500 hover:text-white font-bold py-2 px-4 rounded-lg text-xs transition-colors border border-red-500/30">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- RIGHT PANEL: History Table (8 Columns) -->
+            <div class="lg:col-span-8">
+                <div class="glass-card rounded-2xl shadow-2xl border border-gray-700 overflow-hidden h-full flex flex-col">
+                    <div class="p-6 border-b border-gray-700 flex justify-between items-center bg-gray-800/40">
+                        <div>
+                            <h2 class="text-lg font-bold flex items-center text-white">
+                                <i class="fas fa-history mr-2 text-blue-400"></i> Change Log History
+                            </h2>
+                            <p class="text-xs text-gray-500 mt-1" id="recordCount">0 Records Found</p>
+                        </div>
+                        <!-- Search/Filter could go here -->
+                    </div>
+                    
+                    <div class="overflow-x-auto flex-grow custom-scrollbar">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-800/80 text-gray-400 text-xs uppercase tracking-wider">
+                                    <th class="p-4 border-b border-gray-700 whitespace-nowrap">Date</th>
+                                    <th class="p-4 border-b border-gray-700">Project</th>
+                                    <th class="p-4 border-b border-gray-700">Type</th>
+                                    <th class="p-4 border-b border-gray-700 w-2/5">Description</th>
+                                    <th class="p-4 border-b border-gray-700 text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="logTableBody" class="text-sm">
+                                <!-- Logs will appear here -->
+                            </tbody>
+                        </table>
+                        
+                        <!-- Empty State -->
+                        <div id="emptyState" class="p-10 text-center text-gray-500 hidden flex flex-col items-center justify-center h-64">
+                            <div class="w-20 h-20 bg-gray-800 rounded-full flex items-center justify-center mb-4 border border-gray-700">
+                                <i class="fas fa-clipboard-list text-4xl text-gray-600"></i>
+                            </div>
+                            <p class="text-lg font-semibold text-gray-400">No records found</p>
+                            <p class="text-sm opacity-60 mt-2">Start adding logs from the left panel!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modals & Toasts -->
+    
+    <!-- Confirm Delete Modal (Fixed) -->
+    <div id="confirmationModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card p-6 rounded-2xl max-w-sm w-full text-center shadow-2xl border border-red-500/30 transform scale-100 transition-transform">
+            <div class="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/20">
+                <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
+            </div>
+            <h3 id="modalTitle" class="text-xl font-bold text-white mb-2">Delete All Logs?</h3>
+            <p id="modalDesc" class="text-gray-400 text-sm mb-6 leading-relaxed">This action cannot be undone. All development history will be permanently erased.</p>
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="closeModal()" class="bg-gray-700 text-white py-2.5 rounded-xl font-bold text-sm hover:bg-gray-600 border border-gray-600">Cancel</button>
+                <button onclick="performDelete()" class="bg-red-600 text-white py-2.5 rounded-xl font-bold text-sm hover:bg-red-500 shadow-lg shadow-red-500/20">Yes, Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-2xl border border-yellow-500/30 flex items-center gap-3 transform -translate-y-24 transition-transform duration-300 z-50">
+        <i class="fas fa-check-circle text-green-400" id="toast-icon"></i>
+        <span id="toast-message" class="text-sm font-bold">Success</span>
+    </div>
+
+    <script>
+/* obfuscated */
+function _0x3377(){const _0x372207=['toast-icon','jpyxs','split','ljMjd','sort','hkSHh','trHiD','click','modalTitle','slJub','remove','textContent','sjgYi','wvibF','68152bOnQod','createElement','files','1490DFJanN','universalTrackerLogs','selected','display','opacity','application/json','projectNameInput','VtukQ','push','dzqaa',')\x22\x20class=\x22text-green-400\x20hover:text-white\x20hover:bg-green-600\x20bg-green-900/30\x20p-2\x20rounded\x20mr-2\x20transition\x22\x20title=\x22Save\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-check\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22renderLogs()\x22\x20class=\x22text-gray-400\x20hover:text-white\x20hover:bg-gray-600\x20bg-gray-700/30\x20p-2\x20rounded\x20transition\x22\x20title=\x22Cancel\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-times\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','cUpVJ','ThjYo','input','<span\x20class=\x22text-gray-600\x20italic\x22>Unknown</span>','universalProjectName','PHTOG','\x22\x20class=\x22bg-gray-900\x20border\x20border-gray-600\x20text-white\x20rounded\x20p-2\x20text-sm\x20w-full\x20focus:border-yellow-500\x20focus:outline-none\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<option\x20value=\x22upgrade\x22\x20','xYhuP','QimaP','confirmationModal','toLocaleDateString','LwtKn','IkVBJ','description','IvoZU','hidden','dLrLl','setAttribute','slice','add','VXcrc','forEach','BqEIT','data-id','yYJbY','ZMClV','querySelector','none','logTableBody','2-digit','findIndex','uGRXo','error','qGzAG','fas\x20fa-exclamation-circle\x20text-red-400','target','innerHTML','href','DevLog_Backup_','info','OoeKk','\x22\x20value=\x22','>Design</option>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<option\x20value=\x22info\x22\x20','Are\x20you\x20sure\x20you\x20want\x20to\x20delete\x20this\x20single\x20record?','Invalid\x20File\x20Format','bg-red-500/10\x20text-red-400\x20border-red-500/20','createObjectURL','\x20text-xs\x20px-2.5\x20py-1\x20rounded-md\x20border\x20flex\x20items-center\x20w-max\x20gap-2\x20font-bold\x20uppercase\x20tracking-wider\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','MMnPE','body','className','filter','OcZZr','IFHRp','bg-gray-800','ZTKST','otNQj','modalDesc','.json','gnCug','kEYRd','getItem','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-4\x20text-gray-500\x20font-num\x20text-xs\x20whitespace-nowrap\x22>','FiaUC','kfrPw','ilyhU','5121042booJKv','wXHEq','\x20Records\x20Found','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-4\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20type=\x22text\x22\x20id=\x22edit-project-','Untitled\x20Project','real-date','IXisz','zDlpK','RkBxx','AJQKq','addEventListener','toISOString','Data\x20Imported\x20Successfully','\x20<br><span\x20class=\x22text-gray-500\x20text-[10px]\x22>','PYmoH','length','RlVAp','result','aVYvH','kJWps','UghVT','PoKnl','SnqCG','Mcezk','uMCoP','\x22\x20class=\x22bg-gray-900\x20border\x20border-gray-600\x20text-white\x20rounded\x20p-2\x20w-full\x20text-sm\x20focus:border-yellow-500\x20focus:outline-none\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-4\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<select\x20id=\x22edit-type-','sgWPO','readAsText','5677182WhRDBP','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-4\x20text-white\x20font-semibold\x20text-sm\x22>','classList','isArray','onload','GSxSx','lUZzI','>Maintenance</option>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<option\x20value=\x22design\x22\x20','bg-pink-500/10\x20text-pink-400\x20border-pink-500/20','BKfFM','<i\x20class=\x22fas\x20fa-arrow-up\x22></i>','AWgCi','dXXUn','wUcSg','bBcUt','Record\x20Deleted','timestamp','1|2|0|4|3','bJzrH','appendChild','edit-project-','All\x20Records\x20Deleted','20hBkLiY','SakcF','Effvw','border-red-500','Fqafv','logDesc','parse','<i\x20class=\x22fas\x20fa-tools\x22></i>','stringify','>Info</option>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</select>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-4\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<textarea\x20id=\x22edit-desc-','seyMy','tr[data-id=\x22','wXxnf','pIKBD','tzzsb','VgnqY','LobSZ','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-4\x20text-gray-300\x20font-num\x20text-xs\x20whitespace-nowrap\x20leading-tight\x22>','AmuZA','nmdyE','en-US','NhRxp','toLocaleTimeString','projectName','zWfBO','FKdZu','jWJKV','real-time','BJVsB','<i\x20class=\x22fas\x20fa-bug\x22></i>','SOhRk','rVzCj','3378625sdyXJh','hover:bg-gray-700/30\x20transition\x20border-b\x20border-gray-700/50\x20animate-fade-in\x20group','wtBDy','PfXyK','logForm','maintenance','toast','YbVdR','style','upgrade','value','seORe','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-4\x20text-center\x20whitespace-nowrap\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22toggleEditRow(','1927584TkfzHQ','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-4\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22','DbzHv','-translate-y-24','byvOa','</span>','ynTjw','border-yellow-500/30','sILGQ','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-4\x20text-gray-300\x20leading-relaxed\x20text-sm\x20whitespace-pre-wrap\x22>','find','3706373jcfknS',')\x22\x20class=\x22text-red-400\x20hover:text-white\x20hover:bg-red-600\x20bg-red-500/10\x20p-2\x20rounded-lg\x20transition-all\x22\x20title=\x22Delete\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-trash-alt\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','recordCount','Uzzxs','zGBqO','pIJyP','Okqcn','faZHK','<i\x20class=\x22fas\x20fa-info-circle\x22></i>','long','edit-desc-','preloader','\x22\x20class=\x22bg-gray-900\x20border\x20border-gray-600\x20text-white\x20rounded\x20p-2\x20w-full\x20text-sm\x20focus:border-yellow-500\x20focus:outline-none\x22\x20rows=\x222\x22>','66jHeYiN','kLScL','emptyState','RmzXY','RowEh','Hgujw','WufDC','bg-blue-500/10\x20text-blue-400\x20border-blue-500/20',')\x22\x20class=\x22text-blue-400\x20hover:text-white\x20hover:bg-blue-600\x20bg-blue-500/10\x20p-2\x20rounded-lg\x20mr-2\x20transition-all\x22\x20title=\x22Edit\x20Inline\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-edit\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22deleteLog(','design','innerText','type','This\x20action\x20cannot\x20be\x20undone.\x20All\x20development\x20history\x20will\x20be\x20permanently\x20erased.','bg-orange-500/10\x20text-orange-400\x20border-orange-500/20','qRCsp','triSs','UYVsg','CnCyy','bg-purple-500/10\x20text-purple-400\x20border-purple-500/20','No\x20data\x20to\x20export','getElementById','bg-red-900','ALL','rpCbw','translate-y-5','submit','logType','7gOhgnU','JlhYo','wIpxB','Record\x20Updated','pFNJE','AKgYu','uZfDp','download','XUKsR','edit-type-','gDxgX','38pfUpRK'];_0x3377=function(){return _0x372207;};return _0x3377();}const _0x94ff2b=_0x8f9f;(function(_0x153eb5,_0x36abbd){const _0x302665=_0x8f9f,_0x34b873=_0x153eb5();while(!![]){try{const _0x32e31d=parseInt(_0x302665(0x254))/0x1*(-parseInt(_0x302665(0x242))/0x2)+parseInt(_0x302665(0x21c))/0x3*(parseInt(_0x302665(0x251))/0x4)+-parseInt(_0x302665(0x1f7))/0x5+-parseInt(_0x302665(0x2a1))/0x6*(-parseInt(_0x302665(0x237))/0x7)+parseInt(_0x302665(0x204))/0x8+-parseInt(_0x302665(0x2bd))/0x9+-parseInt(_0x302665(0x2d3))/0xa*(-parseInt(_0x302665(0x20f))/0xb);if(_0x32e31d===_0x36abbd)break;else _0x34b873['push'](_0x34b873['shift']());}catch(_0x60116d){_0x34b873['push'](_0x34b873['shift']());}}}(_0x3377,0xc5598));function initApp(){const _0x1ec8c9=_0x8f9f,_0x536755={'faZHK':function(_0x4b4514,_0x501fe4){return _0x4b4514===_0x501fe4;},'ThjYo':_0x1ec8c9(0x23b),'BqEIT':_0x1ec8c9(0x27a),'triSs':_0x1ec8c9(0x2d6),'PYmoH':'fas\x20fa-check-circle\x20text-green-400','PHTOG':function(_0x3f07d8,_0x930e,_0x392183){return _0x3f07d8(_0x930e,_0x392183);},'SakcF':function(_0x1e8e08){return _0x1e8e08();},'FiaUC':function(_0x2cf476){return _0x2cf476();},'bjAhq':function(_0x3cc411,_0xd239f6,_0x9c73de){return _0x3cc411(_0xd239f6,_0x9c73de);}};_0x536755[_0x1ec8c9(0x2d4)](renderLogs),_0x536755[_0x1ec8c9(0x29e)](updateTime),_0x536755['bjAhq'](setTimeout,()=>{const _0x19583a=_0x1ec8c9,_0x45170e={'DbzHv':_0x536755[_0x19583a(0x22b)],'nmdyE':_0x19583a(0x295),'dzqaa':_0x536755[_0x19583a(0x2af)]},_0x130a86=document[_0x19583a(0x230)](_0x19583a(0x21a));_0x130a86[_0x19583a(0x1ff)][_0x19583a(0x258)]='0',_0x536755[_0x19583a(0x264)](setTimeout,()=>{const _0x1912c0=_0x19583a;_0x536755[_0x1912c0(0x216)]('MfwpC',_0x536755[_0x1912c0(0x260)])?(_0x41e833[_0x1912c0(0x2bf)]['remove'](_0x1912c0(0x231),_0x45170e[_0x1912c0(0x206)]),_0x5a7f25[_0x1912c0(0x2bf)]['add'](_0x45170e[_0x1912c0(0x1ea)],_0x1912c0(0x20b)),_0x1e593a['className']=_0x45170e[_0x1912c0(0x25d)]):_0x130a86[_0x1912c0(0x1ff)][_0x1912c0(0x257)]=_0x536755[_0x1912c0(0x275)];},0x258);},0x4b0);}function updateTime(){const _0x1738de=_0x8f9f,_0x1c6aef={'xQqnd':_0x1738de(0x1f2),'QimaP':_0x1738de(0x1eb),'lUZzI':_0x1738de(0x218),'IkVBJ':'numeric'},_0x3398dc=new Date();document['getElementById'](_0x1c6aef['xQqnd'])[_0x1738de(0x24e)]=_0x3398dc[_0x1738de(0x1ed)](_0x1c6aef[_0x1738de(0x267)],{'hour12':!![]}),document['getElementById'](_0x1738de(0x2a6))[_0x1738de(0x24e)]=_0x3398dc[_0x1738de(0x269)](_0x1738de(0x1eb),{'weekday':_0x1c6aef['lUZzI'],'year':_0x1c6aef[_0x1738de(0x26b)],'month':_0x1c6aef[_0x1738de(0x2c3)],'day':_0x1c6aef['IkVBJ']});}function _0x8f9f(_0xfcebdc,_0x2cc765){_0xfcebdc=_0xfcebdc-0x1e8;const _0x337711=_0x3377();let _0x8f9fd3=_0x337711[_0xfcebdc];return _0x8f9fd3;}setInterval(updateTime,0x3e8);const logForm=document[_0x94ff2b(0x230)](_0x94ff2b(0x1fb)),logTableBody=document[_0x94ff2b(0x230)](_0x94ff2b(0x27b)),emptyState=document[_0x94ff2b(0x230)](_0x94ff2b(0x21e)),projectNameInput=document[_0x94ff2b(0x230)](_0x94ff2b(0x25a));let logs=JSON[_0x94ff2b(0x2d9)](localStorage[_0x94ff2b(0x29c)](_0x94ff2b(0x255)))||[],savedProjectName=localStorage[_0x94ff2b(0x29c)](_0x94ff2b(0x263));if(savedProjectName)projectNameInput['value']=savedProjectName;projectNameInput[_0x94ff2b(0x2ab)](_0x94ff2b(0x261),_0x5f22c7=>{const _0x592660=_0x94ff2b;localStorage['setItem']('universalProjectName',_0x5f22c7[_0x592660(0x282)]['value']);});function saveLogs(){const _0x87faf0={'zqjkT':function(_0x54fc10){return _0x54fc10();}};localStorage['setItem']('universalTrackerLogs',JSON['stringify'](logs)),_0x87faf0['zqjkT'](renderLogs);}function getBadgeColor(_0x302d29){const _0xb7a87=_0x94ff2b,_0x40d665={'RlVAp':_0xb7a87(0x22e),'kEYRd':_0xb7a87(0x27f),'ljMjd':_0xb7a87(0x28c),'OcZZr':_0xb7a87(0x225),'hkSHh':_0xb7a87(0x2c5),'NBQXT':_0xb7a87(0x223)};switch(_0x302d29){case _0xb7a87(0x200):return _0x40d665[_0xb7a87(0x2b1)];case _0x40d665[_0xb7a87(0x29b)]:return _0x40d665[_0xb7a87(0x246)];case _0xb7a87(0x1fc):return _0xb7a87(0x229);case _0x40d665[_0xb7a87(0x293)]:return _0x40d665[_0xb7a87(0x248)];default:return _0x40d665['NBQXT'];}}function getIcon(_0x16fa29){const _0x8247e6=_0x94ff2b,_0x37865a={'ynTjw':_0x8247e6(0x200),'IFHRp':_0x8247e6(0x2c7),'wXHEq':'error','xElcI':_0x8247e6(0x1f4),'VtukQ':_0x8247e6(0x2da),'cUpVJ':_0x8247e6(0x225),'rVzCj':'<i\x20class=\x22fas\x20fa-paint-brush\x22></i>'};switch(_0x16fa29){case _0x37865a[_0x8247e6(0x20a)]:return _0x37865a[_0x8247e6(0x294)];case _0x37865a[_0x8247e6(0x2a2)]:return _0x37865a['xElcI'];case _0x8247e6(0x1fc):return _0x37865a[_0x8247e6(0x25b)];case _0x37865a[_0x8247e6(0x25f)]:return _0x37865a[_0x8247e6(0x1f6)];default:return _0x8247e6(0x217);}}function renderLogs(){const _0xe4eac3=_0x94ff2b,_0x5dff50={'Okqcn':_0xe4eac3(0x1f8),'zMzLh':'data-id','ZTKST':function(_0x3c2770,_0x4f4d21){return _0x3c2770+_0x4f4d21;},'ilyhU':_0xe4eac3(0x2ae),'RmzXY':_0xe4eac3(0x27c),'UQYor':_0xe4eac3(0x209),'wIpxB':'<span\x20class=\x22text-gray-600\x20italic\x22>Unknown</span>','eIOtz':_0xe4eac3(0x211),'seORe':function(_0x1352c3,_0x19066a){return _0x1352c3===_0x19066a;},'LobSZ':'hidden'};logTableBody[_0xe4eac3(0x283)]='',document[_0xe4eac3(0x230)](_0x5dff50['eIOtz'])[_0xe4eac3(0x226)]=logs[_0xe4eac3(0x2b0)]+_0xe4eac3(0x2a3),_0x5dff50[_0xe4eac3(0x202)](logs[_0xe4eac3(0x2b0)],0x0)?emptyState[_0xe4eac3(0x2bf)][_0xe4eac3(0x24d)](_0xe4eac3(0x26e)):(emptyState[_0xe4eac3(0x2bf)][_0xe4eac3(0x272)](_0x5dff50[_0xe4eac3(0x2e3)]),logs[_0xe4eac3(0x247)]((_0x1d413b,_0xd01af3)=>new Date(_0xd01af3[_0xe4eac3(0x2cd)])-new Date(_0x1d413b[_0xe4eac3(0x2cd)]))['forEach'](_0x1486da=>{const _0x595f17=_0xe4eac3,_0x5223af=document[_0x595f17(0x252)]('tr');_0x5223af[_0x595f17(0x291)]=_0x5dff50[_0x595f17(0x215)],_0x5223af[_0x595f17(0x270)](_0x5dff50['zMzLh'],_0x1486da['id']);const _0x53f700=new Date(_0x1486da[_0x595f17(0x2cd)]),_0x2d7928=_0x5dff50[_0x595f17(0x296)](_0x53f700[_0x595f17(0x269)]()+_0x5dff50[_0x595f17(0x2a0)],_0x53f700[_0x595f17(0x1ed)]([],{'hour':_0x5dff50[_0x595f17(0x21f)],'minute':_0x5dff50[_0x595f17(0x21f)]}))+_0x5dff50['UQYor'],_0x1a6988=_0x1486da[_0x595f17(0x1ee)]||_0x5dff50[_0x595f17(0x239)];_0x5223af['innerHTML']='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-4\x20text-gray-300\x20font-num\x20text-xs\x20whitespace-nowrap\x20leading-tight\x22>'+_0x2d7928+_0x595f17(0x2be)+_0x1a6988+_0x595f17(0x205)+getBadgeColor(_0x1486da[_0x595f17(0x227)])+'\x20text-xs\x20px-2.5\x20py-1\x20rounded-md\x20border\x20flex\x20items-center\x20w-max\x20gap-2\x20font-bold\x20uppercase\x20tracking-wider\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+getIcon(_0x1486da[_0x595f17(0x227)])+'\x20'+_0x1486da[_0x595f17(0x227)]+_0x595f17(0x20d)+_0x1486da[_0x595f17(0x26c)]+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-4\x20text-center\x20whitespace-nowrap\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22toggleEditRow('+_0x1486da['id']+')\x22\x20class=\x22text-blue-400\x20hover:text-white\x20hover:bg-blue-600\x20bg-blue-500/10\x20p-2\x20rounded-lg\x20mr-2\x20transition-all\x22\x20title=\x22Edit\x20Inline\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-edit\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22deleteLog('+_0x1486da['id']+_0x595f17(0x210),logTableBody[_0x595f17(0x2d0)](_0x5223af);}));}let deleteTarget=null;function deleteLog(_0x1c884e){const _0x34b7a7=_0x94ff2b,_0x3be959={'IvoZU':_0x34b7a7(0x24b),'wUcSg':_0x34b7a7(0x298),'LwtKn':_0x34b7a7(0x28a),'PBEVJ':_0x34b7a7(0x268),'VXcrc':_0x34b7a7(0x26e)};deleteTarget=_0x1c884e,document[_0x34b7a7(0x230)](_0x3be959[_0x34b7a7(0x26d)])[_0x34b7a7(0x226)]='Delete\x20Entry?',document[_0x34b7a7(0x230)](_0x3be959[_0x34b7a7(0x2ca)])['innerText']=_0x3be959[_0x34b7a7(0x26a)],document[_0x34b7a7(0x230)](_0x3be959['PBEVJ'])['classList'][_0x34b7a7(0x24d)](_0x3be959[_0x34b7a7(0x273)]);}function toggleEditRow(_0x433b6b){const _0x17af28=_0x94ff2b,_0x1296c9={'NhRxp':_0x17af28(0x200),'sjgYi':function(_0x31c7a5,_0xba99de){return _0x31c7a5===_0xba99de;},'tzzsb':_0x17af28(0x27f),'seyMy':_0x17af28(0x256),'dQluu':function(_0x5a08b1,_0x113483){return _0x5a08b1===_0x113483;},'YbVdR':_0x17af28(0x1fc),'RowEh':function(_0x3772f2,_0x4982b1){return _0x3772f2===_0x4982b1;},'sgWPO':_0x17af28(0x225),'zDlpK':_0x17af28(0x286)},_0x22e60d=logs[_0x17af28(0x20e)](_0x36aeee=>_0x36aeee['id']===_0x433b6b);if(!_0x22e60d)return;const _0x18fac4=document[_0x17af28(0x279)](_0x17af28(0x2de)+_0x433b6b+'\x22]');if(!_0x18fac4)return;const _0x2a33c5=new Date(_0x22e60d['timestamp']),_0x149e9e=_0x2a33c5[_0x17af28(0x269)]();_0x18fac4['innerHTML']=_0x17af28(0x29d)+_0x149e9e+_0x17af28(0x2a4)+_0x433b6b+_0x17af28(0x288)+(_0x22e60d[_0x17af28(0x1ee)]||'')+_0x17af28(0x2ba)+_0x433b6b+_0x17af28(0x265)+(_0x22e60d[_0x17af28(0x227)]===_0x1296c9[_0x17af28(0x1ec)]?_0x17af28(0x256):'')+'>Upgrade</option>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<option\x20value=\x22error\x22\x20'+(_0x1296c9[_0x17af28(0x24f)](_0x22e60d[_0x17af28(0x227)],_0x1296c9[_0x17af28(0x2e1)])?_0x1296c9[_0x17af28(0x2dd)]:'')+'>Error</option>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<option\x20value=\x22maintenance\x22\x20'+(_0x1296c9['dQluu'](_0x22e60d['type'],_0x1296c9[_0x17af28(0x1fe)])?_0x17af28(0x256):'')+_0x17af28(0x2c4)+(_0x1296c9[_0x17af28(0x220)](_0x22e60d[_0x17af28(0x227)],_0x1296c9[_0x17af28(0x2bb)])?_0x1296c9['seyMy']:'')+_0x17af28(0x289)+(_0x22e60d[_0x17af28(0x227)]===_0x1296c9[_0x17af28(0x2a8)]?_0x1296c9[_0x17af28(0x2dd)]:'')+_0x17af28(0x2dc)+_0x433b6b+_0x17af28(0x21b)+_0x22e60d[_0x17af28(0x26c)]+'</textarea>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-4\x20text-center\x20whitespace-nowrap\x20align-top\x20pt-5\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22saveEditRow('+_0x433b6b+_0x17af28(0x25e);}function saveEditRow(_0x1a3062){const _0x22cd21=_0x94ff2b,_0x51043a={'meTER':_0x22cd21(0x1f8),'uMCoP':function(_0x34e8be,_0x4335e0){return _0x34e8be+_0x4335e0;},'qGzAG':function(_0x1d93fc,_0x38cbdc){return _0x1d93fc+_0x38cbdc;},'kJWps':'\x20<br><span\x20class=\x22text-gray-500\x20text-[10px]\x22>','dLrLl':_0x22cd21(0x27c),'pIJyP':_0x22cd21(0x209),'byvOa':function(_0x3ae00c,_0x2e0753){return _0x3ae00c(_0x2e0753);},'vVrdr':function(_0x2c55d2,_0x12bad6){return _0x2c55d2(_0x12bad6);},'IXisz':_0x22cd21(0x26e),'wvibF':function(_0x42b02b,_0x1ea24b){return _0x42b02b!==_0x1ea24b;},'dXXUn':function(_0x239d11,_0x3fb1ec){return _0x239d11===_0x3fb1ec;},'BJVsB':'Dzjpd','SNcTh':_0x22cd21(0x278),'GSxSx':function(_0x3e741b,_0x4b1e36){return _0x3e741b(_0x4b1e36);},'zWfBO':_0x22cd21(0x23a),'AJQKq':function(_0x37c316){return _0x37c316();}},_0x1979ad=document[_0x22cd21(0x230)](_0x22cd21(0x2d1)+_0x1a3062)['value'],_0x5a6488=document[_0x22cd21(0x230)](_0x22cd21(0x240)+_0x1a3062)[_0x22cd21(0x201)],_0x2edb68=document[_0x22cd21(0x230)](_0x22cd21(0x219)+_0x1a3062)[_0x22cd21(0x201)];if(!_0x2edb68)return;const _0x3a0703=logs[_0x22cd21(0x27d)](_0x17a380=>_0x17a380['id']===_0x1a3062);if(_0x51043a[_0x22cd21(0x250)](_0x3a0703,-0x1)){if(_0x51043a[_0x22cd21(0x2c9)](_0x51043a[_0x22cd21(0x1f3)],_0x51043a['SNcTh'])){const _0x4c3fa0={'UYVsg':_0x51043a['meTER'],'xYhuP':_0x22cd21(0x276),'SDoyJ':function(_0x9b8748,_0x3f4c79){const _0x3a3742=_0x22cd21;return _0x51043a[_0x3a3742(0x2b9)](_0x9b8748,_0x3f4c79);},'AWgCi':function(_0xc46697,_0x5bf5ac){const _0x1dce83=_0x22cd21;return _0x51043a[_0x1dce83(0x280)](_0xc46697,_0x5bf5ac);},'VVxyT':_0x51043a[_0x22cd21(0x2b4)],'PoKnl':_0x51043a[_0x22cd21(0x26f)],'CnCyy':_0x51043a[_0x22cd21(0x214)],'rpCbw':function(_0x5967ff,_0x163b78){const _0x37b544=_0x22cd21;return _0x51043a[_0x37b544(0x208)](_0x5967ff,_0x163b78);},'WufDC':function(_0x2fe716,_0x587d8f){return _0x51043a['vVrdr'](_0x2fe716,_0x587d8f);}};_0x53b9e0[_0x22cd21(0x2bf)][_0x22cd21(0x272)](_0x51043a[_0x22cd21(0x2a7)]),_0x225083[_0x22cd21(0x247)]((_0x2dd8c8,_0x177969)=>new _0xd20b0f(_0x177969[_0x22cd21(0x2cd)])-new _0xfb872a(_0x2dd8c8[_0x22cd21(0x2cd)]))[_0x22cd21(0x274)](_0x3c37a6=>{const _0x3b627c=_0x22cd21,_0x2ada05=_0x933489[_0x3b627c(0x252)]('tr');_0x2ada05['className']=_0x4c3fa0[_0x3b627c(0x22c)],_0x2ada05[_0x3b627c(0x270)](_0x4c3fa0[_0x3b627c(0x266)],_0x3c37a6['id']);const _0x53e65a=new _0x228d1c(_0x3c37a6[_0x3b627c(0x2cd)]),_0x1122d4=_0x4c3fa0['SDoyJ'](_0x4c3fa0[_0x3b627c(0x2c8)](_0x53e65a['toLocaleDateString'](),_0x4c3fa0['VVxyT'])+_0x53e65a[_0x3b627c(0x1ed)]([],{'hour':_0x4c3fa0[_0x3b627c(0x2b6)],'minute':_0x4c3fa0[_0x3b627c(0x2b6)]}),_0x4c3fa0[_0x3b627c(0x22d)]),_0x8d464a=_0x3c37a6['projectName']||_0x3b627c(0x262);_0x2ada05[_0x3b627c(0x283)]=_0x3b627c(0x1e8)+_0x1122d4+_0x3b627c(0x2be)+_0x8d464a+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-4\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22'+_0x4c3fa0[_0x3b627c(0x233)](_0x16a92a,_0x3c37a6[_0x3b627c(0x227)])+_0x3b627c(0x28e)+_0x4c3fa0[_0x3b627c(0x222)](_0x3f5526,_0x3c37a6[_0x3b627c(0x227)])+'\x20'+_0x3c37a6[_0x3b627c(0x227)]+_0x3b627c(0x20d)+_0x3c37a6[_0x3b627c(0x26c)]+_0x3b627c(0x203)+_0x3c37a6['id']+_0x3b627c(0x224)+_0x3c37a6['id']+_0x3b627c(0x210),_0x2cbb31[_0x3b627c(0x2d0)](_0x2ada05);});}else{const _0x1fba21='1|2|4|3|0'['split']('|');let _0x228a9b=0x0;while(!![]){switch(_0x1fba21[_0x228a9b++]){case'0':_0x51043a[_0x22cd21(0x2c2)](showToast,_0x51043a[_0x22cd21(0x1ef)]);continue;case'1':logs[_0x3a0703][_0x22cd21(0x1ee)]=_0x1979ad;continue;case'2':logs[_0x3a0703][_0x22cd21(0x227)]=_0x5a6488;continue;case'3':_0x51043a[_0x22cd21(0x2aa)](saveLogs);continue;case'4':logs[_0x3a0703][_0x22cd21(0x26c)]=_0x2edb68;continue;}break;}}}}logForm['addEventListener'](_0x94ff2b(0x235),_0x2a5d40=>{const _0xda44df=_0x94ff2b,_0x23bc81={'aVYvH':_0xda44df(0x236),'uGRXo':_0xda44df(0x2a5),'uxzJM':function(_0x338fa3){return _0x338fa3();},'wXxnf':function(_0x263220,_0x5f0df4){return _0x263220(_0x5f0df4);},'UghVT':'New\x20Log\x20Added\x20Successfully'};_0x2a5d40['preventDefault']();const _0x227355=document[_0xda44df(0x230)](_0x23bc81[_0xda44df(0x2b3)])[_0xda44df(0x201)],_0x33ba57=document['getElementById'](_0xda44df(0x2d8))['value'],_0x1284db=projectNameInput[_0xda44df(0x201)]||_0x23bc81[_0xda44df(0x27e)];if(!_0x33ba57)return;const _0x51c200={'id':Date['now'](),'projectName':_0x1284db,'type':_0x227355,'description':_0x33ba57,'timestamp':new Date()[_0xda44df(0x2ac)]()};logs[_0xda44df(0x25c)](_0x51c200),_0x23bc81['uxzJM'](saveLogs),document[_0xda44df(0x230)](_0xda44df(0x2d8))[_0xda44df(0x201)]='',_0x23bc81[_0xda44df(0x2df)](showToast,_0x23bc81[_0xda44df(0x2b5)]);});function exportAllData(){const _0x3b6935=_0x94ff2b,_0x3350d4={'AKgYu':_0x3b6935(0x234),'pIKBD':_0x3b6935(0x207),'gObge':function(_0x1a2e93,_0x3f389c){return _0x1a2e93===_0x3f389c;},'fSkpl':function(_0x416e2b,_0x32de40){return _0x416e2b!==_0x32de40;},'MBbUr':_0x3b6935(0x244),'Effvw':function(_0x62122d,_0x1f65ca,_0x221293){return _0x62122d(_0x1f65ca,_0x221293);},'VgnqY':_0x3b6935(0x22f),'OoeKk':_0x3b6935(0x259),'RkBxx':function(_0x1af6aa,_0x34a7e1){return _0x1af6aa(_0x34a7e1);},'SOhRk':'Backup\x20downloaded'};if(_0x3350d4['gObge'](logs[_0x3b6935(0x2b0)],0x0)){if(_0x3350d4['fSkpl']('JEDEJ',_0x3350d4['MBbUr'])){_0x3350d4[_0x3b6935(0x2d5)](showToast,_0x3350d4[_0x3b6935(0x2e2)],!![]);return;}else _0x37b402[_0x3b6935(0x2bf)][_0x3b6935(0x24d)](_0x3350d4[_0x3b6935(0x23c)]),_0x4b65e1[_0x3b6935(0x2bf)]['add'](_0x3350d4[_0x3b6935(0x2e0)]);}const _0x172842=JSON[_0x3b6935(0x2db)](logs,null,0x2),_0x10b5d4=new Blob([_0x172842],{'type':_0x3350d4[_0x3b6935(0x287)]}),_0x399ba5=URL[_0x3b6935(0x28d)](_0x10b5d4),_0x5467e1=document['createElement']('a');_0x5467e1[_0x3b6935(0x284)]=_0x399ba5,_0x5467e1[_0x3b6935(0x23e)]=_0x3b6935(0x285)+new Date()[_0x3b6935(0x2ac)]()[_0x3b6935(0x271)](0x0,0xa)+_0x3b6935(0x299),document['body'][_0x3b6935(0x2d0)](_0x5467e1),_0x5467e1[_0x3b6935(0x24a)](),document[_0x3b6935(0x290)]['removeChild'](_0x5467e1),_0x3350d4[_0x3b6935(0x2a9)](showToast,_0x3350d4[_0x3b6935(0x1f5)]);}function importData(_0x468107){const _0x4dcb85=_0x94ff2b,_0x1c081e={'Uzzxs':function(_0x3ba2a8,_0x49fcee){return _0x3ba2a8(_0x49fcee);},'ImYVl':_0x4dcb85(0x2ad),'HNBCb':function(_0x1c0564,_0x1f3f68,_0x5443c5){return _0x1c0564(_0x1f3f68,_0x5443c5);},'SjLoC':_0x4dcb85(0x28b)},_0x395a54=_0x468107[_0x4dcb85(0x282)][_0x4dcb85(0x253)][0x0];if(!_0x395a54)return;const _0x5631f1=new FileReader();_0x5631f1[_0x4dcb85(0x2c1)]=function(_0x2f4737){const _0x4d2e6b=_0x4dcb85;try{const _0x2f0298=JSON[_0x4d2e6b(0x2d9)](_0x2f4737['target'][_0x4d2e6b(0x2b2)]);if(Array[_0x4d2e6b(0x2c0)](_0x2f0298))logs=_0x2f0298,saveLogs(),_0x1c081e[_0x4d2e6b(0x212)](showToast,_0x1c081e['ImYVl']);else throw new Error();}catch(_0x17cb57){_0x1c081e['HNBCb'](showToast,_0x1c081e['SjLoC'],!![]);}},_0x5631f1[_0x4dcb85(0x2bc)](_0x395a54),_0x468107[_0x4dcb85(0x282)][_0x4dcb85(0x201)]='';}function confirmClearHistory(){const _0x330f66=_0x94ff2b,_0x2da8da={'Fqafv':_0x330f66(0x2ce),'trHiD':_0x330f66(0x24b),'Mcezk':'Delete\x20All\x20Logs?','otNQj':_0x330f66(0x268),'sILGQ':'hidden','gDxgX':_0x330f66(0x228)},_0x10373d=_0x2da8da[_0x330f66(0x2d7)][_0x330f66(0x245)]('|');let _0x347ec7=0x0;while(!![]){switch(_0x10373d[_0x347ec7++]){case'0':document['getElementById'](_0x2da8da[_0x330f66(0x249)])['innerText']=_0x2da8da[_0x330f66(0x2b8)];continue;case'1':if(logs[_0x330f66(0x2b0)]===0x0)return;continue;case'2':deleteTarget=_0x330f66(0x232);continue;case'3':document[_0x330f66(0x230)](_0x2da8da[_0x330f66(0x297)])['classList'][_0x330f66(0x24d)](_0x2da8da[_0x330f66(0x20c)]);continue;case'4':document['getElementById'](_0x330f66(0x298))[_0x330f66(0x226)]=_0x2da8da[_0x330f66(0x241)];continue;}break;}}function closeModal(){const _0x321ca1=_0x94ff2b,_0x5aa016={'wtBDy':_0x321ca1(0x268),'qRCsp':'hidden'};document[_0x321ca1(0x230)](_0x5aa016[_0x321ca1(0x1f9)])[_0x321ca1(0x2bf)]['add'](_0x5aa016[_0x321ca1(0x22a)]),deleteTarget=null;}function performDelete(){const _0x733062=_0x94ff2b,_0x14a377={'PfXyK':function(_0x515f5d){return _0x515f5d();},'MMnPE':function(_0x2ecffa,_0x313226){return _0x2ecffa(_0x313226);},'HsvLb':_0x733062(0x2ad),'IbHUg':'ALL','JlhYo':function(_0xd96409,_0x114659){return _0xd96409(_0x114659);},'kQmiy':_0x733062(0x2d2),'zGBqO':function(_0x14011b,_0x183877){return _0x14011b!==_0x183877;},'Hgujw':function(_0x411293,_0x32ee29){return _0x411293!==_0x32ee29;},'HguOF':_0x733062(0x277),'BKfFM':function(_0x56c2eb,_0x309eab){return _0x56c2eb(_0x309eab);},'qYmyQ':_0x733062(0x2cc),'XUKsR':function(_0x13ef3a){return _0x13ef3a();}};if(deleteTarget===_0x14a377['IbHUg'])logs=[],_0x14a377[_0x733062(0x238)](showToast,_0x14a377['kQmiy']);else _0x14a377[_0x733062(0x213)](deleteTarget,null)&&(_0x14a377[_0x733062(0x221)](_0x14a377['HguOF'],_0x733062(0x277))?(_0x4fc88c=_0x7bc165,_0x14a377[_0x733062(0x1fa)](_0x129d85),_0x14a377[_0x733062(0x28f)](_0x8ce83,_0x14a377['HsvLb'])):(logs=logs[_0x733062(0x292)](_0x1430df=>_0x1430df['id']!==deleteTarget),_0x14a377[_0x733062(0x2c6)](showToast,_0x14a377['qYmyQ'])));saveLogs(),_0x14a377[_0x733062(0x23f)](closeModal);}function showToast(_0x405a7d,_0x5c70b5=![]){const _0xdc9459=_0x94ff2b,_0x4a5b31={'SnqCG':_0xdc9459(0x26e),'NSCUL':function(_0x2007e3,_0x4fe008){return _0x2007e3===_0x4fe008;},'kLScL':_0xdc9459(0x24c),'uZfDp':_0xdc9459(0x207),'jWJKV':_0xdc9459(0x1fd),'bBcUt':_0xdc9459(0x231),'AmuZA':_0xdc9459(0x2d6),'kfrPw':_0xdc9459(0x281),'yvLVW':'bg-gray-800','Xemko':'border-yellow-500/30','gnCug':'fas\x20fa-check-circle\x20text-green-400','zcfRF':_0xdc9459(0x234),'bJzrH':function(_0x2b75e4,_0x1e66e1,_0x4a0137){return _0x2b75e4(_0x1e66e1,_0x4a0137);}},_0x35ffed=document['getElementById'](_0x4a5b31[_0xdc9459(0x1f1)]),_0x511e5c=document[_0xdc9459(0x230)](_0xdc9459(0x243));document[_0xdc9459(0x230)]('toast-message')[_0xdc9459(0x226)]=_0x405a7d,_0x5c70b5?(_0x35ffed[_0xdc9459(0x2bf)][_0xdc9459(0x24d)](_0xdc9459(0x20b)),_0x35ffed[_0xdc9459(0x2bf)][_0xdc9459(0x272)](_0x4a5b31[_0xdc9459(0x2cb)],_0x4a5b31[_0xdc9459(0x1e9)]),_0x511e5c[_0xdc9459(0x291)]=_0x4a5b31[_0xdc9459(0x29f)]):(_0x35ffed[_0xdc9459(0x2bf)][_0xdc9459(0x24d)](_0x4a5b31[_0xdc9459(0x2cb)],_0x4a5b31[_0xdc9459(0x1e9)]),_0x35ffed['classList'][_0xdc9459(0x272)](_0x4a5b31['yvLVW'],_0x4a5b31['Xemko']),_0x511e5c[_0xdc9459(0x291)]=_0x4a5b31[_0xdc9459(0x29a)]),_0x35ffed[_0xdc9459(0x2bf)][_0xdc9459(0x24d)](_0xdc9459(0x207)),_0x35ffed[_0xdc9459(0x2bf)]['add'](_0x4a5b31['zcfRF']),_0x4a5b31[_0xdc9459(0x2cf)](setTimeout,()=>{const _0x213463=_0xdc9459,_0x5db0d3={'FKdZu':_0x4a5b31[_0x213463(0x2b7)]};_0x4a5b31['NSCUL']('BRjHF',_0x4a5b31[_0x213463(0x21d)])?(_0x590f74[_0x213463(0x230)](_0x213463(0x268))[_0x213463(0x2bf)][_0x213463(0x272)](_0x5db0d3[_0x213463(0x1f0)]),_0x4ab896=null):(_0x35ffed[_0x213463(0x2bf)][_0x213463(0x24d)](_0x213463(0x234)),_0x35ffed[_0x213463(0x2bf)]['add'](_0x4a5b31[_0x213463(0x23d)]));},0xbb8);}
+</script>
+</body>
+</html>
