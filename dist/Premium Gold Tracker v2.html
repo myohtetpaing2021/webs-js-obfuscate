@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Premium Gold Tracker Pro</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <script>
+/* obfuscated */
+var _0x24fb84=_0x3c42;function _0x207f(){var _0x130886=['2668512YtZJch','1062076SPqDwQ','Inter','51082965ghzMtM','1947910pXqRie','182YMgsuh','Padauk','#F59E0B','config','#1e293b','377968xzVmme','5759705VxhbEm','12mtDnbH','151599vhbiWQ','sans-serif','#FBBF24'];_0x207f=function(){return _0x130886;};return _0x207f();}function _0x3c42(_0x3daa3a,_0x4b6313){_0x3daa3a=_0x3daa3a-0xeb;var _0x207fde=_0x207f();var _0x3c42f5=_0x207fde[_0x3daa3a];return _0x3c42f5;}(function(_0x3a4ab8,_0xd215b4){var _0x53b7fc=_0x3c42,_0x282f3e=_0x3a4ab8();while(!![]){try{var _0x3ad840=-parseInt(_0x53b7fc(0xf8))/0x1+-parseInt(_0x53b7fc(0xef))/0x2+-parseInt(_0x53b7fc(0xf7))/0x3*(parseInt(_0x53b7fc(0xec))/0x4)+-parseInt(_0x53b7fc(0xf6))/0x5+-parseInt(_0x53b7fc(0xeb))/0x6+parseInt(_0x53b7fc(0xf0))/0x7*(-parseInt(_0x53b7fc(0xf5))/0x8)+parseInt(_0x53b7fc(0xee))/0x9;if(_0x3ad840===_0xd215b4)break;else _0x282f3e['push'](_0x282f3e['shift']());}catch(_0xaa8e91){_0x282f3e['push'](_0x282f3e['shift']());}}}(_0x207f,0xa1e7e),tailwind[_0x24fb84(0xf3)]={'theme':{'extend':{'colors':{'gold':{0x190:_0x24fb84(0xfa),0x1f4:_0x24fb84(0xf2),0x258:'#D97706'},'dark':{0x320:_0x24fb84(0xf4),0x384:'#0f172a'}},'fontFamily':{'sans':[_0x24fb84(0xf1),'sans-serif'],'num':[_0x24fb84(0xed),_0x24fb84(0xf9)]}}}});
+</script>
+
+    <style>
+        body {
+            font-family: 'Padauk', sans-serif;
+            background-color: #0f172a;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(251, 191, 36, 0.08) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(251, 191, 36, 0.05) 0%, transparent 20%);
+            color: #F9FAFB;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .font-num { font-family: 'Inter', sans-serif; }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .input-field {
+            background-color: #334155;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            background-color: #1e293b;
+            border-color: #FBBF24;
+            box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.2);
+            outline: none;
+        }
+
+        /* Preloader */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background: #0f172a;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
+        }
+
+        .loader-ring {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            border-top-color: #FBBF24;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 10px; }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    </style>
+</head>
+<body class="antialiased pb-12 overflow-x-hidden" onload="initApp()">
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="relative">
+            <div class="loader-ring"></div>
+            <i class="fas fa-gem absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-yellow-500 text-xl"></i>
+        </div>
+        <div class="mt-4 text-yellow-500 font-bold tracking-widest text-[10px] uppercase">Loading Premium Pro</div>
+    </div>
+
+    <div class="container mx-auto max-w-4xl p-4 md:p-6">
+
+        <!-- Header -->
+        <header class="text-center my-8 space-y-2">
+            <h1 class="text-3xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-yellow-500 to-yellow-300 drop-shadow-sm">
+                Premium Gold Tracker
+            </h1>
+            <p class="text-sm md:text-base text-gray-400 font-medium">တိကျမြန်ဆန် စိတ်ချရသော Premium Gold Calculator</p>
+        </header>
+
+        <!-- Main Input Section -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-8">
+            
+            <!-- Gold Price Input -->
+            <div class="md:col-span-12 glass-card p-6 rounded-2xl border border-yellow-500/20 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-500/5 rounded-full blur-3xl -mr-10 -mt-10"></div>
+                
+                <label class="block text-center text-yellow-400 font-bold uppercase tracking-wider text-xs mb-3">
+                    ယနေ့ ရွှေပေါက်စျေး (၁ ကျပ်သား)
+                </label>
+                <div class="relative max-w-md mx-auto">
+                    <input type="number" id="goldPrice" class="input-field text-3xl font-bold text-center w-full p-3 rounded-xl font-num text-white shadow-lg" placeholder="0" oninput="calculate()">
+                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-xs font-num">MMK</span>
+                </div>
+                <div class="flex justify-center gap-4 mt-4 text-[10px] md:text-xs text-gray-400 font-num">
+                    <div class="bg-gray-800/50 px-3 py-1.5 rounded border border-gray-700" id="pricePerPaeDisplay">၁ ပဲ = ၀</div>
+                    <div class="bg-gray-800/50 px-3 py-1.5 rounded border border-gray-700" id="pricePerYwayDisplay">၁ ရွေး = ၀</div>
+                </div>
+            </div>
+
+            <!-- Weight Input -->
+            <div class="md:col-span-6 glass-card p-6 rounded-2xl border-t-4 border-green-500">
+                <h3 class="text-green-400 font-bold mb-4 flex items-center gap-2 text-sm uppercase">
+                    <i class="fas fa-balance-scale"></i> ရွှေထည် အလေးချိန်
+                </h3>
+                <div class="grid grid-cols-3 gap-3">
+                    <div class="text-center">
+                        <label class="text-[10px] text-gray-500 mb-1 block">ကျပ်</label>
+                        <input type="number" id="prodKyat" class="input-field w-full p-2 text-center rounded-lg font-bold font-num" placeholder="0" oninput="calculate()">
+                    </div>
+                    <div class="text-center">
+                        <label class="text-[10px] text-gray-500 mb-1 block">ပဲ</label>
+                        <input type="number" id="prodPae" class="input-field w-full p-2 text-center rounded-lg font-bold font-num" placeholder="0" oninput="calculate()">
+                    </div>
+                    <div class="text-center">
+                        <label class="text-[10px] text-gray-500 mb-1 block">ရွေး</label>
+                        <input type="number" id="prodYway" class="input-field w-full p-2 text-center rounded-lg font-bold font-num" placeholder="0" oninput="calculate()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wastage Input -->
+            <div class="md:col-span-6 glass-card p-6 rounded-2xl border-t-4 border-red-500">
+                <h3 class="text-red-400 font-bold mb-4 flex items-center gap-2 text-sm uppercase">
+                    <i class="fas fa-fire-alt"></i> အလျော့တွက် (လက်ခ)
+                </h3>
+                <div class="grid grid-cols-3 gap-3">
+                    <div class="text-center opacity-30">
+                        <label class="text-[10px] text-gray-500 mb-1 block">ကျပ်</label>
+                        <div class="input-field w-full p-2 text-center rounded-lg font-bold bg-gray-800">-</div>
+                    </div>
+                    <div class="text-center">
+                        <label class="text-[10px] text-gray-500 mb-1 block">ပဲ</label>
+                        <input type="number" id="alyotPae" class="input-field w-full p-2 text-center rounded-lg font-bold font-num text-red-200" placeholder="0" oninput="calculate()">
+                    </div>
+                    <div class="text-center">
+                        <label class="text-[10px] text-gray-500 mb-1 block">ရွေး</label>
+                        <input type="number" id="alyotYway" class="input-field w-full p-2 text-center rounded-lg font-bold font-num text-red-200" placeholder="0" oninput="calculate()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Display -->
+        <div class="glass-card p-8 rounded-[2rem] shadow-2xl mb-8 border border-yellow-500/20 bg-gradient-to-b from-gray-800 to-gray-900 text-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-yellow-500/5 blur-2xl"></div>
+            
+            <div class="relative z-10">
+                <p class="text-gray-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Total Estimated Cost</p>
+                <h2 id="totalCost" class="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400 font-num tracking-tight mb-2">0</h2>
+                <p class="text-yellow-500 font-bold text-sm">MMK (မြန်မာကျပ်ငွေ)</p>
+                
+                <div class="mt-6 pt-6 border-t border-gray-700/50 flex justify-center items-center gap-2">
+                    <span class="text-gray-500 text-xs">စုစုပေါင်း အလေးချိန်:</span>
+                    <span id="totalWeightDisplay" class="text-white font-bold bg-gray-800/80 px-3 py-1 rounded-full text-xs border border-gray-600">၀ ကျပ် ၀ ပဲ ၀ ရွေး</span>
+                </div>
+                
+                <p id="costTextDisplay" class="mt-4 text-[11px] text-gray-500 font-medium italic min-h-[1rem]"></p>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="grid grid-cols-2 gap-4 mb-10">
+            <button onclick="addToHistory()" class="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-gray-900 font-bold py-4 rounded-xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 uppercase text-xs">
+                <i class="fas fa-save"></i> မှတ်တမ်းတင်မည်
+            </button>
+            <button onclick="resetForm()" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-4 rounded-xl border border-gray-600 transition-all active:scale-95 flex items-center justify-center gap-2 uppercase text-xs">
+                <i class="fas fa-redo"></i> ရှင်းမည်
+            </button>
+        </div>
+
+        <!-- History & Settings Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <!-- History Section -->
+            <div class="glass-card p-6 rounded-2xl">
+                <div class="flex justify-between items-center mb-4 border-b border-gray-700/50 pb-3">
+                    <h3 class="font-bold text-yellow-400 flex items-center gap-2 text-sm uppercase">
+                        <i class="fas fa-history"></i> မှတ်တမ်းများ
+                    </h3>
+                    <span class="text-[10px] text-gray-500 bg-gray-800 px-2 py-1 rounded font-num" id="recordCount">0 Records</span>
+                </div>
+                <div id="historyListBody" class="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                    <!-- JS will populate this -->
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div class="glass-card p-6 rounded-2xl">
+                <h3 class="font-bold text-gray-200 mb-4 flex items-center gap-2 border-b border-gray-700/50 pb-3 text-sm uppercase">
+                    <i class="fas fa-cog text-gray-400"></i> Settings & Data
+                </h3>
+                
+                <div class="space-y-4">
+                    <!-- Data Management -->
+                    <div class="bg-gray-800/30 p-4 rounded-xl border border-gray-700/50 hover:border-blue-500/30 transition-colors">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-2 bg-blue-500/10 rounded-lg text-blue-400"><i class="fas fa-database text-xs"></i></div>
+                            <div>
+                                <p class="text-[11px] font-bold text-gray-200 uppercase tracking-wider">Data Management</p>
+                                <p class="text-[10px] text-gray-500">Backup & Restore your records</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="exportAllData()" class="bg-blue-600/90 hover:bg-blue-500 text-white text-[10px] font-bold py-2 rounded-lg transition-colors flex items-center justify-center gap-1">
+                                <i class="fas fa-download"></i> Export
+                            </button>
+                            <button onclick="document.getElementById('importFileInput').click()" class="bg-gray-700 hover:bg-gray-600 text-white text-[10px] font-bold py-2 rounded-lg transition-colors border border-gray-600 flex items-center justify-center gap-1">
+                                <i class="fas fa-upload"></i> Import
+                            </button>
+                            <input type="file" id="importFileInput" class="hidden" accept=".json" onchange="importData(event)">
+                        </div>
+                    </div>
+
+                    <!-- Danger Zone -->
+                    <div class="bg-red-500/5 p-4 rounded-xl border border-red-900/20 hover:border-red-500/30 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 bg-red-500/10 rounded-lg text-red-400"><i class="fas fa-trash-alt text-xs"></i></div>
+                                <div>
+                                    <p class="text-[11px] font-bold text-gray-200 uppercase tracking-wider">Clear Data</p>
+                                    <p class="text-[10px] text-gray-500">Delete all history records</p>
+                                </div>
+                            </div>
+                            <button onclick="confirmClearHistory()" class="bg-red-500/10 hover:bg-red-500 hover:text-white text-red-400 text-[10px] font-bold px-3 py-2 rounded-lg border border-red-500/30 transition-all uppercase">
+                                Delete All
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Confirmation Modal (Delete All) -->
+    <div id="confirmationModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-6">
+        <div class="bg-gray-800 border border-gray-700 p-8 rounded-[2rem] max-w-sm w-full text-center shadow-2xl">
+            <div class="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">မှတ်တမ်းများ အားလုံးဖျက်မည်?</h3>
+            <p class="text-gray-400 text-sm mb-8 leading-relaxed">မှတ်တမ်းအားလုံးကို ဖျက်ပစ်လိုက်ပါက ပြန်လည်ရယူနိုင်တော့မည် မဟုတ်ပါ။</p>
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="closeModal('confirmationModal')" class="bg-gray-700 text-white py-3 rounded-xl font-bold text-sm hover:bg-gray-600 transition-colors">Cancel</button>
+                <button onclick="performClearHistory()" class="bg-red-600 text-white py-3 rounded-xl font-bold text-sm hover:bg-red-500 shadow-lg shadow-red-500/20 transition-colors">Delete All</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Single Item Deletion Modal (The "Alert") -->
+    <div id="itemDeletionModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-6">
+        <div class="bg-gray-800 border border-gray-700 p-8 rounded-[2rem] max-w-sm w-full text-center shadow-2xl">
+            <div class="w-16 h-16 bg-yellow-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-trash-can text-yellow-500 text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">မှတ်တမ်း ဖျက်မည်?</h3>
+            <p class="text-gray-400 text-sm mb-8 leading-relaxed">ဤမှတ်တမ်းတစ်ခုတည်းကိုသာ ဖျက်ပစ်ရန် သေချာပါသလား။</p>
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="closeModal('itemDeletionModal')" class="bg-gray-700 text-white py-3 rounded-xl font-bold text-sm hover:bg-gray-600 transition-colors">Cancel</button>
+                <button id="confirmItemDeleteBtn" class="bg-yellow-600 text-white py-3 rounded-xl font-bold text-sm hover:bg-yellow-500 shadow-lg shadow-yellow-500/20 transition-colors">ဖျက်မည်</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-8 py-3 rounded-full shadow-2xl border border-yellow-500/30 flex items-center gap-3 transform translate-y-32 transition-transform duration-500 z-[101]">
+        <i class="fas fa-info-circle text-yellow-500" id="toast-icon"></i>
+        <span id="toast-message" class="text-xs font-bold">Action Done</span>
+    </div>
+
+    <script>
+/* obfuscated */
+const _0x3293b3=_0x3c1b;(function(_0x69a9fd,_0x6a2293){const _0x4848d6=_0x3c1b,_0xb06fa3=_0x69a9fd();while(!![]){try{const _0x320051=-parseInt(_0x4848d6(0x1da))/0x1+parseInt(_0x4848d6(0x249))/0x2+-parseInt(_0x4848d6(0x205))/0x3*(-parseInt(_0x4848d6(0x226))/0x4)+parseInt(_0x4848d6(0x244))/0x5*(-parseInt(_0x4848d6(0x1c0))/0x6)+-parseInt(_0x4848d6(0x1ad))/0x7+-parseInt(_0x4848d6(0x252))/0x8*(-parseInt(_0x4848d6(0x1f1))/0x9)+parseInt(_0x4848d6(0x1e5))/0xa*(parseInt(_0x4848d6(0x248))/0xb);if(_0x320051===_0x6a2293)break;else _0xb06fa3['push'](_0xb06fa3['shift']());}catch(_0x1f84c2){_0xb06fa3['push'](_0xb06fa3['shift']());}}}(_0x4145,0xa332d));let history=[],currentTotalCost=0x0,currentTotalWeightText='',currentMarketPrice=0x0,itemToDeleteId=null;function initApp(){const _0x4ccbd5=_0x3c1b,_0x4c37cf={'iOZYU':_0x4ccbd5(0x1fb),'oqcJG':function(_0x3ab36a,_0x4bdd23,_0x581fa5){return _0x3ab36a(_0x4bdd23,_0x581fa5);}};loadHistory(),_0x4c37cf[_0x4ccbd5(0x1d5)](setTimeout,()=>{const _0x4454a8=_0x4ccbd5,_0x47891c=document[_0x4454a8(0x250)](_0x4c37cf['iOZYU']);_0x47891c['style']['opacity']='0',setTimeout(()=>_0x47891c[_0x4454a8(0x1b3)][_0x4454a8(0x223)]=_0x4454a8(0x24e),0x258);},0x4b0);}function calculate(){const _0x243d13=_0x3c1b,_0x13283f={'mcNVW':function(_0x1f6114,_0x55d73a){return _0x1f6114(_0x55d73a);},'fayIx':_0x243d13(0x215),'mrmlj':function(_0x2652ce,_0x27142d){return _0x2652ce(_0x27142d);},'HLEEp':_0x243d13(0x1ed),'TcTNe':function(_0x32ef97,_0x594fd8){return _0x32ef97(_0x594fd8);},'IsguZ':_0x243d13(0x206),'gHCpS':_0x243d13(0x240),'APooX':function(_0x2175fc,_0x127a0f){return _0x2175fc/_0x127a0f;},'GGLLl':function(_0x39dcf0,_0x53e3a0){return _0x39dcf0/_0x53e3a0;},'LvRlZ':'pricePerPaeDisplay','IbGzX':_0x243d13(0x1c5),'VsRXE':function(_0x577920,_0x2108d4){return _0x577920+_0x2108d4;},'UzbTj':function(_0x5e4576,_0x93db7a){return _0x5e4576+_0x93db7a;},'InNak':function(_0x3debb2,_0x2b973c){return _0x3debb2*_0x2b973c;},'AJndu':function(_0x15b8a1,_0x36cb36){return _0x15b8a1*_0x36cb36;},'Xokaj':function(_0x4ac4a5,_0x2840b2){return _0x4ac4a5+_0x2840b2;},'jCuRF':function(_0x45af24,_0x3328bd){return _0x45af24%_0x3328bd;},'KEqWJ':function(_0x5a8b43,_0x24ef02){return _0x5a8b43%_0x24ef02;},'aiokS':function(_0x7347c7,_0x4ca7be){return _0x7347c7===_0x4ca7be;},'aDlyf':function(_0x164499,_0x224139){return _0x164499%_0x224139;},'VYntL':_0x243d13(0x1aa),'SdhAY':function(_0x2b14dc,_0x31ba32){return _0x2b14dc*_0x31ba32;},'hWhPn':_0x243d13(0x255),'PJKTc':_0x243d13(0x24f),'IqiDN':function(_0x16df5f,_0x1e463d){return _0x16df5f>_0x1e463d;},'XbrXR':function(_0x2c8e8c,_0x19bae2){return _0x2c8e8c(_0x19bae2);}},_0x22b1ee=_0x13283f[_0x243d13(0x217)](parseFloat,document[_0x243d13(0x250)](_0x13283f[_0x243d13(0x1fc)])[_0x243d13(0x1e1)])||0x0;currentMarketPrice=_0x22b1ee;const _0x5d50ed=parseFloat(document[_0x243d13(0x250)](_0x243d13(0x256))['value'])||0x0,_0x2bb492=_0x13283f[_0x243d13(0x1e4)](parseFloat,document['getElementById'](_0x13283f['HLEEp'])[_0x243d13(0x1e1)])||0x0,_0x380434=_0x13283f[_0x243d13(0x1e4)](parseFloat,document[_0x243d13(0x250)](_0x243d13(0x1e3))['value'])||0x0,_0x40156e=_0x13283f['TcTNe'](parseFloat,document['getElementById'](_0x13283f['IsguZ'])[_0x243d13(0x1e1)])||0x0,_0x4f3190=_0x13283f['mcNVW'](parseFloat,document[_0x243d13(0x250)](_0x13283f[_0x243d13(0x1ab)])[_0x243d13(0x1e1)])||0x0,_0x3856f5=_0x13283f[_0x243d13(0x26a)](_0x22b1ee,0x10),_0x223a4d=_0x13283f[_0x243d13(0x1f0)](_0x3856f5,0x8);document['getElementById'](_0x13283f[_0x243d13(0x1cc)])[_0x243d13(0x268)]=_0x243d13(0x21e)+Math[_0x243d13(0x1ec)](_0x3856f5)[_0x243d13(0x220)](),document[_0x243d13(0x250)](_0x13283f[_0x243d13(0x1c4)])[_0x243d13(0x268)]=_0x243d13(0x232)+Math[_0x243d13(0x1ec)](_0x223a4d)['toLocaleString']();const _0x702a50=_0x13283f['VsRXE'](_0x13283f['UzbTj'](_0x13283f[_0x243d13(0x239)](_0x5d50ed,0x80),_0x13283f[_0x243d13(0x239)](_0x2bb492,0x8)),_0x380434),_0x1e1db1=_0x13283f[_0x243d13(0x235)](_0x13283f['AJndu'](_0x40156e,0x8),_0x4f3190),_0x3ece9f=_0x13283f[_0x243d13(0x1ac)](_0x702a50,_0x1e1db1),_0x4b4b7e=Math[_0x243d13(0x203)](_0x13283f['APooX'](_0x3ece9f,0x80)),_0x568667=_0x13283f[_0x243d13(0x1b9)](_0x3ece9f,0x80),_0xbb7f25=Math[_0x243d13(0x203)](_0x13283f[_0x243d13(0x1f0)](_0x568667,0x8));let _0x40eb06=_0x13283f['mrmlj'](parseFloat,_0x13283f[_0x243d13(0x1d1)](_0x568667,0x8)[_0x243d13(0x1ae)](0x2));if(_0x13283f['aiokS'](_0x13283f['aDlyf'](_0x40eb06,0x1),0x0))_0x40eb06=Math[_0x243d13(0x203)](_0x40eb06);currentTotalWeightText=_0x4b4b7e+_0x243d13(0x22f)+_0xbb7f25+_0x243d13(0x1f6)+_0x40eb06+_0x243d13(0x1ff),document[_0x243d13(0x250)](_0x13283f[_0x243d13(0x1e7)])[_0x243d13(0x268)]=currentTotalWeightText,currentTotalCost=Math[_0x243d13(0x1ec)](_0x13283f[_0x243d13(0x216)](_0x3ece9f,_0x223a4d)),document['getElementById']('totalCost')['innerText']=currentTotalCost[_0x243d13(0x220)](_0x13283f[_0x243d13(0x253)]),document[_0x243d13(0x250)](_0x13283f['PJKTc'])['innerText']=_0x13283f[_0x243d13(0x1d2)](currentTotalCost,0x0)?_0x13283f[_0x243d13(0x25c)](convertToBurmeseSpokenText,currentTotalCost):'';}function toBurmeseNum(_0x5b4bdc){const _0x579085=_0x3c1b,_0x36a82e=['၀','၁','၂','၃','၄','၅','၆','၇','၈','၉'];return _0x5b4bdc[_0x579085(0x1fd)]()['split']('')[_0x579085(0x241)](_0x19f1f7=>/\d/[_0x579085(0x20c)](_0x19f1f7)?_0x36a82e[parseInt(_0x19f1f7)]:_0x19f1f7)[_0x579085(0x200)]('');}function _0x3c1b(_0x2b9c29,_0x443c99){_0x2b9c29=_0x2b9c29-0x1aa;const _0x414565=_0x4145();let _0x3c1bc3=_0x414565[_0x2b9c29];return _0x3c1bc3;}function convertToBurmeseSpokenText(_0x2b5729){const _0x24b998=_0x3c1b,_0x5ee1e3={'EVJgQ':function(_0x54cdaf,_0x1546bc){return _0x54cdaf===_0x1546bc;},'jiArs':function(_0x54a378,_0x174a3b){return _0x54a378/_0x174a3b;},'jgogT':function(_0x1f9093,_0x39109e){return _0x1f9093%_0x39109e;},'FDAuo':function(_0x24c027,_0x3592db){return _0x24c027>_0x3592db;},'KtTlt':function(_0x2cc260,_0x4b7a14){return _0x2cc260+_0x4b7a14;},'iSjcc':function(_0x490552,_0x1f7def){return _0x490552(_0x1f7def);},'hzOMi':_0x24b998(0x236),'UfBwF':function(_0x2a2b01,_0x519716){return _0x2a2b01>_0x519716;},'CDHyW':function(_0x35279a,_0x3d30b3){return _0x35279a!==_0x3d30b3;},'lRqtv':_0x24b998(0x1b7),'rjwoz':function(_0x26717e,_0x321062){return _0x26717e-_0x321062;},'dTaQZ':function(_0x10ca82,_0x2f775d){return _0x10ca82!==_0x2f775d;},'uUEHD':_0x24b998(0x1cb),'JhPsv':_0x24b998(0x21a),'ylAon':function(_0x4f82e0,_0x1717af){return _0x4f82e0===_0x1717af;},'FJATO':_0x24b998(0x20f),'tHxCF':function(_0x1c751a,_0x1b013a){return _0x1c751a+_0x1b013a;},'XJztI':_0x24b998(0x1bc)};if(_0x5ee1e3[_0x24b998(0x1e2)](_0x2b5729,0x0))return'';const _0x281cad=Math['floor'](_0x5ee1e3['jiArs'](_0x2b5729,0x186a0)),_0x2fcd14=_0x5ee1e3[_0x24b998(0x21b)](_0x2b5729,0x186a0);let _0x4d1ef2=_0x5ee1e3[_0x24b998(0x222)](_0x281cad,0x0)?_0x5ee1e3['KtTlt'](_0x5ee1e3[_0x24b998(0x1ca)](toBurmeseNum,_0x281cad),_0x5ee1e3['hzOMi']):'';if(_0x5ee1e3[_0x24b998(0x1f7)](_0x281cad,0x0)&&_0x2fcd14>0x0)_0x4d1ef2+='၊\x20';if(_0x2fcd14>0x0){const _0x1f4c20=_0x2fcd14[_0x24b998(0x1fd)](),_0xb5866c=_0x1f4c20[_0x24b998(0x254)];for(let _0x55fea7=0x0;_0x55fea7<_0xb5866c;_0x55fea7++){if(_0x5ee1e3[_0x24b998(0x219)](_0x5ee1e3['lRqtv'],_0x24b998(0x20d))){const _0x4457ff=parseInt(_0x1f4c20[_0x55fea7]),_0x527636=_0x5ee1e3[_0x24b998(0x25a)](_0xb5866c,0x1)-_0x55fea7;if(_0x5ee1e3[_0x24b998(0x22d)](_0x4457ff,0x0)){_0x4d1ef2+=_0x5ee1e3[_0x24b998(0x1ca)](toBurmeseNum,_0x4457ff);if(_0x527636===0x4)_0x4d1ef2+=_0x5ee1e3[_0x24b998(0x1bd)];else{if(_0x5ee1e3['EVJgQ'](_0x527636,0x3))_0x4d1ef2+=_0x5ee1e3[_0x24b998(0x1c3)];else{if(_0x527636===0x2)_0x4d1ef2+='\x20ရာ';else{if(_0x5ee1e3[_0x24b998(0x211)](_0x527636,0x1))_0x4d1ef2+=_0x5ee1e3['FJATO'];}}}_0x4d1ef2+='\x20';}}else _0x1509c6[_0x24b998(0x23a)]('premium_gold_v3_data',_0xaf303a['stringify'](_0x5cb9a1)),_0x33cc9e();}}return _0x5ee1e3[_0x24b998(0x243)](_0x4d1ef2,_0x5ee1e3[_0x24b998(0x1ee)]);}function resetForm(){const _0x4e85b1=_0x3c1b,_0x1aa7ef={'mRLtI':'goldPrice','vFmhL':'alyotPae','IgOOa':'alyotYway'};[_0x1aa7ef[_0x4e85b1(0x269)],_0x4e85b1(0x256),_0x4e85b1(0x1ed),_0x4e85b1(0x1e3),_0x1aa7ef[_0x4e85b1(0x1dc)],_0x1aa7ef['IgOOa']][_0x4e85b1(0x1ea)](_0x380c58=>{const _0x1222ec=_0x4e85b1;document[_0x1222ec(0x250)](_0x380c58)[_0x1222ec(0x1e1)]='';}),calculate();}function loadHistory(){const _0x2c7e56=_0x3c1b,_0x5c2750={'nGazj':function(_0xa15344){return _0xa15344();},'naVum':function(_0x388081,_0x298c9a){return _0x388081(_0x298c9a);},'xxXft':_0x2c7e56(0x24d),'NhAZA':_0x2c7e56(0x1e9),'aggGH':function(_0x1485e8,_0x61306f){return _0x1485e8!==_0x61306f;},'uwCqt':_0x2c7e56(0x1c8)},_0x269cad=localStorage['getItem'](_0x5c2750[_0x2c7e56(0x1db)]);_0x269cad&&(_0x5c2750[_0x2c7e56(0x1d7)](_0x5c2750['uwCqt'],_0x5c2750[_0x2c7e56(0x245)])?(_0x1d20fe=_0xbf4356,_0x5c2750[_0x2c7e56(0x266)](_0x4c02dd),_0x5c2750[_0x2c7e56(0x1ce)](_0x53ce5b,_0x5c2750[_0x2c7e56(0x233)])):(history=JSON[_0x2c7e56(0x242)](_0x269cad),_0x5c2750[_0x2c7e56(0x266)](renderHistory)));}function saveHistoryLocally(){const _0x4caae2=_0x3c1b,_0x2aef36={'kWOIN':_0x4caae2(0x1e9),'KyFdb':function(_0x3e7deb){return _0x3e7deb();}};localStorage[_0x4caae2(0x23a)](_0x2aef36[_0x4caae2(0x1cf)],JSON[_0x4caae2(0x207)](history)),_0x2aef36['KyFdb'](renderHistory);}function addToHistory(){const _0x19be6d=_0x3c1b,_0x44e386={'npBAB':function(_0x564ba5,_0x59942e){return _0x564ba5(_0x59942e);},'byByY':function(_0x2e9e4b,_0x32b5e7){return _0x2e9e4b-_0x32b5e7;},'LBDxG':function(_0x39d576,_0x3500e6){return _0x39d576!==_0x3500e6;},'DvYbt':function(_0x14c8d2,_0x3693f4){return _0x14c8d2(_0x3693f4);},'fSTKn':function(_0x5da920,_0x5e2b4f){return _0x5da920===_0x5e2b4f;},'tQENY':'\x20သောင်း','NMsuE':_0x19be6d(0x21a),'JVNds':_0x19be6d(0x20a),'HWNjQ':_0x19be6d(0x20f),'XbjkG':function(_0x4649b6,_0x3d91a7){return _0x4649b6===_0x3d91a7;},'dnhyK':'bgbZu','NBzAX':function(_0x25c303,_0x22b0f1,_0x2a2bfc){return _0x25c303(_0x22b0f1,_0x2a2bfc);},'HfHri':_0x19be6d(0x1df),'CNVyy':_0x19be6d(0x204),'MTABp':_0x19be6d(0x24c),'rEDIB':_0x19be6d(0x255)};if(_0x44e386[_0x19be6d(0x24b)](currentTotalCost,0x0)){if(_0x44e386[_0x19be6d(0x1d4)](_0x44e386['dnhyK'],'bgbZu')){_0x44e386[_0x19be6d(0x224)](showToast,_0x44e386[_0x19be6d(0x23d)],!![]);return;}else{const _0x34709e=_0x44e386[_0x19be6d(0x1fa)](_0x458417,_0x305d7a[_0x11d754]),_0x545c2a=_0x44e386[_0x19be6d(0x1e0)](_0x5af9a1-0x1,_0x2355da);if(_0x44e386[_0x19be6d(0x1bb)](_0x34709e,0x0)){_0x7b00e6+=_0x44e386['DvYbt'](_0x482e8a,_0x34709e);if(_0x44e386[_0x19be6d(0x24b)](_0x545c2a,0x4))_0x511a27+=_0x44e386[_0x19be6d(0x21d)];else{if(_0x545c2a===0x3)_0x9e1e74+=_0x44e386['NMsuE'];else{if(_0x44e386['fSTKn'](_0x545c2a,0x2))_0x365f53+=_0x44e386['JVNds'];else{if(_0x545c2a===0x1)_0x1c5637+=_0x44e386[_0x19be6d(0x1c9)];}}}_0x51eede+='\x20';}}}const _0xbe3e8f=new Date(),_0x58c7bf={'id':Date[_0x19be6d(0x1f2)](),'date':_0xbe3e8f[_0x19be6d(0x25f)](_0x44e386[_0x19be6d(0x209)]),'time':_0xbe3e8f[_0x19be6d(0x1fe)]('en-US',{'hour':_0x44e386['MTABp'],'minute':_0x44e386[_0x19be6d(0x1d6)]}),'weight':currentTotalWeightText,'cost':currentTotalCost,'marketPrice':currentMarketPrice,'formattedCost':currentTotalCost[_0x19be6d(0x220)](_0x44e386[_0x19be6d(0x1b5)]),'costText':_0x44e386[_0x19be6d(0x267)](convertToBurmeseSpokenText,currentTotalCost)};history[_0x19be6d(0x21f)](_0x58c7bf),saveHistoryLocally(),showToast(_0x19be6d(0x1d9));}function _0x4145(){const _0x4e6780=['၁\x20ပဲ\x20=\x20','unshift','toLocaleString','CCbEj','FDAuo','display','NBzAX','files','12048UsjTZq','DvIIt','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22bg-gray-800/40\x20border\x20border-white/5\x20rounded-2xl\x20p-4\x20group\x20hover:bg-gray-800/80\x20transition-all\x20hover:border-yellow-500/20\x20shadow-sm\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20justify-between\x20items-start\x20mb-3\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20items-center\x20gap-2\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-[9px]\x20text-gray-400\x20font-num\x20tracking-wider\x20bg-gray-900\x20px-2\x20py-0.5\x20rounded\x22>','uqOJn','မှတ်တမ်းကို\x20ဖျက်ပြီးပါပြီ','\x20Records','result','dTaQZ','GhsCc','\x20ကျပ်\x20','toast','isArray','၁\x20ရွေး\x20=\x20','xxXft','application/json','VsRXE','\x20သိန်း','LNaGX','historyListBody','InNak','setItem','yTTgM','time','HfHri','innerHTML','filter','alyotYway','map','parse','tHxCF','5743375fjTQmA','uwCqt','Qscfo','onclick','2805JsVDOk','2603006CKeOMq','nWGkQ','fSTKn','2-digit','Data\x20ပြန်လည်\x20ထည့်သွင်းပြီး','none','costTextDisplay','getElementById','formattedCost','24XNVFec','hWhPn','length','en-US','prodKyat','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22confirmDeleteItem(','itemDeletionModal','</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22bg-gray-900/40\x20p-2\x20rounded-xl\x20border\x20border-white/5\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-[9px]\x20text-gray-500\x20uppercase\x20tracking-widest\x20mb-1\x22>စျေးနှုန်း\x20(၁\x20ကျပ်)</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-gray-400\x20font-bold\x20text-xs\x20font-num\x22>','rjwoz','hidden','XbrXR','toast-message','VIrcZ','toLocaleDateString','target','UxCiz','GoldTracker_Backup_','tLZTY','fas\x20fa-check-circle\x20text-green-500','YPsax','nGazj','DvYbt','innerText','mRLtI','APooX','totalWeightDisplay','gHCpS','Xokaj','2613842ytrCcb','toFixed','<div\x20class=\x22text-center\x20text-gray-500\x20py-12\x20text-xs\x20opacity-50\x20uppercase\x20tracking-widest\x22>No\x20History\x20Saved</div>','createElement','solyr','fpOPC','style','cost','rEDIB','click','QOEhi','date','jCuRF','dBVNX','LBDxG','\x20ကျပ်','uUEHD',')\x22\x20class=\x22text-gray-600\x20hover:text-red-400\x20p-1\x20transition-colors\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-times-circle\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22space-y-3\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22grid\x20grid-cols-2\x20gap-3\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22bg-gray-900/40\x20p-2\x20rounded-xl\x20border\x20border-white/5\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-[9px]\x20text-gray-500\x20uppercase\x20tracking-widest\x20mb-1\x22>အလေးချိန်</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-gray-200\x20font-bold\x20text-xs\x20truncate\x22>','XwDXQ','6rwOSiY','href','translate-y-32','JhPsv','IbGzX','pricePerYwayDisplay','className','ILzCC','UMcaO','HWNjQ','iSjcc','\x20သောင်း','LvRlZ','XQpQA','naVum','kWOIN','ShlyY','KEqWJ','IqiDN','.json','XbjkG','oqcJG','MTABp','aggGH','readAsText','မှတ်တမ်း\x20သိမ်းဆည်းပြီး','344183Itimmq','NhAZA','vFmhL','qGULE','DqWth','တွက်ချက်ရန်\x20တန်ဖိုးများ\x20ထည့်သွင်းပါ','byByY','value','EVJgQ','prodYway','mrmlj','39240fcRmOH','mclbi','VYntL','LaDWD','premium_gold_v3_data','forEach','\x20MMK</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20justify-between\x20items-center\x20pt-2\x20border-t\x20border-gray-700/50\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-[10px]\x20text-yellow-500/70\x20uppercase\x20font-bold\x20tracking-widest\x22>Grand\x20Total</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22text-right\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-xl\x20font-black\x20text-yellow-500\x20font-num\x20tracking-tight\x22>','round','prodPae','XJztI','add','GGLLl','517086VuoGrH','now',')</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','download','\x20<span\x20class=\x22text-[10px]\x22>MMK</span></p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<!--\x20Added\x20Burmese\x20Spoken\x20Text\x20Display\x20-->\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22bg-yellow-500/5\x20border\x20border-yellow-500/10\x20p-2\x20rounded-lg\x20text-center\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-[10px]\x20text-yellow-500/80\x20font-medium\x20leading-relaxed\x22>(','\x20ပဲ\x20','UfBwF','ဖိုင်ပုံစံ\x20မှားယွင်းနေပါသည်','HzOvI','npBAB','preloader','fayIx','toString','toLocaleTimeString','\x20ရွေး','join','qJXhs','DbZqh','floor','en-GB','60PttPbe','alyotPae','stringify','fas\x20fa-exclamation-circle\x20text-red-500','CNVyy','\x20ရာ','slice','test','PdDES','မှတ်တမ်းများအားလုံး\x20ဖျက်ပြီးပါပြီ','\x20ဆယ်','remove','ylAon','jJxfJ','confirmationModal','silAM','goldPrice','SdhAY','mcNVW','classList','CDHyW','\x20ထောင်','jgogT','border-red-500/30','tQENY'];_0x4145=function(){return _0x4e6780;};return _0x4145();}function renderHistory(){const _0x33c1e6=_0x3c1b,_0x23c429={'DvIIt':_0x33c1e6(0x21c),'mclbi':_0x33c1e6(0x264),'LaDWD':_0x33c1e6(0x238),'fpOPC':'recordCount','XwDXQ':function(_0x1114e5,_0x58fe10){return _0x1114e5===_0x58fe10;},'UxCiz':_0x33c1e6(0x265)},_0x5d407d=document[_0x33c1e6(0x250)](_0x23c429[_0x33c1e6(0x1e8)]);document[_0x33c1e6(0x250)](_0x23c429[_0x33c1e6(0x1b2)])['innerText']=history[_0x33c1e6(0x254)]+_0x33c1e6(0x22b);if(_0x23c429[_0x33c1e6(0x1bf)](history['length'],0x0)){if(_0x23c429[_0x33c1e6(0x1bf)](_0x23c429[_0x33c1e6(0x261)],'VHWjd'))_0x417f4d[_0x33c1e6(0x218)][_0x33c1e6(0x210)](_0x23c429[_0x33c1e6(0x227)]),_0x3186bd[_0x33c1e6(0x250)]('toast-icon')[_0x33c1e6(0x1c6)]=_0x23c429[_0x33c1e6(0x1e6)];else{_0x5d407d[_0x33c1e6(0x23e)]=_0x33c1e6(0x1af);return;}}_0x5d407d[_0x33c1e6(0x23e)]=history[_0x33c1e6(0x241)](_0xcc87fe=>_0x33c1e6(0x228)+_0xcc87fe[_0x33c1e6(0x1b8)]+'\x20•\x20'+_0xcc87fe[_0x33c1e6(0x23c)]+_0x33c1e6(0x257)+_0xcc87fe['id']+_0x33c1e6(0x1be)+_0xcc87fe['weight']+_0x33c1e6(0x259)+_0xcc87fe['marketPrice'][_0x33c1e6(0x220)]()+_0x33c1e6(0x1eb)+_0xcc87fe[_0x33c1e6(0x251)]+_0x33c1e6(0x1f5)+(_0xcc87fe['costText']||convertToBurmeseSpokenText(_0xcc87fe[_0x33c1e6(0x1b4)]))+_0x33c1e6(0x1f3))[_0x33c1e6(0x200)]('');}function confirmDeleteItem(_0x37e3ff){const _0x139808=_0x3c1b,_0x5539e7={'DbZqh':_0x139808(0x25b)};itemToDeleteId=_0x37e3ff,document[_0x139808(0x250)]('itemDeletionModal')[_0x139808(0x218)]['remove'](_0x5539e7[_0x139808(0x202)]);}document[_0x3293b3(0x250)]('confirmItemDeleteBtn')[_0x3293b3(0x247)]=function(){const _0x48f32b=_0x3293b3,_0x3b4eaf={'qJXhs':function(_0x3d5753){return _0x3d5753();},'GhsCc':_0x48f32b(0x258),'qGULE':function(_0x7cd69f,_0x431c86){return _0x7cd69f(_0x431c86);},'ZpKYK':_0x48f32b(0x22a)};itemToDeleteId&&(history=history[_0x48f32b(0x23f)](_0x22d70b=>_0x22d70b['id']!==itemToDeleteId),_0x3b4eaf[_0x48f32b(0x201)](saveHistoryLocally),closeModal(_0x3b4eaf[_0x48f32b(0x22e)]),_0x3b4eaf[_0x48f32b(0x1dd)](showToast,_0x3b4eaf['ZpKYK']),itemToDeleteId=null);};function confirmClearHistory(){const _0x3ae340=_0x3293b3,_0x2cb6d8={'CCbEj':function(_0x135f5c,_0x4566eb){return _0x135f5c>_0x4566eb;},'OFqGW':_0x3ae340(0x213),'dBVNX':'hidden'};if(_0x2cb6d8[_0x3ae340(0x221)](history['length'],0x0))document[_0x3ae340(0x250)](_0x2cb6d8['OFqGW'])[_0x3ae340(0x218)][_0x3ae340(0x210)](_0x2cb6d8[_0x3ae340(0x1ba)]);}function closeModal(_0x4dca4e){const _0x2ae833=_0x3293b3,_0x1c4f48={'silAM':_0x2ae833(0x25b)};document[_0x2ae833(0x250)](_0x4dca4e)['classList'][_0x2ae833(0x1ef)](_0x1c4f48[_0x2ae833(0x214)]);}function performClearHistory(){const _0xd544c5=_0x3293b3,_0x31936e={'jJxfJ':function(_0x5606b5){return _0x5606b5();},'LNaGX':function(_0x6df6eb,_0x36a2a0){return _0x6df6eb(_0x36a2a0);},'ZeQYp':_0xd544c5(0x213),'DqWth':_0xd544c5(0x20e)};history=[],_0x31936e[_0xd544c5(0x212)](saveHistoryLocally),_0x31936e[_0xd544c5(0x237)](closeModal,_0x31936e['ZeQYp']),showToast(_0x31936e[_0xd544c5(0x1de)]);}function exportAllData(){const _0x3d73b5=_0x3293b3,_0x5495ee={'ILzCC':function(_0x5b8ff9,_0x4dd1c9){return _0x5b8ff9===_0x4dd1c9;},'ZxHeU':function(_0x533ebf,_0x206efa,_0x4de39c){return _0x533ebf(_0x206efa,_0x4de39c);},'solyr':function(_0x5122f5,_0x513a4a){return _0x5122f5(_0x513a4a);},'yTTgM':'Backup\x20file\x20ဒေါင်းလုတ်လုပ်ပြီး'};if(_0x5495ee[_0x3d73b5(0x1c7)](history[_0x3d73b5(0x254)],0x0))return _0x5495ee['ZxHeU'](showToast,'Data\x20မရှိပါ',!![]);const _0x1b214f=JSON[_0x3d73b5(0x207)](history,null,0x2),_0x1f8924=new Blob([_0x1b214f],{'type':_0x3d73b5(0x234)}),_0x29366a=URL['createObjectURL'](_0x1f8924),_0x2eb4a2=document[_0x3d73b5(0x1b0)]('a');_0x2eb4a2[_0x3d73b5(0x1c1)]=_0x29366a,_0x2eb4a2[_0x3d73b5(0x1f4)]=_0x3d73b5(0x262)+new Date()['toISOString']()[_0x3d73b5(0x20b)](0x0,0xa)+_0x3d73b5(0x1d3),_0x2eb4a2[_0x3d73b5(0x1b6)](),_0x5495ee[_0x3d73b5(0x1b1)](showToast,_0x5495ee[_0x3d73b5(0x23b)]);}function importData(_0x464a0d){const _0x537c98=_0x3293b3,_0x3b36e2={'HzOvI':function(_0x3f5455){return _0x3f5455();},'Qscfo':function(_0x4cb375,_0x42c77e){return _0x4cb375(_0x42c77e);},'ShlyY':_0x537c98(0x24d),'VIrcZ':_0x537c98(0x1f8)},_0x3dbbd=_0x464a0d[_0x537c98(0x260)][_0x537c98(0x225)][0x0];if(!_0x3dbbd)return;const _0x39d055=new FileReader();_0x39d055['onload']=_0x3b78de=>{const _0x3997bd=_0x537c98;try{const _0x4ba3e6=JSON[_0x3997bd(0x242)](_0x3b78de['target'][_0x3997bd(0x22c)]);Array[_0x3997bd(0x231)](_0x4ba3e6)&&(history=_0x4ba3e6,_0x3b36e2[_0x3997bd(0x1f9)](saveHistoryLocally),_0x3b36e2[_0x3997bd(0x246)](showToast,_0x3b36e2[_0x3997bd(0x1d0)]));}catch(_0x3952cb){showToast(_0x3b36e2[_0x3997bd(0x25e)],!![]);}},_0x39d055[_0x537c98(0x1d8)](_0x3dbbd),_0x464a0d[_0x537c98(0x260)]['value']='';}function showToast(_0x47091d,_0x3d3478=![]){const _0x4f9649=_0x3293b3,_0x406bef={'uqOJn':_0x4f9649(0x25d),'nWGkQ':'toast-icon','XQpQA':_0x4f9649(0x208),'CZsac':_0x4f9649(0x21c),'tLZTY':function(_0x1d2cb9,_0x40345d,_0x4f9a3f){return _0x1d2cb9(_0x40345d,_0x4f9a3f);}},_0x908b83=document['getElementById'](_0x4f9649(0x230));document[_0x4f9649(0x250)](_0x406bef[_0x4f9649(0x229)])[_0x4f9649(0x268)]=_0x47091d,_0x3d3478?(_0x908b83[_0x4f9649(0x218)][_0x4f9649(0x1ef)]('border-red-500/30'),document['getElementById'](_0x406bef[_0x4f9649(0x24a)])[_0x4f9649(0x1c6)]=_0x406bef[_0x4f9649(0x1cd)]):(_0x908b83['classList']['remove'](_0x406bef['CZsac']),document[_0x4f9649(0x250)](_0x406bef[_0x4f9649(0x24a)])[_0x4f9649(0x1c6)]=_0x4f9649(0x264)),_0x908b83['classList']['remove'](_0x4f9649(0x1c2)),_0x406bef[_0x4f9649(0x263)](setTimeout,()=>_0x908b83[_0x4f9649(0x218)]['add']('translate-y-32'),0xbb8);}
+</script>
+</body>
+</html>
