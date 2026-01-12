@@ -4,18 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Premium Gearing Ratio Dashboard</title>
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- React & ReactDOM -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <!-- Babel -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons (UMD Version like pg.html) -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-        
         body {
             font-family: 'Padauk', 'Plus Jakarta Sans', sans-serif;
             background-color: #020617; /* Slate 950 */
@@ -34,7 +33,7 @@
 
         /* Dark Glass Card */
         .glass-card-dark {
-            background: rgba(30, 41, 59, 0.4); /* Slate 800 with opacity */
+            background: rgba(30, 41, 59, 0.4);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -48,7 +47,7 @@
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
         }
 
-        /* Custom Range Slider (Dark Mode) */
+        /* Custom Range Slider */
         input[type=range] {
             -webkit-appearance: none;
             background: transparent;
@@ -57,7 +56,7 @@
             -webkit-appearance: none;
             height: 20px; width: 20px;
             border-radius: 50%;
-            background: #0f172a; /* Slate 900 */
+            background: #0f172a;
             box-shadow: 0 0 10px rgba(255,255,255,0.2);
             border: 2px solid currentColor;
             cursor: pointer;
@@ -69,32 +68,13 @@
             width: 100%; height: 4px;
             cursor: pointer;
             border-radius: 999px;
-            background: #334155; /* Slate 700 */
+            background: #334155;
         }
 
-        /* Remove default number input spin buttons (Increase/Decrease Arrows) */
+        /* Input Number Styling */
         input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { 
-            -webkit-appearance: none; 
-            margin: 0; 
-        }
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-
-        /* Chart Animation & Glow */
-        .chart-circle {
-            transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-            filter: drop-shadow(0 0 4px currentColor);
-        }
-
-        @keyframes pulse-glow {
-            0%, 100% { opacity: 0.6; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.05); }
-        }
-        .animate-pulse-glow { animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
 
         .input-number-dark {
             background: #0f172a;
@@ -105,408 +85,291 @@
             border-color: #6366f1;
             box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
         }
+
+        /* Chart Animation */
+        .chart-circle {
+            transition: stroke-dashoffset 0.5s ease;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            filter: drop-shadow(0 0 4px currentColor);
+        }
     </style>
 </head>
 <body class="bg-midnight-mesh">
-    <div id="root"></div>
 
-    <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+    <div class="max-w-[1600px] mx-auto p-4 lg:p-8">
+        
+        <!-- Navbar -->
+        <nav class="mb-10 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                    <i data-lucide="bar-chart-3" class="text-white w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold text-white tracking-tight">
+                        Gearing Ratio <span class="text-indigo-400">Pro</span>
+                    </h1>
+                    <p class="text-slate-400 text-xs font-medium tracking-wide">FINANCIAL ANALYSIS DASHBOARD</p>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="exportReport()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-full text-sm font-bold shadow-lg shadow-indigo-500/30 flex items-center gap-2 transition cursor-pointer">
+                    <i data-lucide="download" class="w-4 h-4"></i> Export Report
+                </button>
+            </div>
+        </nav>
 
-        // --- COMPONENTS ---
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- LEFT COLUMN: Inputs -->
+            <div class="lg:col-span-8 space-y-8">
+                
+                <!-- Mobile Summary Card -->
+                <div class="lg:hidden bg-slate-800/50 backdrop-blur-md border border-white/10 rounded-3xl p-6 shadow-xl mb-6 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/20 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
+                    <div class="flex justify-between items-center relative z-10">
+                        <div>
+                            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Current Ratio</p>
+                            <div class="text-4xl font-bold text-white"><span id="mobileRatio">0</span> <span class="text-lg text-slate-500">x</span></div>
+                        </div>
+                        <div id="mobileStatusBadge" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-900 flex items-center gap-2">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+                </div>
 
-        // Lucide Icon Helper
-        const Icon = ({ name, size = 20, className = "" }) => {
-            const ref = useRef(null);
-            useEffect(() => {
-                if (window.lucide && ref.current) {
-                    const kebabName = name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
-                    ref.current.innerHTML = `<i data-lucide="${kebabName}"></i>`;
-                    window.lucide.createIcons({
-                        root: ref.current,
-                        nameAttr: 'data-lucide',
-                        attrs: { width: size, height: size, class: className, "stroke-width": 2 }
-                    });
-                }
-            }, [name, size, className]);
-            return <span ref={ref} className="inline-flex items-center justify-center"></span>;
-        };
-
-        // Glowing Donut Chart
-        const DonutChart = ({ value, total, colorClass, size = 160 }) => {
-            const radius = 40;
-            const circumference = 2 * Math.PI * radius;
-            const percent = total > 0 ? (value / total) : 0;
-            const offset = circumference - (percent * circumference);
-            const strokeColor = colorClass.includes('rose') ? '#f43f5e' : '#10b981'; 
-
-            return (
-                <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
-                    <svg width="100%" height="100%" viewBox="0 0 100 100">
-                        {/* Background Track */}
-                        <circle cx="50" cy="50" r={radius} fill="transparent" stroke="#1e293b" strokeWidth="6" />
-                        {/* Value Path */}
-                        <circle cx="50" cy="50" r={radius} fill="transparent" stroke={strokeColor} strokeWidth="6"
-                                strokeDasharray={circumference}
-                                strokeDashoffset={offset}
-                                strokeLinecap="round"
-                                className="chart-circle" 
-                                style={{color: strokeColor}} />
-                    </svg>
-                    <div className="absolute flex flex-col items-center">
-                        <span className="text-3xl font-bold text-white tracking-tighter shadow-black drop-shadow-lg">
-                            {(percent * 100).toFixed(0)}<span className="text-sm text-slate-400">%</span>
+                <!-- Debt Section -->
+                <section>
+                    <div class="flex items-center justify-between mb-4 px-2">
+                        <h3 class="text-lg font-bold text-slate-200 flex items-center gap-2">
+                            Liabilities (အကြွေး)
+                        </h3>
+                        <span id="totalDebtDisplay" class="text-rose-400 font-bold bg-rose-500/10 px-3 py-1 rounded-lg text-sm border border-rose-500/20">
+                            0
                         </span>
                     </div>
-                </div>
-            );
-        };
-
-        // Input Control Component
-        const InputGroup = ({ label, value, onChange, min, max, theme, icon }) => {
-            const isRose = theme === 'rose';
-            const accentColor = isRose ? 'text-rose-400' : 'text-emerald-400';
-            const iconBg = isRose ? 'bg-rose-500/10' : 'bg-emerald-500/10';
-            const sliderColor = isRose ? '#fb7185' : '#34d399';
-
-            return (
-                <div className="glass-card-dark p-5 rounded-2xl group relative overflow-hidden">
-                    <div className={`absolute -right-10 -top-10 w-24 h-24 rounded-full blur-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 ${isRose ? 'bg-rose-500' : 'bg-emerald-500'}`}></div>
-
-                    <div className="flex justify-between items-start mb-4 relative z-10">
-                        <div className="flex items-center gap-3">
-                            <div className={`p-2.5 rounded-xl ${iconBg} ${accentColor} border border-white/5`}>
-                                <Icon name={icon} size={20} />
+                    <div class="grid md:grid-cols-2 gap-5">
+                        <!-- Long Term Debt -->
+                        <div class="glass-card-dark p-5 rounded-2xl group relative overflow-hidden">
+                            <div class="absolute -right-10 -top-10 w-24 h-24 rounded-full blur-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-rose-500"></div>
+                            <div class="flex justify-between items-start mb-4 relative z-10">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2.5 rounded-xl bg-rose-500/10 text-rose-400 border border-white/5"><i data-lucide="calendar-clock" class="w-5 h-5"></i></div>
+                                    <span class="text-sm font-bold text-slate-300 uppercase tracking-wide">Long Term Debt</span>
+                                </div>
+                                <div class="text-right">
+                                     <span id="longTermDebtVal" class="block text-lg font-bold font-mono text-rose-400">1,000</span>
+                                     <span class="text-[10px] text-slate-500 font-bold">MMK</span>
+                                </div>
                             </div>
-                            <span className="text-sm font-bold text-slate-300 uppercase tracking-wide">{label}</span>
+                            <input type="range" id="longTermDebtRange" min="0" max="10000" step="100" value="1000" class="w-full h-2 mb-4 rounded-lg appearance-none cursor-pointer text-rose-400" oninput="syncInput('longTermDebt')">
+                            <div class="relative z-10">
+                                <input type="number" id="longTermDebtInput" value="1000" class="w-full input-number-dark rounded-xl px-4 py-2.5 text-sm font-semibold transition-all outline-none" oninput="syncRange('longTermDebt')">
+                            </div>
                         </div>
-                        <div className="text-right">
-                             <span className={`block text-lg font-bold font-mono ${accentColor}`}>
-                                {Number(value).toLocaleString()}
-                            </span>
-                             <span className="text-[10px] text-slate-500 font-bold">MMK</span>
+
+                        <!-- Short Term Debt -->
+                        <div class="glass-card-dark p-5 rounded-2xl group relative overflow-hidden">
+                            <div class="absolute -right-10 -top-10 w-24 h-24 rounded-full blur-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-rose-500"></div>
+                            <div class="flex justify-between items-start mb-4 relative z-10">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2.5 rounded-xl bg-rose-500/10 text-rose-400 border border-white/5"><i data-lucide="hourglass" class="w-5 h-5"></i></div>
+                                    <span class="text-sm font-bold text-slate-300 uppercase tracking-wide">Short Term Debt</span>
+                                </div>
+                                <div class="text-right">
+                                     <span id="shortTermDebtVal" class="block text-lg font-bold font-mono text-rose-400">500</span>
+                                     <span class="text-[10px] text-slate-500 font-bold">MMK</span>
+                                </div>
+                            </div>
+                            <input type="range" id="shortTermDebtRange" min="0" max="5000" step="100" value="500" class="w-full h-2 mb-4 rounded-lg appearance-none cursor-pointer text-rose-400" oninput="syncInput('shortTermDebt')">
+                            <div class="relative z-10">
+                                <input type="number" id="shortTermDebtInput" value="500" class="w-full input-number-dark rounded-xl px-4 py-2.5 text-sm font-semibold transition-all outline-none" oninput="syncRange('shortTermDebt')">
+                            </div>
                         </div>
                     </div>
+                </section>
 
-                    <input 
-                        type="range" min={min} max={max} step="100" value={value} onChange={onChange}
-                        className="w-full h-2 mb-4 rounded-lg appearance-none cursor-pointer"
-                        style={{color: sliderColor}}
-                    />
+                <!-- Equity Section -->
+                <section>
+                    <div class="flex items-center justify-between mb-4 px-2">
+                        <h3 class="text-lg font-bold text-slate-200 flex items-center gap-2">
+                            <i data-lucide="pie-chart" class="text-emerald-400 w-5 h-5"></i> Equity (ပိုင်ဆိုင်မှု)
+                        </h3>
+                        <span id="totalEquityDisplay" class="text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1 rounded-lg text-sm border border-emerald-500/20">
+                            0
+                        </span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-5">
+                        <!-- Owner's Equity -->
+                        <div class="glass-card-dark p-5 rounded-2xl group relative overflow-hidden">
+                            <div class="absolute -right-10 -top-10 w-24 h-24 rounded-full blur-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-emerald-500"></div>
+                            <div class="flex justify-between items-start mb-4 relative z-10">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-white/5"><i data-lucide="user" class="w-5 h-5"></i></div>
+                                    <span class="text-sm font-bold text-slate-300 uppercase tracking-wide">Owner's Equity</span>
+                                </div>
+                                <div class="text-right">
+                                     <span id="ownerEquityVal" class="block text-lg font-bold font-mono text-emerald-400">500</span>
+                                     <span class="text-[10px] text-slate-500 font-bold">MMK</span>
+                                </div>
+                            </div>
+                            <input type="range" id="ownerEquityRange" min="0" max="10000" step="100" value="500" class="w-full h-2 mb-4 rounded-lg appearance-none cursor-pointer text-emerald-400" oninput="syncInput('ownerEquity')">
+                            <div class="relative z-10">
+                                <input type="number" id="ownerEquityInput" value="500" class="w-full input-number-dark rounded-xl px-4 py-2.5 text-sm font-semibold transition-all outline-none" oninput="syncRange('ownerEquity')">
+                            </div>
+                        </div>
 
-                    <div className="relative z-10">
-                        <input
-                            type="number"
-                            value={value}
-                            onChange={onChange}
-                            className="w-full input-number-dark rounded-xl px-4 py-2.5 text-sm font-semibold transition-all outline-none"
-                        />
+                        <!-- Shareholder's Equity -->
+                        <div class="glass-card-dark p-5 rounded-2xl group relative overflow-hidden">
+                            <div class="absolute -right-10 -top-10 w-24 h-24 rounded-full blur-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-emerald-500"></div>
+                            <div class="flex justify-between items-start mb-4 relative z-10">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-white/5"><i data-lucide="users" class="w-5 h-5"></i></div>
+                                    <span class="text-sm font-bold text-slate-300 uppercase tracking-wide">Shareholder's Equity</span>
+                                </div>
+                                <div class="text-right">
+                                     <span id="shareEquityVal" class="block text-lg font-bold font-mono text-emerald-400">500</span>
+                                     <span class="text-[10px] text-slate-500 font-bold">MMK</span>
+                                </div>
+                            </div>
+                            <input type="range" id="shareEquityRange" min="0" max="10000" step="100" value="500" class="w-full h-2 mb-4 rounded-lg appearance-none cursor-pointer text-emerald-400" oninput="syncInput('shareEquity')">
+                            <div class="relative z-10">
+                                <input type="number" id="shareEquityInput" value="500" class="w-full input-number-dark rounded-xl px-4 py-2.5 text-sm font-semibold transition-all outline-none" oninput="syncRange('shareEquity')">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Info Card -->
+                <div class="bg-slate-800/40 border border-white/5 rounded-2xl p-6">
+                    <h4 class="font-bold text-slate-300 mb-4 flex items-center gap-2 text-sm">
+                        <i data-lucide="book-open" class="text-indigo-400 w-4 h-4"></i>
+                        Quick Guide
+                    </h4>
+                    <div class="grid sm:grid-cols-2 gap-4 text-sm text-slate-400">
+                        <div class="bg-slate-900/50 p-4 rounded-xl border border-white/5 hover:border-white/10 transition-colors">
+                            <span class="block font-bold text-indigo-300 text-xs uppercase mb-2">Gearing Ratio</span>
+                            <div class="flex items-center gap-2 mb-2">
+                                <code class="bg-slate-800 px-2 py-1 rounded text-xs text-slate-300 font-mono border border-slate-700">Debt ÷ Equity</code>
+                            </div>
+                            <p class="text-xs leading-relaxed opacity-80">1.0 အထက်ဆိုလျှင် အကြွေးပမာဏသည် ပိုင်ဆိုင်မှုထက် များနေသည်ဟု သတ်မှတ်သည်။</p>
+                        </div>
+                        <div class="bg-slate-900/50 p-4 rounded-xl border border-white/5 hover:border-white/10 transition-colors">
+                            <span class="block font-bold text-purple-300 text-xs uppercase mb-2">Debt Ratio</span>
+                            <div class="flex items-center gap-2 mb-2">
+                                <code class="bg-slate-800 px-2 py-1 rounded text-xs text-slate-300 font-mono border border-slate-700">Debt ÷ Total Capital</code>
+                            </div>
+                            <p class="text-xs leading-relaxed opacity-80">လုပ်ငန်း၏ Assets အားလုံးတွင် အကြွေးပါဝင်မှု ရာခိုင်နှုန်းကို ပြသသည်။</p>
+                        </div>
                     </div>
                 </div>
-            );
-        };
+            </div>
 
-        // --- MAIN APP ---
-        const App = () => {
-            const [longTermDebt, setLongTermDebt] = useState(1000);
-            const [shortTermDebt, setShortTermDebt] = useState(500);
-            const [ownerEquity, setOwnerEquity] = useState(500);
-            const [shareholderEquity, setShareholderEquity] = useState(500);
-
-            const totalDebt = parseFloat(longTermDebt || 0) + parseFloat(shortTermDebt || 0);
-            const totalEquity = parseFloat(ownerEquity || 0) + parseFloat(shareholderEquity || 0);
-            const totalCapital = totalDebt + totalEquity;
-            const ratio1 = totalEquity > 0 ? (totalDebt / totalEquity).toFixed(2) : 0;
-
-            const getAnalysis = () => {
-                if (ratio1 > 1) {
-                    return {
-                        status: "High Risk",
-                        color: "rose",
-                        bg: "bg-rose-500",
-                        text: "text-rose-400",
-                        border: "border-rose-500/30",
-                        icon: "AlertTriangle",
-                        desc: "Equity ထက် အကြွေးပမာဏ များပြားနေပါသည်။"
-                    };
-                } else if (ratio1 > 0.5) {
-                    return {
-                        status: "Moderate",
-                        color: "amber",
-                        bg: "bg-amber-500",
-                        text: "text-amber-400",
-                        border: "border-amber-500/30",
-                        icon: "Scale",
-                        desc: "အကြွေးနှင့် Equity အချိုးအစား မျှတပါသည်။"
-                    };
-                } else {
-                    return {
-                        status: "Low Risk",
-                        color: "emerald",
-                        bg: "bg-emerald-500",
-                        text: "text-emerald-400",
-                        border: "border-emerald-500/30",
-                        icon: "ShieldCheck",
-                        desc: "ဘဏ္ဍာရေး အခြေအနေ ခိုင်မာမှုရှိပါသည်။"
-                    };
-                }
-            };
-
-            const analysis = getAnalysis();
-
-            const handleExport = () => {
-                const date = new Date().toLocaleDateString();
-                const reportContent = `
-GEARING RATIO ANALYSIS REPORT
-Date: ${date}
-----------------------------------------
-
-[ FINANCIAL INPUTS ]
-
-LIABILITIES (DEBT)
-- Long Term Debt:    ${Number(longTermDebt).toLocaleString()} MMK
-- Short Term Debt:   ${Number(shortTermDebt).toLocaleString()} MMK
-> TOTAL DEBT:        ${totalDebt.toLocaleString()} MMK
-
-EQUITY (OWNERSHIP)
-- Owner's Equity:      ${Number(ownerEquity).toLocaleString()} MMK
-- Shareholder's Equity: ${Number(shareholderEquity).toLocaleString()} MMK
-> TOTAL EQUITY:         ${totalEquity.toLocaleString()} MMK
-
-----------------------------------------
-
-[ ANALYSIS RESULTS ]
-
-GEARING RATIO (Debt/Equity):  ${ratio1}x
-RISK ASSESSMENT:              ${analysis.status}
-DESCRIPTION:                  ${analysis.desc}
-
-DEBT RATIO (Debt/Capital):    ${totalCapital > 0 ? ((totalDebt/totalCapital)*100).toFixed(0) : 0}% of Total Assets
-
-----------------------------------------
-Generated by Premium Gearing Ratio Dashboard
-`.trim();
-
-                const blob = new Blob([reportContent], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `Gearing_Ratio_Report_${new Date().toISOString().split('T')[0]}.txt`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            };
-
-            return (
-                <div className="max-w-[1600px] mx-auto p-4 lg:p-8">
+            <!-- RIGHT COLUMN: Sticky Dashboard -->
+            <div class="lg:col-span-4 relative">
+                <div class="lg:sticky lg:top-8 space-y-6">
                     
-                    {/* Navbar / Header */}
-                    <nav className="mb-10 flex flex-col md:flex-row justify-between items-center gap-6">
-                        <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-                                <Icon name="BarChart3" size={24} className="text-white" />
-                            </div>
-                            <div>
-                                <h1 className="text-2xl font-bold text-white tracking-tight">
-                                    Gearing Ratio <span className="text-indigo-400">Pro</span>
-                                </h1>
-                                <p className="text-slate-400 text-xs font-medium tracking-wide">FINANCIAL ANALYSIS DASHBOARD</p>
-                            </div>
-                        </div>
-                        <div className="flex gap-3">
-                            <button 
-                                onClick={handleExport}
-                                className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-full text-sm font-bold shadow-lg shadow-indigo-500/30 flex items-center gap-2 transition cursor-pointer"
-                            >
-                                <Icon name="Download" size={16} /> Export Report
-                            </button>
-                        </div>
-                    </nav>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    <!-- Main Result Card -->
+                    <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950/40 text-white rounded-[2.5rem] p-8 border border-white/10 shadow-2xl relative overflow-hidden flex flex-col min-h-[420px]">
                         
-                        {/* LEFT COLUMN: Inputs */}
-                        <div className="lg:col-span-8 space-y-8">
-                            
-                            {/* Mobile Summary Card (Dark Mode) */}
-                            <div className="lg:hidden bg-slate-800/50 backdrop-blur-md border border-white/10 rounded-3xl p-6 shadow-xl mb-6 relative overflow-hidden">
-                                <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/20 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
-                                <div className="flex justify-between items-center relative z-10">
-                                    <div>
-                                        <p className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Current Ratio</p>
-                                        <div className="text-4xl font-bold text-white">{ratio1} <span className="text-lg text-slate-500">x</span></div>
+                        <!-- Glowing Orbs -->
+                        <div class="absolute top-0 right-0 w-80 h-80 bg-indigo-600/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+                        <div class="absolute bottom-0 left-0 w-64 h-64 bg-rose-600/10 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
+
+                        <div class="relative z-10 flex flex-col h-full justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-8">
+                                    <h2 class="text-lg font-bold text-slate-200 flex items-center gap-2">
+                                        <i data-lucide="activity" class="text-indigo-400 w-5 h-5"></i> Ratio Analysis
+                                    </h2>
+                                    <div class="flex items-center gap-2">
+                                        <span class="relative flex h-2 w-2">
+                                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                        </span>
+                                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Live</span>
                                     </div>
-                                    <div className={`px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-900 border ${analysis.border} ${analysis.text} flex items-center gap-2`}>
-                                        <div className={`w-2 h-2 rounded-full ${analysis.bg} animate-pulse`}></div>
-                                        {analysis.status}
-                                    </div>
                                 </div>
-                            </div>
 
-                            {/* Debt Section */}
-                            <section>
-                                <div className="flex items-center justify-between mb-4 px-2">
-                                    <h3 className="text-lg font-bold text-slate-200 flex items-center gap-2">
-                                        Liabilities (အကြွေး)
-                                    </h3>
-                                    <span className="text-rose-400 font-bold bg-rose-500/10 px-3 py-1 rounded-lg text-sm border border-rose-500/20">
-                                        {totalDebt.toLocaleString()}
-                                    </span>
-                                </div>
-                                <div className="grid md:grid-cols-2 gap-5">
-                                    <InputGroup 
-                                        label="Long Term Debt" value={longTermDebt} onChange={e => setLongTermDebt(e.target.value)}
-                                        min="0" max="10000" theme="rose" icon="CalendarClock"
-                                    />
-                                    <InputGroup 
-                                        label="Short Term Debt" value={shortTermDebt} onChange={e => setShortTermDebt(e.target.value)}
-                                        min="0" max="5000" theme="rose" icon="Hourglass"
-                                    />
-                                </div>
-                            </section>
-
-                            {/* Equity Section */}
-                            <section>
-                                <div className="flex items-center justify-between mb-4 px-2">
-                                    <h3 className="text-lg font-bold text-slate-200 flex items-center gap-2">
-                                        <Icon name="PieChart" className="text-emerald-400" /> Equity (ပိုင်ဆိုင်မှု)
-                                    </h3>
-                                    <span className="text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1 rounded-lg text-sm border border-emerald-500/20">
-                                        {totalEquity.toLocaleString()}
-                                    </span>
-                                </div>
-                                <div className="grid md:grid-cols-2 gap-5">
-                                    <InputGroup 
-                                        label="Owner's Equity" value={ownerEquity} onChange={e => setOwnerEquity(e.target.value)}
-                                        min="0" max="10000" theme="emerald" icon="User"
-                                    />
-                                    <InputGroup 
-                                        label="Shareholder's Equity" value={shareholderEquity} onChange={e => setShareholderEquity(e.target.value)}
-                                        min="0" max="10000" theme="emerald" icon="Users"
-                                    />
-                                </div>
-                            </section>
-
-                            {/* Info Card (Dark) */}
-                            <div className="bg-slate-800/40 border border-white/5 rounded-2xl p-6">
-                                <h4 className="font-bold text-slate-300 mb-4 flex items-center gap-2 text-sm">
-                                    <Icon name="BookOpen" size={16} className="text-indigo-400" />
-                                    Quick Guide
-                                </h4>
-                                <div className="grid sm:grid-cols-2 gap-4 text-sm text-slate-400">
-                                    <div className="bg-slate-900/50 p-4 rounded-xl border border-white/5 hover:border-white/10 transition-colors">
-                                        <span className="block font-bold text-indigo-300 text-xs uppercase mb-2">Gearing Ratio</span>
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <code className="bg-slate-800 px-2 py-1 rounded text-xs text-slate-300 font-mono border border-slate-700">Debt ÷ Equity</code>
+                                <div class="flex flex-col items-center mb-8">
+                                    <div id="chartContainer" class="relative mb-8 group cursor-default">
+                                        <!-- Chart Glow -->
+                                        <div id="chartGlow" class="absolute inset-0 rounded-full blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-700 bg-emerald-500"></div>
+                                        
+                                        <!-- SVG Donut Chart -->
+                                        <div class="relative flex items-center justify-center" style="width: 180px; height: 180px;">
+                                            <svg width="100%" height="100%" viewBox="0 0 100 100">
+                                                <circle cx="50" cy="50" r="40" fill="transparent" stroke="#1e293b" stroke-width="6" />
+                                                <circle id="chartCircle" cx="50" cy="50" r="40" fill="transparent" stroke="#10b981" stroke-width="6"
+                                                        stroke-dasharray="251.2" stroke-dashoffset="0" stroke-linecap="round"
+                                                        class="chart-circle" />
+                                            </svg>
+                                            <div class="absolute flex flex-col items-center">
+                                                <span class="text-3xl font-bold text-white tracking-tighter shadow-black drop-shadow-lg">
+                                                    <span id="debtRatioText">0</span><span class="text-sm text-slate-400">%</span>
+                                                </span>
+                                            </div>
                                         </div>
-                                        <p className="text-xs leading-relaxed opacity-80">1.0 အထက်ဆိုလျှင် အကြွေးပမာဏသည် ပိုင်ဆိုင်မှုထက် များနေသည်ဟု သတ်မှတ်သည်။</p>
-                                    </div>
-                                    <div className="bg-slate-900/50 p-4 rounded-xl border border-white/5 hover:border-white/10 transition-colors">
-                                        <span className="block font-bold text-purple-300 text-xs uppercase mb-2">Debt Ratio</span>
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <code className="bg-slate-800 px-2 py-1 rounded text-xs text-slate-300 font-mono border border-slate-700">Debt ÷ Total Capital</code>
+                                        
+                                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none mt-14">
+                                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]">Debt Ratio</span>
                                         </div>
-                                        <p className="text-xs leading-relaxed opacity-80">လုပ်ငန်း၏ Assets အားလုံးတွင် အကြွေးပါဝင်မှု ရာခိုင်နှုန်းကို ပြသသည်။</p>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* RIGHT COLUMN: Sticky Dashboard */}
-                        <div className="lg:col-span-4 relative">
-                            <div className="lg:sticky lg:top-8 space-y-6">
-                                
-                                {/* Main Result Card */}
-                                <div className="bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950/40 text-white rounded-[2.5rem] p-8 border border-white/10 shadow-2xl relative overflow-hidden flex flex-col min-h-[420px]">
                                     
-                                    {/* Glowing Orbs */}
-                                    <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-600/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-                                    <div className="absolute bottom-0 left-0 w-64 h-64 bg-rose-600/10 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
-
-                                    <div className="relative z-10 flex flex-col h-full justify-between">
-                                        <div>
-                                            <div className="flex justify-between items-start mb-8">
-                                                <h2 className="text-lg font-bold text-slate-200 flex items-center gap-2">
-                                                    <Icon name="Activity" size={18} className="text-indigo-400" /> 
-                                                    Ratio Analysis
-                                                </h2>
-                                                <div className="flex items-center gap-2">
-                                                    <span className="relative flex h-2 w-2">
-                                                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                                                    </span>
-                                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Live</span>
-                                                </div>
-                                            </div>
-
-                                            <div className="flex flex-col items-center mb-8">
-                                                <div className="relative mb-8 group cursor-default">
-                                                    {/* Chart Glow Effect */}
-                                                    <div className={`absolute inset-0 rounded-full blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-700 ${analysis.color === 'rose' ? 'bg-rose-500' : analysis.color === 'amber' ? 'bg-amber-500' : 'bg-emerald-500'}`}></div>
-                                                    
-                                                    <DonutChart value={totalDebt} total={totalCapital} colorClass="rose" size={180} />
-                                                    
-                                                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none mt-14">
-                                                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]">Debt Ratio</span>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div className="text-center">
-                                                    <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">Debt to Equity Ratio</p>
-                                                    <div className="flex items-center justify-center gap-2">
-                                                        <span className={`text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 drop-shadow-sm`}>
-                                                            {ratio1}
-                                                        </span>
-                                                        <span className="text-2xl text-slate-600 font-light mt-4">x</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Status Box */}
-                                        <div className={`backdrop-blur-xl border p-5 rounded-2xl transition-all duration-500 ${analysis.bg}/10 ${analysis.border}`}>
-                                            <div className="flex items-center gap-3 mb-2">
-                                                <div className={`p-2 rounded-lg ${analysis.bg} text-white shadow-lg`}>
-                                                    <Icon name={analysis.icon} size={18} />
-                                                </div>
-                                                <h3 className={`font-bold text-lg ${analysis.text}`}>
-                                                    {analysis.status}
-                                                </h3>
-                                            </div>
-                                            <p className="text-sm text-slate-300 leading-relaxed opacity-90 font-medium">
-                                                {analysis.desc}
-                                            </p>
+                                    <div class="text-center">
+                                        <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">Debt to Equity Ratio</p>
+                                        <div class="flex items-center justify-center gap-2">
+                                            <span id="gearingRatioText" class="text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 drop-shadow-sm">
+                                                0
+                                            </span>
+                                            <span class="text-2xl text-slate-600 font-light mt-4">x</span>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                {/* Quick Stats (Dark) */}
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="glass-card-dark p-4 rounded-2xl text-center">
-                                        <p className="text-xs font-bold text-slate-500 uppercase mb-1">Total Capital</p>
-                                        <p className="text-xl font-bold text-indigo-300">{(totalCapital/1000).toFixed(1)}k</p>
+                            <!-- Status Box -->
+                            <div id="statusBox" class="backdrop-blur-xl border p-5 rounded-2xl transition-all duration-500 bg-emerald-500/10 border-emerald-500/30">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <div id="statusIconBox" class="p-2 rounded-lg bg-emerald-500 text-white shadow-lg">
+                                        <i data-lucide="shield-check" class="w-5 h-5"></i>
                                     </div>
-                                    <div className="glass-card-dark p-4 rounded-2xl text-center">
-                                        <p className="text-xs font-bold text-slate-500 uppercase mb-1">Risk Level</p>
-                                        <div className="flex justify-center mt-1 space-x-1">
-                                            <div className={`h-1.5 w-4 rounded-full ${ratio1 <= 0.5 ? 'bg-emerald-500' : 'bg-slate-700'}`}></div>
-                                            <div className={`h-1.5 w-4 rounded-full ${ratio1 > 0.5 && ratio1 <= 1 ? 'bg-amber-500' : 'bg-slate-700'}`}></div>
-                                            <div className={`h-1.5 w-4 rounded-full ${ratio1 > 1 ? 'bg-rose-500' : 'bg-slate-700'}`}></div>
-                                        </div>
-                                    </div>
+                                    <h3 id="statusTitle" class="font-bold text-lg text-emerald-400">
+                                        Low Risk
+                                    </h3>
                                 </div>
-
+                                <p id="statusDesc" class="text-sm text-slate-300 leading-relaxed opacity-90 font-medium">
+                                    ဘဏ္ဍာရေး အခြေအနေ ခိုင်မာမှုရှိပါသည်။
+                                </p>
                             </div>
                         </div>
-
                     </div>
-                </div>
-            );
-        };
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+                    <!-- Quick Stats -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="glass-card-dark p-4 rounded-2xl text-center">
+                            <p class="text-xs font-bold text-slate-500 uppercase mb-1">Total Capital</p>
+                            <p class="text-xl font-bold text-indigo-300"><span id="totalCapitalDisplay">0</span>k</p>
+                        </div>
+                        <div class="glass-card-dark p-4 rounded-2xl text-center">
+                            <p class="text-xs font-bold text-slate-500 uppercase mb-1">Risk Level</p>
+                            <div class="flex justify-center mt-1 space-x-1" id="riskIndicators">
+                                <div id="riskBar1" class="h-1.5 w-4 rounded-full bg-slate-700 transition-colors"></div>
+                                <div id="riskBar2" class="h-1.5 w-4 rounded-full bg-slate-700 transition-colors"></div>
+                                <div id="riskBar3" class="h-1.5 w-4 rounded-full bg-slate-700 transition-colors"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+/* obfuscated */
+const _0x374374=_0x51f3;(function(_0x2c07be,_0x14970b){const _0x710c44=_0x51f3,_0xb72bf1=_0x2c07be();while(!![]){try{const _0x331ef7=parseInt(_0x710c44(0x1b4))/0x1+parseInt(_0x710c44(0x163))/0x2*(-parseInt(_0x710c44(0x19b))/0x3)+-parseInt(_0x710c44(0x1be))/0x4*(parseInt(_0x710c44(0x1c5))/0x5)+-parseInt(_0x710c44(0x162))/0x6+parseInt(_0x710c44(0x1e9))/0x7+-parseInt(_0x710c44(0x19d))/0x8+parseInt(_0x710c44(0x17d))/0x9;if(_0x331ef7===_0x14970b)break;else _0xb72bf1['push'](_0xb72bf1['shift']());}catch(_0x43979b){_0xb72bf1['push'](_0xb72bf1['shift']());}}}(_0x8e40,0x1988a));const state={'longTermDebt':0x3e8,'shortTermDebt':0x1f4,'ownerEquity':0x1f4,'shareEquity':0x1f4,'totalDebt':0x0,'totalEquity':0x0,'totalCapital':0x0,'ratio':0x0};function _0x51f3(_0x4775dd,_0x6918ee){_0x4775dd=_0x4775dd-0x160;const _0x8e4015=_0x8e40();let _0x51f3f4=_0x8e4015[_0x4775dd];return _0x51f3f4;}document[_0x374374(0x176)]('DOMContentLoaded',()=>{const _0x52a1b3=_0x374374;lucide[_0x52a1b3(0x166)](),calculate();});function _0x8e40(){const _0x4071a0=['OXSQg','toFixed','\x20MMK\x0a-\x20Shareholder\x27s\x20Equity:\x20','EAnNL','xeIvW','MpnSJ','PbIAh','totalDebt','Val','debtRatioText','EZdHB','innerHTML','epLEq','totalCapitalDisplay','mobileStatusBadge','kbDVy','ratio','Gearing_Ratio_Report_','TIWMt','xVCZg','kKbnS','innerText','px-3\x20py-1.5\x20rounded-lg\x20text-xs\x20font-bold\x20bg-slate-900\x20flex\x20items-center\x20gap-2\x20border\x20border-emerald-500/30\x20text-emerald-400','ownerEquity','PrFIK','h-1.5\x20w-4\x20rounded-full\x20bg-slate-700','2|1|3|4|0','ULMwi','font-bold\x20text-lg\x20text-rose-400','Range','toLocaleDateString','\x20MMK\x0a>\x20TOTAL\x20DEBT:\x20\x20\x20\x20\x20\x20\x20\x20','1093939LvKxTn','revokeObjectURL','#f43f5e','JvhJB','backdrop-blur-xl\x20border\x20p-5\x20rounded-2xl\x20transition-all\x20duration-500\x20bg-amber-500/10\x20border-amber-500/30','219798TgEsAk','6qkKMVn','<i\x20data-lucide=\x22scale\x22\x20class=\x22w-5\x20h-5\x22></i>','body','createIcons','lBEJo','getElementById','removeChild','<i\x20data-lucide=\x22alert-triangle\x22\x20class=\x22w-5\x20h-5\x22></i>','totalEquityDisplay','absolute\x20inset-0\x20rounded-full\x20blur-xl\x20opacity-20\x20group-hover:opacity-40\x20transition-opacity\x20duration-700\x20bg-rose-500','<i\x20data-lucide=\x22shield-check\x22\x20class=\x22w-5\x20h-5\x22></i>','vLuQO','yeNFF','shortTermDebt','statusBox','riskBar2','backdrop-blur-xl\x20border\x20p-5\x20rounded-2xl\x20transition-all\x20duration-500\x20bg-rose-500/10\x20border-rose-500/30','ဘဏ္ဍာရေး\x20အခြေအနေ\x20ခိုင်မာမှုရှိပါသည်။','qDAgN','addEventListener','oDhux','mobileRatio','9|0|7|3|12|2|6|5|11|1|4|8|10','lhwCh','h-1.5\x20w-4\x20rounded-full\x20bg-amber-500','strokeDashoffset','2519703xrYLva','totalEquity','HDCbX','EbzHX','absolute\x20inset-0\x20rounded-full\x20blur-xl\x20opacity-20\x20group-hover:opacity-40\x20transition-opacity\x20duration-700\x20bg-emerald-500','px-3\x20py-1.5\x20rounded-lg\x20text-xs\x20font-bold\x20bg-slate-900\x20flex\x20items-center\x20gap-2\x20border\x20border-rose-500/30\x20text-rose-400','xPDOy','text/plain','အကြွေးနှင့်\x20Equity\x20အချိုးအစား\x20မျှတပါသည်။','jxoMY','IMORB','High\x20Risk','p-2\x20rounded-lg\x20bg-amber-500\x20text-white\x20shadow-lg','totalCapital','style','appendChild','OwPBg','className','ZXlxG','toLocaleString','ophUi','\x20MMK\x0a>\x20TOTAL\x20EQUITY:\x20\x20\x20\x20\x20\x20\x20\x20\x20','BUqFH','px-3\x20py-1.5\x20rounded-lg\x20text-xs\x20font-bold\x20bg-slate-900\x20flex\x20items-center\x20gap-2\x20border\x20border-amber-500/30\x20text-amber-400','xFeeE','QjTKD','ayvki','chartGlow','trim','GNXTw','627UzImvB','statusDesc','1341848imqqwI','h-1.5\x20w-4\x20rounded-full\x20bg-emerald-500','WUKwX','createElement','JwmIP','Cpego','lLtSM','totalDebtDisplay','\x0aGEARING\x20RATIO\x20ANALYSIS\x20REPORT\x0aDate:\x20','pSpQk','\x0a----------------------------------------\x0a\x0a[\x20FINANCIAL\x20INPUTS\x20]\x0a\x0aLIABILITIES\x20(DEBT)\x0a-\x20Long\x20Term\x20Debt:\x20\x20\x20\x20','ZWmkD','stroke','<div\x20class=\x22w-2\x20h-2\x20rounded-full\x20bg-rose-500\x20animate-pulse\x22></div>\x20High\x20Risk','\x0a\x0aDEBT\x20RATIO\x20(Debt/Capital):\x20\x20\x20\x20','shareEquity','statusTitle','cnzCH','ODHIO','value','h-1.5\x20w-4\x20rounded-full\x20bg-rose-500','Moderate','x\x0aRISK\x20ASSESSMENT:\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','6930BPWtKT','JXMwK','download','Input','SMZJV','11|9|2|4|1|8|5|0|7|13|3|10|12|6','createObjectURL','ugyiL','wQAVb','GNwBO','534388pLVnqu','<div\x20class=\x22w-2\x20h-2\x20rounded-full\x20bg-amber-500\x20animate-pulse\x22></div>\x20Moderate','split','\x20MMK\x0a\x0a----------------------------------------\x0a\x0a[\x20ANALYSIS\x20RESULTS\x20]\x0a\x0aGEARING\x20RATIO\x20(Debt/Equity):\x20\x20','longTermDebt','XcFxZ','DriNy','5MFehfF','absolute\x20inset-0\x20rounded-full\x20blur-xl\x20opacity-20\x20group-hover:opacity-40\x20transition-opacity\x20duration-700\x20bg-amber-500','pPdib','href'];_0x8e40=function(){return _0x4071a0;};return _0x8e40();}function syncInput(_0x17299e){const _0x462eeb=_0x374374,_0x557fae={'cnzCH':function(_0xb3b877,_0x17a9b1){return _0xb3b877+_0x17a9b1;},'SMZJV':_0x462eeb(0x1e6),'GNXTw':'Input','JXMwK':function(_0x2875a8,_0x5526ce){return _0x2875a8(_0x5526ce);},'KuJHP':function(_0x119752,_0x29d80a,_0x57ae34){return _0x119752(_0x29d80a,_0x57ae34);}},_0x22303c=document[_0x462eeb(0x168)](_0x557fae[_0x462eeb(0x1ae)](_0x17299e,_0x557fae[_0x462eeb(0x1b8)])),_0x43525d=document[_0x462eeb(0x168)](_0x557fae['cnzCH'](_0x17299e,_0x557fae[_0x462eeb(0x19a)])),_0x566978=_0x557fae[_0x462eeb(0x1b5)](parseFloat,_0x22303c['value']);_0x43525d[_0x462eeb(0x1b0)]=_0x566978,_0x557fae['KuJHP'](updateState,_0x17299e,_0x566978);}function syncRange(_0x48a067){const _0x1a5447=_0x374374,_0x57a054={'QjTKD':function(_0x3bd862,_0x3bf001){return _0x3bd862+_0x3bf001;},'wQAVb':function(_0x52756c,_0x1c109b){return _0x52756c(_0x1c109b);},'pSpQk':function(_0x2aedc1,_0x158ded,_0x5b6b34){return _0x2aedc1(_0x158ded,_0x5b6b34);}},_0xa98432=document[_0x1a5447(0x168)](_0x48a067+_0x1a5447(0x1e6)),_0x3b9c2b=document['getElementById'](_0x57a054[_0x1a5447(0x196)](_0x48a067,_0x1a5447(0x1b7)));let _0x3cba01=_0x57a054[_0x1a5447(0x1bc)](parseFloat,_0x3b9c2b[_0x1a5447(0x1b0)]);if(_0x57a054[_0x1a5447(0x1bc)](isNaN,_0x3cba01))_0x3cba01=0x0;_0xa98432[_0x1a5447(0x1b0)]=_0x3cba01,_0x57a054[_0x1a5447(0x1a6)](updateState,_0x48a067,_0x3cba01);}function updateState(_0x4dbf6d,_0x3e4b0c){const _0x5f4cda=_0x374374,_0x2dcdcb={'GwdvN':function(_0x48e642,_0x104bd4){return _0x48e642+_0x104bd4;},'EbzHX':function(_0x5772e1){return _0x5772e1();}};state[_0x4dbf6d]=_0x3e4b0c;const _0x2286c9=_0x2dcdcb['GwdvN'](_0x4dbf6d,_0x5f4cda(0x1d1));document[_0x5f4cda(0x168)](_0x2286c9)&&(document[_0x5f4cda(0x168)](_0x2286c9)[_0x5f4cda(0x1de)]=_0x3e4b0c[_0x5f4cda(0x190)]()),_0x2dcdcb[_0x5f4cda(0x180)](calculate);}function calculate(){const _0x22fee6=_0x374374,_0x9fb0f5={'kbDVy':_0x22fee6(0x1e3),'ZWmkD':function(_0x18aefc){return _0x18aefc();},'MpnSJ':function(_0x546658,_0x5b2a09){return _0x546658+_0x5b2a09;},'xeIvW':function(_0x3bd636,_0x3204ad){return _0x3bd636>_0x3204ad;},'BVgar':function(_0x327849,_0x1dae75){return _0x327849/_0x1dae75;}},_0x391436=_0x9fb0f5[_0x22fee6(0x1d8)]['split']('|');let _0x1dc136=0x0;while(!![]){switch(_0x391436[_0x1dc136++]){case'0':_0x9fb0f5[_0x22fee6(0x1a8)](updateUI);continue;case'1':state[_0x22fee6(0x17e)]=_0x9fb0f5[_0x22fee6(0x1ce)](state[_0x22fee6(0x1e0)],state[_0x22fee6(0x1ac)]);continue;case'2':state[_0x22fee6(0x1d0)]=_0x9fb0f5[_0x22fee6(0x1ce)](state[_0x22fee6(0x1c2)],state[_0x22fee6(0x170)]);continue;case'3':state[_0x22fee6(0x18a)]=_0x9fb0f5[_0x22fee6(0x1ce)](state[_0x22fee6(0x1d0)],state[_0x22fee6(0x17e)]);continue;case'4':state[_0x22fee6(0x1d9)]=_0x9fb0f5[_0x22fee6(0x1cd)](state['totalEquity'],0x0)?_0x9fb0f5['BVgar'](state[_0x22fee6(0x1d0)],state[_0x22fee6(0x17e)])[_0x22fee6(0x1ca)](0x2):0x0;continue;}break;}}function updateUI(){const _0x277e6f=_0x374374,_0x141eb0={'ODHIO':_0x277e6f(0x1a4),'xVCZg':_0x277e6f(0x16b),'xFeeE':'gearingRatioText','thUWN':_0x277e6f(0x178),'ophUi':function(_0x3f6c0a,_0x54a2b2){return _0x3f6c0a/_0x54a2b2;},'XcFxZ':function(_0x21cec2,_0x4f7ed0){return _0x21cec2*_0x4f7ed0;},'EZdHB':function(_0x4052e4,_0x241599){return _0x4052e4*_0x241599;},'vUskG':function(_0x3341cd,_0x2e0eee){return _0x3341cd*_0x2e0eee;},'dysgr':function(_0x1d0ae8,_0x2432fe){return _0x1d0ae8-_0x2432fe;},'epLEq':function(_0x4fe233,_0x46aeee){return _0x4fe233*_0x46aeee;},'jEozl':'chartCircle','lBEJo':function(_0x5e495e,_0x19a7bd){return _0x5e495e(_0x19a7bd);}};document[_0x277e6f(0x168)](_0x141eb0[_0x277e6f(0x1af)])[_0x277e6f(0x1de)]=state[_0x277e6f(0x1d0)][_0x277e6f(0x190)](),document[_0x277e6f(0x168)](_0x141eb0[_0x277e6f(0x1dc)])[_0x277e6f(0x1de)]=state[_0x277e6f(0x17e)][_0x277e6f(0x190)](),document[_0x277e6f(0x168)](_0x141eb0[_0x277e6f(0x195)])[_0x277e6f(0x1de)]=state[_0x277e6f(0x1d9)],document[_0x277e6f(0x168)](_0x141eb0['thUWN'])[_0x277e6f(0x1de)]=state[_0x277e6f(0x1d9)];const _0x388454=state[_0x277e6f(0x18a)]>0x0?_0x141eb0[_0x277e6f(0x191)](state[_0x277e6f(0x1d0)],state[_0x277e6f(0x18a)]):0x0,_0x2ce1b1=_0x141eb0[_0x277e6f(0x1c3)](_0x388454,0x64)['toFixed'](0x0);document[_0x277e6f(0x168)](_0x277e6f(0x1d2))[_0x277e6f(0x1de)]=_0x2ce1b1;const _0x47c214=0x28,_0x370262=_0x141eb0[_0x277e6f(0x1d3)](_0x141eb0['vUskG'](0x2,Math['PI']),_0x47c214),_0xed6e88=_0x141eb0['dysgr'](_0x370262,_0x141eb0[_0x277e6f(0x1d5)](_0x388454,_0x370262)),_0x138c3d=document[_0x277e6f(0x168)](_0x141eb0['jEozl']);_0x138c3d[_0x277e6f(0x18b)][_0x277e6f(0x17c)]=_0xed6e88,document[_0x277e6f(0x168)](_0x277e6f(0x1d6))['innerText']=_0x141eb0[_0x277e6f(0x191)](state[_0x277e6f(0x18a)],0x3e8)[_0x277e6f(0x1ca)](0x1),_0x141eb0['lBEJo'](updateAnalysis,_0x141eb0[_0x277e6f(0x167)](parseFloat,state[_0x277e6f(0x1d9)]));}function updateAnalysis(_0x47aa3c){const _0xf05943=_0x374374,_0x26d70e={'ZXlxG':_0xf05943(0x171),'rsRJG':_0xf05943(0x19c),'oDhux':_0xf05943(0x198),'kKbnS':'riskBar1','PbIAh':function(_0x2f7251,_0x20fcfe){return _0x2f7251>_0x20fcfe;},'TzAEC':_0xf05943(0x173),'xPDOy':_0xf05943(0x16a),'BUqFH':_0xf05943(0x1e5),'WUKwX':_0xf05943(0x188),'whWUY':'Equity\x20ထက်\x20အကြွေးပမာဏ\x20များပြားနေပါသည်။','JwmIP':'#f43f5e','lLtSM':_0xf05943(0x1e2),'qEqDz':_0xf05943(0x1b1),'yeNFF':_0xf05943(0x182),'kxSXp':_0xf05943(0x1aa),'qDAgN':_0xf05943(0x1b9),'pPdib':_0xf05943(0x1b2),'EAnNL':_0xf05943(0x17b),'ayvki':'font-bold\x20text-lg\x20text-amber-400','HDCbX':_0xf05943(0x1bf),'EzyHX':_0xf05943(0x1c6),'EkgIq':_0xf05943(0x185),'UHGuw':_0xf05943(0x161),'PrFIK':_0xf05943(0x194),'lhwCh':_0xf05943(0x179),'glfif':'p-2\x20rounded-lg\x20bg-emerald-500\x20text-white\x20shadow-lg','jxoMY':'font-bold\x20text-lg\x20text-emerald-400','ULMwi':_0xf05943(0x181),'DriNy':'#10b981','ugyiL':_0xf05943(0x16d),'JvhJB':_0xf05943(0x1df),'vLuQO':'backdrop-blur-xl\x20border\x20p-5\x20rounded-2xl\x20transition-all\x20duration-500\x20bg-emerald-500/10\x20border-emerald-500/30','GNwBO':'<div\x20class=\x22w-2\x20h-2\x20rounded-full\x20bg-emerald-500\x20animate-pulse\x22></div>\x20Low\x20Risk','iiuIc':_0xf05943(0x19e),'Cpego':'Low\x20Risk'},_0x2acf7a=document[_0xf05943(0x168)](_0x26d70e[_0xf05943(0x18f)]),_0x2440e7=document[_0xf05943(0x168)]('statusIconBox'),_0x37361a=document['getElementById'](_0xf05943(0x1ad)),_0x40353b=document[_0xf05943(0x168)](_0x26d70e['rsRJG']),_0x567d5b=document[_0xf05943(0x168)]('chartCircle'),_0x2c0ec3=document[_0xf05943(0x168)](_0x26d70e[_0xf05943(0x177)]),_0x4a7494=document['getElementById'](_0xf05943(0x1d7)),_0x4f9572=document[_0xf05943(0x168)](_0x26d70e[_0xf05943(0x1dd)]),_0x9021aa=document[_0xf05943(0x168)](_0xf05943(0x172)),_0x5f1df5=document[_0xf05943(0x168)]('riskBar3'),_0x55ca39=_0x20c61b=>_0x20c61b['className']='';if(_0x26d70e[_0xf05943(0x1cf)](_0x47aa3c,0x1))_0x2acf7a[_0xf05943(0x18e)]=_0x26d70e['TzAEC'],_0x2440e7[_0xf05943(0x18e)]='p-2\x20rounded-lg\x20bg-rose-500\x20text-white\x20shadow-lg',_0x2440e7[_0xf05943(0x1d4)]=_0x26d70e[_0xf05943(0x183)],_0x37361a[_0xf05943(0x18e)]=_0x26d70e[_0xf05943(0x193)],_0x37361a[_0xf05943(0x1de)]=_0x26d70e[_0xf05943(0x19f)],_0x40353b[_0xf05943(0x1de)]=_0x26d70e['whWUY'],_0x567d5b[_0xf05943(0x18b)][_0xf05943(0x1a9)]=_0x26d70e['JwmIP'],_0x2c0ec3[_0xf05943(0x18e)]=_0xf05943(0x16c),_0x4f9572[_0xf05943(0x18e)]=_0x26d70e[_0xf05943(0x1a3)],_0x9021aa[_0xf05943(0x18e)]=_0xf05943(0x1e2),_0x5f1df5[_0xf05943(0x18e)]=_0x26d70e['qEqDz'],_0x4a7494['className']=_0x26d70e[_0xf05943(0x16f)],_0x4a7494[_0xf05943(0x1d4)]=_0x26d70e['kxSXp'];else{if(_0x47aa3c>0.5){const _0xdbf61a=_0x26d70e[_0xf05943(0x175)]['split']('|');let _0x3f554f=0x0;while(!![]){switch(_0xdbf61a[_0x3f554f++]){case'0':_0x567d5b[_0xf05943(0x18b)][_0xf05943(0x1a9)]=_0xf05943(0x1eb);continue;case'1':_0x37361a[_0xf05943(0x1de)]=_0x26d70e[_0xf05943(0x1c7)];continue;case'2':_0x2440e7[_0xf05943(0x1d4)]=_0xf05943(0x164);continue;case'3':_0x9021aa[_0xf05943(0x18e)]=_0x26d70e[_0xf05943(0x1cc)];continue;case'4':_0x37361a['className']=_0x26d70e[_0xf05943(0x197)];continue;case'5':_0x567d5b[_0xf05943(0x18b)][_0xf05943(0x1a9)]=_0x26d70e[_0xf05943(0x1a1)];continue;case'6':_0x4a7494['innerHTML']=_0x26d70e[_0xf05943(0x17f)];continue;case'7':_0x2c0ec3[_0xf05943(0x18e)]=_0x26d70e['EzyHX'];continue;case'8':_0x40353b['innerText']=_0x26d70e['EkgIq'];continue;case'9':_0x2440e7[_0xf05943(0x18e)]=_0xf05943(0x189);continue;case'10':_0x5f1df5[_0xf05943(0x18e)]=_0x26d70e['lLtSM'];continue;case'11':_0x2acf7a[_0xf05943(0x18e)]=_0x26d70e['UHGuw'];continue;case'12':_0x4a7494[_0xf05943(0x18e)]=_0x26d70e[_0xf05943(0x1e1)];continue;case'13':_0x4f9572['className']=_0x26d70e[_0xf05943(0x1a3)];continue;}break;}}else{const _0x47b42a=_0x26d70e[_0xf05943(0x17a)][_0xf05943(0x1c0)]('|');let _0x222132=0x0;while(!![]){switch(_0x47b42a[_0x222132++]){case'0':_0x2440e7['className']=_0x26d70e['glfif'];continue;case'1':_0x9021aa[_0xf05943(0x18e)]=_0xf05943(0x1e2);continue;case'2':_0x40353b[_0xf05943(0x1de)]=_0xf05943(0x174);continue;case'3':_0x37361a[_0xf05943(0x18e)]=_0x26d70e[_0xf05943(0x186)];continue;case'4':_0x5f1df5[_0xf05943(0x18e)]=_0x26d70e[_0xf05943(0x1a3)];continue;case'5':_0x2c0ec3[_0xf05943(0x18e)]=_0x26d70e[_0xf05943(0x1e4)];continue;case'6':_0x567d5b[_0xf05943(0x18b)]['stroke']=_0x26d70e[_0xf05943(0x1c4)];continue;case'7':_0x2440e7[_0xf05943(0x1d4)]=_0x26d70e[_0xf05943(0x1bb)];continue;case'8':_0x4a7494[_0xf05943(0x18e)]=_0x26d70e[_0xf05943(0x160)];continue;case'9':_0x2acf7a[_0xf05943(0x18e)]=_0x26d70e[_0xf05943(0x16e)];continue;case'10':_0x4a7494[_0xf05943(0x1d4)]=_0x26d70e[_0xf05943(0x1bd)];continue;case'11':_0x4f9572[_0xf05943(0x18e)]=_0x26d70e['iiuIc'];continue;case'12':_0x37361a['innerText']=_0x26d70e[_0xf05943(0x1a2)];continue;}break;}}}lucide[_0xf05943(0x166)]();}function exportReport(){const _0x79e7bb=_0x374374,_0x455066={'OwPBg':'statusTitle','OXSQg':_0x79e7bb(0x19c),'RLJgd':function(_0x4c634d,_0x5b06f5){return _0x4c634d>_0x5b06f5;},'IMORB':function(_0x8af2de,_0x51edbb){return _0x8af2de*_0x51edbb;},'TIWMt':function(_0x246244,_0x22320f){return _0x246244/_0x22320f;}},_0x2d1a50=new Date()[_0x79e7bb(0x1e7)](),_0x4d5583=(_0x79e7bb(0x1a5)+_0x2d1a50+_0x79e7bb(0x1a7)+state[_0x79e7bb(0x1c2)]['toLocaleString']()+'\x20MMK\x0a-\x20Short\x20Term\x20Debt:\x20\x20\x20'+state[_0x79e7bb(0x170)]['toLocaleString']()+_0x79e7bb(0x1e8)+state['totalDebt'][_0x79e7bb(0x190)]()+'\x20MMK\x0a\x0aEQUITY\x20(OWNERSHIP)\x0a-\x20Owner\x27s\x20Equity:\x20\x20\x20\x20\x20\x20'+state['ownerEquity'][_0x79e7bb(0x190)]()+_0x79e7bb(0x1cb)+state[_0x79e7bb(0x1ac)][_0x79e7bb(0x190)]()+_0x79e7bb(0x192)+state[_0x79e7bb(0x17e)][_0x79e7bb(0x190)]()+_0x79e7bb(0x1c1)+state['ratio']+_0x79e7bb(0x1b3)+document[_0x79e7bb(0x168)](_0x455066[_0x79e7bb(0x18d)])[_0x79e7bb(0x1de)]+'\x0aDESCRIPTION:\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+document[_0x79e7bb(0x168)](_0x455066[_0x79e7bb(0x1c9)])[_0x79e7bb(0x1de)]+_0x79e7bb(0x1ab)+(_0x455066['RLJgd'](state[_0x79e7bb(0x18a)],0x0)?_0x455066[_0x79e7bb(0x187)](_0x455066[_0x79e7bb(0x1db)](state['totalDebt'],state[_0x79e7bb(0x18a)]),0x64)[_0x79e7bb(0x1ca)](0x0):0x0)+'%\x20of\x20Total\x20Assets\x0a\x0a----------------------------------------\x0aGenerated\x20by\x20Premium\x20Gearing\x20Ratio\x20Dashboard\x0a')[_0x79e7bb(0x199)](),_0x1869f3=new Blob([_0x4d5583],{'type':_0x79e7bb(0x184)}),_0x38f434=URL[_0x79e7bb(0x1ba)](_0x1869f3),_0x12850b=document[_0x79e7bb(0x1a0)]('a');_0x12850b[_0x79e7bb(0x1c8)]=_0x38f434,_0x12850b[_0x79e7bb(0x1b6)]=_0x79e7bb(0x1da)+new Date()['toISOString']()[_0x79e7bb(0x1c0)]('T')[0x0]+'.txt',document['body'][_0x79e7bb(0x18c)](_0x12850b),_0x12850b['click'](),document[_0x79e7bb(0x165)][_0x79e7bb(0x169)](_0x12850b),URL[_0x79e7bb(0x1ea)](_0x38f434);}
+</script>
 </body>
 </html>
