@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Price Calculator</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+/* obfuscated */
+var _0x3b7d1f=_0x21e0;function _0x21e0(_0x21875d,_0x3ba374){_0x21875d=_0x21875d-0x18b;var _0x301d1e=_0x301d();var _0x21e0dc=_0x301d1e[_0x21875d];return _0x21e0dc;}(function(_0x2fb32f,_0x4da340){var _0x2af793=_0x21e0,_0x42aaf0=_0x2fb32f();while(!![]){try{var _0x4a0f7e=-parseInt(_0x2af793(0x194))/0x1+-parseInt(_0x2af793(0x18b))/0x2*(-parseInt(_0x2af793(0x18c))/0x3)+parseInt(_0x2af793(0x19b))/0x4+-parseInt(_0x2af793(0x19c))/0x5*(-parseInt(_0x2af793(0x191))/0x6)+parseInt(_0x2af793(0x18e))/0x7*(-parseInt(_0x2af793(0x197))/0x8)+parseInt(_0x2af793(0x193))/0x9*(parseInt(_0x2af793(0x192))/0xa)+parseInt(_0x2af793(0x195))/0xb*(parseInt(_0x2af793(0x19d))/0xc);if(_0x4a0f7e===_0x4da340)break;else _0x42aaf0['push'](_0x42aaf0['shift']());}catch(_0x9ec7dd){_0x42aaf0['push'](_0x42aaf0['shift']());}}}(_0x301d,0x2b796),tailwind['config']={'theme':{'extend':{'fontFamily':{'sans':[_0x3b7d1f(0x18d),_0x3b7d1f(0x199)],'num':['Inter',_0x3b7d1f(0x199)]},'animation':{'blob':_0x3b7d1f(0x196),'fade-in':'fadeIn\x200.5s\x20ease-out\x20forwards'},'keyframes':{'blob':{'0%':{'transform':'translate(0px,\x200px)\x20scale(1)'},'33%':{'transform':_0x3b7d1f(0x190)},'66%':{'transform':_0x3b7d1f(0x198)},'100%':{'transform':_0x3b7d1f(0x19a)}},'fadeIn':{'0%':{'opacity':'0','transform':'translateY(10px)'},'100%':{'opacity':'1','transform':_0x3b7d1f(0x18f)}}}}}});function _0x301d(){var _0x198a34=['9kNaxqC','163398TxBUeW','165ixCbvX','blob\x207s\x20infinite','14184zHYCmK','translate(-20px,\x2020px)\x20scale(0.9)','sans-serif','translate(0px,\x200px)\x20scale(1)','1189144tzAnXs','5BQaUWT','99768nHmwqf','2oqQYoi','12993HnmmpJ','Padauk','1169TzWNRY','translateY(0)','translate(30px,\x20-50px)\x20scale(1.1)','840846DKvSXA','710910oBaDxx'];_0x301d=function(){return _0x198a34;};return _0x301d();}
+</script>
+
+    <style>
+        body {
+            background-color: #020617; /* Slate 950 */
+        }
+        
+        /* Hide Number Input Arrows */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Modern Glass Effect */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .input-group:focus-within i {
+            color: white; 
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.5));
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        
+        /* Animation Delays */
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4 md:p-6 text-slate-200 selection:bg-cyan-500/30 relative font-sans overflow-x-hidden">
+
+    <!-- Animated Background Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-blob"></div>
+        <div class="absolute top-0 right-1/4 w-96 h-96 bg-cyan-500/20 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-blob" style="animation-delay: 2s"></div>
+        <div class="absolute -bottom-32 left-1/3 w-96 h-96 bg-pink-500/20 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-blob" style="animation-delay: 4s"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="glass-panel w-full max-w-6xl rounded-[24px] md:rounded-[32px] relative z-10 overflow-hidden flex flex-col lg:flex-row shadow-2xl animate-fade-in">
+        
+        <!-- Left Side: Inputs -->
+        <div class="w-full lg:w-5/12 p-6 md:p-10 border-b lg:border-b-0 lg:border-r border-white/5 bg-gradient-to-b from-white/5 to-transparent relative">
+            
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-8 md:mb-10">
+                <h1 class="text-xl md:text-2xl font-bold text-white flex items-center gap-3">
+                    <div class="bg-gradient-to-br from-cyan-500 to-blue-600 p-2.5 rounded-xl shadow-lg shadow-cyan-500/20">
+                        <i data-lucide="calculator" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <span class="tracking-wide font-num">PRICE<span class="text-cyan-400">CALC</span></span>
+                </h1>
+                <button onclick="resetCalculator()" class="group flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/50 hover:bg-slate-700 text-xs font-medium text-slate-400 hover:text-white transition-all border border-white/5 hover:border-white/20 active:scale-95">
+                    <i data-lucide="refresh-ccw" class="w-3.5 h-3.5 group-hover:-rotate-180 transition-transform duration-500"></i>
+                    RESET
+                </button>
+            </div>
+
+            <!-- Inputs Form -->
+            <div class="space-y-6 md:space-y-8">
+                
+                <!-- Cost Input -->
+                <div class="group relative input-group animate-fade-in delay-100">
+                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block flex items-center gap-2">
+                        အရင်း (Cost)
+                    </label>
+                    <div class="relative transition-all duration-300 transform group-hover:-translate-y-1">
+                        <div class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none transition-colors duration-300">
+                            <i data-lucide="dollar-sign" class="w-5 h-5 text-cyan-400"></i>
+                        </div>
+                        <input type="number" id="inputCost" oninput="calculate()" placeholder="0" class="w-full bg-[#0f172a]/60 border border-slate-700/50 rounded-2xl py-4 pl-12 pr-16 text-xl font-bold text-white placeholder-slate-600 focus:outline-none focus:border-cyan-500/50 focus:bg-[#0f172a] focus:ring-4 focus:ring-cyan-500/10 transition-all shadow-inner font-num">
+                        <span class="absolute right-5 top-1/2 -translate-y-1/2 text-xs md:text-sm font-bold text-slate-500 font-num bg-slate-800/50 px-2 py-1 rounded">MMK</span>
+                    </div>
+                </div>
+
+                <!-- Profit Input -->
+                <div class="group relative input-group animate-fade-in delay-200">
+                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block flex items-center gap-2">
+                        လိုချင်သည့် အမြတ်
+                    </label>
+                    <div class="relative transition-all duration-300 transform group-hover:-translate-y-1">
+                        <div class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none transition-colors duration-300">
+                            <i data-lucide="trending-up" class="w-5 h-5 text-emerald-400"></i>
+                        </div>
+                        <input type="number" id="inputProfit" oninput="calculate()" placeholder="0" class="w-full bg-[#0f172a]/60 border border-slate-700/50 rounded-2xl py-4 pl-12 pr-16 text-xl font-bold text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500/50 focus:bg-[#0f172a] focus:ring-4 focus:ring-emerald-500/10 transition-all shadow-inner font-num">
+                        <span class="absolute right-5 top-1/2 -translate-y-1/2 text-xs md:text-sm font-bold text-slate-500 font-num bg-slate-800/50 px-2 py-1 rounded">MMK</span>
+                    </div>
+                </div>
+
+                <!-- Commission Input -->
+                <div class="group relative input-group animate-fade-in delay-300">
+                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block flex items-center gap-2">
+                        ကော်မရှင် (%)
+                    </label>
+                    <div class="relative transition-all duration-300 transform group-hover:-translate-y-1">
+                        <div class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none transition-colors duration-300">
+                            <i data-lucide="percent" class="w-5 h-5 text-pink-400"></i>
+                        </div>
+                        <input type="number" id="inputCommission" oninput="calculate()" placeholder="0" class="w-full bg-[#0f172a]/60 border border-slate-700/50 rounded-2xl py-4 pl-12 pr-16 text-xl font-bold text-white placeholder-slate-600 focus:outline-none focus:border-pink-500/50 focus:bg-[#0f172a] focus:ring-4 focus:ring-pink-500/10 transition-all shadow-inner font-num">
+                        <span class="absolute right-5 top-1/2 -translate-y-1/2 text-xs md:text-sm font-bold text-slate-500 font-num bg-slate-800/50 px-2 py-1 rounded">%</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Right Side: Results -->
+        <div class="w-full lg:w-7/12 p-6 md:p-10 flex flex-col justify-between bg-black/20 relative">
+            
+            <!-- Mobile Separator -->
+            <div class="lg:hidden w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-6"></div>
+
+            <div class="flex-grow flex flex-col justify-center">
+                <h2 class="text-xs md:text-sm font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2 font-num justify-center lg:justify-start">
+                    <i data-lucide="crown" class="w-5 h-5 text-yellow-500"></i>
+                    Recommended Price
+                </h2>
+
+                <!-- Main Price Display -->
+                <div class="relative group w-full">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+                    <div class="relative bg-[#0b1221] border border-slate-700/50 rounded-3xl p-8 md:p-12 flex flex-col items-center justify-center text-center shadow-2xl overflow-hidden">
+                        
+                        <!-- Decorative background grid -->
+                        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-20"></div>
+
+                        <span class="text-slate-400 text-sm font-medium mb-4 relative z-10">ရောင်းရမည့် စျေးနှုန်း</span>
+                        
+                        <div class="flex flex-col md:flex-row items-baseline gap-2 mb-2 relative z-10">
+                            <span id="displayPrice" class="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-cyan-100 to-cyan-400 tracking-tight font-num drop-shadow-lg">0</span>
+                            <span class="text-lg text-slate-500 font-bold font-num hidden md:inline-block">MMK</span>
+                        </div>
+                        <span class="text-sm text-slate-500 font-bold font-num md:hidden mb-2">MMK</span>
+
+                        <!-- Copy Button (Hidden initially) -->
+                        <button id="btnCopy" onclick="copyPrice()" class="mt-6 hidden items-center gap-2 px-5 py-2.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 hover:text-cyan-300 text-sm font-bold transition-all border border-cyan-500/20 hover:border-cyan-500/40 active:scale-95 z-10">
+                            <i id="iconCopy" data-lucide="copy" class="w-4 h-4"></i>
+                            <span id="textCopy">စျေးနှုန်း ကူးယူမည်</span>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Breakdown Section -->
+            <div class="mt-8 space-y-4">
+                
+                <!-- Visual Bars & Data -->
+                <div class="bg-[#0f172a]/40 p-5 md:p-6 rounded-2xl border border-slate-700/30 backdrop-blur-sm">
+                    <div class="flex justify-between text-[10px] md:text-xs font-bold text-slate-400 mb-3 uppercase font-num tracking-wider">
+                        <span>Net Income</span>
+                        <span>Commission</span>
+                    </div>
+                    
+                    <!-- Progress Bar -->
+                    <div class="h-3 md:h-4 w-full bg-slate-800 rounded-full overflow-hidden flex relative shadow-inner">
+                        <div id="barNet" class="h-full bg-gradient-to-r from-emerald-600 to-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.5)] transition-all duration-700 ease-out" style="width: 100%"></div>
+                        <div id="barComm" class="h-full bg-gradient-to-l from-pink-600 to-pink-400 shadow-[0_0_10px_rgba(236,72,153,0.5)] transition-all duration-700 ease-out" style="width: 0%"></div>
+                    </div>
+
+                    <!-- Detailed Numbers -->
+                    <div class="grid grid-cols-2 gap-4 mt-6">
+                        
+                        <!-- Net Amount -->
+                        <div class="flex flex-col p-3 rounded-xl hover:bg-white/5 transition-colors">
+                            <div class="flex items-center gap-2 mb-1.5">
+                                <div class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_5px_rgba(52,211,153,0.8)]"></div>
+                                <span class="text-[10px] md:text-xs text-slate-400 font-bold font-num">YOU GET (NET)</span>
+                            </div>
+                            <span id="displayNet" class="text-lg md:text-xl font-bold text-white font-num">0</span>
+                        </div>
+
+                        <!-- Commission Amount -->
+                        <div class="flex flex-col items-end text-right p-3 rounded-xl hover:bg-white/5 transition-colors">
+                            <div class="flex items-center gap-2 mb-1.5">
+                                <span class="text-[10px] md:text-xs text-slate-400 font-bold font-num">COMMISSION</span>
+                                <div class="w-2 h-2 rounded-full bg-pink-400 shadow-[0_0_5px_rgba(244,114,182,0.8)]"></div>
+                            </div>
+                            <span id="displayComm" class="text-lg md:text-xl font-bold text-pink-400 font-num">0</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full shadow-2xl border border-slate-700 flex items-center gap-3 transition-all duration-300 translate-y-32 z-50">
+        <div class="bg-green-500/20 p-1 rounded-full"><i data-lucide="check" class="w-4 h-4 text-green-400"></i></div>
+        <span class="text-sm font-medium">Copied to clipboard!</span>
+    </div>
+
+    <script>
+/* obfuscated */
+const _0x1c7fa9=_0x22d8;(function(_0x56779f,_0x504628){const _0x281d3c=_0x22d8,_0x43b896=_0x56779f();while(!![]){try{const _0x1cb476=parseInt(_0x281d3c(0x1c8))/0x1*(parseInt(_0x281d3c(0x19a))/0x2)+-parseInt(_0x281d3c(0x1cc))/0x3*(-parseInt(_0x281d3c(0x1c7))/0x4)+-parseInt(_0x281d3c(0x188))/0x5+-parseInt(_0x281d3c(0x19e))/0x6*(-parseInt(_0x281d3c(0x1b8))/0x7)+-parseInt(_0x281d3c(0x194))/0x8+-parseInt(_0x281d3c(0x198))/0x9*(-parseInt(_0x281d3c(0x1cd))/0xa)+parseInt(_0x281d3c(0x1ba))/0xb;if(_0x1cb476===_0x504628)break;else _0x43b896['push'](_0x43b896['shift']());}catch(_0x472c69){_0x43b896['push'](_0x43b896['shift']());}}}(_0x3787,0x8ad58),lucide[_0x1c7fa9(0x185)]());function _0x22d8(_0x490491,_0x2e2ea6){_0x490491=_0x490491-0x182;const _0x37871f=_0x3787();let _0x22d817=_0x37871f[_0x490491];return _0x22d817;}function _0x3787(){const _0x864b20=['OqZBc','rUpqR','lWeCS','error','ikazk','CUBYf','innerText','width','copy','FfDKP','1441336lSCZLf','haqpi','bZyDD','prxhD','87687sXztTT','GziSK','348wGRNJd','gJHHH','hidden','vAcEb','1040694pQBQGf','inputCommission','bLzxb','style','CSvXd','eujZh','tTWYe','VoSnW','btnCopy','body','max','VMoEI','wHNvf','inputCost','select','tVaxQ','NumberFormat','min','barComm','toFixed','Repme','kqmkJ','en-MM','yCLxE','barNet','LrpDI','7jMNWUn','SNwmZ','3275547bqiWcg','zNpRk','remove','add','KbPnS','PkkzI','kSohK','inputProfit','value','createElement','aRIsQ','cSNfq','dYqhi','19276KqwPnC','1138kgyPJZ','textarea','displayComm','pYXkZ','507fVpBWZ','60lBOsah','FtoPr','LiiYx','displayPrice','BCwXX','removeChild','hrQxf','GdoxZ','classList','getElementById','bTVzN','createIcons','ifzCm','appendChild','3966380ixuYLD','AdTOi'];_0x3787=function(){return _0x864b20;};return _0x3787();}let currentPrice=0x0;function calculate(){const _0x197ddd=_0x1c7fa9,_0x23424c={'bZyDD':function(_0x15cdc4,_0x3a6c80){return _0x15cdc4>_0x3a6c80;},'GYafw':'copy','BCwXX':function(_0x58ca59){return _0x58ca59();},'LrpDI':'Copy\x20failed','CUBYf':function(_0x288b03,_0x3e8d3a){return _0x288b03(_0x3e8d3a);},'vjfFi':function(_0x4534ae,_0xcee05b){return _0x4534ae!==_0xcee05b;},'rUpqR':_0x197ddd(0x1c0),'cSNfq':_0x197ddd(0x1b3),'KbPnS':function(_0x4278ae,_0x224178,_0x2ebd00,_0x30c65a){return _0x4278ae(_0x224178,_0x2ebd00,_0x30c65a);},'Repme':function(_0x4a192d,_0x2d8c25){return _0x4a192d/_0x2d8c25;},'bLzxb':function(_0x2a89dd,_0x2b7c16){return _0x2a89dd/_0x2b7c16;},'ikazk':function(_0x488e30,_0x20d404){return _0x488e30+_0x20d404;},'hrQxf':function(_0x4eb414,_0x12e58b){return _0x4eb414-_0x12e58b;},'GdoxZ':function(_0xbd658f,_0x2f869a){return _0xbd658f*_0x2f869a;},'LiiYx':function(_0x441533,_0x3b1c11,_0x4ebdf3,_0x18e98f){return _0x441533(_0x3b1c11,_0x4ebdf3,_0x18e98f);}},_0x16af48=_0x23424c[_0x197ddd(0x18f)](parseFloat,document[_0x197ddd(0x183)](_0x197ddd(0x1ab))[_0x197ddd(0x1c2)])||0x0,_0x8e47d8=_0x23424c[_0x197ddd(0x18f)](parseFloat,document[_0x197ddd(0x183)](_0x197ddd(0x1c1))['value'])||0x0,_0x5f2b94=_0x23424c[_0x197ddd(0x18f)](parseFloat,document[_0x197ddd(0x183)](_0x197ddd(0x19f))[_0x197ddd(0x1c2)])||0x0;_0x23424c[_0x197ddd(0x18f)](updateBars,_0x5f2b94);if(_0x5f2b94>=0x64){if(_0x23424c['vjfFi'](_0x23424c[_0x197ddd(0x18b)],_0x23424c[_0x197ddd(0x1c5)])){_0x23424c[_0x197ddd(0x1be)](updateDisplay,0x0,0x0,0x0);return;}else{if(_0x23424c[_0x197ddd(0x196)](_0x4e73ba,0x0)){const _0x370b13=_0x43e5ae['createElement'](_0x197ddd(0x1c9));_0x370b13[_0x197ddd(0x1c2)]=_0x22591f['toFixed'](0x0),_0x34eaae[_0x197ddd(0x1a7)][_0x197ddd(0x187)](_0x370b13),_0x370b13[_0x197ddd(0x1ac)]();try{_0x4e9869['execCommand'](_0x23424c['GYafw']),_0x23424c[_0x197ddd(0x1d1)](_0x3f3d2b);}catch(_0x218151){_0x312f1d[_0x197ddd(0x18d)](_0x23424c[_0x197ddd(0x1b7)],_0x218151);}_0x5b40d4['body']['removeChild'](_0x370b13);}}}const _0xcfc6c2=_0x23424c[_0x197ddd(0x1b2)](_0x5f2b94,0x64),_0x48201f=_0x23424c[_0x197ddd(0x1a0)](_0x23424c[_0x197ddd(0x18e)](_0x16af48,_0x8e47d8),_0x23424c['hrQxf'](0x1,_0xcfc6c2)),_0x3b4746=_0x23424c[_0x197ddd(0x1d4)](_0x48201f,_0xcfc6c2),_0x1563da=_0x23424c[_0x197ddd(0x1d3)](_0x48201f,_0x3b4746);currentPrice=_0x48201f,_0x23424c[_0x197ddd(0x1cf)](updateDisplay,_0x48201f,_0x3b4746,_0x1563da);}function updateDisplay(_0x225471,_0x59e660,_0x7fc74d){const _0x118726=_0x1c7fa9,_0x250faa={'ZjztL':_0x118726(0x1d0),'aRIsQ':function(_0x5cd24d,_0x9a72fd){return _0x5cd24d(_0x9a72fd);},'dYqhi':'displayNet','tTWYe':function(_0x4b30cc,_0x4b4e36){return _0x4b30cc>_0x4b4e36;},'OqZBc':'hidden','TbSDe':'flex'};document[_0x118726(0x183)](_0x250faa['ZjztL'])[_0x118726(0x190)]=formatCurrency(_0x225471),document[_0x118726(0x183)](_0x118726(0x1ca))[_0x118726(0x190)]=_0x250faa[_0x118726(0x1c4)](formatCurrency,_0x59e660),document[_0x118726(0x183)](_0x250faa[_0x118726(0x1c6)])['innerText']=formatCurrency(_0x7fc74d);const _0x1fa610=document[_0x118726(0x183)](_0x118726(0x1a6));_0x250faa[_0x118726(0x1a4)](_0x225471,0x0)?(_0x1fa610[_0x118726(0x182)][_0x118726(0x1bc)](_0x250faa['OqZBc']),_0x1fa610['classList'][_0x118726(0x1bd)](_0x250faa['TbSDe'])):(_0x1fa610[_0x118726(0x182)][_0x118726(0x1bd)](_0x250faa[_0x118726(0x18a)]),_0x1fa610[_0x118726(0x182)][_0x118726(0x1bc)](_0x250faa['TbSDe']));}function updateBars(_0x3fb928){const _0x159aea=_0x1c7fa9,_0x536965={'LjPaq':function(_0x56dcf5,_0x347539){return _0x56dcf5-_0x347539;},'lWeCS':_0x159aea(0x1b6),'SNwmZ':'barComm'},_0x4f084c=Math[_0x159aea(0x1af)](0x64,Math[_0x159aea(0x1a8)](0x0,_0x3fb928)),_0x13ca7b=Math[_0x159aea(0x1a8)](0x0,_0x536965['LjPaq'](0x64,_0x4f084c));document[_0x159aea(0x183)](_0x536965[_0x159aea(0x18c)])['style'][_0x159aea(0x191)]=_0x13ca7b+'%',document[_0x159aea(0x183)](_0x536965[_0x159aea(0x1b9)])['style']['width']=_0x4f084c+'%';}function formatCurrency(_0x1e5ce8){const _0x3bd381=_0x1c7fa9,_0x184dcb={'yCLxE':_0x3bd381(0x1b4)};return new Intl[(_0x3bd381(0x1ae))](_0x184dcb[_0x3bd381(0x1b5)],{'minimumFractionDigits':0x0,'maximumFractionDigits':0x2})['format'](_0x1e5ce8);}function resetCalculator(){const _0xc6df43=_0x1c7fa9,_0x5a9eff={'lLUvl':'inputCost','ifzCm':_0xc6df43(0x1c1),'FtoPr':_0xc6df43(0x19f)};document[_0xc6df43(0x183)](_0x5a9eff['lLUvl'])['value']='',document['getElementById'](_0x5a9eff[_0xc6df43(0x186)])[_0xc6df43(0x1c2)]='',document[_0xc6df43(0x183)](_0x5a9eff[_0xc6df43(0x1ce)])[_0xc6df43(0x1c2)]='',calculate();}function copyPrice(){const _0x16b4b6=_0x1c7fa9,_0x2b4a52={'rFNRg':_0x16b4b6(0x1b6),'eujZh':_0x16b4b6(0x1b0),'wHNvf':_0x16b4b6(0x1d0),'prxhD':function(_0x4cb031,_0x17469d){return _0x4cb031(_0x17469d);},'VoSnW':_0x16b4b6(0x1ca),'tVaxQ':'displayNet','CSvXd':'btnCopy','jaNmY':_0x16b4b6(0x19c),'zNpRk':'flex','UjbEv':function(_0xb3d569,_0x1fc8b8){return _0xb3d569>_0x1fc8b8;},'vAcEb':_0x16b4b6(0x1c9),'VFOtL':function(_0x28cf4c,_0x3fe637){return _0x28cf4c===_0x3fe637;},'gJHHH':'TNqNk','VMoEI':_0x16b4b6(0x199),'PkkzI':_0x16b4b6(0x1cb),'mjmoX':'Copy\x20failed'};if(_0x2b4a52['UjbEv'](currentPrice,0x0)){const _0x563c3b=document[_0x16b4b6(0x1c3)](_0x2b4a52[_0x16b4b6(0x19d)]);_0x563c3b[_0x16b4b6(0x1c2)]=currentPrice[_0x16b4b6(0x1b1)](0x0),document[_0x16b4b6(0x1a7)][_0x16b4b6(0x187)](_0x563c3b),_0x563c3b['select']();try{if(_0x2b4a52['VFOtL']('LRvTI',_0x2b4a52[_0x16b4b6(0x19b)])){const _0x4c564e=_0x48ad03[_0x16b4b6(0x1af)](0x64,_0x2b8254[_0x16b4b6(0x1a8)](0x0,_0x168731)),_0x5d5bb1=_0x1c00eb[_0x16b4b6(0x1a8)](0x0,0x64-_0x4c564e);_0x2b360d[_0x16b4b6(0x183)](_0x2b4a52['rFNRg'])['style'][_0x16b4b6(0x191)]=_0x5d5bb1+'%',_0x967124[_0x16b4b6(0x183)](_0x2b4a52[_0x16b4b6(0x1a3)])[_0x16b4b6(0x1a1)][_0x16b4b6(0x191)]=_0x4c564e+'%';}else document['execCommand'](_0x16b4b6(0x192)),showToast();}catch(_0x19c0fb){if(_0x2b4a52[_0x16b4b6(0x1a9)]===_0x2b4a52[_0x16b4b6(0x1bf)]){_0x5d64bf[_0x16b4b6(0x183)](_0x2b4a52[_0x16b4b6(0x1aa)])['innerText']=_0x2b4a52[_0x16b4b6(0x197)](_0x336fec,_0x580d98),_0x14b276['getElementById'](_0x2b4a52[_0x16b4b6(0x1a5)])[_0x16b4b6(0x190)]=_0x2b4a52['prxhD'](_0x4343ab,_0x1332f2),_0x2efa20[_0x16b4b6(0x183)](_0x2b4a52[_0x16b4b6(0x1ad)])[_0x16b4b6(0x190)]=_0x2b4a52[_0x16b4b6(0x197)](_0x5cfeca,_0x37ac6d);const _0x2b1b3f=_0x15c889[_0x16b4b6(0x183)](_0x2b4a52[_0x16b4b6(0x1a2)]);_0x571833>0x0?(_0x2b1b3f[_0x16b4b6(0x182)][_0x16b4b6(0x1bc)](_0x2b4a52['jaNmY']),_0x2b1b3f[_0x16b4b6(0x182)][_0x16b4b6(0x1bd)](_0x2b4a52[_0x16b4b6(0x1bb)])):(_0x2b1b3f[_0x16b4b6(0x182)]['add'](_0x2b4a52['jaNmY']),_0x2b1b3f[_0x16b4b6(0x182)][_0x16b4b6(0x1bc)](_0x2b4a52[_0x16b4b6(0x1bb)]));}else console[_0x16b4b6(0x18d)](_0x2b4a52['mjmoX'],_0x19c0fb);}document[_0x16b4b6(0x1a7)][_0x16b4b6(0x1d2)](_0x563c3b);}}function showToast(){const _0x1da9fd=_0x1c7fa9,_0x2540a1={'VlLkU':_0x1da9fd(0x19f),'AdTOi':function(_0x36186d,_0x3bb289){return _0x36186d===_0x3bb289;},'bTVzN':'XCMBS'},_0x2a217e=document['getElementById']('toast');_0x2a217e[_0x1da9fd(0x182)][_0x1da9fd(0x1bc)]('translate-y-32'),setTimeout(()=>{const _0x4937bd=_0x1da9fd,_0x2597df={'FfDKP':'inputProfit','omvgn':_0x2540a1['VlLkU']};_0x2540a1[_0x4937bd(0x189)](_0x2540a1[_0x4937bd(0x184)],_0x4937bd(0x195))?(_0x42ad2e[_0x4937bd(0x183)]('inputCost')[_0x4937bd(0x1c2)]='',_0x2c21a3[_0x4937bd(0x183)](_0x2597df[_0x4937bd(0x193)])[_0x4937bd(0x1c2)]='',_0x358a45[_0x4937bd(0x183)](_0x2597df['omvgn'])[_0x4937bd(0x1c2)]='',_0xa4a5d6()):_0x2a217e[_0x4937bd(0x182)][_0x4937bd(0x1bd)]('translate-y-32');},0x7d0);}
+</script>
+</body>
+</html>
