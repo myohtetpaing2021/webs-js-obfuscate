@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="my" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Depreciation Master - SME Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#020617', // Deep Space
+                            900: '#0f172a',
+                            800: '#1e293b',
+                        },
+                        cyan: {
+                            400: '#22d3ee',
+                            500: '#06b6d4',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 8s ease-in-out infinite',
+                        'float-delayed': 'float 8s ease-in-out infinite 4s',
+                        'pulse-glow': 'pulseGlow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'spin-slow': 'spin 8s linear infinite',
+                        'spin-reverse': 'spin-reverse 3s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: 1, boxShadow: '0 0 20px rgba(34, 211, 238, 0.2)' },
+                            '50%': { opacity: .8, boxShadow: '0 0 40px rgba(34, 211, 238, 0.4)' },
+                        },
+                        fadeInUp: {
+                            'from': { opacity: 0, transform: 'translateY(20px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        'spin-reverse': {
+                            'from': { transform: 'rotate(360deg)' },
+                            'to': { transform: 'rotate(0deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        
+        /* Modern Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        /* Glassmorphism Classes */
+        .glass-nav {
+            background: rgba(2, 6, 23, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card {
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(34, 211, 238, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(34, 211, 238, 0.1);
+        }
+
+        .input-group:focus-within label {
+            color: #22d3ee;
+        }
+
+        .input-group:focus-within .input-icon {
+            color: #22d3ee;
+        }
+
+        .neo-input {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .neo-input:focus {
+            background: rgba(15, 23, 42, 0.9);
+            border-color: #22d3ee;
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.15);
+        }
+
+        /* Shine Effect for Buttons */
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-shine::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+            transform: skewX(-25deg);
+            transition: 0.5s;
+        }
+        .btn-shine:hover::after {
+            left: 150%;
+            transition: 0.7s;
+        }
+
+        /* Table Responsive */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 1rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-all duration-1000 ease-[cubic-bezier(0.77,0,0.175,1)]">
+        <!-- Tech Background Grid -->
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(15,23,42,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.6)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)] opacity-30"></div>
+        
+        <!-- Central Loader Complex -->
+        <div class="relative flex items-center justify-center w-80 h-80 mb-8 scale-75 md:scale-100">
+            <!-- Outer Glowing Orb -->
+            <div class="absolute inset-0 rounded-full bg-cyan-500/5 blur-3xl animate-pulse"></div>
+            
+            <!-- Rotating Rings -->
+            <div class="absolute inset-0 rounded-full border border-slate-800/60"></div> <!-- Static Guide -->
+            
+            <!-- Main Spinner -->
+            <div class="absolute inset-0 rounded-full border border-t-cyan-400 border-r-transparent border-b-transparent border-l-transparent animate-[spin_2s_linear_infinite] shadow-[0_0_15px_rgba(34,211,238,0.3)]"></div>
+            
+            <!-- Reverse Spinner -->
+            <div class="absolute inset-6 rounded-full border border-b-blue-500 border-t-transparent border-r-transparent border-l-transparent animate-spin-reverse"></div>
+            
+            <!-- Slow Dashed Ring -->
+            <div class="absolute inset-16 rounded-full border border-dashed border-slate-600/30 animate-spin-slow"></div>
+
+            <!-- Inner Decoration -->
+            <div class="absolute inset-28 rounded-full bg-gradient-to-br from-slate-900 to-[#020617] border border-white/5 flex items-center justify-center shadow-inner">
+                 <div class="absolute inset-0 rounded-full bg-cyan-500/10 animate-pulse"></div>
+            </div>
+
+            <!-- Center Icon -->
+            <div class="relative z-10 flex flex-col items-center justify-center">
+                 <i data-lucide="cpu" class="w-10 h-10 text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.8)]"></i>
+            </div>
+        </div>
+
+        <!-- Text & Progress -->
+        <div class="relative z-10 text-center space-y-8">
+            <div class="overflow-hidden">
+                 <h1 class="text-4xl md:text-5xl font-black tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-slate-400 font-num animate-fade-in-up drop-shadow-sm">
+                    DEPRECIATION
+                </h1>
+                <p class="text-xs text-cyan-500/60 font-mono tracking-[0.5em] mt-2 uppercase animate-pulse">Professional Suite</p>
+            </div>
+            
+            <div class="flex flex-col items-center gap-2">
+                <div class="flex items-center gap-4 w-64 mx-auto">
+                     <div class="h-[1px] w-full bg-slate-800 relative overflow-hidden">
+                        <div id="progress-bar" class="absolute top-0 left-0 h-full bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-400 w-0 shadow-[0_0_10px_rgba(34,211,238,0.8)] transition-all duration-75 ease-out"></div>
+                     </div>
+                </div>
+                <span id="progress-text" class="text-[10px] font-mono text-cyan-400">0%</span>
+            </div>
+            
+            <div class="flex justify-center gap-8 text-[9px] text-slate-600 font-mono tracking-widest uppercase">
+                <span class="flex items-center gap-2">
+                    <span class="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Core: Active
+                </span>
+                 <span class="flex items-center gap-2">
+                    <span class="w-1 h-1 rounded-full bg-blue-500 animate-pulse delay-75"></span>
+                    UI: Loading
+                </span>
+                <span class="flex items-center gap-2">
+                    <span class="w-1 h-1 rounded-full bg-purple-500 animate-pulse delay-150"></span>
+                    Ver: 2.5.0
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Background Elements -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+        <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-[#020617] to-[#020617]"></div>
+        <div class="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[100px] animate-float"></div>
+        <div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[100px] animate-float-delayed"></div>
+        <!-- Grid Pattern -->
+        <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 md:h-20">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                        <i data-lucide="bar-chart-2" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg md:text-xl text-white tracking-tight font-num leading-none">
+                            Depreciation<span class="text-cyan-400">Pro</span>
+                        </h1>
+                        <p class="text-[10px] font-bold text-slate-400 tracking-[0.2em] uppercase mt-0.5">Premium Suite</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center bg-slate-900/50 rounded-full p-1 border border-white/5 backdrop-blur-sm">
+                    <a href="#straight-line" class="px-5 py-2 rounded-full text-sm font-medium text-slate-400 hover:text-white hover:bg-white/10 transition-all">Straight Line</a>
+                    <a href="#reducing-balance" class="px-5 py-2 rounded-full text-sm font-medium text-slate-400 hover:text-white hover:bg-white/10 transition-all">Reducing Balance</a>
+                    <a href="#units-prod" class="px-5 py-2 rounded-full text-sm font-medium text-slate-400 hover:text-white hover:bg-white/10 transition-all">Units</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2 text-slate-400 hover:text-white" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-white/5 bg-[#020617]/95 backdrop-blur-xl">
+            <div class="px-4 py-4 space-y-2">
+                <a href="#straight-line" class="block px-4 py-3 rounded-xl text-sm font-medium text-slate-300 hover:bg-white/5 hover:text-cyan-400 transition-all flex items-center gap-3">
+                    <i data-lucide="trending-down" class="w-4 h-4"></i> Straight Line
+                </a>
+                <a href="#reducing-balance" class="block px-4 py-3 rounded-xl text-sm font-medium text-slate-300 hover:bg-white/5 hover:text-violet-400 transition-all flex items-center gap-3">
+                    <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Reducing Balance
+                </a>
+                <a href="#units-prod" class="block px-4 py-3 rounded-xl text-sm font-medium text-slate-300 hover:bg-white/5 hover:text-orange-400 transition-all flex items-center gap-3">
+                    <i data-lucide="activity" class="w-4 h-4"></i> Units of Production
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="relative z-10 pt-24 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-16 md:space-y-24">
+
+        <!-- Hero Section -->
+        <header class="text-center max-w-3xl mx-auto animate-fade-in-up delay-300 opacity-0" style="animation-fill-mode: forwards;">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold uppercase tracking-wider mb-6 shadow-[0_0_15px_rgba(34,211,238,0.1)]">
+                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                Asset Valuation Tool
+            </div>
+            <h2 class="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight">
+                Smart Depreciation <br class="hidden md:block" />
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Calculator & Analytics</span>
+            </h2>
+            <p class="text-base md:text-lg text-slate-400 leading-relaxed max-w-2xl mx-auto">
+                စီးပွားရေးလုပ်ငန်းသုံး Fixed Assets များ၏ တန်ဖိုးလျော့ (Depreciation) တွက်ချက်ခြင်းကို 
+                လွယ်ကူတိကျစွာ ဆောင်ရွက်နိုင်ရန် ဒီဇိုင်းရေးဆွဲထားပါသည်။
+            </p>
+            
+            <div class="mt-8 flex flex-wrap justify-center gap-4">
+                <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-xs text-slate-400">
+                    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i>
+                    <span>Tax Reporting</span>
+                </div>
+                <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-xs text-slate-400">
+                    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i>
+                    <span>Asset Management</span>
+                </div>
+                <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-xs text-slate-400">
+                    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i>
+                    <span>Financial Planning</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Method 1: Straight Line -->
+        <section id="straight-line" class="scroll-mt-28">
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+                <!-- Info Side -->
+                <div class="lg:col-span-4 lg:sticky lg:top-28">
+                    <div class="glass-card p-6 md:p-8 rounded-3xl border-l-4 border-l-cyan-500">
+                        <div class="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center mb-6 border border-cyan-500/20">
+                            <span class="font-bold text-xl md:text-2xl font-num">01</span>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-bold text-white mb-2 font-num">Straight Line</h3>
+                        <p class="text-sm font-bold text-cyan-400 mb-4 font-sans">ပုံသေ တန်ဖိုးလျော့ နည်းလမ်း</p>
+                        <p class="text-sm text-slate-400 mb-6 leading-relaxed font-sans">
+                            နှစ်စဉ် တူညီသော ပမာဏဖြင့် တန်ဖိုးလျော့ချခြင်းဖြစ်သည်။ ရေရှည်အသုံးခံပြီး တန်ဖိုးကျဆင်းမှု ညီမျှသော ပစ္စည်းများအတွက် အသုံးပြုရန် သင့်လျော်သည်။
+                        </p>
+                        <div class="p-4 bg-slate-900/80 rounded-xl border border-white/10 font-num text-xs text-slate-400">
+                            Formula: <br>
+                            <span class="font-bold text-cyan-400 text-sm block mt-1">(Cost - Residual) ÷ Life</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calculator Side -->
+                <div class="lg:col-span-8">
+                    <div class="glass-card rounded-3xl p-6 md:p-10 border-t border-white/10">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- Input: Cost -->
+                            <div class="input-group group">
+                                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 block group-focus-within:text-cyan-400 transition-colors">Acquisition Cost (မူလတန်ဖိုး)</label>
+                                <div class="relative">
+                                    <input type="number" id="sl-cost" placeholder="50,000,000" class="neo-input w-full rounded-xl px-5 py-4 text-sm text-white placeholder-slate-600 focus:outline-none font-num pl-12">
+                                    <div class="absolute left-4 top-4 text-slate-500 input-icon transition-colors">
+                                        <i data-lucide="dollar-sign" class="w-4 h-4"></i>
+                                    </div>
+                                    <div class="absolute right-4 top-4 text-slate-600 text-xs font-bold">Ks</div>
+                                </div>
+                            </div>
+
+                            <!-- Input: Salvage -->
+                            <div class="input-group group">
+                                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 block group-focus-within:text-cyan-400 transition-colors">Residual Value (လက်ကျန်တန်ဖိုး)</label>
+                                <div class="relative">
+                                    <input type="number" id="sl-salvage" placeholder="5,000,000" class="neo-input w-full rounded-xl px-5 py-4 text-sm text-white placeholder-slate-600 focus:outline-none font-num pl-12">
+                                    <div class="absolute left-4 top-4 text-slate-500 input-icon transition-colors">
+                                        <i data-lucide="piggy-bank" class="w-4 h-4"></i>
+                                    </div>
+                                    <div class="absolute right-4 top-4 text-slate-600 text-xs font-bold">Ks</div>
+                                </div>
+                            </div>
+
+                            <!-- Input: Life -->
+                            <div class="input-group group md:col-span-2">
+                                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 block group-focus-within:text-cyan-400 transition-colors">Useful Life (သက်တမ်း)</label>
+                                <div class="relative">
+                                    <input type="number" id="sl-life" placeholder="10" class="neo-input w-full rounded-xl px-5 py-4 text-sm text-white placeholder-slate-600 focus:outline-none font-num pl-12">
+                                    <div class="absolute left-4 top-4 text-slate-500 input-icon transition-colors">
+                                        <i data-lucide="clock" class="w-4 h-4"></i>
+                                    </div>
+                                    <div class="absolute right-4 top-4 text-slate-600 text-xs font-bold">Years</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-white/5">
+                            <button onclick="calcStraightLine()" class="btn-shine w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 active:scale-[0.98] transition-all">
+                                <span>GENERATE ANALYSIS (တွက်ချက်မည်)</span>
+                                <i data-lucide="cpu" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <!-- Result Display -->
+                        <div id="sl-result" class="hidden mt-6 transition-all duration-500">
+                            <div class="bg-gradient-to-br from-slate-900 to-[#0B1120] rounded-2xl p-6 border border-cyan-500/20 relative overflow-hidden">
+                                <!-- Decorative Glow -->
+                                <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl -mr-10 -mt-10"></div>
+                                
+                                <div class="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                    <div>
+                                        <p class="text-cyan-500 text-[10px] font-bold tracking-widest uppercase mb-1">Annual Expense</p>
+                                        <div class="flex items-baseline gap-2">
+                                            <span class="text-3xl md:text-4xl font-bold text-white font-num tracking-tight" id="sl-value">0</span>
+                                            <span class="text-sm font-medium text-slate-500">MMK / Year</span>
+                                        </div>
+                                        <p class="text-slate-500 text-xs mt-2 font-sans">
+                                            သက်တမ်း <span id="sl-life-display" class="text-cyan-400 font-bold">0</span> နှစ်အတွက် နှစ်စဉ် ကုန်ကျစရိတ်
+                                        </p>
+                                    </div>
+                                    <div class="w-12 h-12 rounded-full bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20 text-cyan-400">
+                                        <i data-lucide="check" class="w-5 h-5"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Method 2: Reducing Balance -->
+        <section id="reducing-balance" class="scroll-mt-28">
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+                <!-- Info Side -->
+                <div class="lg:col-span-4 lg:sticky lg:top-28 lg:order-2">
+                    <div class="glass-card p-6 md:p-8 rounded-3xl border-l-4 border-l-violet-500">
+                        <div class="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-violet-500/10 text-violet-400 flex items-center justify-center mb-6 border border-violet-500/20">
+                            <span class="font-bold text-xl md:text-2xl font-num">02</span>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-bold text-white mb-2 font-num">Diminishing Balance</h3>
+                        <p class="text-sm font-bold text-violet-400 mb-4 font-sans">လက်ကျန်တန်ဖိုးလျော့ နည်းလမ်း</p>
+                        <p class="text-sm text-slate-400 mb-6 leading-relaxed font-sans">
+                            အစပိုင်းနှစ်များတွင် တန်ဖိုးလျော့ပမာဏ များပြားပြီး နှစ်ကြာလာသည်နှင့်အမျှ လျော့နည်းသွားမည့်စနစ်။
+                        </p>
+                        <div class="p-4 bg-slate-900/80 rounded-xl border border-white/10 font-num text-xs text-slate-400">
+                            Formula: <br>
+                            <span class="font-bold text-violet-400 text-sm block mt-1">Book Value × Rate %</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calculator Side -->
+                <div class="lg:col-span-8 lg:order-1">
+                    <div class="glass-card rounded-3xl p-6 md:p-10 border-t border-white/10">
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <!-- Input: Cost -->
+                            <div class="input-group group md:col-span-2">
+                                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 block group-focus-within:text-violet-400 transition-colors">Opening Book Value (စာရင်းဖွင့်တန်ဖိုး)</label>
+                                <div class="relative">
+                                    <input type="number" id="rb-cost" placeholder="100,000,000" class="neo-input w-full rounded-xl px-5 py-4 text-sm text-white placeholder-slate-600 focus:outline-none font-num pl-12">
+                                    <div class="absolute left-4 top-4 text-slate-500 input-icon transition-colors">
+                                        <i data-lucide="wallet" class="w-4 h-4"></i>
+                                    </div>
+                                    <div class="absolute right-4 top-4 text-slate-600 text-xs font-bold">Ks</div>
+                                </div>
+                            </div>
+
+                            <!-- Input: Rate -->
+                            <div class="input-group group">
+                                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 block group-focus-within:text-violet-400 transition-colors">Rate (ရာခိုင်နှုန်း)</label>
+                                <div class="relative">
+                                    <input type="number" id="rb-rate" placeholder="20" class="neo-input w-full rounded-xl px-5 py-4 text-sm text-white placeholder-slate-600 focus:outline-none font-num pl-12">
+                                    <div class="absolute left-4 top-4 text-slate-500 input-icon transition-colors">
+                                        <i data-lucide="percent" class="w-4 h-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Input: Years -->
+                            <div class="input-group group">
+                                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 block group-focus-within:text-violet-400 transition-colors">Project Period (နှစ်)</label>
+                                <div class="relative">
+                                    <input type="number" id="rb-years" value="5" class="neo-input w-full rounded-xl px-5 py-4 text-sm text-white placeholder-slate-600 focus:outline-none font-num pl-12">
+                                    <div class="absolute left-4 top-4 text-slate-500 input-icon transition-colors">
+                                        <i data-lucide="calendar" class="w-4 h-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-white/5">
+                            <button onclick="calcReducingBalance()" class="btn-shine w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-violet-500/20 active:scale-[0.98] transition-all">
+                                <span>GENERATE SCHEDULE (ဇယားဆွဲမည်)</span>
+                                <i data-lucide="table" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <!-- Result Table -->
+                        <div id="rb-result" class="hidden mt-6 transition-all duration-500">
+                            <div class="table-container bg-slate-900/50">
+                                <table class="w-full text-sm text-left modern-table">
+                                    <thead class="bg-slate-900 border-b border-white/5">
+                                        <tr>
+                                            <th class="px-6 py-4 font-bold text-slate-400">Year</th>
+                                            <th class="px-6 py-4 text-right font-bold text-slate-400">Opening</th>
+                                            <th class="px-6 py-4 text-right font-bold text-violet-400">Expense</th>
+                                            <th class="px-6 py-4 text-right font-bold text-slate-400">Closing</th>
+                                            <th class="px-6 py-4 w-32 font-bold text-slate-400 text-center">Visual</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="rb-table-body" class="divide-y divide-white/5 font-num text-slate-300">
+                                        <!-- Javascript Generated Rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Method 3: Units of Production -->
+        <section id="units-prod" class="scroll-mt-28">
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+                <!-- Info Side -->
+                <div class="lg:col-span-4 lg:sticky lg:top-28">
+                    <div class="glass-card p-6 md:p-8 rounded-3xl border-l-4 border-l-orange-500">
+                        <div class="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-orange-500/10 text-orange-400 flex items-center justify-center mb-6 border border-orange-500/20">
+                            <span class="font-bold text-xl md:text-2xl font-num">03</span>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-bold text-white mb-2 font-num">Units of Production</h3>
+                        <p class="text-sm font-bold text-orange-400 mb-4 font-sans">ထုတ်လုပ်မှုအခြေပြု နည်းလမ်း</p>
+                        <p class="text-sm text-slate-400 mb-6 leading-relaxed font-sans">
+                            စက်ကိရိယာများ၏ အမှန်တကယ် ထုတ်လုပ်နိုင်စွမ်း (Output/Usage) ပေါ် မူတည်၍ တွက်ချက်ခြင်း။ စက်ရုံများအတွက် အထူးသင့်လျော်သည်။
+                        </p>
+                        <div class="p-4 bg-slate-900/80 rounded-xl border border-white/10 font-num text-xs text-slate-400">
+                            Formula: <br>
+                            <span class="font-bold text-orange-400 text-sm block mt-1">(Cost - Residual) ÷ Total Units</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calculator Side -->
+                <div class="lg:col-span-8">
+                    <div class="glass-card rounded-3xl p-6 md:p-10 border-t border-white/10">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- Input: Cost -->
+                            <div class="input-group group">
+                                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 block group-focus-within:text-orange-400 transition-colors">Asset Cost (ပစ္စည်းတန်ဖိုး)</label>
+                                <div class="relative">
+                                    <input type="number" id="up-cost" placeholder="100,000" class="neo-input w-full rounded-xl px-5 py-4 text-sm text-white placeholder-slate-600 focus:outline-none font-num pl-12">
+                                    <div class="absolute left-4 top-4 text-slate-500 input-icon transition-colors">
+                                        <i data-lucide="tag" class="w-4 h-4"></i>
+                                    </div>
+                                    <div class="absolute right-4 top-4 text-slate-600 text-xs font-bold">Ks</div>
+                                </div>
+                            </div>
+
+                            <!-- Input: Salvage -->
+                            <div class="input-group group">
+                                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 block group-focus-within:text-orange-400 transition-colors">Scrap Value (Scrap တန်ဖိုး)</label>
+                                <div class="relative">
+                                    <input type="number" id="up-salvage" placeholder="0" class="neo-input w-full rounded-xl px-5 py-4 text-sm text-white placeholder-slate-600 focus:outline-none font-num pl-12">
+                                    <div class="absolute left-4 top-4 text-slate-500 input-icon transition-colors">
+                                        <i data-lucide="recycle" class="w-4 h-4"></i>
+                                    </div>
+                                    <div class="absolute right-4 top-4 text-slate-600 text-xs font-bold">Ks</div>
+                                </div>
+                            </div>
+
+                            <!-- Input: Total Units -->
+                            <div class="input-group group">
+                                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 block group-focus-within:text-orange-400 transition-colors">Total Capacity (စုစုပေါင်းစွမ်းရည်)</label>
+                                <div class="relative">
+                                    <input type="number" id="up-total" placeholder="Total Units" class="neo-input w-full rounded-xl px-5 py-4 text-sm text-white placeholder-slate-600 focus:outline-none font-num pl-12">
+                                    <div class="absolute left-4 top-4 text-slate-500 input-icon transition-colors">
+                                        <i data-lucide="layers" class="w-4 h-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Input: Current Units -->
+                            <div class="input-group group">
+                                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 block group-focus-within:text-orange-400 transition-colors">Current Output (လက်ရှိထုတ်လုပ်မှု)</label>
+                                <div class="relative">
+                                    <input type="number" id="up-current" placeholder="Current Units" class="neo-input w-full rounded-xl px-5 py-4 text-sm text-white placeholder-slate-600 focus:outline-none font-num pl-12">
+                                    <div class="absolute left-4 top-4 text-slate-500 input-icon transition-colors">
+                                        <i data-lucide="zap" class="w-4 h-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-white/5">
+                            <button onclick="calcUnitsProduction()" class="btn-shine w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 active:scale-[0.98] transition-all">
+                                <span>CALCULATE EXPENSE (စရိတ်တွက်မည်)</span>
+                                <i data-lucide="activity" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <!-- Result Box -->
+                        <div id="up-result" class="hidden mt-6 transition-all duration-500 grid md:grid-cols-2 gap-4">
+                            <!-- Rate Card -->
+                            <div class="bg-slate-900/60 rounded-2xl p-6 border border-white/10 flex items-center justify-between">
+                                <div>
+                                    <p class="text-[10px] text-slate-500 font-bold uppercase mb-1 tracking-wider">Depreciation Rate</p>
+                                    <p class="text-xl font-num font-bold text-white" id="up-rate-display">0</p>
+                                    <p class="text-[10px] text-slate-600 mt-1">Per Unit Cost</p>
+                                </div>
+                                <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 border border-white/5">
+                                    <i data-lucide="tag" class="w-5 h-5"></i>
+                                </div>
+                            </div>
+                            
+                            <!-- Total Card -->
+                            <div class="bg-gradient-to-br from-orange-500/10 to-amber-500/5 rounded-2xl p-6 border border-orange-500/20 flex items-center justify-between shadow-lg shadow-orange-500/5 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-orange-500/5 animate-pulse"></div>
+                                <div class="relative z-10">
+                                    <p class="text-[10px] text-orange-400 font-bold uppercase mb-1 tracking-wider">Total Expense</p>
+                                    <p class="text-2xl font-num font-bold text-white text-shadow-orange" id="up-value">0</p>
+                                    <p class="text-[10px] text-orange-400/60 mt-1">For Current Period</p>
+                                </div>
+                                <div class="relative z-10 w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 border border-orange-500/20">
+                                    <i data-lucide="coins" class="w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-[#020617] border-t border-white/5 py-10 mt-auto relative z-10">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex justify-center items-center gap-2 mb-4 opacity-50 hover:opacity-100 transition-opacity">
+                 <div class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-cyan-400 border border-white/10">
+                    <span class="font-bold text-sm font-num">D</span>
+                </div>
+                <span class="font-bold text-slate-200 tracking-tight font-num">Depreciation<span class="text-cyan-400">Pro</span></span>
+            </div>
+            <p class="text-slate-600 text-xs font-medium tracking-wide">
+                &copy; 2024 DepreciationPro. Built for Professionals.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Utility: Animate Value
+        function animateValue(obj, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const currentVal = Math.floor(progress * (end - start) + start);
+                obj.innerHTML = new Intl.NumberFormat('en-US').format(currentVal);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        const formatMoney = (amount) => {
+            return new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        };
+
+        function showResult(elementId) {
+            const el = document.getElementById(elementId);
+            el.classList.remove('hidden');
+        }
+
+        // --- Straight Line Logic ---
+        function calcStraightLine() {
+            const cost = parseFloat(document.getElementById('sl-cost').value);
+            const salvage = parseFloat(document.getElementById('sl-salvage').value) || 0;
+            const life = parseFloat(document.getElementById('sl-life').value);
+
+            if (!cost || !life) return alert("Please fill required fields (Cost & Life)");
+
+            const annualDep = (cost - salvage) / life;
+            
+            showResult('sl-result');
+            const resultElement = document.getElementById('sl-value');
+            animateValue(resultElement, 0, annualDep, 1500);
+            
+            document.getElementById('sl-life-display').innerText = life;
+        }
+
+        // --- Reducing Balance Logic ---
+        function calcReducingBalance() {
+            let value = parseFloat(document.getElementById('rb-cost').value);
+            const originalValue = value;
+            const rate = parseFloat(document.getElementById('rb-rate').value);
+            const years = parseInt(document.getElementById('rb-years').value) || 5;
+
+            if (!value || !rate) return alert("Please fill required fields (Value & Rate)");
+
+            const tbody = document.getElementById('rb-table-body');
+            tbody.innerHTML = ''; 
+
+            for (let i = 1; i <= years; i++) {
+                const dep = value * (rate / 100);
+                const closing = value - dep;
+                const percentage = Math.max(5, (closing / originalValue) * 100);
+                
+                let barColor = 'bg-violet-500';
+                if(percentage < 50) barColor = 'bg-violet-400';
+                if(percentage < 25) barColor = 'bg-fuchsia-400';
+
+                const row = `
+                    <tr class="transition-colors group hover:bg-white/[0.03]">
+                        <td class="px-6 py-4 font-bold text-slate-500 group-hover:text-violet-400 transition-colors">Y${i}</td>
+                        <td class="px-6 py-4 text-right text-slate-300 font-num text-xs sm:text-sm">${formatMoney(value)}</td>
+                        <td class="px-6 py-4 text-right text-fuchsia-400 font-bold font-num text-xs sm:text-sm">-${formatMoney(dep)}</td>
+                        <td class="px-6 py-4 text-right font-bold text-white font-num text-xs sm:text-sm">${formatMoney(closing)}</td>
+                        <td class="px-6 py-4 align-middle">
+                            <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden shadow-inner border border-white/5">
+                                <div class="${barColor} h-1.5 rounded-full shadow-[0_0_10px_rgba(139,92,246,0.5)]" style="width: ${percentage}%"></div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('beforeend', row);
+                value = closing; 
+            }
+            
+            showResult('rb-result');
+        }
+
+        // --- Units of Production Logic ---
+        function calcUnitsProduction() {
+            const cost = parseFloat(document.getElementById('up-cost').value);
+            const salvage = parseFloat(document.getElementById('up-salvage').value) || 0;
+            const totalUnits = parseFloat(document.getElementById('up-total').value);
+            const currentUnits = parseFloat(document.getElementById('up-current').value);
+
+            if (!cost || !totalUnits || !currentUnits) return alert("Please fill required fields");
+
+            const ratePerUnit = (cost - salvage) / totalUnits;
+            const totalDep = ratePerUnit * currentUnits;
+
+            const resDiv = document.getElementById('up-result');
+            resDiv.classList.remove('hidden');
+            
+            document.getElementById('up-rate-display').innerText = formatMoney(ratePerUnit.toFixed(2)) + " / unit";
+            
+            const resultElement = document.getElementById('up-value');
+            animateValue(resultElement, 0, totalDep, 1000);
+        }
+
+        // Preloader Script
+        document.addEventListener('DOMContentLoaded', () => {
+            const progress = document.getElementById('progress-bar');
+            const text = document.getElementById('progress-text');
+            const preloader = document.getElementById('preloader');
+            let width = 0;
+
+            const interval = setInterval(() => {
+                width += Math.random() * 5; 
+                if (width > 100) width = 100;
+                
+                if (progress) progress.style.width = width + '%';
+                if (text) text.innerText = Math.floor(width) + '%';
+
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        if(preloader) {
+                            preloader.classList.add('opacity-0', 'pointer-events-none');
+                            setTimeout(() => preloader.remove(), 700);
+                        }
+                    }, 600); 
+                }
+            }, 30); 
+        });
+    </script>
+</body>
+</html>
