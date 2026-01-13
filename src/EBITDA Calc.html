@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EBITDA Ultimate</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#020617', // Slate 950
+                            900: '#0f172a',
+                            800: '#1e293b',
+                        },
+                        neon: {
+                            blue: '#3b82f6',
+                            emerald: '#10b981',
+                            purple: '#8b5cf6'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 8s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'grid-move': 'gridMove 20s linear infinite',
+                        'spin-slow': 'spin 3s linear infinite',
+                        'spin-reverse': 'spin-reverse 4s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: 1, filter: 'brightness(1.2) drop-shadow(0 0 5px rgba(16,185,129,0.5))' },
+                            '50%': { opacity: .8, filter: 'brightness(1) drop-shadow(0 0 2px rgba(16,185,129,0.2))' },
+                        },
+                        slideUp: {
+                            'from': { opacity: 0, transform: 'translateY(20px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' }
+                        },
+                        gridMove: {
+                            '0%': { backgroundPosition: '0 0' },
+                            '100%': { backgroundPosition: '40px 40px' }
+                        },
+                        'spin-reverse': {
+                            'from': { transform: 'rotate(360deg)' },
+                            'to': { transform: 'rotate(0deg)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Padauk', sans-serif;
+            background-color: #020617;
+            color: #f8fafc;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Cyberpunk Grid Background */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .glass-card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card-hover:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px -10px rgba(59, 130, 246, 0.15);
+        }
+
+        .input-glow {
+            background: rgba(2, 6, 23, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.2s ease;
+            border-radius: 8px;
+        }
+        .input-glow:focus {
+            outline: none;
+            background: rgba(2, 6, 23, 0.8);
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+        
+        /* Label Input Styling */
+        .input-label {
+            background: transparent;
+            border: none;
+            outline: none;
+            width: 100%;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid transparent;
+        }
+        .input-label:focus {
+            border-bottom-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            padding-left: 4px;
+        }
+        
+        /* Header Input Styling */
+        .input-header {
+            background: transparent;
+            border: none;
+            outline: none;
+            width: 100%;
+            text-align: center;
+            transition: all 0.2s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .input-header:focus {
+            border-bottom-color: currentColor;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        /* Responsive Table Magic */
+        .sticky-col {
+            position: sticky;
+            left: 0;
+            background: rgba(15, 23, 42, 0.95); /* Match row bg */
+            z-index: 20;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+        }
+        
+        /* Mobile scrollbar adjustments */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Custom Scrollbar for desktop */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col relative overflow-hidden">
+
+    <!-- Premium Tech Loader -->
+    <div id="loader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-all duration-1000 ease-in-out">
+        <div class="relative w-32 h-32 mb-8">
+            <!-- Outer Glow -->
+            <div class="absolute inset-0 bg-blue-500/20 rounded-full blur-2xl animate-pulse"></div>
+            
+            <!-- Outer Ring (Slow Spin) -->
+            <div class="absolute inset-0 border-2 border-blue-500/10 rounded-full"></div>
+            <div class="absolute inset-0 border-t-2 border-r-2 border-transparent border-t-blue-500 border-r-blue-400 rounded-full animate-spin"></div>
+            
+            <!-- Middle Ring (Reverse Spin) -->
+            <div class="absolute inset-3 border-2 border-emerald-500/10 rounded-full"></div>
+            <div class="absolute inset-3 border-b-2 border-l-2 border-transparent border-b-emerald-500 border-l-emerald-400 rounded-full animate-spin-reverse"></div>
+            
+            <!-- Inner Ring (Fast Spin) -->
+            <div class="absolute inset-8 border border-purple-500/30 rounded-full animate-pulse"></div>
+
+            <!-- Core -->
+            <div class="absolute inset-[38%] bg-slate-900 rounded-full flex items-center justify-center border border-white/20 shadow-[0_0_20px_rgba(59,130,246,0.6)] z-10 animate-pulse-glow">
+                 <div class="w-2 h-2 bg-white rounded-full shadow-[0_0_10px_white]"></div>
+            </div>
+        </div>
+
+        <!-- Text Animation -->
+        <div class="text-center space-y-3 z-10">
+            <h2 class="text-2xl font-black text-white tracking-[0.2em] font-num flex items-center gap-2">
+                EBITDA <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">ULTIMATE</span>
+            </h2>
+            <div class="flex items-center justify-center gap-1.5">
+                <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">System Initializing</span>
+                <span class="flex gap-1">
+                    <span class="w-1 h-1 bg-emerald-500 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                    <span class="w-1 h-1 bg-emerald-500 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                    <span class="w-1 h-1 bg-emerald-500 rounded-full animate-bounce"></span>
+                </span>
+            </div>
+        </div>
+        
+        <!-- Decorative Grid Lines -->
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_100%)] pointer-events-none"></div>
+    </div>
+
+    <!-- Background Elements -->
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 bg-grid animate-grid-move"></div>
+        <!-- Blobs -->
+        <div class="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[100px] animate-float"></div>
+        <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-emerald-600/10 rounded-full blur-[100px] animate-float" style="animation-delay: -4s;"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-white/5 shadow-2xl shadow-black/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
+            <div class="flex items-center gap-3 group cursor-default w-full sm:w-auto justify-center sm:justify-start">
+                <div class="relative w-10 h-10 sm:w-11 sm:h-11 shrink-0">
+                    <div class="absolute inset-0 bg-blue-500 rounded-xl blur-lg opacity-40 group-hover:opacity-70 transition duration-500"></div>
+                    <div class="relative w-full h-full bg-slate-900 rounded-xl border border-white/10 flex items-center justify-center shadow-inner shadow-white/5">
+                        <i data-lucide="zap" class="text-blue-400 w-5 h-5 sm:w-6 sm:h-6 fill-current"></i>
+                    </div>
+                </div>
+                <div>
+                    <h1 class="text-lg sm:text-xl font-bold text-white tracking-wide leading-tight text-center sm:text-left">EBITDA <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 font-extrabold">ULTIMATE</span></h1>
+                    <p class="hidden sm:block text-[10px] text-slate-400 font-num uppercase tracking-[0.2em]">Financial Intelligence</p>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="flex p-1 bg-slate-950/50 backdrop-blur-md rounded-xl border border-white/10 w-full sm:w-auto">
+                <button onclick="switchTab('learn')" id="tab-learn" class="flex-1 sm:flex-none justify-center px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg flex items-center gap-2 transition-all duration-300 text-xs sm:text-sm font-medium relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-blue-600/90 opacity-0 group-[.active]:opacity-100 transition duration-300"></div>
+                    <i data-lucide="book-open" class="w-4 h-4 relative z-10"></i>
+                    <span class="relative z-10">Theory</span>
+                </button>
+                <button onclick="switchTab('calculator')" id="tab-calculator" class="flex-1 sm:flex-none justify-center px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg flex items-center gap-2 transition-all duration-300 text-xs sm:text-sm font-medium relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-blue-600/90 opacity-0 group-[.active]:opacity-100 transition duration-300"></div>
+                    <i data-lucide="calculator" class="w-4 h-4 relative z-10"></i>
+                    <span class="relative z-10">Calc</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8 z-10">
+        
+        <!-- LEARN TAB -->
+        <div id="view-learn" class="space-y-6 sm:space-y-8 animate-slide-up">
+            
+            <!-- Hero Card -->
+            <div class="glass-panel rounded-3xl p-6 sm:p-10 md:p-12 border border-blue-500/20 relative overflow-hidden group">
+                <div class="absolute -right-20 -top-20 w-64 sm:w-96 h-64 sm:h-96 bg-blue-500/20 rounded-full blur-3xl group-hover:bg-blue-500/30 transition duration-1000"></div>
+                
+                <div class="relative z-10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-4 sm:mb-6 backdrop-blur-sm shadow-[0_0_10px_rgba(59,130,246,0.2)]">
+                        <span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+                        Concept Mastery
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6 leading-tight">
+                        What is <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">EBITDA</span>?
+                    </h2>
+                    <p class="text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl mb-8 font-light">
+                        EBITDA ဆိုတာ <span class="text-white font-medium">Earnings Before Interest, Taxes, Depreciation and Amortization</span> ဖြစ်ပါတယ်။ 
+                        လုပ်ငန်းတစ်ခုရဲ့ "အသားတင်လည်ပတ်မှု စွမ်းဆောင်ရည်" (Core Operational Performance) ကို တိုင်းတာတဲ့ ရွှေစံနှုန်း (Gold Standard Metric) တစ်ခုဖြစ်ပါတယ်။
+                    </p>
+                    
+                    <div class="w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0">
+                        <div class="p-[1px] rounded-2xl bg-gradient-to-r from-blue-500/50 to-emerald-500/50 inline-block min-w-max">
+                            <div class="bg-slate-900/90 rounded-2xl p-4 sm:p-6 backdrop-blur-sm">
+                                <p class="text-lg sm:text-xl md:text-2xl font-bold text-white font-num tracking-wide flex items-center gap-1 sm:gap-2">
+                                    <span>EBITDA</span> <span class="text-slate-600">=</span>
+                                    <span class="text-blue-400">Net Income</span> <span class="text-slate-600">+</span>
+                                    <span class="text-slate-400 text-sm sm:text-xl">Int</span> <span class="text-slate-600">+</span>
+                                    <span class="text-slate-400 text-sm sm:text-xl">Tax</span> <span class="text-slate-600">+</span>
+                                    <span class="text-slate-400 text-sm sm:text-xl">Dep</span> <span class="text-slate-600">+</span>
+                                    <span class="text-slate-400 text-sm sm:text-xl">Amort</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bento Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="glass-panel p-5 sm:p-6 rounded-2xl glass-card-hover group">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition duration-300">
+                        <i data-lucide="trending-up" class="text-orange-400 w-5 h-5 sm:w-6 sm:h-6"></i>
+                    </div>
+                    <h3 class="text-base sm:text-lg font-bold text-white mb-2">Interest</h3>
+                    <p class="text-xs sm:text-sm text-slate-400 font-light">ဘဏ်ချေးငွေနှင့် အခြားကြွေးမြီများအတွက် ပေးရသော အတိုးစရိတ်များ။</p>
+                </div>
+                <div class="glass-panel p-5 sm:p-6 rounded-2xl glass-card-hover group">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition duration-300">
+                        <i data-lucide="landmark" class="text-red-400 w-5 h-5 sm:w-6 sm:h-6"></i>
+                    </div>
+                    <h3 class="text-base sm:text-lg font-bold text-white mb-2">Taxes</h3>
+                    <p class="text-xs sm:text-sm text-slate-400 font-light">နိုင်ငံတော်အစိုးရသို့ ပေးဆောင်ရသော ဝင်ငွေခွန် (Corporate Tax)။</p>
+                </div>
+                <div class="glass-panel p-5 sm:p-6 rounded-2xl glass-card-hover group">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition duration-300">
+                        <i data-lucide="building-2" class="text-purple-400 w-5 h-5 sm:w-6 sm:h-6"></i>
+                    </div>
+                    <h3 class="text-base sm:text-lg font-bold text-white mb-2">Depreciation</h3>
+                    <p class="text-xs sm:text-sm text-slate-400 font-light">ပုံသေပိုင်ဆိုင်မှုများ (စက်၊ ကား၊ အဆောက်အဦး) ၏ တန်ဖိုးလျော့ခြင်း။</p>
+                </div>
+                <div class="glass-panel p-5 sm:p-6 rounded-2xl glass-card-hover group">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition duration-300">
+                        <i data-lucide="scroll-text" class="text-emerald-400 w-5 h-5 sm:w-6 sm:h-6"></i>
+                    </div>
+                    <h3 class="text-base sm:text-lg font-bold text-white mb-2">Amortization</h3>
+                    <p class="text-xs sm:text-sm text-slate-400 font-light">ဒြပ်မဲ့ပိုင်ဆိုင်မှုများ (Software, Licenses) ၏ တန်ဖိုးခွဲဝေခြင်း။</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CALCULATOR TAB -->
+        <div id="view-calculator" class="space-y-6 sm:space-y-8 animate-slide-up hidden">
+            
+            <!-- Controls -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white mb-1">Financial Simulator</h2>
+                    <p class="text-slate-400 text-xs sm:text-sm">Real-time EBITDA calculation engine. (Unit: သိန်း)</p>
+                </div>
+                <div class="flex gap-2 w-full sm:w-auto">
+                    <button onclick="exportReport()" class="w-full sm:w-auto group flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/50 transition text-xs font-bold uppercase tracking-wider text-blue-300 hover:text-white active:scale-95">
+                        <i data-lucide="download" class="w-3.5 h-3.5 group-hover:translate-y-1 transition duration-500"></i> Export Report
+                    </button>
+                    <button onclick="resetData()" class="w-full sm:w-auto group flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition text-xs font-bold uppercase tracking-wider text-slate-300 hover:text-white active:scale-95">
+                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 group-hover:-rotate-180 transition duration-500"></i> Reset
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Interface (Table) -->
+            <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl relative border border-white/10">
+                <div class="overflow-x-auto relative z-10 custom-scrollbar">
+                    <table class="w-full text-sm text-left border-collapse min-w-[600px] sm:min-w-full">
+                        <thead class="bg-slate-950/90 backdrop-blur text-slate-400 uppercase text-[10px] sm:text-xs font-bold tracking-widest border-b border-white/5">
+                            <tr>
+                                <!-- Description column is sticky -->
+                                <th class="px-4 sm:px-8 py-4 sm:py-6 w-[140px] sm:w-1/3 sticky-col z-30 shadow-[4px_0_12px_-4px_rgba(0,0,0,0.5)]">Description</th>
+                                <th class="px-4 sm:px-6 py-4 sm:py-6 text-center text-blue-400 w-[120px] sm:w-auto">
+                                    <input type="text" id="header-y1" value="Year 1" oninput="handleYearLabelChange(0, this.value)" class="input-header text-blue-400 font-bold placeholder-blue-400/50 uppercase" />
+                                </th>
+                                <th class="px-4 sm:px-6 py-4 sm:py-6 text-center text-purple-400 w-[120px] sm:w-auto">
+                                    <input type="text" id="header-y2" value="Year 2" oninput="handleYearLabelChange(1, this.value)" class="input-header text-purple-400 font-bold placeholder-purple-400/50 uppercase" />
+                                </th>
+                                <th class="px-4 sm:px-6 py-4 sm:py-6 text-center text-emerald-400 w-[120px] sm:w-auto">
+                                    <input type="text" id="header-y3" value="Year 3" oninput="handleYearLabelChange(2, this.value)" class="input-header text-emerald-400 font-bold placeholder-emerald-400/50 uppercase" />
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="calculator-body">
+                            <!-- JS Injection -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Visualization Deck -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="visualizer-container">
+                <!-- JS Injection -->
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // --- PRELOADER ---
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            // Allow animation to play for a bit
+            setTimeout(() => {
+                loader.classList.add('opacity-0', 'pointer-events-none');
+                document.body.classList.remove('overflow-hidden');
+            }, 1800);
+        });
+
+        // --- STATE MANAGEMENT ---
+        const defaultData = [
+            { year: 'Year 1', revenue: 500, cogs: 300, opex: 50, depreciation: 20, amortization: 10, interest: 10, tax: 10 },
+            { year: 'Year 2', revenue: 1000, cogs: 600, opex: 50, depreciation: 30, amortization: 20, interest: 20, tax: 20 },
+            { year: 'Year 3', revenue: 1500, cogs: 700, opex: 80, depreciation: 40, amortization: 30, interest: 30, tax: 40 }
+        ];
+
+        let financialData = JSON.parse(JSON.stringify(defaultData));
+
+        // Manage Row Labels
+        let rowLabels = {
+            revenue: "Net Revenue",
+            cogs: "COGS",
+            opex: "SG&A (General)",
+            depreciation: "Depreciation",
+            amortization: "Amortization",
+            interest: "Interest Exp",
+            tax: "Income Tax"
+        };
+        
+        // Manage Year Labels (Synced with data for calculations but kept separately for immediate UI updates)
+        let yearLabels = ["Year 1", "Year 2", "Year 3"];
+
+        function handleLabelChange(key, value) {
+            rowLabels[key] = value;
+        }
+
+        function handleYearLabelChange(index, value) {
+            yearLabels[index] = value;
+            financialData[index].year = value; // Update data model for charts
+            renderCalculator(false); // Re-render charts only, or just update charts? Re-render all is safer.
+        }
+
+        // --- INIT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            switchTab('learn'); 
+        });
+
+        function resetData() {
+            financialData = JSON.parse(JSON.stringify(defaultData));
+            rowLabels = {
+                revenue: "Net Revenue",
+                cogs: "COGS",
+                opex: "SG&A (General)",
+                depreciation: "Depreciation",
+                amortization: "Amortization",
+                interest: "Interest Exp",
+                tax: "Income Tax"
+            };
+            yearLabels = ["Year 1", "Year 2", "Year 3"];
+            // Reset Header Inputs
+            document.getElementById('header-y1').value = "Year 1";
+            document.getElementById('header-y2').value = "Year 2";
+            document.getElementById('header-y3').value = "Year 3";
+            
+            renderCalculator();
+        }
+
+        // --- NAVIGATION ---
+        function switchTab(tabId) {
+            const learnView = document.getElementById('view-learn');
+            const calcView = document.getElementById('view-calculator');
+            const learnBtn = document.getElementById('tab-learn');
+            const calcBtn = document.getElementById('tab-calculator');
+
+            const setActive = (btn) => {
+                btn.classList.add('active', 'text-white', 'shadow-lg', 'shadow-blue-500/20');
+                btn.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-white/5');
+            };
+            const setInactive = (btn) => {
+                btn.classList.remove('active', 'text-white', 'shadow-lg', 'shadow-blue-500/20');
+                btn.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-white/5');
+            };
+
+            if (tabId === 'learn') {
+                learnView.classList.remove('hidden');
+                calcView.classList.add('hidden');
+                setActive(learnBtn);
+                setInactive(calcBtn);
+            } else {
+                learnView.classList.add('hidden');
+                calcView.classList.remove('hidden');
+                setInactive(learnBtn);
+                setActive(calcBtn);
+                renderCalculator();
+            }
+        }
+
+        // --- MATH LOGIC ---
+        function calculateMetrics(data) {
+            const grossProfit = data.revenue - data.cogs;
+            const totalExpenses = data.opex + data.depreciation + data.amortization;
+            const operatingProfit = grossProfit - totalExpenses;
+            const netIncome = operatingProfit - data.interest - data.tax;
+            const ebitda = netIncome + data.interest + data.tax + data.depreciation + data.amortization;
+            const ebitdaMargin = data.revenue ? ((ebitda / data.revenue) * 100).toFixed(1) : 0;
+            return { grossProfit, operatingProfit, netIncome, ebitda, ebitdaMargin };
+        }
+
+        function handleInputChange(index, field, value) {
+            financialData[index][field] = Number(value);
+            renderCalculator(false); // Prevent losing focus by not re-rendering entire table if possible?
+            // Actually, innerHTML rewrite kills focus. We need a better update strategy or just re-render visuals.
+            // For simplicity in this vanilla JS setup, we will re-render but we need to maintain focus if we want smooth typing.
+            // However, since we used 'oninput', re-rendering the whole body on every keystroke is bad.
+            // Let's split rendering: Update Charts separately.
+            updateVisualsOnly();
+        }
+
+        // --- EXPORT FUNCTION ---
+        function exportReport() {
+            const date = new Date().toLocaleString();
+            let content = `EBITDA ULTIMATE REPORT\n`;
+            content += `Generated: ${date}\n`;
+            content += `========================================\n\n`;
+
+            financialData.forEach((data, idx) => {
+                const metrics = calculateMetrics(data);
+                content += `[ ${data.year} ]\n`;
+                content += `----------------------------------------\n`;
+                content += `${rowLabels.revenue.padEnd(25)}: ${data.revenue.toLocaleString()}\n`;
+                content += `${rowLabels.cogs.padEnd(25)}: -${data.cogs.toLocaleString()}\n`;
+                content += `GROSS PROFIT             : ${metrics.grossProfit.toLocaleString()}\n\n`;
+                
+                content += `Expenses:\n`;
+                content += `${rowLabels.opex.padEnd(25)}: ${data.opex.toLocaleString()}\n`;
+                content += `${rowLabels.depreciation.padEnd(25)}: ${data.depreciation.toLocaleString()}\n`;
+                content += `${rowLabels.amortization.padEnd(25)}: ${data.amortization.toLocaleString()}\n`;
+                content += `OPERATING PROFIT         : ${metrics.operatingProfit.toLocaleString()}\n\n`;
+                
+                content += `${rowLabels.interest.padEnd(25)}: ${data.interest.toLocaleString()}\n`;
+                content += `${rowLabels.tax.padEnd(25)}: ${data.tax.toLocaleString()}\n`;
+                content += `NET INCOME               : ${metrics.netIncome.toLocaleString()}\n`;
+                content += `----------------------------------------\n`;
+                content += `EBITDA                   : ${metrics.ebitda.toLocaleString()}\n`;
+                content += `EBITDA MARGIN            : ${metrics.ebitdaMargin}%\n`;
+                content += `========================================\n\n`;
+            });
+
+            // Create blob and download
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `EBITDA_Report_${new Date().toISOString().slice(0,10)}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+
+        // --- UI RENDERING ---
+        function renderCalculator(fullRender = true) {
+            const tbody = document.getElementById('calculator-body');
+            
+            if (fullRender) {
+                // Helper for Input Cells - Added onfocus="this.select()"
+                const generateInputCells = (field, colorClass = "text-white") => {
+                    return financialData.map((data, idx) => `
+                        <td class="px-4 sm:px-6 py-4 text-center align-middle">
+                            <div class="relative group w-full">
+                                <input 
+                                    type="number" 
+                                    value="${data[field]}" 
+                                    oninput="handleInputChange(${idx}, '${field}', this.value)"
+                                    onfocus="this.select()"
+                                    class="w-full text-center py-2 sm:py-2.5 text-sm sm:text-base input-glow font-bold font-num ${colorClass}"
+                                />
+                            </div>
+                        </td>
+                    `).join('');
+                };
+
+                const generateSmallInputCells = (field) => {
+                    return financialData.map((data, idx) => `
+                        <td class="px-4 sm:px-6 py-2 text-center align-middle">
+                            <input type="number" value="${data[field]}" 
+                            oninput="handleInputChange(${idx}, '${field}', this.value)" 
+                            onfocus="this.select()"
+                            class="w-full max-w-[80px] mx-auto text-center bg-transparent border-b border-slate-700 focus:border-blue-500 text-slate-400 focus:text-white transition-colors focus:outline-none font-num text-xs sm:text-sm py-1"/>
+                        </td>
+                    `).join('');
+                }
+
+                // Calculated rows need ID to update them without re-rendering inputs
+                const generateCalculatedRow = (metricKey, textColor = "text-slate-300", textSize = "") => {
+                     return financialData.map((data, idx) => `
+                        <td id="calc-${metricKey}-${idx}" class="px-4 sm:px-6 py-4 text-center font-num ${textColor} ${textSize} font-medium align-middle">
+                            ${calculateMetrics(data)[metricKey].toLocaleString()}
+                        </td>
+                    `).join('');
+                };
+
+                // EBITDA ROW - Needs IDs
+                const generateEbitdaRow = () => {
+                    return financialData.map((data, idx) => {
+                        const metrics = calculateMetrics(data);
+                        return `
+                            <td class="px-4 sm:px-6 py-6 sm:py-8 text-center relative align-middle">
+                                <div class="relative z-10 flex flex-col items-center">
+                                    <div id="calc-ebitda-${idx}" class="text-xl sm:text-2xl md:text-3xl font-extrabold font-num text-transparent bg-clip-text bg-gradient-to-b from-emerald-300 to-emerald-600 drop-shadow-lg leading-tight">${metrics.ebitda.toLocaleString()}</div>
+                                    <div class="inline-flex items-center gap-1 mt-2 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[9px] sm:text-[10px] font-bold font-num uppercase tracking-wider whitespace-nowrap">
+                                        <span id="calc-margin-${idx}">${metrics.ebitdaMargin}</span>% Margin
+                                    </div>
+                                </div>
+                            </td>
+                        `;
+                    }).join('');
+                };
+
+                // TABLE CONTENT
+                tbody.innerHTML = `
+                    <!-- Net Revenue -->
+                    <tr class="group hover:bg-white/[0.02] transition">
+                        <td class="px-4 sm:px-8 py-5 sticky-col align-middle shadow-[4px_0_12px_-4px_rgba(0,0,0,0.5)]">
+                            <div class="flex items-center gap-3 text-blue-400 font-bold text-xs sm:text-sm">
+                                <div class="p-1.5 rounded-lg bg-blue-500/10 shrink-0"><i data-lucide="plus" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i></div>
+                                <input type="text" value="${rowLabels.revenue}" oninput="handleLabelChange('revenue', this.value)" class="input-label text-blue-400 font-bold placeholder-blue-400/50" />
+                            </div>
+                        </td>
+                        ${generateInputCells('revenue', 'text-blue-200')}
+                    </tr>
+
+                    <!-- COGS -->
+                    <tr class="group hover:bg-white/[0.02] transition">
+                        <td class="px-4 sm:px-8 py-5 sticky-col align-middle shadow-[4px_0_12px_-4px_rgba(0,0,0,0.5)]">
+                            <div class="flex items-center gap-3 text-red-400 font-medium text-xs sm:text-sm">
+                                <div class="p-1.5 rounded-lg bg-red-500/10 shrink-0"><i data-lucide="minus" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i></div>
+                                <input type="text" value="${rowLabels.cogs}" oninput="handleLabelChange('cogs', this.value)" class="input-label text-red-400 font-bold placeholder-red-400/50" />
+                            </div>
+                        </td>
+                        ${generateInputCells('cogs', 'text-red-200')}
+                    </tr>
+
+                    <!-- Gross Profit -->
+                    <tr class="bg-slate-900/40 border-y border-white/5">
+                        <td class="px-4 sm:px-8 py-4 sticky-col align-middle shadow-[4px_0_12px_-4px_rgba(0,0,0,0.5)]">
+                            <span class="text-slate-300 pl-8 sm:pl-10 font-semibold text-xs sm:text-sm uppercase tracking-wider block">Gross Profit</span>
+                        </td>
+                        ${generateCalculatedRow('grossProfit', 'text-white', 'text-base sm:text-lg')}
+                    </tr>
+
+                    <!-- OPEX HEADER -->
+                    <tr><td colspan="4" class="px-4 sm:px-8 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest bg-slate-950/30 sticky left-0 z-10">Operating Expenses</td></tr>
+                    
+                    <!-- OPEX ITEMS -->
+                    <tr><td class="px-4 sm:px-8 py-2 text-slate-500 pl-8 sm:pl-14 text-[10px] sm:text-xs font-medium sticky-col shadow-[4px_0_12px_-4px_rgba(0,0,0,0.5)]">
+                        <input type="text" value="${rowLabels.opex}" oninput="handleLabelChange('opex', this.value)" class="input-label text-slate-500" />
+                    </td>${generateSmallInputCells('opex')}</tr>
+                    <tr><td class="px-4 sm:px-8 py-2 text-slate-500 pl-8 sm:pl-14 text-[10px] sm:text-xs font-medium sticky-col shadow-[4px_0_12px_-4px_rgba(0,0,0,0.5)]">
+                        <input type="text" value="${rowLabels.depreciation}" oninput="handleLabelChange('depreciation', this.value)" class="input-label text-slate-500" />
+                    </td>${generateSmallInputCells('depreciation')}</tr>
+                    <tr><td class="px-4 sm:px-8 py-2 text-slate-500 pl-8 sm:pl-14 text-[10px] sm:text-xs font-medium sticky-col shadow-[4px_0_12px_-4px_rgba(0,0,0,0.5)]">
+                        <input type="text" value="${rowLabels.amortization}" oninput="handleLabelChange('amortization', this.value)" class="input-label text-slate-500" />
+                    </td>${generateSmallInputCells('amortization')}</tr>
+
+                    <!-- OPERATING PROFIT -->
+                    <tr class="bg-slate-900/40 border-y border-white/5">
+                        <td class="px-4 sm:px-8 py-4 sticky-col align-middle shadow-[4px_0_12px_-4px_rgba(0,0,0,0.5)]">
+                             <span class="text-slate-300 pl-8 sm:pl-10 font-semibold text-xs sm:text-sm uppercase tracking-wider block">Operating Profit</span>
+                        </td>
+                        ${generateCalculatedRow('operatingProfit', 'text-white', 'text-base sm:text-lg')}
+                    </tr>
+
+                    <!-- TAX/INT -->
+                    <tr><td class="px-4 sm:px-8 py-2 text-slate-500 pl-8 sm:pl-14 text-[10px] sm:text-xs font-medium pt-4 sticky-col shadow-[4px_0_12px_-4px_rgba(0,0,0,0.5)]">
+                        <input type="text" value="${rowLabels.interest}" oninput="handleLabelChange('interest', this.value)" class="input-label text-slate-500" />
+                    </td>${generateSmallInputCells('interest')}</tr>
+                    <tr><td class="px-4 sm:px-8 py-2 text-slate-500 pl-8 sm:pl-14 text-[10px] sm:text-xs font-medium pb-4 sticky-col shadow-[4px_0_12px_-4px_rgba(0,0,0,0.5)]">
+                        <input type="text" value="${rowLabels.tax}" oninput="handleLabelChange('tax', this.value)" class="input-label text-slate-500" />
+                    </td>${generateSmallInputCells('tax')}</tr>
+
+                    <!-- NET INCOME -->
+                    <tr class="bg-blue-900/10 border-t border-blue-500/20">
+                        <td class="px-4 sm:px-8 py-5 pl-8 sm:pl-14 sticky-col align-middle shadow-[4px_0_12px_-4px_rgba(0,0,0,0.5)]">
+                            <span class="text-blue-300 font-bold text-xs sm:text-sm uppercase tracking-wider block">Net Income</span>
+                        </td>
+                        ${generateCalculatedRow('netIncome', 'text-blue-200', 'text-lg sm:text-xl font-bold')}
+                    </tr>
+
+                    <!-- EBITDA HERO ROW -->
+                    <tr class="bg-gradient-to-r from-emerald-950/30 via-emerald-900/20 to-emerald-950/30 border-t border-emerald-500/30 relative">
+                        <td class="px-4 sm:px-8 py-8 sticky-col align-middle shadow-[4px_0_12px_-4px_rgba(0,0,0,0.5)] bg-slate-900/80 backdrop-blur-sm rounded-bl-2xl">
+                            <div class="flex items-center gap-2 sm:gap-3">
+                                 <div class="w-8 h-8 sm:w-10 sm:h-10 shrink-0 rounded-xl bg-emerald-500 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)] animate-pulse-glow">
+                                    <i data-lucide="bar-chart-3" class="text-emerald-950 w-5 h-5 sm:w-6 sm:h-6"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xl sm:text-2xl font-extrabold text-white tracking-tight block text-neon-green">EBITDA</span>
+                                </div>
+                            </div>
+                        </td>
+                        ${generateEbitdaRow()}
+                    </tr>
+                `;
+            } else {
+                // PARTIAL UPDATE FOR CALCULATED VALUES ONLY
+                financialData.forEach((data, idx) => {
+                    const metrics = calculateMetrics(data);
+                    
+                    // Update Text Contents
+                    try {
+                        document.getElementById(`calc-grossProfit-${idx}`).textContent = metrics.grossProfit.toLocaleString();
+                        document.getElementById(`calc-operatingProfit-${idx}`).textContent = metrics.operatingProfit.toLocaleString();
+                        document.getElementById(`calc-netIncome-${idx}`).textContent = metrics.netIncome.toLocaleString();
+                        document.getElementById(`calc-ebitda-${idx}`).textContent = metrics.ebitda.toLocaleString();
+                        document.getElementById(`calc-margin-${idx}`).textContent = metrics.ebitdaMargin;
+                    } catch (e) { console.log('Elements not ready'); }
+                });
+            }
+
+            updateVisualsOnly();
+        }
+
+        function updateVisualsOnly() {
+             const visuals = document.getElementById('visualizer-container');
+             
+             // Dynamic maxVal calculation
+            const maxRevenue = Math.max(...financialData.map(d => d.revenue));
+            const maxVal = maxRevenue * 1.2; // Add 20% headroom
+
+            visuals.innerHTML = financialData.map((data, idx) => {
+                const metrics = calculateMetrics(data);
+                
+                const revHeight = Math.min((data.revenue / maxVal) * 100, 100);
+                const ebitdaHeight = Math.min((metrics.ebitda / maxVal) * 100, 100);
+                
+                const colors = [
+                    { revFrom: 'from-blue-600', revTo: 'to-blue-400', ebitFrom: 'from-emerald-600', ebitTo: 'to-emerald-400' },
+                    { revFrom: 'from-purple-600', revTo: 'to-purple-400', ebitFrom: 'from-teal-600', ebitTo: 'to-teal-400' },
+                    { revFrom: 'from-indigo-600', revTo: 'to-indigo-400', ebitFrom: 'from-green-600', ebitTo: 'to-green-400' }
+                ];
+                const c = colors[idx];
+
+                // Theme colors for header
+                const themes = [
+                    { color: 'blue', text: 'text-blue-400', bg: 'bg-blue-500', border: 'border-blue-500/30', shadow: 'hover:shadow-blue-500/20' },
+                    { color: 'purple', text: 'text-purple-400', bg: 'bg-purple-500', border: 'border-purple-500/30', shadow: 'hover:shadow-purple-500/20' },
+                    { color: 'emerald', text: 'text-emerald-400', bg: 'bg-emerald-500', border: 'border-emerald-500/30', shadow: 'hover:shadow-emerald-500/20' }
+                ];
+                const t = themes[idx];
+                
+                // Format Year Display (Handle if user typed custom year)
+                let displayYear = data.year;
+                if(displayYear.toLowerCase().includes('year')) {
+                     displayYear = displayYear.replace(/year/i, 'FY');
+                }
+
+                return `
+                    <div class="glass-panel relative rounded-3xl flex flex-col items-center justify-end h-80 sm:h-96 w-full overflow-hidden group border border-white/5 transition-all duration-500 ${t.shadow} hover:border-white/10 hover:-translate-y-1">
+                        
+                        <!-- Tech Background Grid (Subtle) -->
+                        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:20px_20px] opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+
+                        <!-- Floating Glass Header Card -->
+                        <div class="absolute top-4 left-4 right-4 z-20">
+                            <div class="bg-slate-900/40 backdrop-blur-xl rounded-2xl p-4 border border-white/10 flex justify-between items-center relative overflow-hidden group-hover:bg-slate-900/60 transition-colors duration-300">
+                                
+                                <!-- Decorative Line -->
+                                <div class="absolute left-0 top-0 bottom-0 w-1 ${t.bg} opacity-50"></div>
+
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <!-- Tech Dots -->
+                                        <div class="flex gap-1">
+                                            <div class="w-1 h-1 rounded-full ${t.bg} animate-pulse"></div>
+                                            <div class="w-1 h-1 rounded-full bg-slate-600"></div>
+                                            <div class="w-1 h-1 rounded-full bg-slate-600"></div>
+                                        </div>
+                                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest font-num">Period</span>
+                                    </div>
+                                    <div class="flex items-baseline gap-2">
+                                        <span class="text-2xl sm:text-3xl font-black text-white font-num tracking-tight">${displayYear}</span>
+                                        <span class="text-[10px] font-bold ${t.text} bg-${t.color}-500/10 px-1.5 py-0.5 rounded border ${t.border}">ACTIVE</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Animated Ring Icon -->
+                                <div class="relative w-10 h-10 flex items-center justify-center">
+                                     <!-- Rotating Ring -->
+                                     <div class="absolute inset-0 rounded-full border-2 border-slate-700/50"></div>
+                                     <div class="absolute inset-0 rounded-full border-t-2 border-${t.color}-400 animate-[spin_3s_linear_infinite] opacity-80"></div>
+                                     <i data-lucide="bar-chart-2" class="${t.text} w-5 h-5 relative z-10"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bars Container -->
+                        <div class="flex items-end space-x-8 sm:space-x-12 w-full justify-center h-full pb-6 relative z-10 pt-28">
+                            
+                            <!-- Revenue Bar -->
+                            <div class="flex flex-col items-center w-12 sm:w-16 group/bar relative h-full justify-end">
+                                <!-- Visible Label with Glow -->
+                                <div class="mb-3 px-2 py-1 rounded bg-slate-900/80 border border-blue-500/30 backdrop-blur-sm text-[10px] sm:text-xs font-bold text-blue-300 font-num shadow-[0_0_15px_rgba(59,130,246,0.3)] transform transition-transform group-hover/bar:scale-110 group-hover/bar:-translate-y-1">
+                                    ${data.revenue.toLocaleString()}
+                                </div>
+                                
+                                <div class="w-full bg-slate-800/30 rounded-t-lg h-full absolute bottom-0 -z-10 border-x border-t border-white/5"></div> <!-- Track -->
+                                <div class="w-full bg-gradient-to-t ${c.revFrom} ${c.revTo} rounded-t-lg transition-all duration-1000 ease-out relative shadow-[0_0_20px_rgba(59,130,246,0.4)] group-hover/bar:shadow-[0_0_30px_rgba(59,130,246,0.6)]" style="height: ${revHeight}%"></div>
+                                <span class="text-[9px] sm:text-[10px] mt-3 font-bold text-slate-400 uppercase tracking-widest group-hover/bar:text-blue-400 transition-colors">Rev</span>
+                            </div>
+                            
+                            <!-- EBITDA Bar -->
+                            <div class="flex flex-col items-center w-12 sm:w-16 group/bar relative h-full justify-end">
+                                <!-- Visible Label with Glow -->
+                                <div class="mb-3 px-2 py-1 rounded bg-emerald-950/80 border border-emerald-500/30 backdrop-blur-sm text-[10px] sm:text-xs font-bold text-emerald-400 font-num shadow-[0_0_15px_rgba(16,185,129,0.3)] transform transition-transform group-hover/bar:scale-110 group-hover/bar:-translate-y-1">
+                                    ${metrics.ebitda.toLocaleString()}
+                                </div>
+
+                                <div class="w-full bg-slate-800/30 rounded-t-lg h-full absolute bottom-0 -z-10 border-x border-t border-white/5"></div> <!-- Track -->
+                                <div class="w-full bg-gradient-to-t ${c.ebitFrom} ${c.ebitTo} rounded-t-lg transition-all duration-1000 ease-out relative shadow-[0_0_20px_rgba(16,185,129,0.4)] group-hover/bar:shadow-[0_0_30px_rgba(16,185,129,0.6)]" style="height: ${ebitdaHeight}%"></div>
+                                <span class="text-[9px] sm:text-[10px] mt-3 font-bold text-emerald-500 uppercase tracking-widest group-hover/bar:text-emerald-400 transition-colors">EBITDA</span>
+                            </div>
+                        </div>
+                     </div>
+                `;
+            }).join('');
+            
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
