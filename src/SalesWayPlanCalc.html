@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sales Way Plan & PJP Calculator</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#020617', // Deep Space
+                            900: '#0f172a',
+                            800: '#1e293b',
+                        },
+                        cyan: {
+                            400: '#22d3ee',
+                            500: '#06b6d4',
+                            900: '#164e63',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 8s ease-in-out infinite',
+                        'float-delayed': 'float 8s ease-in-out infinite 4s',
+                        'slide-up': 'slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 8s linear infinite',
+                        'spin-reverse': 'spin-reverse 12s linear infinite',
+                        'ping-slow': 'ping 3s cubic-bezier(0, 0, 0.2, 1) infinite',
+                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        slideUp: {
+                            'from': { opacity: 0, transform: 'translateY(40px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        fadeIn: {
+                            'from': { opacity: 0 },
+                            'to': { opacity: 1 },
+                        },
+                        'spin-reverse': {
+                            'from': { transform: 'rotate(360deg)' },
+                            'to': { transform: 'rotate(0deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Remove Spinners */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] { -moz-appearance: textfield; }
+
+        /* Premium Glass Effect */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.3) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.5) 100%);
+            border-color: rgba(34, 211, 238, 0.3);
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .input-field {
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.2), 0 0 15px rgba(34, 211, 238, 0.1);
+            border-color: rgba(34, 211, 238, 0.5);
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        .text-neon-cyan { text-shadow: 0 0 10px rgba(34, 211, 238, 0.6); }
+        .text-neon-green { text-shadow: 0 0 10px rgba(16, 185, 129, 0.6); }
+
+        /* Loader Specific */
+        .loader-ring {
+            border: 2px solid transparent;
+            border-top-color: #22d3ee;
+            border-right-color: #22d3ee;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-200 overflow-hidden" id="body-content">
+
+    <!-- PREMIUM PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-all duration-700 ease-[cubic-bezier(0.76,0,0.24,1)]">
+        
+        <!-- Background Grid FX -->
+        <div class="absolute inset-0 opacity-20 pointer-events-none">
+            <div class="absolute inset-0" style="background-image: linear-gradient(rgba(34, 211, 238, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(34, 211, 238, 0.1) 1px, transparent 1px); background-size: 40px 40px; transform: perspective(500px) rotateX(60deg) translateY(-100px) scale(1.5);"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-[#020617]"></div>
+        </div>
+
+        <div class="relative flex flex-col items-center scale-100 transition-transform duration-700" id="preloader-content">
+            <!-- HUD Circle Animation -->
+            <div class="relative w-64 h-64 flex items-center justify-center mb-8">
+                <!-- Outer Ring (Static Glow) -->
+                <div class="absolute inset-0 rounded-full border border-cyan-500/10 shadow-[0_0_50px_rgba(34,211,238,0.05)]"></div>
+                
+                <!-- Ring 1 (Spinning Slow) -->
+                <div class="absolute inset-2 rounded-full border border-transparent border-t-cyan-500/30 border-l-cyan-500/30 animate-spin-slow"></div>
+                
+                <!-- Ring 2 (Spinning Reverse) -->
+                <div class="absolute inset-6 rounded-full border border-transparent border-r-blue-500/40 border-b-blue-500/40 animate-spin-reverse"></div>
+                
+                <!-- Ring 3 (Fast Spin - Active) -->
+                <div class="absolute inset-0 rounded-full loader-ring animate-[spin_3s_linear_infinite]"></div>
+
+                <!-- Center Core -->
+                <div class="absolute inset-0 flex items-center justify-center z-10">
+                    <div class="w-40 h-40 bg-[#020617] rounded-full flex flex-col items-center justify-center border border-white/5 relative overflow-hidden shadow-[0_0_30px_rgba(0,0,0,0.8)]">
+                        <!-- Scanning Line -->
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/10 to-transparent h-full w-full animate-pulse"></div>
+                        
+                        <div class="relative z-10 text-center">
+                            <i data-lucide="cpu" class="w-8 h-8 text-cyan-400 mx-auto mb-2 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]"></i>
+                            <div class="text-3xl font-bold font-mono text-white text-neon-cyan tracking-tighter" id="progress-percent">0%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Text Info -->
+            <div class="w-64 space-y-2 relative z-20">
+                <div class="flex justify-between items-end">
+                    <h2 class="text-sm font-bold tracking-[0.2em] text-cyan-500/80 font-mono">SYSTEM_BOOT</h2>
+                    <span class="text-[10px] text-slate-500 font-mono animate-pulse" id="loading-status">INITIALIZING...</span>
+                </div>
+                
+                <div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden border border-white/5 relative">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-600 via-cyan-400 to-white w-0 shadow-[0_0_20px_rgba(34,211,238,0.5)] relative transition-all duration-100 ease-out"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Background -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-blue-600/5 rounded-full blur-[150px] animate-float"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-cyan-600/5 rounded-full blur-[150px] animate-float-delayed"></div>
+        <div class="absolute inset-0 opacity-[0.02]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 32px 32px;"></div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="relative z-10 min-h-screen flex flex-col p-4 md:p-8 opacity-0 translate-y-4" id="main-content">
+        
+        <!-- Header -->
+        <header class="mb-10 max-w-5xl mx-auto w-full">
+            <div class="glass-panel p-6 md:p-8 rounded-3xl border border-white/10 shadow-2xl flex flex-col md:flex-row justify-between items-center gap-6 relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                
+                <div class="flex items-center gap-5 relative z-10">
+                    <div class="w-14 h-14 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.3)] border border-white/20 group-hover:scale-105 transition-transform duration-300">
+                        <i data-lucide="map" class="text-white w-7 h-7"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight font-num">Sales<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">WayPlan</span></h1>
+                        <p class="text-xs text-slate-400 font-medium tracking-[0.3em] uppercase mt-1">Strategic PJP Calculator</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center gap-3 px-5 py-2.5 bg-slate-900/50 rounded-full border border-white/10 text-xs text-slate-300 backdrop-blur-md">
+                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <span>System Operational</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="max-w-5xl mx-auto w-full space-y-8">
+
+            <!-- Intro Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="glass-card p-6 md:p-8 rounded-3xl border-l-4 border-l-yellow-500 relative overflow-hidden group">
+                    <div class="flex justify-between items-start relative z-10">
+                        <div>
+                            <h3 class="font-bold text-slate-400 text-xs uppercase tracking-wider mb-2 flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-yellow-500"></div>Selling Time</h3>
+                            <div class="text-4xl md:text-5xl font-bold text-white mt-2 font-num text-neon-cyan group-hover:scale-105 transition-transform origin-left">26%</div>
+                            <p class="text-xs text-slate-400 mt-3 font-medium">Effective Customer Interaction</p>
+                        </div>
+                        <div class="p-3.5 bg-yellow-500/10 rounded-2xl text-yellow-400 border border-yellow-500/20 shadow-lg shadow-yellow-500/5">
+                            <i data-lucide="clock" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card p-6 md:p-8 rounded-3xl border-l-4 border-l-slate-500 relative overflow-hidden group">
+                    <div class="flex justify-between items-start relative z-10">
+                        <div>
+                            <h3 class="font-bold text-slate-400 text-xs uppercase tracking-wider mb-2 flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-slate-500"></div>Non-Selling Time</h3>
+                            <div class="text-4xl md:text-5xl font-bold text-slate-200 mt-2 font-num group-hover:scale-105 transition-transform origin-left">74%</div>
+                            <p class="text-xs text-slate-400 mt-3 font-medium">Travel, Admin & Prep Work</p>
+                        </div>
+                        <div class="p-3.5 bg-slate-500/10 rounded-2xl text-slate-400 border border-slate-500/20 shadow-lg shadow-slate-500/5">
+                            <i data-lucide="truck" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calculator Section -->
+            <div class="glass-panel rounded-3xl overflow-hidden shadow-2xl border border-cyan-500/20">
+                <div class="bg-slate-900/50 p-5 border-b border-white/5 flex flex-wrap justify-between items-center backdrop-blur-md gap-4">
+                    <h2 class="font-bold text-lg text-white flex items-center gap-3">
+                        <div class="p-2 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-lg border border-cyan-500/20">
+                            <i data-lucide="cpu" class="w-5 h-5 text-cyan-400"></i>
+                        </div>
+                        PJP Resource Calculator
+                    </h2>
+                    <span class="text-[10px] font-bold bg-emerald-500/10 text-emerald-400 px-3 py-1.5 rounded-full border border-emerald-500/20 tracking-wide flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE
+                    </span>
+                </div>
+                
+                <div class="p-6 md:p-10 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+                    <!-- Input Form -->
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="text-xs font-bold text-cyan-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                                <i data-lucide="database" class="w-3 h-3"></i> Outlet Data Input
+                            </h3>
+                            
+                            <div class="space-y-5">
+                                <!-- Outlet A -->
+                                <div class="group">
+                                    <div class="flex justify-between mb-2">
+                                        <label class="text-xs font-bold text-slate-300 group-hover:text-white transition-colors">Type A (High Value)</label>
+                                        <span class="text-[10px] text-cyan-400 font-mono bg-cyan-500/10 px-2 py-0.5 rounded">4 visits/mo</span>
+                                    </div>
+                                    <div class="relative">
+                                        <input type="number" id="inputA" class="input-field w-full bg-slate-950/50 border border-white/10 rounded-xl px-5 py-4 text-sm text-white font-num focus:outline-none pl-12" placeholder="0">
+                                        <div class="absolute left-4 top-4 text-slate-500 group-focus-within:text-cyan-400 transition-colors"><i data-lucide="star" class="w-4 h-4"></i></div>
+                                    </div>
+                                </div>
+
+                                <!-- Outlet B -->
+                                <div class="group">
+                                    <div class="flex justify-between mb-2">
+                                        <label class="text-xs font-bold text-slate-300 group-hover:text-white transition-colors">Type B (Medium)</label>
+                                        <span class="text-[10px] text-blue-400 font-mono bg-blue-500/10 px-2 py-0.5 rounded">2 visits/mo</span>
+                                    </div>
+                                    <div class="relative">
+                                        <input type="number" id="inputB" class="input-field w-full bg-slate-950/50 border border-white/10 rounded-xl px-5 py-4 text-sm text-white font-num focus:outline-none pl-12" placeholder="0">
+                                        <div class="absolute left-4 top-4 text-slate-500 group-focus-within:text-blue-400 transition-colors"><i data-lucide="store" class="w-4 h-4"></i></div>
+                                    </div>
+                                </div>
+
+                                <!-- Outlet C -->
+                                <div class="group">
+                                    <div class="flex justify-between mb-2">
+                                        <label class="text-xs font-bold text-slate-300 group-hover:text-white transition-colors">Type C (Low)</label>
+                                        <span class="text-[10px] text-slate-400 font-mono bg-slate-700/30 px-2 py-0.5 rounded">1 visit/mo</span>
+                                    </div>
+                                    <div class="relative">
+                                        <input type="number" id="inputC" class="input-field w-full bg-slate-950/50 border border-white/10 rounded-xl px-5 py-4 text-sm text-white font-num focus:outline-none pl-12" placeholder="0">
+                                        <div class="absolute left-4 top-4 text-slate-500 group-focus-within:text-slate-300 transition-colors"><i data-lucide="shopping-bag" class="w-4 h-4"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-white/5">
+                            <h3 class="text-xs font-bold text-cyan-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                                <i data-lucide="settings" class="w-3 h-3"></i> Parameters
+                            </h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="group">
+                                    <label class="block text-[10px] font-bold text-slate-400 mb-2 uppercase group-hover:text-cyan-400 transition-colors">Work Days</label>
+                                    <div class="relative">
+                                        <input type="number" id="workDays" class="input-field w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white font-num text-center" placeholder="0">
+                                    </div>
+                                </div>
+                                <div class="group">
+                                    <label class="block text-[10px] font-bold text-slate-400 mb-2 uppercase group-hover:text-cyan-400 transition-colors">Daily Cap</label>
+                                    <div class="relative">
+                                        <input type="number" id="dailyCapacity" class="input-field w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white font-num text-center" placeholder="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Button Deck -->
+                        <div class="space-y-4">
+                            <button onclick="calculatePJP()" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white shadow-[0_0_30px_rgba(6,182,212,0.25)] border border-cyan-400/20 px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-all active:scale-95 group relative overflow-hidden">
+                                <div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                                <i data-lucide="calculator" class="w-5 h-5 group-hover:scale-110 transition-transform relative z-10"></i>
+                                <span class="relative z-10">CALCULATE PLAN</span>
+                            </button>
+
+                            <!-- System Operations Toolbar -->
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                <button onclick="exportReport()" class="p-3 rounded-lg bg-slate-800/50 border border-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition-all flex flex-col items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-wider group" title="Download Text Report">
+                                    <i data-lucide="file-text" class="w-4 h-4 group-hover:text-cyan-400 transition-colors"></i>
+                                    Report
+                                </button>
+                                <button onclick="backupData()" class="p-3 rounded-lg bg-slate-800/50 border border-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition-all flex flex-col items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-wider group" title="Backup Data to JSON">
+                                    <i data-lucide="save" class="w-4 h-4 group-hover:text-emerald-400 transition-colors"></i>
+                                    Backup
+                                </button>
+                                <button onclick="document.getElementById('fileInput').click()" class="p-3 rounded-lg bg-slate-800/50 border border-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition-all flex flex-col items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-wider group" title="Restore Data from JSON">
+                                    <i data-lucide="upload" class="w-4 h-4 group-hover:text-violet-400 transition-colors"></i>
+                                    Import
+                                </button>
+                                <button onclick="confirmReset()" class="p-3 rounded-lg bg-slate-800/50 border border-white/5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-all flex flex-col items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-wider group" title="Reset All Data">
+                                    <i data-lucide="rotate-ccw" class="w-4 h-4 transition-colors"></i>
+                                    Reset
+                                </button>
+                            </div>
+                            <input type="file" id="fileInput" accept=".json" class="hidden" onchange="restoreData(this)">
+                        </div>
+                    </div>
+
+                    <!-- Results Display -->
+                    <div class="flex flex-col justify-center space-y-6">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="h-px bg-white/10 flex-1"></div>
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Analysis Output</span>
+                            <div class="h-px bg-white/10 flex-1"></div>
+                        </div>
+
+                        <!-- Total Workload -->
+                        <div class="glass-card p-6 rounded-2xl border border-white/5 bg-slate-900/30">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h4 class="text-xs text-slate-400 uppercase font-bold tracking-wide">Total Monthly Workload</h4>
+                                    <p class="text-[10px] text-slate-600 mt-1">Sum of all required visits</p>
+                                </div>
+                                <i data-lucide="bar-chart-2" class="w-5 h-5 text-cyan-500/50"></i>
+                            </div>
+                            <div class="flex items-end gap-2 mb-3">
+                                <span class="text-3xl font-bold text-white font-num text-neon-cyan" id="resultTotalVisits">0</span>
+                                <span class="text-xs text-slate-500 mb-1.5">visits</span>
+                            </div>
+                            <div class="w-full bg-slate-800/50 rounded-full h-1.5 overflow-hidden flex">
+                                <div class="bg-cyan-500 h-full shadow-[0_0_10px_rgba(34,211,238,0.8)]" style="width: 40%"></div>
+                                <div class="bg-blue-500 h-full" style="width: 30%"></div>
+                                <div class="bg-slate-600 h-full" style="width: 30%"></div>
+                            </div>
+                            <div class="flex justify-between mt-2 text-[9px] font-mono text-slate-500">
+                                <span>Type A</span>
+                                <span>Type B</span>
+                                <span>Type C</span>
+                            </div>
+                        </div>
+
+                        <!-- Daily Target -->
+                        <div class="glass-card p-6 rounded-2xl border border-white/5 bg-slate-900/30">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <span class="text-xs text-slate-400 uppercase font-bold block mb-1">Daily Visit Target</span>
+                                    <span class="text-[10px] text-slate-600">Across all teams per day</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-2xl font-bold text-white font-num block" id="resultDailyTarget">0</span>
+                                    <span class="text-[9px] text-cyan-500/70 uppercase">Visits / Day</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Final Result -->
+                        <div class="relative group">
+                            <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 blur-xl rounded-3xl opacity-50 group-hover:opacity-75 transition-opacity duration-500"></div>
+                            <div class="glass-card bg-gradient-to-br from-slate-900/80 to-slate-900/60 border border-emerald-500/30 p-8 rounded-3xl relative overflow-hidden">
+                                <div class="absolute -right-6 -top-6 w-32 h-32 bg-emerald-500/10 rounded-full blur-[40px] animate-pulse-slow"></div>
+                                
+                                <div class="text-center relative z-10">
+                                    <p class="text-xs font-bold text-emerald-400 uppercase tracking-[0.2em] mb-4">Recommended Sales Force</p>
+                                    
+                                    <div class="flex items-center justify-center gap-6 my-2">
+                                        <div class="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.1)]">
+                                            <i data-lucide="users" class="w-8 h-8"></i>
+                                        </div>
+                                        <div class="text-left">
+                                            <div class="text-5xl font-bold text-white font-num text-neon-green leading-none" id="resultVehicles">0</div>
+                                            <span class="text-xs text-emerald-500/60 font-bold uppercase tracking-wide">Teams / Vans</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-4 pt-4 border-t border-white/5">
+                                        <p class="text-[10px] text-slate-400 max-w-xs mx-auto">Based on standard PJP efficiency metrics and travel time allocation.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guide Section -->
+            <div class="pt-8">
+                <h2 class="text-lg font-bold text-white mb-6 flex items-center gap-3">
+                    <span class="w-8 h-1 bg-cyan-500 rounded-full"></span>
+                    Implementation Strategy
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Step 1 -->
+                    <div class="glass-card p-6 rounded-2xl hover:bg-white/5 transition-all group border-t-2 border-t-cyan-500">
+                        <div class="mb-4 bg-cyan-900/30 w-10 h-10 rounded-lg flex items-center justify-center text-cyan-400 font-bold border border-cyan-500/20">1</div>
+                        <h4 class="font-bold text-white text-sm uppercase tracking-wide mb-2 group-hover:text-cyan-400 transition-colors">Segmentation</h4>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            Classify based on potential. High value (A), Medium (B), Low (C).
+                        </p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="glass-card p-6 rounded-2xl hover:bg-white/5 transition-all group border-t-2 border-t-blue-500">
+                        <div class="mb-4 bg-blue-900/30 w-10 h-10 rounded-lg flex items-center justify-center text-blue-400 font-bold border border-blue-500/20">2</div>
+                        <h4 class="font-bold text-white text-sm uppercase tracking-wide mb-2 group-hover:text-blue-400 transition-colors">Route Mapping</h4>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            Assign dealers/branches. Calculate efficient routes to minimize travel time (74%).
+                        </p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="glass-card p-6 rounded-2xl hover:bg-white/5 transition-all group border-t-2 border-t-violet-500">
+                        <div class="mb-4 bg-violet-900/30 w-10 h-10 rounded-lg flex items-center justify-center text-violet-400 font-bold border border-violet-500/20">3</div>
+                        <h4 class="font-bold text-white text-sm uppercase tracking-wide mb-2 group-hover:text-violet-400 transition-colors">Optimization</h4>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            Use calculated workforce to balance daily workload and coverage frequency.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="text-center text-slate-600 text-[10px] py-12 font-mono uppercase tracking-widest">
+            <p>Sales Way Plan Calculation System • Ultimate Edition</p>
+        </footer>
+
+    </main>
+
+    <!-- CUSTOM CONFIRM MODAL -->
+    <div id="confirm-modal" class="fixed inset-0 z-[150] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
+        <div class="glass-panel w-full max-w-sm rounded-3xl p-6 relative border border-white/10 shadow-2xl text-center">
+            <div class="w-16 h-16 rounded-full bg-rose-500/10 text-rose-500 flex items-center justify-center mx-auto mb-4 border border-rose-500/20 shadow-[0_0_20px_rgba(244,63,94,0.2)]">
+                <i data-lucide="alert-triangle" class="w-8 h-8"></i>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Confirm System Reset?</h3>
+            <p class="text-xs text-slate-400 mb-6 font-sans leading-relaxed">All entered data and calculations will be cleared. This action cannot be undone.</p>
+            <div class="flex justify-center gap-3">
+                <button onclick="closeConfirmModal()" class="px-5 py-2.5 rounded-xl text-slate-300 hover:bg-white/10 text-sm font-bold border border-transparent hover:border-white/10 transition-colors">Cancel</button>
+                <button onclick="executeReset()" class="bg-rose-600 hover:bg-rose-500 text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-rose-600/30">Reset All</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed top-4 right-4 z-[200] hidden transition-all duration-500 translate-x-full">
+        <div class="glass-panel px-5 py-4 rounded-xl border border-emerald-500/20 shadow-2xl flex items-center gap-4 bg-[#020617]/90 backdrop-blur-xl">
+            <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
+                <i data-lucide="check" class="w-4 h-4"></i>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold text-white">System Success</h4>
+                <p class="text-xs text-slate-400" id="toast-msg">Operation completed.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Premium Preloader Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const preloader = document.getElementById('preloader');
+            const preloaderContent = document.getElementById('preloader-content');
+            const mainContent = document.getElementById('main-content');
+            const progress = document.getElementById('progress-bar');
+            const percentText = document.getElementById('progress-percent');
+            const statusText = document.getElementById('loading-status');
+            const body = document.getElementById('body-content');
+
+            const statusMessages = [
+                "INITIALIZING CORE...",
+                "LOADING ASSETS...",
+                "SYNCING DATABASE...",
+                "CALIBRATING AI...",
+                "OPTIMIZING UX...",
+                "READY TO LAUNCH"
+            ];
+
+            let width = 0;
+
+            const interval = setInterval(() => {
+                const increment = Math.random() * 2 + 0.5;
+                width += increment;
+                
+                if (width > 100) width = 100;
+                
+                if (progress) progress.style.width = width + '%';
+                if (percentText) percentText.innerText = Math.floor(width) + '%';
+
+                const stage = Math.floor((width / 100) * (statusMessages.length - 1));
+                if (statusText && statusMessages[stage]) {
+                    statusText.innerText = statusMessages[stage];
+                }
+
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        if(preloaderContent) {
+                            preloaderContent.style.transform = "scale(0.8)";
+                            preloaderContent.style.opacity = "0";
+                        }
+                        if(preloader) {
+                            preloader.style.opacity = "0";
+                            preloader.style.pointerEvents = "none";
+                        }
+                        setTimeout(() => {
+                            if(preloader) preloader.remove();
+                            if(mainContent) {
+                                mainContent.classList.remove('opacity-0', 'translate-y-4');
+                                mainContent.classList.add('animate-slide-up');
+                            }
+                            body.classList.remove('overflow-hidden'); 
+                        }, 600);
+                    }, 400); 
+                }
+            }, 30); 
+            
+            calculatePJP();
+            lucide.createIcons();
+        });
+
+        // Constants
+        const FREQ_A = 4;
+        const FREQ_B = 2;
+        const FREQ_C = 1;
+
+        function getInputValues() {
+            return {
+                a: parseInt(document.getElementById('inputA').value) || 0,
+                b: parseInt(document.getElementById('inputB').value) || 0,
+                c: parseInt(document.getElementById('inputC').value) || 0,
+                days: parseInt(document.getElementById('workDays').value) || 0,
+                cap: parseInt(document.getElementById('dailyCapacity').value) || 0
+            };
+        }
+
+        function calculatePJP() {
+            const val = getInputValues();
+
+            const visitsA = val.a * FREQ_A;
+            const visitsB = val.b * FREQ_B;
+            const visitsC = val.c * FREQ_C;
+            const totalVisits = visitsA + visitsB + visitsC;
+
+            // Prevent division by zero if inputs are 0
+            const dailyVisitsRequired = val.days > 0 ? totalVisits / val.days : 0;
+            const vehiclesNeeded = val.cap > 0 ? dailyVisitsRequired / val.cap : 0;
+
+            updateUI(totalVisits, dailyVisitsRequired, vehiclesNeeded, visitsA, visitsB, visitsC);
+        }
+
+        function updateUI(total, daily, vehicles, vA, vB, vC) {
+            animateValue(document.getElementById('resultTotalVisits'), total);
+            animateValue(document.getElementById('resultDailyTarget'), Math.ceil(daily));
+            animateValue(document.getElementById('resultVehicles'), Math.ceil(vehicles));
+        }
+
+        function animateValue(obj, end) {
+            let startTimestamp = null;
+            const duration = 1000;
+            const start = parseInt(obj.innerText.replace(/,/g, '')) || 0;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString();
+                if (progress < 1) window.requestAnimationFrame(step);
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // --- NEW FUNCTIONS FOR SYSTEM OPERATIONS ---
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.classList.remove('hidden', 'translate-x-full');
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+                setTimeout(() => toast.classList.add('hidden'), 500);
+            }, 3000);
+        }
+
+        // 1. Export Report (.txt)
+        function exportReport() {
+            const val = getInputValues();
+            const totalVisits = (val.a * FREQ_A) + (val.b * FREQ_B) + (val.c * FREQ_C);
+            const daily = Math.ceil(totalVisits / val.days);
+            const vehicles = Math.ceil(daily / val.cap);
+            const date = new Date().toLocaleString();
+
+            const report = `
+SALES WAY PLAN (PJP) REPORT
+Generated: ${date}
+----------------------------------------
+
+INPUT DATA:
+- Type A Outlets: ${val.a}
+- Type B Outlets: ${val.b}
+- Type C Outlets: ${val.c}
+- Working Days  : ${val.days}
+- Daily Capacity: ${val.cap}
+
+ANALYSIS RESULTS:
+----------------------------------------
+1. Total Monthly Workload: ${totalVisits} visits
+2. Daily Visit Target    : ${daily} visits/day
+3. REQUIRED SALES FORCE  : ${vehicles} TEAMS/VEHICLES
+
+----------------------------------------
+Generated by PJP Calculator v2.5
+`;
+            downloadFile(report, `PJP_Report_${Date.now()}.txt`, 'text/plain');
+            showToast("Report downloaded successfully");
+        }
+
+        // 2. Backup Data (.json)
+        function backupData() {
+            const data = getInputValues();
+            const jsonString = JSON.stringify(data, null, 2);
+            downloadFile(jsonString, `PJP_Backup_${Date.now()}.json`, 'application/json');
+            showToast("System backup created");
+        }
+
+        // Helper to trigger download
+        function downloadFile(content, fileName, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // 3. Restore Data
+        function restoreData(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.a !== undefined) {
+                        document.getElementById('inputA').value = data.a;
+                        document.getElementById('inputB').value = data.b;
+                        document.getElementById('inputC').value = data.c;
+                        document.getElementById('workDays').value = data.days;
+                        document.getElementById('dailyCapacity').value = data.cap;
+                        calculatePJP();
+                        showToast("Data restored successfully");
+                    } else {
+                        alert("Invalid backup file");
+                    }
+                } catch (err) {
+                    alert("Error reading file");
+                }
+            };
+            reader.readAsText(file);
+            input.value = ''; // Reset input
+        }
+
+        // 4. Reset System
+        function confirmReset() {
+            const modal = document.getElementById('confirm-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeConfirmModal() {
+            const modal = document.getElementById('confirm-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function executeReset() {
+            document.getElementById('inputA').value = '';
+            document.getElementById('inputB').value = '';
+            document.getElementById('inputC').value = '';
+            document.getElementById('workDays').value = '';
+            document.getElementById('dailyCapacity').value = '';
+            calculatePJP();
+            closeConfirmModal();
+            showToast("System reset complete");
+        }
+    </script>
+</body>
+</html>
