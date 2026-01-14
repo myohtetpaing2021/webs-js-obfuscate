@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Liquidity Ratio - Ultimate Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+/* obfuscated */
+var _0x4ed74c=_0x596c;function _0x596c(_0xfb076c,_0x554941){_0xfb076c=_0xfb076c-0x1d9;var _0x12f098=_0x12f0();var _0x596c43=_0x12f098[_0xfb076c];return _0x596c43;}function _0x12f0(){var _0x1c6440=['Inter','shimmer\x202s\x20infinite','sans-serif','#1e293b','23524BMLscc','Padauk','2385410ayFxyB','453234DruHvV','2370408bSvIAK','955ICpYaU','#020617','5XNElPG','7eGLByp','-200%\x200','22ZXzAua','float\x208s\x20ease-in-out\x20infinite','#0284c7','1518918iTXfeY','float\x208s\x20ease-in-out\x20infinite\x204s','Rajdhani','2167866WlZAZq','translateY(40px)','200%\x200','pulse\x204s\x20cubic-bezier(0.4,\x200,\x200.6,\x201)\x20infinite'];_0x12f0=function(){return _0x1c6440;};return _0x12f0();}(function(_0x177d13,_0x5461c0){var _0x2c9c76=_0x596c,_0x1f46ae=_0x177d13();while(!![]){try{var _0x1fd079=-parseInt(_0x2c9c76(0x1d9))/0x1*(parseInt(_0x2c9c76(0x1de))/0x2)+parseInt(_0x2c9c76(0x1ef))/0x3+-parseInt(_0x2c9c76(0x1ec))/0x4*(parseInt(_0x2c9c76(0x1db))/0x5)+-parseInt(_0x2c9c76(0x1e1))/0x6+parseInt(_0x2c9c76(0x1dc))/0x7*(parseInt(_0x2c9c76(0x1f0))/0x8)+-parseInt(_0x2c9c76(0x1e4))/0x9+parseInt(_0x2c9c76(0x1ee))/0xa;if(_0x1fd079===_0x5461c0)break;else _0x1f46ae['push'](_0x1f46ae['shift']());}catch(_0x599cbf){_0x1f46ae['push'](_0x1f46ae['shift']());}}}(_0x12f0,0x2ad93),tailwind['config']={'theme':{'extend':{'fontFamily':{'sans':[_0x4ed74c(0x1ed),_0x4ed74c(0x1ea)],'num':[_0x4ed74c(0x1e8),_0x4ed74c(0x1ea)],'tech':[_0x4ed74c(0x1e3),_0x4ed74c(0x1ea)]},'colors':{'dark':{0x3b6:_0x4ed74c(0x1da),0x384:'#0f172a',0x320:_0x4ed74c(0x1eb)},'primary':{0x190:'#38bdf8',0x1f4:'#0ea5e9',0x258:_0x4ed74c(0x1e0)}},'animation':{'float':_0x4ed74c(0x1df),'float-delayed':_0x4ed74c(0x1e2),'slide-up':'slideUp\x200.8s\x20cubic-bezier(0.16,\x201,\x200.3,\x201)\x20forwards','pulse-slow':_0x4ed74c(0x1e7),'spin-slow':'spin\x208s\x20linear\x20infinite','spin-reverse':'spin\x206s\x20linear\x20infinite\x20reverse','fade-in':'fadeIn\x200.5s\x20ease-out\x20forwards','shimmer':_0x4ed74c(0x1e9)},'keyframes':{'float':{'0%,\x20100%':{'transform':'translateY(0px)'},'50%':{'transform':'translateY(-20px)'}},'slideUp':{'from':{'opacity':0x0,'transform':_0x4ed74c(0x1e5)},'to':{'opacity':0x1,'transform':'translateY(0)'}},'fadeIn':{'from':{'opacity':0x0},'to':{'opacity':0x1}},'shimmer':{'0%':{'backgroundPosition':_0x4ed74c(0x1dd)},'100%':{'backgroundPosition':_0x4ed74c(0x1e6)}}}}}});
+</script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Remove Spinners from Number Inputs */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Premium Glass Effect */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.6) 100%);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 
+                        0 0 20px rgba(56, 189, 248, 0.1); /* Subtle blue glow */
+        }
+        
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+
+        .text-neon-blue {
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+        }
+        
+        .text-neon-emerald {
+            text-shadow: 0 0 15px rgba(16, 185, 129, 0.6);
+        }
+
+        /* Preloader Specific Styles */
+        .loader-ring {
+            border: 2px solid transparent;
+            border-top-color: #0ea5e9;
+            border-right-color: rgba(14, 165, 233, 0.2);
+            border-radius: 50%;
+        }
+        .loader-ring-inner {
+            border: 2px solid transparent;
+            border-bottom-color: #8b5cf6;
+            border-left-color: rgba(139, 92, 246, 0.2);
+            border-radius: 50%;
+        }
+        .loader-bg-grid {
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            perspective: 500px;
+            transform-style: preserve-3d;
+        }
+        
+        /* Input Styling */
+        .input-field {
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3), 0 0 15px rgba(56, 189, 248, 0.2);
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
+
+    <!-- PREMIUM PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-all duration-1000 ease-in-out overflow-hidden">
+        
+        <!-- Animated Background Grid -->
+        <div class="absolute inset-0 opacity-20 loader-bg-grid animate-pulse-slow" style="transform: perspective(500px) rotateX(20deg) scale(1.5);"></div>
+        
+        <!-- Vignette Overlay -->
+        <div class="absolute inset-0 bg-radial-gradient from-transparent to-[#020617]"></div>
+
+        <div class="relative flex flex-col items-center z-10">
+            <!-- Central Core System -->
+            <div class="relative w-48 h-48 flex items-center justify-center mb-12">
+                
+                <!-- Glow Effect -->
+                <div class="absolute inset-0 bg-cyan-500/20 blur-[60px] rounded-full animate-pulse-slow"></div>
+
+                <!-- Ring 1: Outer Slow -->
+                <div class="absolute inset-0 loader-ring animate-spin-slow shadow-[0_0_20px_rgba(6,182,212,0.1)]"></div>
+                
+                <!-- Ring 2: Middle Reverse -->
+                <div class="absolute inset-4 loader-ring-inner animate-spin-reverse shadow-[0_0_20px_rgba(139,92,246,0.1)]"></div>
+                
+                <!-- Ring 3: Static Dashed -->
+                <div class="absolute inset-8 border border-dashed border-slate-700/50 rounded-full animate-[spin_12s_linear_infinite]"></div>
+
+                <!-- Core Hexagon/Orb -->
+                <div class="relative w-24 h-24 bg-[#0f172a] rounded-full flex items-center justify-center border border-cyan-500/30 shadow-[0_0_30px_rgba(6,182,212,0.3)] backdrop-blur-md">
+                    <div class="absolute inset-2 bg-gradient-to-br from-cyan-900/50 to-violet-900/50 rounded-full animate-pulse"></div>
+                    <i data-lucide="activity" class="text-cyan-400 w-8 h-8 relative z-10 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]"></i>
+                </div>
+            </div>
+            
+            <!-- Typography & Progress -->
+            <div class="w-80 space-y-6 text-center">
+                
+                <!-- Title Reveal -->
+                <div class="overflow-hidden">
+                    <h2 class="text-4xl font-bold tracking-[0.2em] text-white font-tech mb-2 drop-shadow-lg">
+                        LIQUIDITY<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-500">FLOW</span>
+                    </h2>
+                </div>
+                
+                <div class="flex justify-between items-end px-1">
+                    <p class="text-[10px] text-cyan-500/70 font-tech tracking-[0.3em] uppercase animate-pulse">Initializing Core...</p>
+                    <span id="progress-text" class="text-xl font-bold font-num text-white">0%</span>
+                </div>
+                
+                <!-- Premium Progress Bar -->
+                <div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden border border-white/5 relative shadow-inner">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-600 w-0 shadow-[0_0_15px_rgba(6,182,212,0.8)] relative transition-all duration-75 ease-out">
+                        <div class="absolute top-0 right-0 bottom-0 w-20 bg-gradient-to-r from-transparent to-white/60 blur-sm"></div>
+                    </div>
+                </div>
+
+                <!-- Footer Status -->
+                <div class="flex justify-between text-[9px] text-slate-500 font-tech tracking-widest uppercase opacity-60">
+                    <span>Ver 3.0 Ultimate</span>
+                    <span>Secure Connection</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Background (Main App) -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <!-- Deep gradients -->
+        <div class="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-blue-600/5 rounded-full blur-[120px] animate-float"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-violet-600/5 rounded-full blur-[120px] animate-float-delayed"></div>
+        
+        <!-- Tech Grid -->
+        <div class="absolute inset-0 opacity-[0.02]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="min-h-screen relative z-10 flex flex-col">
+        
+        <!-- Navbar -->
+        <nav class="glass-panel border-b border-white/5 sticky top-0 z-50">
+            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/20 border border-white/10 group cursor-pointer hover:shadow-cyan-500/40 transition-all duration-300">
+                        <i data-lucide="bar-chart-2" class="text-white w-6 h-6 group-hover:scale-110 transition-transform"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-white font-tech tracking-wide">Liquidity<span class="text-cyan-400">Flow</span></h1>
+                        <p class="text-[10px] text-slate-400 font-medium tracking-[0.2em] uppercase">Financial Engine</p>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center gap-3">
+                    <div class="px-3 py-1.5 rounded-full bg-slate-800/50 border border-white/5 backdrop-blur-md flex items-center gap-2">
+                        <span class="relative flex h-2 w-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">System Active</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container mx-auto px-4 py-8 max-w-6xl flex-1">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 animate-slide-up" style="animation-delay: 0.2s;">
+                
+                <!-- Left Side: Educational Content -->
+                <div class="lg:col-span-5 space-y-6">
+                    <!-- Intro Card -->
+                    <div class="glass-card p-6 rounded-3xl border-l-4 border-l-cyan-500 group">
+                        <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2 font-tech uppercase tracking-wide">
+                            <i data-lucide="book-open" class="w-5 h-5 text-cyan-400 group-hover:text-cyan-300 transition-colors"></i>
+                            ငွေဖြစ်လွယ်မှု (Liquidity)
+                        </h2>
+                        <p class="text-slate-400 leading-relaxed mb-4 text-sm font-light">
+                            လုပ်ငန်းတွေလုပ်တဲ့အခါ ငွေပေါ်မြန်မှုဟာ လွန်စွာအရေးကြီးပါတယ်။ လုပ်ငန်းတွေမှာ လပိုင်းအတွင်း ရေတိုပေးရမယ့် ငွေတွေ (Supplier အကြွေး၊ လုပ်ခလစာ) ရှိတာကြောင့် တစ်ဖက်က ငွေပြန်ရပြီး ပေးနိုင်ဖို့ လိုအပ်ပါတယ်။
+                        </p>
+                        <div class="text-xs text-slate-300 bg-slate-800/50 p-4 rounded-xl border border-white/5 flex gap-3 shadow-inner">
+                            <i data-lucide="info" class="w-5 h-5 text-cyan-400 shrink-0"></i>
+                            <div>
+                                <strong class="text-cyan-400 block mb-1 font-tech uppercase tracking-wider">Timeframe Note:</strong>
+                                ၁ နှစ်အောက် အချိန်ကို Short Term (ရေတို)၊ ၁ နှစ်အထက်ကို Long Term (ရေရှည်) လို့ သတ်မှတ်ပါတယ်။
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formulas -->
+                    <div class="glass-panel p-6 rounded-3xl">
+                        <h3 class="text-lg font-bold text-white mb-6 border-b border-white/10 pb-4 flex items-center gap-2 font-tech uppercase tracking-wide">
+                            <i data-lucide="function-square" class="w-5 h-5 text-violet-400"></i>
+                            ပုံသေနည်းများ
+                        </h3>
+                        
+                        <div class="space-y-6">
+                            <div class="group cursor-default">
+                                <h4 class="text-sm font-bold text-cyan-400 mb-2 font-tech uppercase tracking-widest flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Current Ratio
+                                </h4>
+                                <div class="bg-slate-900/50 p-4 rounded-xl border border-white/10 text-center font-num text-slate-200 font-bold mb-2 group-hover:border-cyan-500/30 group-hover:shadow-[0_0_15px_rgba(6,182,212,0.1)] transition-all">
+                                    Current Assets ÷ Current Liabilities
+                                </div>
+                                <p class="text-slate-500 text-xs">
+                                    လုပ်ငန်းရဲ့ ရေတိုပေးရမယ့် ပေးရန်တာဝန်တွေကို လက်ရှိပိုင်ဆိုင်မှုနဲ့ ဘယ်လောက်အထိ ပေးနိုင်လဲဆိုတာ တိုင်းတာခြင်းဖြစ်ပါတယ်။
+                                </p>
+                            </div>
+
+                            <div class="group cursor-default">
+                                <h4 class="text-sm font-bold text-violet-400 mb-2 font-tech uppercase tracking-widest flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-violet-500 rounded-full"></span> Quick Ratio
+                                </h4>
+                                <div class="bg-slate-900/50 p-4 rounded-xl border border-white/10 text-center font-num text-slate-200 font-bold mb-2 group-hover:border-violet-500/30 group-hover:shadow-[0_0_15px_rgba(139,92,246,0.1)] transition-all">
+                                    (Assets - Inventory) ÷ Liabilities
+                                </div>
+                                <p class="text-slate-500 text-xs">
+                                    ချက်ချင်းရောင်းမထွက်နိုင်တဲ့ Inventory (ကုန်ပစ္စည်းလက်ကျန်) တွေကို နှုတ်ပြီး တွက်ချက်ခြင်းဖြစ်ပါတယ်။
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Components Info -->
+                    <div class="glass-card p-6 rounded-3xl">
+                        <h3 class="font-bold text-white mb-4 text-sm font-tech uppercase tracking-wider">Components</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-emerald-500/5 p-4 rounded-2xl border border-emerald-500/10 hover:bg-emerald-500/10 transition-colors">
+                                <strong class="text-emerald-400 text-xs block mb-2 uppercase font-bold tracking-wide">Current Assets</strong>
+                                <ul class="text-xs text-slate-400 space-y-1.5 list-disc list-inside">
+                                    <li>Cash (ငွေသား)</li>
+                                    <li>Inventory (ကုန်ပစ္စည်း)</li>
+                                    <li>Prepay (ကြိုတင်ပေး)</li>
+                                    <li>Receivable (ရရန်ရှိ)</li>
+                                </ul>
+                            </div>
+                            <div class="bg-rose-500/5 p-4 rounded-2xl border border-rose-500/10 hover:bg-rose-500/10 transition-colors">
+                                <strong class="text-rose-400 text-xs block mb-2 uppercase font-bold tracking-wide">Liabilities</strong>
+                                <ul class="text-xs text-slate-400 space-y-1.5 list-disc list-inside">
+                                    <li>Payable (ပေးရန်ရှိ)</li>
+                                    <li>Short term Notes</li>
+                                    <li>Wages (လုပ်ခလစာ)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side: Calculator -->
+                <div class="lg:col-span-7">
+                    <div class="glass-panel rounded-3xl overflow-hidden sticky top-24 border border-cyan-500/20 shadow-[0_0_50px_rgba(6,182,212,0.05)] ring-1 ring-white/5">
+                        <!-- Calc Header -->
+                        <div class="bg-gradient-to-r from-slate-900/90 via-slate-800/90 to-slate-900/90 p-5 flex justify-between items-center border-b border-white/5 backdrop-blur-xl">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 bg-cyan-500/10 rounded-lg text-cyan-400 border border-cyan-500/20 shadow-[0_0_10px_rgba(6,182,212,0.1)]">
+                                    <i data-lucide="calculator" class="w-5 h-5"></i>
+                                </div>
+                                <h3 class="font-bold text-white font-tech uppercase tracking-wide">Calculation Engine</h3>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="exportReport()" class="text-xs bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 px-4 py-2 rounded-xl transition-all border border-cyan-500/20 hover:text-white hover:border-cyan-500/40 flex items-center gap-2 group shadow-lg">
+                                    <i data-lucide="download" class="w-3 h-3 group-hover:scale-110 transition-transform"></i> Export
+                                </button>
+                                <button onclick="resetForm()" class="text-xs bg-white/5 hover:bg-white/10 text-slate-300 px-4 py-2 rounded-xl transition-all border border-white/5 hover:text-white hover:border-white/20 flex items-center gap-2 group shadow-lg">
+                                    <i data-lucide="rotate-ccw" class="w-3 h-3 group-hover:-rotate-180 transition-transform duration-500 text-cyan-400"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="p-6 md:p-8 space-y-8">
+                            
+                            <!-- Assets Section -->
+                            <div class="space-y-5 animate-fade-in" style="animation-delay: 0.3s;">
+                                <div class="flex items-center justify-between border-b border-white/5 pb-2">
+                                    <h4 class="text-emerald-400 font-bold flex items-center text-sm uppercase tracking-wider font-tech">
+                                        <i data-lucide="wallet" class="w-4 h-4 mr-2"></i> Current Assets
+                                    </h4>
+                                    <span class="text-xs font-num text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-lg border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.1)]" id="total-assets">0 Ks</span>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                    <!-- Input Item -->
+                                    <div class="flex flex-col gap-2 group">
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider pl-1 group-hover:text-emerald-400 transition-colors">Cash & Equivalents</label>
+                                        <div class="relative group-focus-within:scale-[1.02] transition-transform duration-300">
+                                            <input type="number" id="cash" placeholder="0" class="asset-input input-field w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:outline-none font-num shadow-inner">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col gap-2 group">
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider pl-1 group-hover:text-emerald-400 transition-colors">Inventory / Stock</label>
+                                        <div class="relative group-focus-within:scale-[1.02] transition-transform duration-300">
+                                            <input type="number" id="inventory" placeholder="0" class="asset-input input-field w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:outline-none font-num shadow-inner">
+                                            <div class="absolute right-3 top-3.5 text-orange-400/50 text-[10px]" title="Excluded in Quick Ratio"><i data-lucide="alert-circle" class="w-3.5 h-3.5"></i></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-col gap-2 group">
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider pl-1 group-hover:text-emerald-400 transition-colors">Prepay Expense</label>
+                                        <div class="relative group-focus-within:scale-[1.02] transition-transform duration-300">
+                                            <input type="number" id="prepay" placeholder="0" class="asset-input input-field w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:outline-none font-num shadow-inner">
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-col gap-2 group">
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider pl-1 group-hover:text-emerald-400 transition-colors">Receivables</label>
+                                        <div class="relative group-focus-within:scale-[1.02] transition-transform duration-300">
+                                            <input type="number" id="receivable" placeholder="0" class="asset-input input-field w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:outline-none font-num shadow-inner">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Liabilities Section -->
+                            <div class="space-y-5 animate-fade-in" style="animation-delay: 0.4s;">
+                                <div class="flex items-center justify-between border-b border-white/5 pb-2">
+                                    <h4 class="text-rose-400 font-bold flex items-center text-sm uppercase tracking-wider font-tech">
+                                        <i data-lucide="file-warning" class="w-4 h-4 mr-2"></i> Current Liabilities
+                                    </h4>
+                                    <span class="text-xs font-num text-rose-400 bg-rose-500/10 px-3 py-1 rounded-lg border border-rose-500/20 shadow-[0_0_10px_rgba(244,63,94,0.1)]" id="total-liabilities">0 Ks</span>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                                    <div class="flex flex-col gap-2 group">
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider pl-1 group-hover:text-rose-400 transition-colors">Accounts Payable</label>
+                                        <input type="number" id="payable" placeholder="0" class="liability-input input-field w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:outline-none font-num shadow-inner group-focus-within:scale-[1.02] transition-transform">
+                                    </div>
+                                    <div class="flex flex-col gap-2 group">
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider pl-1 group-hover:text-rose-400 transition-colors">Short Term Notes</label>
+                                        <input type="number" id="notes" placeholder="0" class="liability-input input-field w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:outline-none font-num shadow-inner group-focus-within:scale-[1.02] transition-transform">
+                                    </div>
+                                    <div class="flex flex-col gap-2 group">
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider pl-1 group-hover:text-rose-400 transition-colors">Wages Payable</label>
+                                        <input type="number" id="wages" placeholder="0" class="liability-input input-field w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:outline-none font-num shadow-inner group-focus-within:scale-[1.02] transition-transform">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Results Display -->
+                            <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-8 border border-white/5 relative overflow-hidden group shadow-2xl animate-fade-in" style="animation-delay: 0.5s;">
+                                <!-- Animated Background in Result Card -->
+                                <div class="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                <div class="absolute -right-10 -top-10 w-32 h-32 bg-cyan-500/10 rounded-full blur-[50px] animate-pulse-slow"></div>
+                                
+                                <div class="grid grid-cols-2 gap-8 text-center relative z-10">
+                                    <div class="relative">
+                                        <h5 class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] mb-3 font-tech">Current Ratio</h5>
+                                        <div id="result-current-ratio" class="text-5xl font-bold text-white font-num text-neon-blue transition-all duration-300 scale-100 hover:scale-110 cursor-default">-</div>
+                                        <div class="h-1.5 w-16 mx-auto bg-slate-800 rounded-full mt-4 overflow-hidden">
+                                            <div class="h-full w-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)]"></div>
+                                        </div>
+                                    </div>
+                                    <div class="border-l border-white/5 relative">
+                                        <h5 class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] mb-3 font-tech">Quick Ratio</h5>
+                                        <div id="result-quick-ratio" class="text-5xl font-bold text-white font-num transition-all duration-300 scale-100 hover:scale-110 cursor-default">-</div>
+                                        <div class="h-1.5 w-16 mx-auto bg-slate-800 rounded-full mt-4 overflow-hidden">
+                                            <div class="h-full w-full bg-violet-400 shadow-[0_0_10px_rgba(167,139,250,0.8)]"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div id="interpretation" class="mt-8 pt-6 border-t border-white/5 text-center hidden">
+                                    <!-- Dynamic content inserted by JS -->
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="border-t border-white/5 bg-[#020617] py-8 text-center relative z-10">
+            <p class="text-xs text-slate-600 font-tech uppercase tracking-widest">
+                Engineered by <span class="text-cyan-600 font-bold hover:text-cyan-400 transition-colors cursor-pointer">MYO HTET PAING</span>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+/* obfuscated */
+const _0x1d1172=_0x4000;(function(_0x44da5a,_0xaa253d){const _0x5b17a4=_0x4000,_0x14ca54=_0x44da5a();while(!![]){try{const _0x5cd5f2=parseInt(_0x5b17a4(0xe5))/0x1*(-parseInt(_0x5b17a4(0x113))/0x2)+parseInt(_0x5b17a4(0x173))/0x3*(-parseInt(_0x5b17a4(0x155))/0x4)+parseInt(_0x5b17a4(0x146))/0x5+parseInt(_0x5b17a4(0x123))/0x6+parseInt(_0x5b17a4(0x112))/0x7*(parseInt(_0x5b17a4(0x10b))/0x8)+-parseInt(_0x5b17a4(0x133))/0x9*(parseInt(_0x5b17a4(0x13e))/0xa)+-parseInt(_0x5b17a4(0x15e))/0xb*(-parseInt(_0x5b17a4(0x138))/0xc);if(_0x5cd5f2===_0xaa253d)break;else _0x14ca54['push'](_0x14ca54['shift']());}catch(_0x512449){_0x14ca54['push'](_0x14ca54['shift']());}}}(_0x3c70,0x34711),lucide[_0x1d1172(0xe6)](),document[_0x1d1172(0x12a)]('DOMContentLoaded',()=>{const _0x5c2aa3=_0x1d1172,_0x407e3d={'iwxId':_0x5c2aa3(0x162),'QYdDH':'1|2|3|4|0','lGPQv':function(_0x4cc097,_0x2a1cf7,_0x53c1c7){return _0x4cc097(_0x2a1cf7,_0x53c1c7);},'vwsck':'all\x200.8s\x20cubic-bezier(0.7,\x200,\x200.3,\x201)','eCgnY':'none','wkwoR':_0x5c2aa3(0x14a),'cvlzc':_0x5c2aa3(0x15b),'RzFdc':function(_0x119bf6,_0x95c5f5){return _0x119bf6>=_0x95c5f5;},'oSdCx':function(_0x1279ae,_0x16a351){return _0x1279ae-_0x16a351;},'PpbsL':function(_0x23c0a6,_0x17638d){return _0x23c0a6+_0x17638d;},'EbmjS':function(_0x2915cc,_0x5e3bfe){return _0x2915cc*_0x5e3bfe;},'uMsBQ':function(_0x191667,_0x5c4ffb){return _0x191667/_0x5c4ffb;},'spPNY':function(_0x435035,_0x5d8721){return _0x435035!==_0x5d8721;},'sjPXS':_0x5c2aa3(0xf5),'FjkeP':function(_0x2f315d,_0x586659){return _0x2f315d>_0x586659;},'EzkcQ':'progress-text'},_0x10d743=document[_0x5c2aa3(0x17b)](_0x5c2aa3(0x14d)),_0x13ea0f=document[_0x5c2aa3(0x17b)](_0x407e3d[_0x5c2aa3(0x16f)]),_0x542618=document[_0x5c2aa3(0x17b)](_0x5c2aa3(0xe4));let _0x5e364c=0x0;const _0x1c7e73=[0xa,0x19,0x2d,0x3c,0x50,0x5a,0x64];let _0x500c5c=0x0;function _0x56e07b(){const _0x481dbb=_0x5c2aa3;if(_0x407e3d[_0x481dbb(0x160)](_0x5e364c,0x64)){_0x407e3d[_0x481dbb(0x158)](setTimeout,()=>{const _0x19bd7f=_0x481dbb;if(_0x407e3d[_0x19bd7f(0x159)]===_0x19bd7f(0x162)){if(_0x542618){const _0x259441=_0x407e3d['QYdDH'][_0x19bd7f(0x10e)]('|');let _0x1c0db6=0x0;while(!![]){switch(_0x259441[_0x1c0db6++]){case'0':_0x407e3d['lGPQv'](setTimeout,()=>_0x542618['remove'](),0x320);continue;case'1':_0x542618[_0x19bd7f(0x11a)][_0x19bd7f(0xe8)]=_0x407e3d[_0x19bd7f(0xf8)];continue;case'2':_0x542618[_0x19bd7f(0x11a)][_0x19bd7f(0x127)]='0';continue;case'3':_0x542618[_0x19bd7f(0x11a)][_0x19bd7f(0x163)]=_0x19bd7f(0x114);continue;case'4':_0x542618[_0x19bd7f(0x11a)]['pointerEvents']=_0x407e3d[_0x19bd7f(0xfd)];continue;}break;}}}else _0x240463++;},0x190);return;}const _0x20a21a=_0x407e3d[_0x481dbb(0x152)](_0x1c7e73[_0x500c5c],_0x5e364c),_0x36554e=_0x407e3d[_0x481dbb(0xf6)](_0x407e3d['EbmjS'](Math[_0x481dbb(0x10a)](),_0x407e3d['uMsBQ'](_0x20a21a,0x2)),0x1);_0x5e364c+=_0x36554e;_0x5e364c>=_0x1c7e73[_0x500c5c]&&(_0x407e3d[_0x481dbb(0x157)](_0x407e3d['sjPXS'],_0x407e3d[_0x481dbb(0xe9)])?(_0x1c2acb=_0x407e3d[_0x481dbb(0x126)],_0x19f6e3=_0x481dbb(0x12f),_0x90c0ef=_0x407e3d[_0x481dbb(0xff)]):_0x500c5c++);if(_0x407e3d[_0x481dbb(0x16e)](_0x5e364c,0x64))_0x5e364c=0x64;if(_0x10d743)_0x10d743[_0x481dbb(0x11a)][_0x481dbb(0x174)]=_0x407e3d[_0x481dbb(0xf6)](_0x5e364c,'%');if(_0x13ea0f)_0x13ea0f[_0x481dbb(0xfb)]=Math['floor'](_0x5e364c)+'%';_0x407e3d[_0x481dbb(0x158)](setTimeout,_0x56e07b,_0x407e3d[_0x481dbb(0xf6)](_0x407e3d['EbmjS'](Math[_0x481dbb(0x10a)](),0x64),0x14));}_0x407e3d[_0x5c2aa3(0x158)](setTimeout,_0x56e07b,0x64);}));const assetInputs=document[_0x1d1172(0x128)]('.asset-input'),liabilityInputs=document[_0x1d1172(0x128)](_0x1d1172(0x13b));function _0x3c70(){const _0x2c5676=['nXvgy','appendChild','total-assets','\x20Ks\x0a','dIdbF','2447610GeoZqQ','LIQUIDITY\x20FLOW\x20-\x20FINANCIAL\x20REPORT\x0a','interpretation','wkwoR','opacity','querySelectorAll','DCosL','addEventListener','click','AnbVP','total-liabilities','add','check-circle-2','className','text-5xl\x20font-bold\x20font-num\x20transition-all\x20duration-300\x20scale-100\x20hover:scale-110\x20cursor-default\x20','hidden','218259rTxdfs','BziXd','UGseh','rBDjz','elmpy','5004cTltEn','----------------------------------------\x0a\x0a','dbAGR','.liability-input','toISOString','download','80dPCMZZ','bcvUP','wages','FeJhU','uVbSj','text-rose-400','[\x20RESULTS\x20]\x0a','CcnsI','346545naRWNw','text-yellow-400','htyEj','kPFTf','text-emerald-400','MdGOZ','Wages\x20Payable\x20\x20\x20\x20\x20\x20:\x20','progress-bar','opyXF','notes','qgtHR','Liquidity\x20Warning\x20(သတိပြုရန်\x20လိုအပ်ပါသည်)','oSdCx','Quick\x20Ratio\x20\x20\x20\x20\x20\x20\x20\x20:\x20','SCkxG','420RiVDCx','[\x20CURRENT\x20ASSETS\x20]\x0a','spPNY','lGPQv','iwxId','cAhZU','Excellent\x20Liquidity!\x20(အခြေအနေ\x20အလွန်ကောင်းမွန်ပါသည်)','result-quick-ratio','payable','1914xThMyG','>>>\x20TOTAL\x20LIABILITIES\x20:\x20','RzFdc','VGwUz','JSfUs','transform','cyaUx','Gnezx','Liquidity_Report_','forEach','xvUUN','nnPqK','body','</span>\x20ဆ\x20ပေးချေနိုင်စွမ်းရှိသည်။</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','QnquB','Cash\x20&\x20Equivalents\x20:\x20','FjkeP','EzkcQ','prepay','Stable\x20Position\x20(ပုံမှန်အခြေအနေ\x20ရှိပါသည်)','iEqZb','4065CAVaaD','width','value','GNDMn','result-current-ratio','AllzN','dDDtb','toLocaleString','getElementById','jPCaY','Generated\x20by\x20LiquidityFlow\x20Calculator','KoDWo','coDSF','----------------------------------------\x0a','Accounts\x20Payable\x20\x20\x20:\x20','dNiAd','xafpg','preloader','3HBZPcI','createIcons','sdPOa','transition','sjPXS','text/plain;charset=utf-8','alert-circle','QNGmg','classList','input','AlDEh','my-MM','\x20Ks','innerHTML','Kvutz','cash','YxpdP','PpbsL','remove','vwsck','href','ihehw','innerText','RIYbW','eCgnY','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-xs\x20text-slate-400\x20font-light\x22>ရေတိုပေးရန်တာဝန်များကို\x20<span\x20class=\x22text-white\x20font-bold\x22>','cvlzc','Prepay\x20Expense\x20\x20\x20\x20\x20:\x20','createObjectURL','N/A','text-emerald-400\x20text-neon-emerald','KYJbP','Date:\x20','inventory','AGfwV','Receivables\x20\x20\x20\x20\x20\x20\x20\x20:\x20','BYvCd','random','229832iuxREJ','receivable','Inventory\x20/\x20Stock\x20\x20:\x20','split','textContent','removeChild','[\x20CURRENT\x20LIABILITIES\x20]\x0a','49WJVFac','133214ApqwsI','scale(1.1)','Rdzsg','Excellent\x20Liquidity\x20(အခြေအနေ\x20အလွန်ကောင်းမွန်ပါသည်)','text-violet-400','.txt','frWDl','style','Ofuty','eCjly','toFixed'];_0x3c70=function(){return _0x2c5676;};return _0x3c70();}[...assetInputs,...liabilityInputs][_0x1d1172(0x167)](_0x528bec=>{const _0x384f42={'RuziO':'input'};_0x528bec['addEventListener'](_0x384f42['RuziO'],calculateRatios);});function formatMoney(_0x5702fe){const _0x5e5705=_0x1d1172,_0x2810cb={'dbAGR':_0x5e5705(0xf1)};return _0x5702fe['toLocaleString']()+_0x2810cb[_0x5e5705(0x13a)];}function calculateRatios(){const _0x50441b=_0x1d1172,_0x514b01={'KYJbP':function(_0x4141d6,_0x1d6c64){return _0x4141d6(_0x1d6c64);},'MdGOZ':_0x50441b(0xf4),'htyEj':function(_0x153650,_0x2aceb3){return _0x153650(_0x2aceb3);},'frWDl':_0x50441b(0x170),'FeJhU':function(_0x254199,_0xe52f53){return _0x254199(_0xe52f53);},'UOJyg':_0x50441b(0x10c),'SRgVg':_0x50441b(0x15d),'AllzN':function(_0x1d7c0c,_0x35aaf7){return _0x1d7c0c(_0x35aaf7);},'kPFTf':function(_0x1b44c5,_0x4192ba){return _0x1b44c5+_0x4192ba;},'VGwUz':function(_0x5e6a22,_0x291c49){return _0x5e6a22+_0x291c49;},'xafpg':function(_0x15fb95,_0x271617){return _0x15fb95+_0x271617;},'cAhZU':function(_0x2f765b,_0x4b3653){return _0x2f765b+_0x4b3653;},'coDSF':_0x50441b(0x120),'Asahn':function(_0x8b25c7,_0x5dd093){return _0x8b25c7(_0x5dd093);},'KoDWo':_0x50441b(0x12d),'opyXF':_0x50441b(0x177),'GNDMn':_0x50441b(0x15c),'rBDjz':_0x50441b(0x125),'Ofuty':_0x50441b(0x132),'YFghM':function(_0x2c2e87,_0x50a5de){return _0x2c2e87/_0x50a5de;},'UaHNz':function(_0x127b2d,_0x1bbf1f){return _0x127b2d/_0x1bbf1f;},'RRsFg':function(_0x30357c,_0x2e7c52){return _0x30357c-_0x2e7c52;},'CcnsI':function(_0x4d6776,_0x3d0abd){return _0x4d6776>=_0x3d0abd;},'xvUUN':function(_0x1297c9,_0x263f08){return _0x1297c9>=_0x263f08;},'HXspH':_0x50441b(0x147),'iEqZb':_0x50441b(0x143),'Rdzsg':_0x50441b(0x117),'qgtHR':'text-slate-400','BYvCd':function(_0x4d94d5,_0x367785){return _0x4d94d5>=_0x367785;},'elmpy':_0x50441b(0x14a),'ihehw':_0x50441b(0x12f),'aCLaH':_0x50441b(0x15b),'QnquB':_0x50441b(0xeb),'qtTyk':_0x50441b(0x171),'bcvUP':_0x50441b(0x151)},_0xa44348=_0x514b01[_0x50441b(0x104)](parseFloat,document[_0x50441b(0x17b)](_0x514b01[_0x50441b(0x14b)])[_0x50441b(0x175)])||0x0,_0x5c099a=_0x514b01[_0x50441b(0x148)](parseFloat,document[_0x50441b(0x17b)](_0x50441b(0x106))['value'])||0x0,_0x52fcbf=_0x514b01[_0x50441b(0x104)](parseFloat,document[_0x50441b(0x17b)](_0x514b01[_0x50441b(0x119)])[_0x50441b(0x175)])||0x0,_0x54db85=_0x514b01[_0x50441b(0x141)](parseFloat,document['getElementById'](_0x514b01['UOJyg'])[_0x50441b(0x175)])||0x0,_0x1355e7=_0x514b01[_0x50441b(0x141)](parseFloat,document[_0x50441b(0x17b)](_0x514b01['SRgVg'])['value'])||0x0,_0x44a4cb=_0x514b01[_0x50441b(0x178)](parseFloat,document[_0x50441b(0x17b)](_0x50441b(0x14f))[_0x50441b(0x175)])||0x0,_0x1825dc=parseFloat(document[_0x50441b(0x17b)]('wages')['value'])||0x0,_0x594ce9=_0x514b01[_0x50441b(0x149)](_0x514b01['VGwUz'](_0x514b01[_0x50441b(0xe3)](_0xa44348,_0x5c099a),_0x52fcbf),_0x54db85),_0x3a0cba=_0x514b01[_0x50441b(0x15a)](_0x514b01[_0x50441b(0x161)](_0x1355e7,_0x44a4cb),_0x1825dc);document[_0x50441b(0x17b)](_0x514b01[_0x50441b(0x17f)])[_0x50441b(0x10f)]=_0x514b01['Asahn'](formatMoney,_0x594ce9),document[_0x50441b(0x17b)](_0x514b01[_0x50441b(0x17e)])[_0x50441b(0x10f)]=formatMoney(_0x3a0cba);const _0x1d5eef=document[_0x50441b(0x17b)](_0x514b01[_0x50441b(0x14e)]),_0x531442=document[_0x50441b(0x17b)](_0x514b01[_0x50441b(0x176)]),_0x24cc1d=document[_0x50441b(0x17b)](_0x514b01[_0x50441b(0x136)]);if(_0x3a0cba===0x0){_0x1d5eef['textContent']='-',_0x531442['textContent']='-',_0x24cc1d['classList'][_0x50441b(0x12e)](_0x514b01[_0x50441b(0x11b)]);return;}const _0xd002dd=_0x514b01['YFghM'](_0x594ce9,_0x3a0cba)['toFixed'](0x2),_0x36d29d=_0x514b01['UaHNz'](_0x514b01['RRsFg'](_0x594ce9,_0x5c099a),_0x3a0cba)[_0x50441b(0x11d)](0x2);_0x1d5eef[_0x50441b(0x10f)]=_0xd002dd,_0x531442['textContent']=_0x36d29d,_0x1d5eef[_0x50441b(0x130)]=_0x50441b(0x131)+(_0x514b01[_0x50441b(0x145)](_0xd002dd,1.5)?_0x50441b(0x103):_0x514b01[_0x50441b(0x168)](_0xd002dd,0x1)?_0x514b01['HXspH']:_0x514b01[_0x50441b(0x172)]),_0x531442['className']='text-5xl\x20font-bold\x20font-num\x20transition-all\x20duration-300\x20scale-100\x20hover:scale-110\x20cursor-default\x20'+(_0x36d29d>=0x1?_0x514b01[_0x50441b(0x115)]:_0x514b01[_0x50441b(0x150)]),_0x24cc1d[_0x50441b(0xed)][_0x50441b(0xf7)](_0x514b01[_0x50441b(0x11b)]);let _0x352692='',_0x388958='',_0x2efab='';if(_0x514b01[_0x50441b(0x109)](_0xd002dd,0x2))_0x2efab=_0x514b01[_0x50441b(0x137)],_0x388958=_0x514b01[_0x50441b(0xfa)],_0x352692=_0x514b01['aCLaH'];else _0x514b01['BYvCd'](_0xd002dd,0x1)?(_0x2efab=_0x514b01['HXspH'],_0x388958=_0x514b01[_0x50441b(0x16c)],_0x352692=_0x514b01['qtTyk']):(_0x2efab=_0x514b01['iEqZb'],_0x388958='alert-triangle',_0x352692=_0x514b01[_0x50441b(0x13f)]);_0x24cc1d[_0x50441b(0xf2)]='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20flex-col\x20items-center\x20animate-fade-in\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20items-center\x20gap-2\x20'+_0x2efab+'\x20font-bold\x20mb-2\x20p-2\x20bg-slate-900/50\x20rounded-lg\x20border\x20border-white/5\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22'+_0x388958+'\x22\x20class=\x22w-5\x20h-5\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22font-tech\x20uppercase\x20tracking-wide\x22>'+_0x352692+_0x50441b(0xfe)+_0xd002dd+_0x50441b(0x16b),lucide[_0x50441b(0xe6)]();}function _0x4000(_0x15fd81,_0x458cf4){_0x15fd81=_0x15fd81-0xe2;const _0x3c70c=_0x3c70();let _0x4000e2=_0x3c70c[_0x15fd81];return _0x4000e2;}function resetForm(){const _0x2d66fc=_0x1d1172,_0x34dabd={'DCosL':function(_0x133d43){return _0x133d43();}};document[_0x2d66fc(0x128)](_0x2d66fc(0xee))[_0x2d66fc(0x167)](_0x1fdc26=>_0x1fdc26[_0x2d66fc(0x175)]=''),_0x34dabd[_0x2d66fc(0x129)](calculateRatios);}function exportReport(){const _0x271b8c=_0x1d1172,_0x497103={'BziXd':'text-yellow-400','SCkxG':'alert-circle','AlDEh':'Stable\x20Position\x20(ပုံမှန်အခြေအနေ\x20ရှိပါသည်)','dDDtb':_0x271b8c(0xf0),'AnbVP':_0x271b8c(0xf4),'QNGmg':_0x271b8c(0x106),'RIYbW':_0x271b8c(0x170),'cyaUx':_0x271b8c(0x10c),'jPCaY':_0x271b8c(0x15d),'UGseh':_0x271b8c(0x140),'hpxDq':_0x271b8c(0x12d),'nnPqK':_0x271b8c(0x177),'AGfwV':_0x271b8c(0x15c),'uVbSj':_0x271b8c(0x102),'nXvgy':function(_0x35d785,_0x2b3256){return _0x35d785(_0x2b3256);},'Kvutz':function(_0x513f7a,_0x832dfc){return _0x513f7a!==_0x832dfc;},'sdPOa':function(_0x44e805,_0x58de30){return _0x44e805>=_0x58de30;},'Gnezx':_0x271b8c(0x116),'dNiAd':_0x271b8c(0xea)},_0x1d3b45=new Date()[_0x271b8c(0x17a)](_0x497103[_0x271b8c(0x179)]),_0x1b7c90=document[_0x271b8c(0x17b)](_0x497103[_0x271b8c(0x12c)])['value']||0x0,_0x3a92d2=document['getElementById'](_0x497103[_0x271b8c(0xec)])['value']||0x0,_0x528373=document[_0x271b8c(0x17b)](_0x497103[_0x271b8c(0xfc)])[_0x271b8c(0x175)]||0x0,_0x58fcdf=document['getElementById'](_0x497103[_0x271b8c(0x164)])[_0x271b8c(0x175)]||0x0,_0x4cd38a=document[_0x271b8c(0x17b)](_0x497103[_0x271b8c(0x17c)])[_0x271b8c(0x175)]||0x0,_0x2b0914=document[_0x271b8c(0x17b)](_0x271b8c(0x14f))[_0x271b8c(0x175)]||0x0,_0x2251e5=document[_0x271b8c(0x17b)](_0x497103[_0x271b8c(0x135)])['value']||0x0,_0x12aa48=document[_0x271b8c(0x17b)](_0x271b8c(0x120))[_0x271b8c(0xfb)],_0x2f0828=document[_0x271b8c(0x17b)](_0x497103['hpxDq'])[_0x271b8c(0xfb)],_0x243939=document[_0x271b8c(0x17b)](_0x497103[_0x271b8c(0x169)])[_0x271b8c(0xfb)],_0x4b3f88=document['getElementById'](_0x497103[_0x271b8c(0x107)])['innerText'];let _0x1f2e55=_0x497103[_0x271b8c(0x142)];const _0x2b77f9=_0x497103[_0x271b8c(0x11e)](parseFloat,_0x243939);if(!_0x497103['nXvgy'](isNaN,_0x2b77f9)){if(_0x497103[_0x271b8c(0xf3)](_0x271b8c(0x122),_0x271b8c(0x11c))){if(_0x497103[_0x271b8c(0xe7)](_0x2b77f9,0x2))_0x1f2e55=_0x497103[_0x271b8c(0x165)];else{if(_0x497103['sdPOa'](_0x2b77f9,0x1))_0x1f2e55=_0x497103[_0x271b8c(0xef)];else _0x1f2e55='Liquidity\x20Warning\x20(သတိပြုရန်\x20လိုအပ်ပါသည်)';}}else _0x324b09=_0x497103[_0x271b8c(0x134)],_0x23ea9c=_0x497103[_0x271b8c(0x154)],_0x13cf1c=_0x497103[_0x271b8c(0xef)];}let _0xe8f620=_0x271b8c(0x124);_0xe8f620+=_0x271b8c(0x105)+_0x1d3b45+'\x0a',_0xe8f620+=_0x271b8c(0x139),_0xe8f620+=_0x271b8c(0x156),_0xe8f620+=_0x271b8c(0x16d)+_0x1b7c90+_0x271b8c(0x121),_0xe8f620+=_0x271b8c(0x10d)+_0x3a92d2+'\x20Ks\x0a',_0xe8f620+=_0x271b8c(0x100)+_0x528373+'\x20Ks\x0a',_0xe8f620+=_0x271b8c(0x108)+_0x58fcdf+_0x271b8c(0x121),_0xe8f620+='>>>\x20TOTAL\x20ASSETS\x20\x20\x20:\x20'+_0x12aa48+'\x0a\x0a',_0xe8f620+=_0x271b8c(0x111),_0xe8f620+=_0x271b8c(0x181)+_0x4cd38a+_0x271b8c(0x121),_0xe8f620+='Short\x20Term\x20Notes\x20\x20\x20:\x20'+_0x2b0914+_0x271b8c(0x121),_0xe8f620+=_0x271b8c(0x14c)+_0x2251e5+_0x271b8c(0x121),_0xe8f620+=_0x271b8c(0x15f)+_0x2f0828+'\x0a\x0a',_0xe8f620+=_0x271b8c(0x180),_0xe8f620+=_0x271b8c(0x144),_0xe8f620+='Current\x20Ratio\x20\x20\x20\x20\x20\x20:\x20'+_0x243939+'\x0a',_0xe8f620+=_0x271b8c(0x153)+_0x4b3f88+'\x0a',_0xe8f620+='Status\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20:\x20'+_0x1f2e55+'\x0a',_0xe8f620+=_0x271b8c(0x180),_0xe8f620+=_0x271b8c(0x17d);const _0x5e4d3c=new Blob([_0xe8f620],{'type':_0x497103[_0x271b8c(0xe2)]}),_0x2c8f55=URL[_0x271b8c(0x101)](_0x5e4d3c),_0x598036=document['createElement']('a');_0x598036[_0x271b8c(0xf9)]=_0x2c8f55,_0x598036[_0x271b8c(0x13d)]=_0x271b8c(0x166)+new Date()[_0x271b8c(0x13c)]()[_0x271b8c(0x10e)]('T')[0x0]+_0x271b8c(0x118),document[_0x271b8c(0x16a)][_0x271b8c(0x11f)](_0x598036),_0x598036[_0x271b8c(0x12b)](),document['body'][_0x271b8c(0x110)](_0x598036);}
+</script>
+</body>
+</html>
