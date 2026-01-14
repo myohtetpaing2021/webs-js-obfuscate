@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Prepaid Expense Visualizer - SME Style</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#020617', // Deep Space
+                            900: '#0f172a',
+                            800: '#1e293b',
+                        },
+                        primary: {
+                            400: '#38bdf8', // Sky
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 8s ease-in-out infinite',
+                        'float-delayed': 'float 8s ease-in-out infinite 4s',
+                        'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                        'spin-slow': 'spin 3s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        slideUp: {
+                            'from': { opacity: 0, transform: 'translateY(20px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        fadeIn: {
+                            'from': { opacity: 0 },
+                            'to': { opacity: 1 },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Remove Spinners from Number Inputs */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Premium Glass Effect */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.6) 100%);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 
+                        0 0 20px rgba(56, 189, 248, 0.1); /* Subtle blue glow */
+        }
+        
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Input Styling */
+        .input-field {
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3), 0 0 15px rgba(56, 189, 248, 0.2);
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        .text-neon-blue {
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+        
+        .transition-width {
+            transition: width 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
+
+    <!-- PRELOADER (From SME Flow) -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-all duration-1000 ease-out overflow-hidden">
+        <!-- Background Grid Animation -->
+        <div class="absolute inset-0 opacity-20" 
+             style="background-image: radial-gradient(#38bdf8 1px, transparent 1px); background-size: 40px 40px; transform: perspective(500px) rotateX(20deg);">
+        </div>
+
+        <div class="relative flex flex-col items-center">
+            <!-- Central Tech Spinner -->
+            <div class="relative w-40 h-40 flex items-center justify-center mb-10">
+                <!-- Outer Ring -->
+                <div class="absolute inset-0 rounded-full border-2 border-transparent border-t-cyan-500 border-l-cyan-500/30 animate-[spin_2s_linear_infinite] shadow-[0_0_30px_rgba(6,182,212,0.2)]"></div>
+                <!-- Inner Ring -->
+                <div class="absolute inset-3 rounded-full border-2 border-transparent border-b-violet-500 border-r-violet-500/30 animate-[spin_3s_linear_infinite_reverse]"></div>
+                <!-- Core -->
+                <div class="relative z-10 w-20 h-20 bg-gradient-to-br from-cyan-950 to-slate-900 rounded-full flex items-center justify-center border border-white/10 shadow-[0_0_50px_rgba(6,182,212,0.4)] animate-pulse">
+                    <div class="absolute inset-0 bg-cyan-500/20 rounded-full blur-xl animate-pulse"></div>
+                    <i data-lucide="zap" class="text-white w-8 h-8 relative z-10 drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]"></i>
+                </div>
+            </div>
+            
+            <!-- Text & Progress -->
+            <div class="w-64 space-y-4">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-[0.2em] text-white font-num mb-1">ACC<span class="text-cyan-400">LAB</span></h2>
+                    <p class="text-[10px] text-cyan-500/70 font-num tracking-[0.4em] uppercase">Visualizing Assets</p>
+                </div>
+                
+                <!-- Progress Bar Container -->
+                <div class="h-1 w-full bg-slate-800/50 rounded-full overflow-hidden border border-white/5 relative">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 w-0 shadow-[0_0_20px_rgba(6,182,212,0.8)] relative">
+                        <div class="absolute right-0 top-0 bottom-0 w-2 bg-white/50 blur-[2px]"></div>
+                    </div>
+                </div>
+                
+                <!-- Stats Row -->
+                <div class="flex justify-between text-[10px] font-num text-slate-400 font-medium tracking-wider">
+                    <span class="animate-pulse">LOADING MODULES...</span>
+                    <span id="progress-text" class="text-cyan-400 font-bold">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Background -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px] animate-float"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-emerald-600/10 rounded-full blur-[120px] animate-float-delayed"></div>
+        <div class="absolute top-[30%] left-[40%] w-[40%] h-[40%] bg-violet-600/5 rounded-full blur-[100px] animate-pulse-slow"></div>
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+    </div>
+
+    <!-- Main App Content -->
+    <div class="relative z-10 min-h-screen flex flex-col">
+        
+        <!-- Header -->
+        <header class="glass-panel border-b border-white/10 sticky top-0 z-50">
+            <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.4)] border border-white/10">
+                        <i data-lucide="file-text" class="text-white w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-white font-num tracking-tight">Prepaid<span class="text-cyan-400">Expense</span></h1>
+                        <p class="text-[10px] text-slate-400 uppercase tracking-widest font-medium">Visualizer</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/50 border border-white/5 text-xs text-slate-400">
+                    <i data-lucide="info" class="w-3 h-3 text-cyan-400"></i> Educational Purpose
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-6xl mx-auto p-4 md:p-6 space-y-8 flex-1 w-full animate-slide-up">
+
+            <!-- Theory Section -->
+            <section class="glass-card rounded-3xl p-6 md:p-8 border-l-4 border-l-cyan-500">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-[80px] pointer-events-none -mr-16 -mt-16"></div>
+                <h2 class="text-xl font-bold mb-4 flex items-center text-cyan-400 gap-2">
+                    <div class="p-2 bg-cyan-500/20 rounded-lg"><i data-lucide="book-open" class="w-5 h-5"></i></div>
+                    Prepaid Expense ဆိုတာဘာလဲ
+                </h2>
+                <div class="text-slate-300 space-y-3 leading-relaxed relative z-10">
+                    <p>
+                        လုပ်ငန်းတွေမှာ ရုံးခန်းငှားခ၊ အာမခံကြေး (Insurance) စတာတွေကို တစ်နှစ်စာ ကြိုတင်ပေးချေလေ့ရှိပါတယ်။ ဒီလိုပေးချေလိုက်တဲ့ငွေကို <strong class="text-white">Profit & Loss Statement</strong> မှာ ချက်ချင်း Expense (ကုန်ကျစရိတ်) အနေနဲ့ နုတ်ယူလို့မရပါဘူး။
+                    </p>
+                    <p>
+                        Cash Flow အရ ငွေထွက်သွားပေမယ့် စာရင်းအရ <strong class="text-white">Current Asset (လက်ရှိရပိုင်ခွင့်)</strong> အနေနဲ့ Balance Sheet မှာ အရင်ပြသထားရပါမယ်။ ပြီးမှ လစဉ်ကုန်ဆုံးသွားတဲ့ ပမာဏအတိုင်း Expense အဖြစ် ပြောင်းလဲစာရင်းသွင်းရမှာ ဖြစ်ပါတယ်။
+                    </p>
+                </div>
+            </section>
+
+            <!-- Simulator Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- Controls -->
+                <div class="lg:col-span-1 h-fit">
+                    <div class="glass-panel rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-b from-slate-800/20 to-transparent pointer-events-none"></div>
+                        <h3 class="text-lg font-bold mb-6 pb-4 border-b border-white/10 text-white flex items-center gap-2">
+                            <i data-lucide="sliders" class="w-4 h-4 text-cyan-400"></i> Input Data
+                        </h3>
+                        
+                        <div class="space-y-6 relative z-10">
+                            <div class="space-y-2">
+                                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider pl-1">စုစုပေါင်း ပမာဏ (Total)</label>
+                                <div class="relative group">
+                                    <input type="number" id="totalAmount" class="input-field w-full bg-slate-900/40 border border-white/10 rounded-xl px-5 py-3.5 pl-10 text-sm text-white font-num focus:outline-none" placeholder="0.00">
+                                    <div class="absolute left-4 top-3.5 text-slate-500 group-hover:text-cyan-400 transition-colors">
+                                        <i data-lucide="dollar-sign" class="w-4 h-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider pl-1">ကြာချိန် (လပေါင်း)</label>
+                                <div class="relative group">
+                                    <input type="number" id="duration" value="12" class="input-field w-full bg-slate-900/40 border border-white/10 rounded-xl px-5 py-3.5 pl-10 text-sm text-white font-num focus:outline-none" min="1" max="60">
+                                    <div class="absolute left-4 top-3.5 text-slate-500 group-hover:text-cyan-400 transition-colors">
+                                        <i data-lucide="calendar-clock" class="w-4 h-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-6 border-t border-white/10">
+                                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-4 block">Simulation Slider</label>
+                                <input type="range" id="monthSlider" min="0" max="12" value="0" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-500 hover:accent-cyan-400 transition-all">
+                                <div class="flex justify-between text-[10px] text-slate-500 mt-3 font-num tracking-wider">
+                                    <span>Start (Jan 1)</span>
+                                    <span id="currentMonthDisplay" class="font-bold text-cyan-400 bg-cyan-500/10 px-2 py-1 rounded border border-cyan-500/20">Month 0</span>
+                                    <span>End</span>
+                                </div>
+                            </div>
+
+                            <div class="bg-gradient-to-r from-cyan-900/20 to-blue-900/20 p-4 rounded-xl border border-cyan-500/20 relative overflow-hidden group">
+                                <div class="absolute inset-0 bg-cyan-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                <p class="text-[10px] text-cyan-300 uppercase tracking-wider mb-1">Monthly Expense</p>
+                                <p class="text-2xl font-bold text-white font-num text-neon-blue" id="monthlyExpenseDisplay">$0</p>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="grid grid-cols-2 gap-3 mt-2">
+                                <button onclick="exportReport()" class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 hover:bg-cyan-500/20 transition-all text-xs font-bold uppercase tracking-wider group hover:shadow-lg hover:shadow-cyan-500/10">
+                                    <i data-lucide="download" class="w-4 h-4 group-hover:scale-110 transition-transform"></i> Report
+                                </button>
+                                <button onclick="resetData()" class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 transition-all text-xs font-bold uppercase tracking-wider group hover:shadow-lg hover:shadow-rose-500/10">
+                                    <i data-lucide="refresh-ccw" class="w-4 h-4 group-hover:-rotate-90 transition-transform"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visualization -->
+                <div class="lg:col-span-2 space-y-6">
+                    
+                    <!-- Dynamic T-Account Visuals -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Asset Card -->
+                        <div class="glass-card p-6 rounded-3xl border border-emerald-500/20 bg-emerald-900/5 relative group">
+                            <div class="absolute -right-10 -top-10 w-32 h-32 bg-emerald-500/10 rounded-full blur-[40px] group-hover:bg-emerald-500/20 transition-all"></div>
+                            
+                            <div class="flex justify-between items-start relative z-10 mb-4">
+                                <div>
+                                    <h4 class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-1">Balance Sheet</h4>
+                                    <h3 class="text-lg font-bold text-white">Prepaid Rent (Asset)</h3>
+                                    <p class="text-xs text-slate-400 mt-1">လက်ကျန် ကြိုတင်ပေးငွေ</p>
+                                </div>
+                                <div class="bg-emerald-500/10 p-2.5 rounded-xl text-emerald-400 border border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+                                    <i data-lucide="wallet" class="w-5 h-5"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="relative z-10 mt-6">
+                                <span class="text-3xl font-bold text-white font-num" id="assetValue">$0</span>
+                            </div>
+                            
+                            <!-- Progress Bar -->
+                            <div class="w-full bg-slate-700/30 rounded-full h-1.5 mt-4 overflow-hidden">
+                                <div id="assetBar" class="bg-emerald-500 h-full rounded-full transition-width shadow-[0_0_10px_rgba(16,185,129,0.6)]" style="width: 100%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Expense Card -->
+                        <div class="glass-card p-6 rounded-3xl border border-rose-500/20 bg-rose-900/5 relative group">
+                            <div class="absolute -right-10 -top-10 w-32 h-32 bg-rose-500/10 rounded-full blur-[40px] group-hover:bg-rose-500/20 transition-all"></div>
+
+                            <div class="flex justify-between items-start relative z-10 mb-4">
+                                <div>
+                                    <h4 class="text-[10px] font-bold text-rose-400 uppercase tracking-wider mb-1">Profit & Loss</h4>
+                                    <h3 class="text-lg font-bold text-white">Rent Expense</h3>
+                                    <p class="text-xs text-slate-400 mt-1">အသုံးစရိတ်အဖြစ် ပြောင်းလဲပြီး</p>
+                                </div>
+                                <div class="bg-rose-500/10 p-2.5 rounded-xl text-rose-400 border border-rose-500/20 shadow-[0_0_15px_rgba(244,63,94,0.2)]">
+                                    <i data-lucide="trending-down" class="w-5 h-5"></i>
+                                </div>
+                            </div>
+
+                            <div class="relative z-10 mt-6">
+                                <span class="text-3xl font-bold text-white font-num" id="expenseValue">$0</span>
+                            </div>
+
+                            <!-- Progress Bar -->
+                            <div class="w-full bg-slate-700/30 rounded-full h-1.5 mt-4 overflow-hidden">
+                                <div id="expenseBar" class="bg-rose-500 h-full rounded-full transition-width shadow-[0_0_10px_rgba(244,63,94,0.6)]" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Journal Entry Log -->
+                    <div class="glass-panel rounded-3xl overflow-hidden border border-white/5">
+                        <div class="bg-slate-900/50 px-6 py-4 border-b border-white/5 flex justify-between items-center backdrop-blur-md">
+                            <h3 class="text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2">
+                                <i data-lucide="book" class="w-4 h-4 text-cyan-400"></i> Journal Entries
+                            </h3>
+                            <span id="journalDate" class="text-slate-400 text-xs font-num bg-white/5 px-2 py-1 rounded">Jan 1</span>
+                        </div>
+                        
+                        <div class="p-6">
+                            <!-- Initial Entry -->
+                            <div id="initialEntry" class="mb-6 opacity-100 transition-opacity duration-300">
+                                <div class="flex items-center mb-3">
+                                    <span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-bold uppercase mr-2 px-2.5 py-1 rounded-full">Start</span>
+                                </div>
+                                <div class="rounded-xl border border-white/5 overflow-hidden">
+                                    <table class="w-full text-sm text-left">
+                                        <thead class="text-[10px] text-slate-400 uppercase bg-white/5 font-bold tracking-wider">
+                                            <tr>
+                                                <th class="px-4 py-3 w-1/2">Account Name</th>
+                                                <th class="px-4 py-3 text-right">Debit</th>
+                                                <th class="px-4 py-3 text-right">Credit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-white/5 text-slate-300">
+                                            <tr class="hover:bg-white/[0.02]">
+                                                <td class="px-4 py-3 font-medium text-emerald-400">Prepaid Rent (Asset)</td>
+                                                <td class="px-4 py-3 text-right text-emerald-400 font-num font-bold" id="je-initial-debit">$0</td>
+                                                <td class="px-4 py-3 text-right font-num"></td>
+                                            </tr>
+                                            <tr class="hover:bg-white/[0.02]">
+                                                <td class="px-4 py-3 pl-8 text-slate-400">Cash (Asset)</td>
+                                                <td class="px-4 py-3 text-right font-num"></td>
+                                                <td class="px-4 py-3 text-right text-rose-400 font-num font-bold" id="je-initial-credit">$0</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p class="text-xs text-slate-500 mt-3 italic flex items-center gap-2">
+                                    <i data-lucide="info" class="w-3 h-3"></i> ငွေထွက်သွားသော်လည်း ဝန်ဆောင်မှုမရသေးသဖြင့် Asset (Prepaid Rent) အဖြစ်သာ မှတ်တမ်းတင်ထားသည်။
+                                </p>
+                            </div>
+
+                            <!-- Monthly Adjustment -->
+                            <div id="monthlyEntry" class="hidden opacity-0 transition-opacity duration-500">
+                                <div class="flex items-center mb-3">
+                                    <span class="bg-orange-500/10 text-orange-400 border border-orange-500/20 text-[10px] font-bold uppercase mr-2 px-2.5 py-1 rounded-full">Month End Adjustment</span>
+                                </div>
+                                <div class="rounded-xl border border-white/5 overflow-hidden">
+                                    <table class="w-full text-sm text-left">
+                                        <thead class="text-[10px] text-slate-400 uppercase bg-white/5 font-bold tracking-wider">
+                                            <tr>
+                                                <th class="px-4 py-3 w-1/2">Account Name</th>
+                                                <th class="px-4 py-3 text-right">Debit</th>
+                                                <th class="px-4 py-3 text-right">Credit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-white/5 text-slate-300">
+                                            <tr class="hover:bg-white/[0.02]">
+                                                <td class="px-4 py-3 font-medium text-emerald-400">Rent Expense</td>
+                                                <td class="px-4 py-3 text-right text-emerald-400 font-num font-bold" id="je-adjust-debit">$0</td>
+                                                <td class="px-4 py-3 text-right font-num"></td>
+                                            </tr>
+                                            <tr class="hover:bg-white/[0.02]">
+                                                <td class="px-4 py-3 pl-8 text-slate-400">Prepaid Rent (Asset)</td>
+                                                <td class="px-4 py-3 text-right font-num"></td>
+                                                <td class="px-4 py-3 text-right text-rose-400 font-num font-bold" id="je-adjust-credit">$0</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p class="text-xs text-slate-500 mt-3 italic flex items-center gap-2">
+                                    <i data-lucide="info" class="w-3 h-3"></i> တစ်လစာ အသုံးပြုပြီးဖြစ်သဖြင့် Asset မှလျှော့၍ Expense အဖြစ် စာရင်းပြောင်းထည့်ပါသည်။
+                                </p>
+                            </div>
+
+                            <div id="noAdjustmentMsg" class="hidden text-center py-8 text-slate-600 italic">
+                                <i data-lucide="clock" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>
+                                လကုန်ဆုံးခြင်း မရှိသေးသဖြင့် Adjustment Entry မရှိပါ။
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="border-t border-white/5 py-6 mt-8 bg-slate-900/50 backdrop-blur-sm">
+            <div class="max-w-6xl mx-auto px-4 text-center">
+                <p class="text-xs text-slate-500 font-num tracking-wider">PREPAID EXPENSE VISUALIZER - MYO HTET PAING EDITION</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // DOM Elements
+        const totalAmountInput = document.getElementById('totalAmount');
+        const durationInput = document.getElementById('duration');
+        const monthSlider = document.getElementById('monthSlider');
+        const currentMonthDisplay = document.getElementById('currentMonthDisplay');
+        const monthlyExpenseDisplay = document.getElementById('monthlyExpenseDisplay');
+        
+        // Output Elements
+        const assetValue = document.getElementById('assetValue');
+        const expenseValue = document.getElementById('expenseValue');
+        const expenseBar = document.getElementById('expenseBar');
+        const assetBar = document.getElementById('assetBar');
+        
+        // Journal Entry Elements
+        const initialEntry = document.getElementById('initialEntry');
+        const monthlyEntry = document.getElementById('monthlyEntry');
+        const noAdjustmentMsg = document.getElementById('noAdjustmentMsg');
+        const jeInitialDebit = document.getElementById('je-initial-debit');
+        const jeInitialCredit = document.getElementById('je-initial-credit');
+        const jeAdjustDebit = document.getElementById('je-adjust-debit');
+        const jeAdjustCredit = document.getElementById('je-adjust-credit');
+        const journalDate = document.getElementById('journalDate');
+
+        // State (Default to 0 as requested)
+        let total = 0;
+        let months = 12;
+        let monthlyCost = 0;
+        let currentMonth = 0;
+
+        // Formatter
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            maximumFractionDigits: 0
+        });
+
+        // Initialize
+        function init() {
+            lucide.createIcons();
+            updateCalculations();
+            updateUI();
+        }
+
+        // Event Listeners
+        totalAmountInput.addEventListener('input', () => {
+            total = parseFloat(totalAmountInput.value) || 0;
+            updateCalculations();
+            updateUI();
+        });
+
+        durationInput.addEventListener('input', () => {
+            months = parseInt(durationInput.value) || 12;
+            monthSlider.max = months;
+            updateCalculations();
+            updateUI();
+        });
+
+        monthSlider.addEventListener('input', () => {
+            currentMonth = parseInt(monthSlider.value);
+            updateUI();
+        });
+
+        function updateCalculations() {
+            monthlyCost = months > 0 ? total / months : 0;
+            // Update static displays
+            monthlyExpenseDisplay.textContent = formatter.format(monthlyCost);
+            jeInitialDebit.textContent = formatter.format(total);
+            jeInitialCredit.textContent = formatter.format(total);
+            jeAdjustDebit.textContent = formatter.format(monthlyCost);
+            jeAdjustCredit.textContent = formatter.format(monthlyCost);
+        }
+
+        function updateUI() {
+            // Logic
+            const accumulatedExpense = monthlyCost * currentMonth;
+            const remainingAsset = total - accumulatedExpense;
+            
+            // Handle division by zero or empty states safely
+            let percentageUsed = 0;
+            if(months > 0 && total > 0) {
+                 percentageUsed = (currentMonth / months) * 100;
+            } else if (total === 0) {
+                percentageUsed = 0;
+            }
+
+            const percentageRemaining = 100 - percentageUsed;
+
+            // Update Text Values
+            assetValue.textContent = formatter.format(remainingAsset);
+            expenseValue.textContent = formatter.format(accumulatedExpense);
+            currentMonthDisplay.textContent = `လ ${currentMonth} (Month ${currentMonth})`;
+
+            // Update Visual Bars
+            expenseBar.style.width = `${percentageUsed}%`;
+            assetBar.style.width = `${percentageRemaining}%`;
+            
+            // Journal Entry Logic
+            if (currentMonth === 0) {
+                // Initial State
+                initialEntry.classList.remove('opacity-50');
+                monthlyEntry.classList.add('hidden');
+                monthlyEntry.classList.remove('opacity-100');
+                noAdjustmentMsg.classList.remove('hidden');
+                journalDate.textContent = "January 1 (Start)";
+            } else {
+                // During Adjustment
+                initialEntry.classList.add('opacity-50'); // Dim initial entry
+                monthlyEntry.classList.remove('hidden');
+                setTimeout(() => {
+                    monthlyEntry.classList.add('opacity-100');
+                }, 50); // Small delay for transition
+                noAdjustmentMsg.classList.add('hidden');
+                journalDate.textContent = `Month ${currentMonth} End Adjustment`;
+            }
+        }
+
+        // --- NEW FEATURES ---
+
+        function resetData() {
+            // Reset State
+            total = 0;
+            months = 12;
+            currentMonth = 0;
+            
+            // Reset Inputs
+            totalAmountInput.value = ''; // Changed from 0 to empty string
+            durationInput.value = 12;
+            monthSlider.value = 0;
+            monthSlider.max = 12;
+            
+            // Update UI
+            updateCalculations();
+            updateUI();
+        }
+
+        function exportReport() {
+            const date = new Date().toLocaleDateString();
+            const accumulatedExpense = monthlyCost * currentMonth;
+            const remainingAsset = total - accumulatedExpense;
+
+            let report = `PREPAID EXPENSE REPORT\n`;
+            report += `Generated Date: ${date}\n`;
+            report += `--------------------------------\n\n`;
+            
+            report += `INPUT DATA:\n`;
+            report += `Total Prepaid Amount : ${formatter.format(total)}\n`;
+            report += `Duration             : ${months} Months\n`;
+            report += `Monthly Expense Rate : ${formatter.format(monthlyCost)}\n\n`;
+
+            report += `CURRENT STATUS (Month ${currentMonth}):\n`;
+            report += `Remaining Asset (Balance Sheet)  : ${formatter.format(remainingAsset)}\n`;
+            report += `Recognized Expense (P&L)         : ${formatter.format(accumulatedExpense)}\n\n`;
+
+            report += `JOURNAL ENTRY SNAPSHOT:\n`;
+            if (currentMonth === 0) {
+                report += `[Initial Entry - Start]\n`;
+                report += `Dr. Prepaid Rent    ${formatter.format(total)}\n`;
+                report += `Cr. Cash            ${formatter.format(total)}\n`;
+            } else {
+                report += `[Adjustment Entry - Month ${currentMonth}]\n`;
+                report += `Dr. Rent Expense    ${formatter.format(monthlyCost)}\n`;
+                report += `Cr. Prepaid Rent    ${formatter.format(monthlyCost)}\n`;
+            }
+
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Prepaid_Report_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a); // Append to body for Firefox support
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Preloader Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            init();
+
+            const progress = document.getElementById('progress-bar');
+            const text = document.getElementById('progress-text');
+            const preloader = document.getElementById('preloader');
+            let width = 0;
+
+            const interval = setInterval(() => {
+                width += Math.random() * 5;
+                if (width > 100) width = 100;
+                
+                if (progress) progress.style.width = width + '%';
+                if (text) text.innerText = Math.floor(width) + '%';
+
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        if(preloader) {
+                            preloader.classList.add('opacity-0', 'scale-105', 'pointer-events-none');
+                            setTimeout(() => preloader.remove(), 700);
+                        }
+                    }, 500);
+                }
+            }, 50);
+        });
+
+    </script>
+</body>
+</html>
