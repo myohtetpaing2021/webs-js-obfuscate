@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AIDA Strategy Tool - AI Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <!-- Markdown Parser (Marked.js) for AI Response -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#020617', // Deep Space
+                            900: '#0f172a',
+                        },
+                        primary: {
+                            400: '#38bdf8', // Sky
+                            500: '#0ea5e9',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 8s ease-in-out infinite',
+                        'float-delayed': 'float 8s ease-in-out infinite 4s',
+                        'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                        'spin-slow': 'spin 3s linear infinite',
+                        'grid-move': 'gridMove 20s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        slideUp: {
+                            'from': { opacity: 0, transform: 'translateY(20px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        fadeIn: {
+                            'from': { opacity: 0 },
+                            'to': { opacity: 1 },
+                        },
+                        gridMove: {
+                            '0%': { backgroundPosition: '0 0' },
+                            '100%': { backgroundPosition: '0 40px' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Glass Effect */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(56, 189, 248, 0.2);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6), 0 0 15px rgba(56, 189, 248, 0.05);
+        }
+
+        /* Input Styling */
+        .input-field {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3), 0 0 15px rgba(56, 189, 248, 0.2);
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(56, 189, 248, 0.5);
+            outline: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        .pb-safe { padding-bottom: calc(6rem + env(safe-area-inset-bottom)); }
+        
+        .markdown-content h1, .markdown-content h2, .markdown-content h3 { font-weight: bold; margin-bottom: 0.5rem; color: #fff; }
+        .markdown-content p { margin-bottom: 0.8rem; line-height: 1.6; }
+        .markdown-content strong { color: #38bdf8; }
+        .markdown-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 0.8rem; }
+        
+        /* Perspective for Grid */
+        .perspective-container {
+            perspective: 500px;
+        }
+        .grid-floor {
+            transform: rotateX(60deg);
+            transform-origin: 50% 0;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
+
+    <!-- PREMIUM PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-all duration-1000 ease-[cubic-bezier(0.76,0,0.24,1)] overflow-hidden">
+        
+        <!-- 3D Moving Grid Background -->
+        <div class="absolute inset-0 perspective-container pointer-events-none">
+            <div class="absolute inset-[-100%] grid-floor opacity-30 animate-grid-move" 
+                 style="background-image: linear-gradient(rgba(56, 189, 248, 0.3) 1px, transparent 1px),
+                 linear-gradient(90deg, rgba(56, 189, 248, 0.3) 1px, transparent 1px);
+                 background-size: 50px 50px;">
+            </div>
+            <!-- Vignette Fade -->
+            <div class="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-[#020617]"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-[#020617] via-transparent to-[#020617]"></div>
+        </div>
+
+        <!-- Central Reactor Core -->
+        <div class="relative flex flex-col items-center z-10 scale-100 transition-transform duration-700" id="preloader-core">
+            
+            <!-- Spinner Container -->
+            <div class="relative w-48 h-48 flex items-center justify-center mb-10">
+                <!-- Ambient Glow -->
+                <div class="absolute inset-0 bg-cyan-500/10 blur-[50px] rounded-full animate-pulse-slow"></div>
+
+                <!-- Ring 1 (Slow Outer) -->
+                <div class="absolute inset-0 border border-cyan-500/20 rounded-full border-dashed animate-[spin_12s_linear_infinite]"></div>
+                
+                <!-- Ring 2 (Fast Inner) -->
+                <div class="absolute inset-3 border-t-2 border-r-2 border-cyan-400/80 rounded-full animate-[spin_3s_linear_infinite] shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
+                
+                <!-- Ring 3 (Reverse) -->
+                <div class="absolute inset-6 border-b-2 border-l-2 border-violet-500/80 rounded-full animate-[spin_4s_linear_infinite_reverse]"></div>
+
+                <!-- Core Icon -->
+                <div class="relative w-24 h-24 bg-[#020617] rounded-full flex items-center justify-center border border-white/10 shadow-[0_0_40px_rgba(6,182,212,0.2)] z-20 overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500/20 to-violet-500/20 animate-pulse"></div>
+                    <!-- Using Brain Circuit for AI feel -->
+                    <i data-lucide="brain-circuit" class="text-white w-10 h-10 relative z-30 drop-shadow-[0_0_15px_rgba(255,255,255,0.8)] animate-pulse"></i>
+                </div>
+            </div>
+            
+            <!-- Text & Progress -->
+            <div class="text-center w-80 space-y-5">
+                <!-- Title with Glitch Effect placeholder -->
+                <h1 class="text-4xl font-bold tracking-[0.2em] text-white font-num relative group">
+                    <span class="relative z-10">AIDA<span class="text-cyan-400">.AI</span></span>
+                    <span class="absolute inset-0 blur-lg bg-cyan-500/30 opacity-50 z-0 group-hover:opacity-80 transition-opacity"></span>
+                </h1>
+                
+                <!-- Advanced Progress Bar -->
+                <div class="relative h-1 w-full bg-slate-800 rounded-full overflow-hidden border border-white/5">
+                    <div id="progress-bar" class="absolute top-0 left-0 h-full w-0 bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 shadow-[0_0_20px_rgba(56,189,248,0.8)] transition-all duration-100 ease-out">
+                        <div class="absolute right-0 top-0 bottom-0 w-10 bg-white/80 blur-[4px]"></div>
+                    </div>
+                </div>
+                
+                <!-- Status Row -->
+                <div class="flex justify-between items-center text-[10px] font-mono tracking-widest uppercase">
+                    <div class="flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                        <span id="loading-status" class="text-cyan-400/90">Initializing System...</span>
+                    </div>
+                    <span id="progress-text" class="text-white font-bold">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div id="settings-modal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
+        <div class="glass-panel w-full max-w-md rounded-3xl p-6 relative border border-white/10 shadow-2xl">
+            <button onclick="toggleSettings()" class="absolute right-5 top-5 text-slate-400 hover:text-white transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/20">
+                    <i data-lucide="key" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-white">API Settings</h3>
+                    <p class="text-xs text-slate-400">Configure your Gemini AI Key</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider pl-1 mb-2 block">Gemini API Key</label>
+                    <div class="relative">
+                        <input id="api-key-input" type="password" placeholder="Paste your API key here..." class="input-field w-full rounded-xl pl-10 pr-4 py-3 text-sm font-sans">
+                        <i data-lucide="lock" class="absolute left-3.5 top-3.5 w-4 h-4 text-slate-500"></i>
+                    </div>
+                    <p class="text-[10px] text-slate-500 mt-2">
+                        API Key မရှိသေးပါက <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-cyan-400 hover:underline">Google AI Studio</a> တွင် အခမဲ့ရယူပါ။
+                    </p>
+                </div>
+
+                <div class="pt-2 flex gap-3">
+                    <button onclick="saveApiKey()" class="flex-1 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-cyan-500/20 transition-all active:scale-95">
+                        Save Key
+                    </button>
+                    <button onclick="resetApiKey()" class="px-4 py-2.5 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 font-bold text-sm transition-all">
+                        Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Background -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px] animate-float"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-600/10 rounded-full blur-[120px] animate-float-delayed"></div>
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+    </div>
+
+    <div class="min-h-screen flex flex-col md:flex-row relative z-10">
+        
+        <!-- SIDEBAR (Desktop) -->
+        <aside class="hidden md:flex w-72 glass-panel border-r border-white/5 flex-col m-4 rounded-3xl h-[calc(100vh-2rem)] sticky top-4 shadow-2xl z-20 transition-all">
+            <div class="p-8 pb-6">
+                <div class="flex items-center gap-3 mb-1">
+                    <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.4)] border border-white/10 relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+                        <i data-lucide="bot" class="text-white w-6 h-6 relative z-10"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-white tracking-tight font-num">AIDA<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">AI</span></h1>
+                        <p class="text-[10px] text-slate-400 font-medium tracking-[0.2em] uppercase">Copywriting Tool</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="flex-1 px-4 space-y-2 mt-4" id="desktop-nav">
+                <!-- Nav items injected by JS -->
+            </nav>
+
+            <div class="p-6 mt-auto">
+                <button onclick="toggleSettings()" class="w-full glass-card p-4 rounded-2xl border border-cyan-500/20 bg-cyan-500/5 relative overflow-hidden group hover:bg-cyan-500/10 transition-all text-left">
+                    <div class="flex items-center justify-between relative z-10">
+                        <div class="flex items-center gap-3">
+                            <div id="key-status-dot" class="w-2 h-2 rounded-full bg-slate-500 shadow-[0_0_10px_rgba(100,116,139,0.8)]"></div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-200 group-hover:text-white">API Config</h4>
+                                <p id="key-status-text" class="text-[10px] text-slate-500 font-num">No Key Set</p>
+                            </div>
+                        </div>
+                        <i data-lucide="settings" class="w-4 h-4 text-slate-400 group-hover:rotate-90 transition-transform duration-500"></i>
+                    </div>
+                </button>
+            </div>
+        </aside>
+
+        <!-- MOBILE HEADER -->
+        <div class="md:hidden fixed top-0 left-0 right-0 z-40 bg-[#020617]/80 backdrop-blur-xl border-b border-white/5 px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-9 h-9 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                    <i data-lucide="bot" class="text-white w-5 h-5"></i>
+                </div>
+                <span class="font-bold text-lg text-white font-num">AIDA<span class="text-cyan-400">AI</span></span>
+            </div>
+            <button onclick="toggleSettings()" class="w-9 h-9 rounded-full bg-slate-800/80 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700/80 transition-all">
+                <i data-lucide="settings" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 relative z-10 pt-20 md:pt-4 md:px-0 pb-28 md:pb-4 h-screen overflow-y-auto custom-scrollbar scroll-smooth">
+            <div id="app-content" class="max-w-5xl mx-auto px-4 md:px-8 space-y-8 animate-slide-up pb-10">
+                <!-- Dynamic Content injected here -->
+            </div>
+        </main>
+
+        <!-- MOBILE BOTTOM NAV -->
+        <div class="md:hidden fixed bottom-6 left-4 right-4 h-[70px] glass-panel rounded-2xl border border-white/10 z-50 flex items-center justify-between px-2 shadow-[0_10px_30px_rgba(0,0,0,0.5)]" id="mobile-nav">
+            <!-- Mobile nav items injected by JS -->
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- State Management ---
+        const state = {
+            activeTab: 'theory',
+            apiKey: localStorage.getItem('gemini_api_key') || null,
+            isGenerating: false
+        };
+
+        // --- Render Navigation ---
+        function renderNavigation() {
+            const tabs = [
+                { id: 'theory', label: 'သင်ခန်းစာ', labelDesk: 'သင်ခန်းစာ (Theory)', icon: 'book-open' },
+                { id: 'case-study', label: 'ဥပမာ', labelDesk: 'လက်တွေ့ (Case Study)', icon: 'microscope' },
+                { id: 'generator', label: 'AI Writer', labelDesk: 'AI Copy Writer', icon: 'sparkles', isAction: true },
+            ];
+
+            // Desktop Nav
+            const desktopNav = document.getElementById('desktop-nav');
+            desktopNav.innerHTML = tabs.map(tab => {
+                const isActive = state.activeTab === tab.id;
+                return `
+                <button onclick="switchTab('${tab.id}')" 
+                    class="w-full flex items-center gap-4 px-5 py-4 rounded-2xl transition-all duration-300 group relative overflow-hidden ${isActive ? 'text-white bg-white/5 border border-white/5 shadow-lg' : 'text-slate-400 hover:text-white hover:bg-white/5'}">
+                    ${isActive ? '<div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-cyan-400 to-blue-500 rounded-l-full"></div>' : ''}
+                    <i data-lucide="${tab.icon}" class="w-5 h-5 relative z-10 transition-transform duration-300 ${isActive ? 'text-cyan-400 scale-110' : 'group-hover:scale-110'}"></i>
+                    <span class="font-medium relative z-10 tracking-wide">${tab.labelDesk}</span>
+                </button>
+            `}).join('');
+
+            // Mobile Nav
+            const mobileNav = document.getElementById('mobile-nav');
+            mobileNav.innerHTML = tabs.map(tab => {
+                const isActive = state.activeTab === tab.id;
+                
+                if (tab.id === 'generator') {
+                     return `
+                        <button onclick="switchTab('${tab.id}')" 
+                            class="w-14 h-14 bg-gradient-to-tr from-cyan-500 to-blue-600 rounded-full -mt-12 flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.5)] border-4 border-[#020617] cursor-pointer active:scale-95 transition-transform hover:shadow-[0_0_30px_rgba(6,182,212,0.6)] group">
+                            <i data-lucide="sparkles" class="text-white w-6 h-6 group-hover:scale-110 transition-transform duration-300"></i>
+                        </button>
+                    `;
+                }
+
+                return `
+                    <button onclick="switchTab('${tab.id}')" class="flex-1 flex flex-col items-center justify-center h-full relative group">
+                        <div class="absolute -top-1 w-8 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent rounded-full opacity-0 transition-opacity ${isActive ? 'opacity-100' : ''}"></div>
+                        <div class="p-2 rounded-xl transition-all duration-300 ${isActive ? 'text-cyan-400 bg-cyan-500/10' : 'text-slate-500 group-hover:text-slate-300'}">
+                            <i data-lucide="${tab.icon}" class="w-6 h-6 ${isActive ? 'fill-cyan-500/20' : ''}"></i>
+                        </div>
+                        <span class="text-[10px] mt-1 font-medium ${isActive ? 'text-cyan-400' : 'text-slate-600'}">${tab.label}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        // --- Settings & API Logic ---
+        function toggleSettings() {
+            const modal = document.getElementById('settings-modal');
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.getElementById('api-key-input').value = state.apiKey || '';
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function saveApiKey() {
+            const key = document.getElementById('api-key-input').value.trim();
+            if (key) {
+                state.apiKey = key;
+                localStorage.setItem('gemini_api_key', key);
+                updateKeyStatus();
+                toggleSettings();
+                alert("API Key saved successfully!");
+            }
+        }
+
+        function resetApiKey() {
+            if (confirm("API Key ကို ဖျက်ရန် သေချာပါသလား?")) {
+                state.apiKey = null;
+                localStorage.removeItem('gemini_api_key');
+                document.getElementById('api-key-input').value = '';
+                updateKeyStatus();
+                alert("API Key removed!");
+            }
+        }
+
+        function updateKeyStatus() {
+            const dot = document.getElementById('key-status-dot');
+            const text = document.getElementById('key-status-text');
+            if (!dot || !text) return;
+
+            if (state.apiKey) {
+                dot.className = "w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)]";
+                text.innerText = "Connected";
+                text.className = "text-[10px] text-emerald-400 font-num";
+            } else {
+                dot.className = "w-2 h-2 rounded-full bg-slate-500 shadow-[0_0_10px_rgba(100,116,139,0.8)]";
+                text.innerText = "No Key Set";
+                text.className = "text-[10px] text-slate-500 font-num";
+            }
+        }
+
+        // --- Content Rendering ---
+
+        function renderTheory() {
+            return `
+                <div class="flex flex-col mb-6 animate-fade-in">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-2 font-num tracking-tight">Theory <span class="text-cyan-400">Center</span></h2>
+                    <p class="text-slate-400 text-sm">Content မရေးခင် သိထားသင့်သော အခြေခံအချက်များ</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <!-- Brand Analysis Card -->
+                    <div class="glass-card p-6 rounded-3xl group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/20 shadow-lg shadow-blue-500/10">
+                                <i data-lucide="target" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white">1. Brand Analysis</h3>
+                        </div>
+                        <ul class="space-y-3 text-sm text-slate-300">
+                            <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5 shadow-[0_0_5px_rgba(96,165,250,0.8)]"></div><span><strong>USP:</strong> သူများနဲ့မတူတဲ့ အားသာချက်က ဘာလဲ?</span></li>
+                            <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5 shadow-[0_0_5px_rgba(96,165,250,0.8)]"></div><span><strong>Positioning:</strong> ဈေးကွက်ထဲမှာ ဘယ်နေရာယူမှာလဲ?</span></li>
+                            <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5 shadow-[0_0_5px_rgba(96,165,250,0.8)]"></div><span><strong>Persona:</strong> Brand က လူငယ်ပုံစံလား၊ ရင့်ကျက်တဲ့ပုံစံလား?</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Target Audience Card -->
+                    <div class="glass-card p-6 rounded-3xl group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20 shadow-lg shadow-emerald-500/10">
+                                <i data-lucide="users" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white">2. Target Audience</h3>
+                        </div>
+                        <ul class="space-y-3 text-sm text-slate-300">
+                            <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shadow-[0_0_5px_rgba(52,211,153,0.8)]"></div><span><strong>Demographics:</strong> အသက်၊ နေရပ်၊ ဝင်ငွေ (SEC Level)။</span></li>
+                            <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shadow-[0_0_5px_rgba(52,211,153,0.8)]"></div><span><strong>Pain Points:</strong> သူတို့ရဲ့ ပြဿနာ၊ မလိုချင်တာတွေ။</span></li>
+                            <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shadow-[0_0_5px_rgba(52,211,153,0.8)]"></div><span><strong>Gain Points:</strong> သူတို့လိုချင်တဲ့ အဖြေ။</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-8 rounded-3xl border border-white/10 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-32 bg-cyan-500/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
+                    <h2 class="text-2xl font-bold text-white mb-8 text-center relative z-10">AIDA Model Breakdown</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 relative z-10">
+                        ${renderAIDAStep('A', 'Attention', 'အာရုံဖမ်းစားပါ', 'megaphone', 'red')}
+                        ${renderAIDAStep('I', 'Interest', 'စိတ်ဝင်စားအောင်လုပ်ပါ', 'search', 'orange')}
+                        ${renderAIDAStep('D', 'Desire', 'လိုချင်စိတ်ဖြစ်အောင်လုပ်ပါ', 'heart', 'purple')}
+                        ${renderAIDAStep('A', 'Action', 'ဝယ်ယူအောင်လုပ်ပါ', 'shopping-cart', 'green')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAIDAStep(letter, title, desc, icon, color) {
+            const colors = {
+                red: 'text-rose-400 bg-rose-500/10 border-rose-500/20 shadow-rose-500/10',
+                orange: 'text-orange-400 bg-orange-500/10 border-orange-500/20 shadow-orange-500/10',
+                purple: 'text-violet-400 bg-violet-500/10 border-violet-500/20 shadow-violet-500/10',
+                green: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20 shadow-emerald-500/10',
+            }[color];
+
+            return `
+                <div class="glass-card p-5 rounded-2xl text-center group hover:bg-white/5 transition-all">
+                    <div class="w-12 h-12 mx-auto mb-4 rounded-xl ${colors} flex items-center justify-center border shadow-lg group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="${icon}" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-white text-lg mb-1">${title}</h3>
+                    <p class="text-xs text-slate-400">${desc}</p>
+                </div>
+            `;
+        }
+
+        function renderCaseStudy() {
+             return `
+                <div class="flex flex-col mb-6 animate-fade-in">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-2 font-num tracking-tight">Case <span class="text-violet-400">Study</span></h2>
+                    <p class="text-slate-400 text-sm">Example: Natural Acne Face Wash</p>
+                </div>
+
+                <div class="glass-card p-6 md:p-8 rounded-3xl border border-violet-500/20 relative overflow-hidden mb-8">
+                     <div class="absolute top-0 right-0 w-64 h-64 bg-violet-500/10 rounded-full blur-[80px] pointer-events-none -mr-20 -mt-20"></div>
+                     
+                     <div class="relative z-10 mb-8 pb-6 border-b border-white/5">
+                        <h3 class="font-bold text-white text-lg mb-4 flex items-center gap-2">
+                            <i data-lucide="target" class="text-violet-400 w-5 h-5"></i> Brand Strategy
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-6 text-sm">
+                            <div class="space-y-3">
+                                <div class="bg-white/5 p-3 rounded-xl border border-white/5">
+                                    <span class="text-violet-400 font-bold block text-xs uppercase mb-1">Target</span>
+                                    <span class="text-slate-200">၁၀-၂၀ ကျော် လူငယ်များ (ကျောင်းသား/လုပ်ငန်းခွင်ဝင်စ)</span>
+                                </div>
+                                <div class="bg-white/5 p-3 rounded-xl border border-white/5">
+                                    <span class="text-violet-400 font-bold block text-xs uppercase mb-1">Pain Point</span>
+                                    <span class="text-slate-200">ဝက်ခြံပေါက်လို့ ယုံကြည်မှုလျော့နည်းခြင်း</span>
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="bg-white/5 p-3 rounded-xl border border-white/5">
+                                    <span class="text-violet-400 font-bold block text-xs uppercase mb-1">USP</span>
+                                    <span class="text-slate-200">သဘာဝပစ္စည်း သုံးထားလို့ Chemical ရှောင်ချင်သူတွေအတွက် အဆင်ပြေ</span>
+                                </div>
+                            </div>
+                        </div>
+                     </div>
+
+                     <div class="space-y-4 relative z-10">
+                        ${renderCaseStep('A', 'Attention', 'ဝက်ခြံဖြစ်နေတာကြောင့် စိတ်ညစ်နေလား? မနက်တိုင်း မျက်နှာအဆီပြန်နေလို့ မှန်တောင် မကြည့်ရဲဖြစ်နေပြီလား?', 'red')}
+                        ${renderCaseStep('I', 'Interest', 'ပူပြင်းလှတဲ့​နွေမှာ ​ကျောင်းသွား၊ ရုံးသွားတဲ့အခါ ဖုန်မှုန့်တွေနဲ့ အဆီတွေ​ကြောင့် ဝက်ခြံ​တွေ ပိုထွက်လာပြီး လူကြားထဲ ယုံကြည်မှု​တွေ ​ပျောက်ဆုံး​နေရပြီလား?', 'orange')}
+                        ${renderCaseStep('D', 'Desire', 'ဓာတုပစ္စည်းတွေကြောင့် အသားအရေ ပိုမပျက်စီးစေဖို့ သဘာဝပစ္စည်းစစ်စစ်နဲ့ ထုတ်လုပ်ထားတဲ့ ဒီမျက်နှာသစ်ဆေးက အဆီပြန်ခြင်းကို ထိန်းပေးပြီး ဝက်ခြံတွေကို သက်သာပျောက်ကင်းစေပါတယ်။', 'purple')}
+                        ${renderCaseStep('A', 'Action', 'အခုပဲ Messenger (သို့) Comment မှာ အသေးစိတ် လာရောက်မေးမြန်း မှာယူနိုင်ပါပြီ။', 'green')}
+                     </div>
+                </div>
+            `;
+        }
+
+        function renderCaseStep(letter, title, text, color) {
+             const colors = {
+                red: 'bg-rose-500/20 text-rose-400 border-rose-500/30',
+                orange: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
+                purple: 'bg-violet-500/20 text-violet-400 border-violet-500/30',
+                green: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+            }[color];
+
+            return `
+                <div class="flex gap-4 items-start group">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-xl ${colors} border flex items-center justify-center font-bold text-lg font-num shadow-[0_0_15px_rgba(0,0,0,0.3)] group-hover:scale-110 transition-transform duration-300">
+                        ${letter}
+                    </div>
+                    <div class="bg-white/5 border border-white/5 p-4 rounded-xl flex-1 group-hover:bg-white/10 transition-colors">
+                        <h4 class="font-bold text-white mb-1">${title}</h4>
+                        <p class="text-sm text-slate-400 leading-relaxed italic">"${text}"</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderGenerator() {
+            return `
+                 <div class="flex flex-col mb-6 animate-fade-in">
+                    <div class="flex justify-between items-end">
+                        <div>
+                            <h2 class="text-3xl md:text-4xl font-bold text-white mb-2 font-num tracking-tight">AI <span class="text-cyan-400">Writer</span></h2>
+                            <p class="text-slate-400 text-sm">Gemini AI ဖြင့် AIDA Copy များကို စက္ကန့်ပိုင်းအတွင်း ဖန်တီးပါ</p>
+                        </div>
+                        <button onclick="resetForm()" class="text-xs text-rose-400 hover:text-rose-300 flex items-center gap-1 bg-rose-500/10 px-3 py-1.5 rounded-lg border border-rose-500/20 transition-all">
+                            <i data-lucide="refresh-ccw" class="w-3 h-3"></i> Clear Form
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <!-- Input Form -->
+                    <div class="glass-card p-6 md:p-8 rounded-3xl border border-cyan-500/20 bg-gradient-to-br from-cyan-900/10 to-transparent">
+                        <div class="space-y-5">
+                            ${renderInput('inp-product', 'Product Name', 'text', '', 'ဥပမာ - Glow Serum')}
+                            ${renderInput('inp-pain', "Customer's Pain Point", 'text', '', 'ဥပမာ - မျက်နှာမည်းညစ်နေတာ')}
+                            ${renderInput('inp-situation', 'Situation', 'textarea', '', 'ဥပမာ - နေပူထဲသွားရလို့ အသားတွေညိုမည်းပြီး စိတ်ညစ်နေရတာ')}
+                            ${renderInput('inp-benefit', 'Main Benefit', 'textarea', '', 'ဥပမာ - တစ်ပတ်အတွင်း သိသိသာသာ ဖြူဝင်းလာမယ်')}
+                            ${renderInput('inp-cta', 'Call to Action', 'text', '', 'ဥပမာ - Page Messenger မှာ မှာယူပါ')}
+                            
+                            <button id="generate-btn" onclick="generateAIDA()" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white shadow-[0_0_20px_rgba(6,182,212,0.4)] border border-cyan-400/20 px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all active:scale-95 group mt-4 disabled:opacity-50 disabled:cursor-not-allowed">
+                                <i data-lucide="sparkles" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                                Generate AI Copy
+                             </button>
+                        </div>
+                    </div>
+
+                    <!-- Output -->
+                    <div class="glass-panel p-6 rounded-3xl border border-white/10 flex flex-col h-full bg-[#020617]/50 relative min-h-[500px] lg:min-h-0">
+                        <div class="flex justify-between items-center mb-4 pb-4 border-b border-white/5">
+                            <h3 class="font-bold text-white flex items-center gap-2">
+                                <i data-lucide="file-text" class="w-4 h-4 text-cyan-400"></i> AI Generated Result
+                            </h3>
+                            <button onclick="copyToClipboard()" class="text-xs flex items-center gap-1 text-slate-400 hover:text-white transition-colors">
+                                <i data-lucide="copy" class="w-3 h-3"></i> Copy Text
+                            </button>
+                        </div>
+                        <div id="result-box" class="flex-1 rounded-xl p-2 text-slate-300 text-sm overflow-y-auto custom-scrollbar font-sans markdown-content">
+                            <div class="h-full flex flex-col items-center justify-center text-slate-600 space-y-3 opacity-50">
+                                <i data-lucide="bot" class="w-12 h-12"></i>
+                                <p>Ready to generate content...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderInput(id, label, type, value, placeholder) {
+            return `
+                <div class="flex flex-col gap-2 group">
+                    <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider pl-1 group-hover:text-cyan-400 transition-colors">${label}</label>
+                    ${type === 'textarea' 
+                        ? `<textarea id="${id}" rows="2" placeholder="${placeholder}" class="input-field w-full rounded-xl px-4 py-3 text-sm placeholder-slate-600 font-sans resize-none"></textarea>`
+                        : `<input id="${id}" type="text" placeholder="${placeholder}" class="input-field w-full rounded-xl px-4 py-3 text-sm placeholder-slate-600 font-sans" />`
+                    }
+                </div>
+            `;
+        }
+
+        // --- Logic ---
+        function switchTab(tabId) {
+            state.activeTab = tabId;
+            renderApp();
+        }
+
+        function resetForm() {
+            if(confirm("Form အချက်အလက်များကို ရှင်းလင်းမည်မှာ သေချာပါသလား?")) {
+                const inputs = ['inp-product', 'inp-pain', 'inp-situation', 'inp-benefit', 'inp-cta'];
+                inputs.forEach(id => {
+                    const el = document.getElementById(id);
+                    if(el) el.value = '';
+                });
+                document.getElementById('result-box').innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center text-slate-600 space-y-3 opacity-50">
+                        <i data-lucide="bot" class="w-12 h-12"></i>
+                        <p>Ready to generate content...</p>
+                    </div>`;
+            }
+        }
+
+        async function generateAIDA() {
+            // Check for API Key
+            if (!state.apiKey) {
+                alert("ကျေးဇူးပြု၍ Settings တွင် Gemini API Key ထည့်သွင်းပေးပါ။");
+                toggleSettings();
+                return;
+            }
+
+            const product = document.getElementById('inp-product').value;
+            const pain = document.getElementById('inp-pain').value;
+            const situation = document.getElementById('inp-situation').value;
+            const benefit = document.getElementById('inp-benefit').value;
+            const cta = document.getElementById('inp-cta').value;
+
+            // Check if fields are empty
+            if(!product && !pain) {
+                alert("အနည်းဆုံး Product Name နှင့် Pain Point ကို ဖြည့်သွင်းပေးပါ။");
+                return;
+            }
+
+            const btn = document.getElementById('generate-btn');
+            const resultBox = document.getElementById('result-box');
+            
+            // Loading State
+            btn.disabled = true;
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Generating...`;
+            resultBox.innerHTML = `
+                <div class="h-full flex flex-col items-center justify-center text-cyan-400 space-y-4 animate-pulse">
+                    <div class="w-12 h-12 rounded-full border-2 border-t-cyan-500 border-r-cyan-500/30 border-b-transparent border-l-transparent animate-spin"></div>
+                    <p class="text-sm font-num tracking-widest">AI WRITING...</p>
+                </div>`;
+            lucide.createIcons();
+
+            // Construct Prompt
+            const prompt = `
+                Act as a professional Burmese copywriter. Write a Facebook post using the AIDA model (Attention, Interest, Desire, Action) based on these details:
+                Product: ${product}
+                Pain Point: ${pain || 'N/A'}
+                Situation: ${situation || 'N/A'}
+                Benefit: ${benefit || 'N/A'}
+                CTA: ${cta || 'See more in comments'}
+                
+                Language: Burmese (Myanmar).
+                Tone: Engaging, Emotional, and Persuasive.
+                Format: 
+                - Use clear headings for Attention, Interest, Desire, Action.
+                - Use emojis appropriately.
+                - Make it readable for social media.
+            `;
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${state.apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }]
+                    })
+                });
+
+                if (!response.ok) throw new Error('API Request Failed');
+
+                const data = await response.json();
+                const aiText = data.candidates[0].content.parts[0].text;
+                
+                // Render Markdown
+                resultBox.innerHTML = marked.parse(aiText);
+
+            } catch (error) {
+                console.error(error);
+                resultBox.innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center text-rose-400 space-y-2">
+                        <i data-lucide="alert-triangle" class="w-10 h-10"></i>
+                        <p>Generation Failed.</p>
+                        <p class="text-xs text-rose-500/70">API Key ကို စစ်ဆေးပါ သို့မဟုတ် အင်တာနက်လိုင်း စစ်ဆေးပါ။</p>
+                    </div>`;
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="sparkles" class="w-5 h-5 group-hover:scale-110 transition-transform"></i> Generate AI Copy`;
+                lucide.createIcons();
+            }
+        }
+
+        function copyToClipboard() {
+            const text = document.getElementById('result-box').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector('button[onclick="copyToClipboard()"]');
+                const original = btn.innerHTML;
+                btn.innerHTML = `<i data-lucide="check" class="w-3 h-3 text-emerald-400"></i> Copied!`;
+                lucide.createIcons();
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                    lucide.createIcons();
+                }, 2000);
+            });
+        }
+
+        function renderApp() {
+            renderNavigation();
+            const content = document.getElementById('app-content');
+            
+            if (state.activeTab === 'theory') content.innerHTML = renderTheory();
+            else if (state.activeTab === 'case-study') content.innerHTML = renderCaseStudy();
+            else if (state.activeTab === 'generator') content.innerHTML = renderGenerator();
+            
+            updateKeyStatus();
+            lucide.createIcons();
+        }
+
+        // --- Init ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderApp();
+
+            // Premium Preloader Logic
+            const progress = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            const statusText = document.getElementById('loading-status');
+            const preloader = document.getElementById('preloader');
+            const core = document.getElementById('preloader-core');
+            
+            let width = 0;
+            const messages = [
+                { limit: 30, text: "Initializing Core Systems..." },
+                { limit: 60, text: "Loading AI Neural Models..." },
+                { limit: 80, text: "Authenticating Secure API..." },
+                { limit: 95, text: "Optimizing Interface..." },
+                { limit: 100, text: "System Ready. Access Granted." }
+            ];
+
+            const interval = setInterval(() => {
+                width += Math.random() * 2; // Smoother increment
+                if (width > 100) width = 100;
+                
+                // Update visuals
+                if (progress) progress.style.width = width + '%';
+                if (progressText) progressText.innerText = Math.floor(width) + '%';
+                
+                // Update Text dynamically
+                if (statusText) {
+                    const currentMsg = messages.find(m => width <= m.limit);
+                    if (currentMsg && statusText.innerText !== currentMsg.text) {
+                        statusText.innerText = currentMsg.text;
+                    }
+                }
+
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        if(core) core.classList.add('scale-150', 'opacity-0'); // Zoom out effect
+                        if(preloader) {
+                            preloader.style.opacity = '0';
+                            preloader.style.pointerEvents = 'none';
+                            setTimeout(() => preloader.remove(), 800);
+                        }
+                    }, 600);
+                }
+            }, 30);
+        });
+    </script>
+</body>
+</html>
