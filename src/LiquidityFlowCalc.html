@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Liquidity Ratio - Ultimate Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                        tech: ['Rajdhani', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#020617', // Deep Space
+                            900: '#0f172a',
+                            800: '#1e293b',
+                        },
+                        primary: {
+                            400: '#38bdf8', // Sky
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 8s ease-in-out infinite',
+                        'float-delayed': 'float 8s ease-in-out infinite 4s',
+                        'slide-up': 'slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 8s linear infinite',
+                        'spin-reverse': 'spin 6s linear infinite reverse',
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'shimmer': 'shimmer 2s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        slideUp: {
+                            'from': { opacity: 0, transform: 'translateY(40px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        fadeIn: {
+                            'from': { opacity: 0 },
+                            'to': { opacity: 1 },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Remove Spinners from Number Inputs */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Premium Glass Effect */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.6) 100%);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 
+                        0 0 20px rgba(56, 189, 248, 0.1); /* Subtle blue glow */
+        }
+        
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+
+        .text-neon-blue {
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+        }
+        
+        .text-neon-emerald {
+            text-shadow: 0 0 15px rgba(16, 185, 129, 0.6);
+        }
+
+        /* Preloader Specific Styles */
+        .loader-ring {
+            border: 2px solid transparent;
+            border-top-color: #0ea5e9;
+            border-right-color: rgba(14, 165, 233, 0.2);
+            border-radius: 50%;
+        }
+        .loader-ring-inner {
+            border: 2px solid transparent;
+            border-bottom-color: #8b5cf6;
+            border-left-color: rgba(139, 92, 246, 0.2);
+            border-radius: 50%;
+        }
+        .loader-bg-grid {
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            perspective: 500px;
+            transform-style: preserve-3d;
+        }
+        
+        /* Input Styling */
+        .input-field {
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3), 0 0 15px rgba(56, 189, 248, 0.2);
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
+
+    <!-- PREMIUM PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-all duration-1000 ease-in-out overflow-hidden">
+        
+        <!-- Animated Background Grid -->
+        <div class="absolute inset-0 opacity-20 loader-bg-grid animate-pulse-slow" style="transform: perspective(500px) rotateX(20deg) scale(1.5);"></div>
+        
+        <!-- Vignette Overlay -->
+        <div class="absolute inset-0 bg-radial-gradient from-transparent to-[#020617]"></div>
+
+        <div class="relative flex flex-col items-center z-10">
+            <!-- Central Core System -->
+            <div class="relative w-48 h-48 flex items-center justify-center mb-12">
+                
+                <!-- Glow Effect -->
+                <div class="absolute inset-0 bg-cyan-500/20 blur-[60px] rounded-full animate-pulse-slow"></div>
+
+                <!-- Ring 1: Outer Slow -->
+                <div class="absolute inset-0 loader-ring animate-spin-slow shadow-[0_0_20px_rgba(6,182,212,0.1)]"></div>
+                
+                <!-- Ring 2: Middle Reverse -->
+                <div class="absolute inset-4 loader-ring-inner animate-spin-reverse shadow-[0_0_20px_rgba(139,92,246,0.1)]"></div>
+                
+                <!-- Ring 3: Static Dashed -->
+                <div class="absolute inset-8 border border-dashed border-slate-700/50 rounded-full animate-[spin_12s_linear_infinite]"></div>
+
+                <!-- Core Hexagon/Orb -->
+                <div class="relative w-24 h-24 bg-[#0f172a] rounded-full flex items-center justify-center border border-cyan-500/30 shadow-[0_0_30px_rgba(6,182,212,0.3)] backdrop-blur-md">
+                    <div class="absolute inset-2 bg-gradient-to-br from-cyan-900/50 to-violet-900/50 rounded-full animate-pulse"></div>
+                    <i data-lucide="activity" class="text-cyan-400 w-8 h-8 relative z-10 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]"></i>
+                </div>
+            </div>
+            
+            <!-- Typography & Progress -->
+            <div class="w-80 space-y-6 text-center">
+                
+                <!-- Title Reveal -->
+                <div class="overflow-hidden">
+                    <h2 class="text-4xl font-bold tracking-[0.2em] text-white font-tech mb-2 drop-shadow-lg">
+                        LIQUIDITY<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-500">FLOW</span>
+                    </h2>
+                </div>
+                
+                <div class="flex justify-between items-end px-1">
+                    <p class="text-[10px] text-cyan-500/70 font-tech tracking-[0.3em] uppercase animate-pulse">Initializing Core...</p>
+                    <span id="progress-text" class="text-xl font-bold font-num text-white">0%</span>
+                </div>
+                
+                <!-- Premium Progress Bar -->
+                <div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden border border-white/5 relative shadow-inner">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-600 w-0 shadow-[0_0_15px_rgba(6,182,212,0.8)] relative transition-all duration-75 ease-out">
+                        <div class="absolute top-0 right-0 bottom-0 w-20 bg-gradient-to-r from-transparent to-white/60 blur-sm"></div>
+                    </div>
+                </div>
+
+                <!-- Footer Status -->
+                <div class="flex justify-between text-[9px] text-slate-500 font-tech tracking-widest uppercase opacity-60">
+                    <span>Ver 3.0 Ultimate</span>
+                    <span>Secure Connection</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Background (Main App) -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <!-- Deep gradients -->
+        <div class="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-blue-600/5 rounded-full blur-[120px] animate-float"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-violet-600/5 rounded-full blur-[120px] animate-float-delayed"></div>
+        
+        <!-- Tech Grid -->
+        <div class="absolute inset-0 opacity-[0.02]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="min-h-screen relative z-10 flex flex-col">
+        
+        <!-- Navbar -->
+        <nav class="glass-panel border-b border-white/5 sticky top-0 z-50">
+            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/20 border border-white/10 group cursor-pointer hover:shadow-cyan-500/40 transition-all duration-300">
+                        <i data-lucide="bar-chart-2" class="text-white w-6 h-6 group-hover:scale-110 transition-transform"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-white font-tech tracking-wide">Liquidity<span class="text-cyan-400">Flow</span></h1>
+                        <p class="text-[10px] text-slate-400 font-medium tracking-[0.2em] uppercase">Financial Engine</p>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center gap-3">
+                    <div class="px-3 py-1.5 rounded-full bg-slate-800/50 border border-white/5 backdrop-blur-md flex items-center gap-2">
+                        <span class="relative flex h-2 w-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">System Active</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container mx-auto px-4 py-8 max-w-6xl flex-1">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 animate-slide-up" style="animation-delay: 0.2s;">
+                
+                <!-- Left Side: Educational Content -->
+                <div class="lg:col-span-5 space-y-6">
+                    <!-- Intro Card -->
+                    <div class="glass-card p-6 rounded-3xl border-l-4 border-l-cyan-500 group">
+                        <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2 font-tech uppercase tracking-wide">
+                            <i data-lucide="book-open" class="w-5 h-5 text-cyan-400 group-hover:text-cyan-300 transition-colors"></i>
+                            ငွေဖြစ်လွယ်မှု (Liquidity)
+                        </h2>
+                        <p class="text-slate-400 leading-relaxed mb-4 text-sm font-light">
+                            လုပ်ငန်းတွေလုပ်တဲ့အခါ ငွေပေါ်မြန်မှုဟာ လွန်စွာအရေးကြီးပါတယ်။ လုပ်ငန်းတွေမှာ လပိုင်းအတွင်း ရေတိုပေးရမယ့် ငွေတွေ (Supplier အကြွေး၊ လုပ်ခလစာ) ရှိတာကြောင့် တစ်ဖက်က ငွေပြန်ရပြီး ပေးနိုင်ဖို့ လိုအပ်ပါတယ်။
+                        </p>
+                        <div class="text-xs text-slate-300 bg-slate-800/50 p-4 rounded-xl border border-white/5 flex gap-3 shadow-inner">
+                            <i data-lucide="info" class="w-5 h-5 text-cyan-400 shrink-0"></i>
+                            <div>
+                                <strong class="text-cyan-400 block mb-1 font-tech uppercase tracking-wider">Timeframe Note:</strong>
+                                ၁ နှစ်အောက် အချိန်ကို Short Term (ရေတို)၊ ၁ နှစ်အထက်ကို Long Term (ရေရှည်) လို့ သတ်မှတ်ပါတယ်။
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formulas -->
+                    <div class="glass-panel p-6 rounded-3xl">
+                        <h3 class="text-lg font-bold text-white mb-6 border-b border-white/10 pb-4 flex items-center gap-2 font-tech uppercase tracking-wide">
+                            <i data-lucide="function-square" class="w-5 h-5 text-violet-400"></i>
+                            ပုံသေနည်းများ
+                        </h3>
+                        
+                        <div class="space-y-6">
+                            <div class="group cursor-default">
+                                <h4 class="text-sm font-bold text-cyan-400 mb-2 font-tech uppercase tracking-widest flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Current Ratio
+                                </h4>
+                                <div class="bg-slate-900/50 p-4 rounded-xl border border-white/10 text-center font-num text-slate-200 font-bold mb-2 group-hover:border-cyan-500/30 group-hover:shadow-[0_0_15px_rgba(6,182,212,0.1)] transition-all">
+                                    Current Assets ÷ Current Liabilities
+                                </div>
+                                <p class="text-slate-500 text-xs">
+                                    လုပ်ငန်းရဲ့ ရေတိုပေးရမယ့် ပေးရန်တာဝန်တွေကို လက်ရှိပိုင်ဆိုင်မှုနဲ့ ဘယ်လောက်အထိ ပေးနိုင်လဲဆိုတာ တိုင်းတာခြင်းဖြစ်ပါတယ်။
+                                </p>
+                            </div>
+
+                            <div class="group cursor-default">
+                                <h4 class="text-sm font-bold text-violet-400 mb-2 font-tech uppercase tracking-widest flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-violet-500 rounded-full"></span> Quick Ratio
+                                </h4>
+                                <div class="bg-slate-900/50 p-4 rounded-xl border border-white/10 text-center font-num text-slate-200 font-bold mb-2 group-hover:border-violet-500/30 group-hover:shadow-[0_0_15px_rgba(139,92,246,0.1)] transition-all">
+                                    (Assets - Inventory) ÷ Liabilities
+                                </div>
+                                <p class="text-slate-500 text-xs">
+                                    ချက်ချင်းရောင်းမထွက်နိုင်တဲ့ Inventory (ကုန်ပစ္စည်းလက်ကျန်) တွေကို နှုတ်ပြီး တွက်ချက်ခြင်းဖြစ်ပါတယ်။
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Components Info -->
+                    <div class="glass-card p-6 rounded-3xl">
+                        <h3 class="font-bold text-white mb-4 text-sm font-tech uppercase tracking-wider">Components</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-emerald-500/5 p-4 rounded-2xl border border-emerald-500/10 hover:bg-emerald-500/10 transition-colors">
+                                <strong class="text-emerald-400 text-xs block mb-2 uppercase font-bold tracking-wide">Current Assets</strong>
+                                <ul class="text-xs text-slate-400 space-y-1.5 list-disc list-inside">
+                                    <li>Cash (ငွေသား)</li>
+                                    <li>Inventory (ကုန်ပစ္စည်း)</li>
+                                    <li>Prepay (ကြိုတင်ပေး)</li>
+                                    <li>Receivable (ရရန်ရှိ)</li>
+                                </ul>
+                            </div>
+                            <div class="bg-rose-500/5 p-4 rounded-2xl border border-rose-500/10 hover:bg-rose-500/10 transition-colors">
+                                <strong class="text-rose-400 text-xs block mb-2 uppercase font-bold tracking-wide">Liabilities</strong>
+                                <ul class="text-xs text-slate-400 space-y-1.5 list-disc list-inside">
+                                    <li>Payable (ပေးရန်ရှိ)</li>
+                                    <li>Short term Notes</li>
+                                    <li>Wages (လုပ်ခလစာ)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side: Calculator -->
+                <div class="lg:col-span-7">
+                    <div class="glass-panel rounded-3xl overflow-hidden sticky top-24 border border-cyan-500/20 shadow-[0_0_50px_rgba(6,182,212,0.05)] ring-1 ring-white/5">
+                        <!-- Calc Header -->
+                        <div class="bg-gradient-to-r from-slate-900/90 via-slate-800/90 to-slate-900/90 p-5 flex justify-between items-center border-b border-white/5 backdrop-blur-xl">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 bg-cyan-500/10 rounded-lg text-cyan-400 border border-cyan-500/20 shadow-[0_0_10px_rgba(6,182,212,0.1)]">
+                                    <i data-lucide="calculator" class="w-5 h-5"></i>
+                                </div>
+                                <h3 class="font-bold text-white font-tech uppercase tracking-wide">Calculation Engine</h3>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="exportReport()" class="text-xs bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 px-4 py-2 rounded-xl transition-all border border-cyan-500/20 hover:text-white hover:border-cyan-500/40 flex items-center gap-2 group shadow-lg">
+                                    <i data-lucide="download" class="w-3 h-3 group-hover:scale-110 transition-transform"></i> Export
+                                </button>
+                                <button onclick="resetForm()" class="text-xs bg-white/5 hover:bg-white/10 text-slate-300 px-4 py-2 rounded-xl transition-all border border-white/5 hover:text-white hover:border-white/20 flex items-center gap-2 group shadow-lg">
+                                    <i data-lucide="rotate-ccw" class="w-3 h-3 group-hover:-rotate-180 transition-transform duration-500 text-cyan-400"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="p-6 md:p-8 space-y-8">
+                            
+                            <!-- Assets Section -->
+                            <div class="space-y-5 animate-fade-in" style="animation-delay: 0.3s;">
+                                <div class="flex items-center justify-between border-b border-white/5 pb-2">
+                                    <h4 class="text-emerald-400 font-bold flex items-center text-sm uppercase tracking-wider font-tech">
+                                        <i data-lucide="wallet" class="w-4 h-4 mr-2"></i> Current Assets
+                                    </h4>
+                                    <span class="text-xs font-num text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-lg border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.1)]" id="total-assets">0 Ks</span>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                    <!-- Input Item -->
+                                    <div class="flex flex-col gap-2 group">
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider pl-1 group-hover:text-emerald-400 transition-colors">Cash & Equivalents</label>
+                                        <div class="relative group-focus-within:scale-[1.02] transition-transform duration-300">
+                                            <input type="number" id="cash" placeholder="0" class="asset-input input-field w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:outline-none font-num shadow-inner">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col gap-2 group">
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider pl-1 group-hover:text-emerald-400 transition-colors">Inventory / Stock</label>
+                                        <div class="relative group-focus-within:scale-[1.02] transition-transform duration-300">
+                                            <input type="number" id="inventory" placeholder="0" class="asset-input input-field w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:outline-none font-num shadow-inner">
+                                            <div class="absolute right-3 top-3.5 text-orange-400/50 text-[10px]" title="Excluded in Quick Ratio"><i data-lucide="alert-circle" class="w-3.5 h-3.5"></i></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-col gap-2 group">
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider pl-1 group-hover:text-emerald-400 transition-colors">Prepay Expense</label>
+                                        <div class="relative group-focus-within:scale-[1.02] transition-transform duration-300">
+                                            <input type="number" id="prepay" placeholder="0" class="asset-input input-field w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:outline-none font-num shadow-inner">
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-col gap-2 group">
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider pl-1 group-hover:text-emerald-400 transition-colors">Receivables</label>
+                                        <div class="relative group-focus-within:scale-[1.02] transition-transform duration-300">
+                                            <input type="number" id="receivable" placeholder="0" class="asset-input input-field w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:outline-none font-num shadow-inner">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Liabilities Section -->
+                            <div class="space-y-5 animate-fade-in" style="animation-delay: 0.4s;">
+                                <div class="flex items-center justify-between border-b border-white/5 pb-2">
+                                    <h4 class="text-rose-400 font-bold flex items-center text-sm uppercase tracking-wider font-tech">
+                                        <i data-lucide="file-warning" class="w-4 h-4 mr-2"></i> Current Liabilities
+                                    </h4>
+                                    <span class="text-xs font-num text-rose-400 bg-rose-500/10 px-3 py-1 rounded-lg border border-rose-500/20 shadow-[0_0_10px_rgba(244,63,94,0.1)]" id="total-liabilities">0 Ks</span>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                                    <div class="flex flex-col gap-2 group">
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider pl-1 group-hover:text-rose-400 transition-colors">Accounts Payable</label>
+                                        <input type="number" id="payable" placeholder="0" class="liability-input input-field w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:outline-none font-num shadow-inner group-focus-within:scale-[1.02] transition-transform">
+                                    </div>
+                                    <div class="flex flex-col gap-2 group">
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider pl-1 group-hover:text-rose-400 transition-colors">Short Term Notes</label>
+                                        <input type="number" id="notes" placeholder="0" class="liability-input input-field w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:outline-none font-num shadow-inner group-focus-within:scale-[1.02] transition-transform">
+                                    </div>
+                                    <div class="flex flex-col gap-2 group">
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider pl-1 group-hover:text-rose-400 transition-colors">Wages Payable</label>
+                                        <input type="number" id="wages" placeholder="0" class="liability-input input-field w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:outline-none font-num shadow-inner group-focus-within:scale-[1.02] transition-transform">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Results Display -->
+                            <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-8 border border-white/5 relative overflow-hidden group shadow-2xl animate-fade-in" style="animation-delay: 0.5s;">
+                                <!-- Animated Background in Result Card -->
+                                <div class="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                <div class="absolute -right-10 -top-10 w-32 h-32 bg-cyan-500/10 rounded-full blur-[50px] animate-pulse-slow"></div>
+                                
+                                <div class="grid grid-cols-2 gap-8 text-center relative z-10">
+                                    <div class="relative">
+                                        <h5 class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] mb-3 font-tech">Current Ratio</h5>
+                                        <div id="result-current-ratio" class="text-5xl font-bold text-white font-num text-neon-blue transition-all duration-300 scale-100 hover:scale-110 cursor-default">-</div>
+                                        <div class="h-1.5 w-16 mx-auto bg-slate-800 rounded-full mt-4 overflow-hidden">
+                                            <div class="h-full w-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)]"></div>
+                                        </div>
+                                    </div>
+                                    <div class="border-l border-white/5 relative">
+                                        <h5 class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] mb-3 font-tech">Quick Ratio</h5>
+                                        <div id="result-quick-ratio" class="text-5xl font-bold text-white font-num transition-all duration-300 scale-100 hover:scale-110 cursor-default">-</div>
+                                        <div class="h-1.5 w-16 mx-auto bg-slate-800 rounded-full mt-4 overflow-hidden">
+                                            <div class="h-full w-full bg-violet-400 shadow-[0_0_10px_rgba(167,139,250,0.8)]"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div id="interpretation" class="mt-8 pt-6 border-t border-white/5 text-center hidden">
+                                    <!-- Dynamic content inserted by JS -->
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="border-t border-white/5 bg-[#020617] py-8 text-center relative z-10">
+            <p class="text-xs text-slate-600 font-tech uppercase tracking-widest">
+                Engineered by <span class="text-cyan-600 font-bold hover:text-cyan-400 transition-colors cursor-pointer">MYO HTET PAING</span>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Init Lucide Icons
+        lucide.createIcons();
+
+        // Premium Preloader Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const progress = document.getElementById('progress-bar');
+            const text = document.getElementById('progress-text');
+            const preloader = document.getElementById('preloader');
+            
+            // Randomize loading speed for "real" feel
+            let width = 0;
+            const steps = [10, 25, 45, 60, 80, 90, 100];
+            let currentStep = 0;
+
+            function advanceLoader() {
+                if (width >= 100) {
+                    setTimeout(() => {
+                        if(preloader) {
+                            preloader.style.transition = "all 0.8s cubic-bezier(0.7, 0, 0.3, 1)";
+                            preloader.style.opacity = "0";
+                            preloader.style.transform = "scale(1.1)";
+                            // Disable interaction
+                            preloader.style.pointerEvents = "none";
+                            setTimeout(() => preloader.remove(), 800);
+                        }
+                    }, 400); // Slight delay at 100%
+                    return;
+                }
+
+                // Calculate next increment
+                const diff = steps[currentStep] - width;
+                const increment = Math.random() * (diff / 2) + 1;
+                
+                width += increment;
+                if (width >= steps[currentStep]) {
+                    currentStep++;
+                }
+                
+                if (width > 100) width = 100;
+
+                if (progress) progress.style.width = width + '%';
+                if (text) text.innerText = Math.floor(width) + '%';
+
+                // Random delay for next frame
+                setTimeout(advanceLoader, Math.random() * 100 + 20);
+            }
+
+            // Start loading
+            setTimeout(advanceLoader, 100);
+        });
+
+        // Calculator Logic
+        const assetInputs = document.querySelectorAll('.asset-input');
+        const liabilityInputs = document.querySelectorAll('.liability-input');
+        
+        [...assetInputs, ...liabilityInputs].forEach(input => {
+            input.addEventListener('input', calculateRatios);
+        });
+
+        function formatMoney(amount) {
+            return amount.toLocaleString() + ' Ks';
+        }
+
+        function calculateRatios() {
+            // Get Values (Asset Side)
+            const cash = parseFloat(document.getElementById('cash').value) || 0;
+            const inventory = parseFloat(document.getElementById('inventory').value) || 0;
+            const prepay = parseFloat(document.getElementById('prepay').value) || 0;
+            const receivable = parseFloat(document.getElementById('receivable').value) || 0;
+
+            // Get Values (Liability Side)
+            const payable = parseFloat(document.getElementById('payable').value) || 0;
+            const notes = parseFloat(document.getElementById('notes').value) || 0;
+            const wages = parseFloat(document.getElementById('wages').value) || 0;
+
+            // Calculate Totals
+            const totalAssets = cash + inventory + prepay + receivable;
+            const totalLiabilities = payable + notes + wages;
+
+            // Update Total Displays
+            document.getElementById('total-assets').textContent = formatMoney(totalAssets);
+            document.getElementById('total-liabilities').textContent = formatMoney(totalLiabilities);
+
+            const currentRatioEl = document.getElementById('result-current-ratio');
+            const quickRatioEl = document.getElementById('result-quick-ratio');
+            const interpretationEl = document.getElementById('interpretation');
+
+            if (totalLiabilities === 0) {
+                currentRatioEl.textContent = "-";
+                quickRatioEl.textContent = "-";
+                interpretationEl.classList.add('hidden');
+                return;
+            }
+
+            // Calculate Ratios
+            const currentRatio = (totalAssets / totalLiabilities).toFixed(2);
+            const quickRatio = ((totalAssets - inventory) / totalLiabilities).toFixed(2);
+
+            // Display Results
+            currentRatioEl.textContent = currentRatio;
+            quickRatioEl.textContent = quickRatio;
+
+            // Styling based on health
+            currentRatioEl.className = `text-5xl font-bold font-num transition-all duration-300 scale-100 hover:scale-110 cursor-default ${currentRatio >= 1.5 ? 'text-emerald-400 text-neon-emerald' : (currentRatio >= 1 ? 'text-yellow-400' : 'text-rose-400')}`;
+            
+            quickRatioEl.className = `text-5xl font-bold font-num transition-all duration-300 scale-100 hover:scale-110 cursor-default ${quickRatio >= 1 ? 'text-violet-400' : 'text-slate-400'}`;
+
+            // Interpretation Logic
+            interpretationEl.classList.remove('hidden');
+            let message = "";
+            let icon = "";
+            let colorClass = "";
+            
+            if (currentRatio >= 2) {
+                colorClass = "text-emerald-400";
+                icon = "check-circle-2";
+                message = "Excellent Liquidity! (အခြေအနေ အလွန်ကောင်းမွန်ပါသည်)";
+            } else if (currentRatio >= 1) {
+                colorClass = "text-yellow-400";
+                icon = "alert-circle";
+                message = "Stable Position (ပုံမှန်အခြေအနေ ရှိပါသည်)";
+            } else {
+                colorClass = "text-rose-400";
+                icon = "alert-triangle";
+                message = "Liquidity Warning (သတိပြုရန် လိုအပ်ပါသည်)";
+            }
+
+            interpretationEl.innerHTML = `
+                <div class="flex flex-col items-center animate-fade-in">
+                    <div class="flex items-center gap-2 ${colorClass} font-bold mb-2 p-2 bg-slate-900/50 rounded-lg border border-white/5">
+                        <i data-lucide="${icon}" class="w-5 h-5"></i>
+                        <span class="font-tech uppercase tracking-wide">${message}</span>
+                    </div>
+                    <p class="text-xs text-slate-400 font-light">ရေတိုပေးရန်တာဝန်များကို <span class="text-white font-bold">${currentRatio}</span> ဆ ပေးချေနိုင်စွမ်းရှိသည်။</p>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function resetForm() {
+            document.querySelectorAll('input').forEach(input => input.value = '');
+            calculateRatios();
+        }
+
+        function exportReport() {
+            const date = new Date().toLocaleString('my-MM');
+            
+            // Get Values
+            const cash = document.getElementById('cash').value || 0;
+            const inventory = document.getElementById('inventory').value || 0;
+            const prepay = document.getElementById('prepay').value || 0;
+            const receivable = document.getElementById('receivable').value || 0;
+            const payable = document.getElementById('payable').value || 0;
+            const notes = document.getElementById('notes').value || 0;
+            const wages = document.getElementById('wages').value || 0;
+            
+            // Get Totals & Ratios
+            const totalAssets = document.getElementById('total-assets').innerText;
+            const totalLiabilities = document.getElementById('total-liabilities').innerText;
+            const currentRatio = document.getElementById('result-current-ratio').innerText;
+            const quickRatio = document.getElementById('result-quick-ratio').innerText;
+            
+            // Interpretation logic re-run for clean text
+            let status = "N/A";
+            const crVal = parseFloat(currentRatio);
+            if (!isNaN(crVal)) {
+                if (crVal >= 2) status = "Excellent Liquidity (အခြေအနေ အလွန်ကောင်းမွန်ပါသည်)";
+                else if (crVal >= 1) status = "Stable Position (ပုံမှန်အခြေအနေ ရှိပါသည်)";
+                else status = "Liquidity Warning (သတိပြုရန် လိုအပ်ပါသည်)";
+            }
+
+            let reportContent = `LIQUIDITY FLOW - FINANCIAL REPORT\n`;
+            reportContent += `Date: ${date}\n`;
+            reportContent += `----------------------------------------\n\n`;
+            
+            reportContent += `[ CURRENT ASSETS ]\n`;
+            reportContent += `Cash & Equivalents : ${cash} Ks\n`;
+            reportContent += `Inventory / Stock  : ${inventory} Ks\n`;
+            reportContent += `Prepay Expense     : ${prepay} Ks\n`;
+            reportContent += `Receivables        : ${receivable} Ks\n`;
+            reportContent += `>>> TOTAL ASSETS   : ${totalAssets}\n\n`;
+            
+            reportContent += `[ CURRENT LIABILITIES ]\n`;
+            reportContent += `Accounts Payable   : ${payable} Ks\n`;
+            reportContent += `Short Term Notes   : ${notes} Ks\n`;
+            reportContent += `Wages Payable      : ${wages} Ks\n`;
+            reportContent += `>>> TOTAL LIABILITIES : ${totalLiabilities}\n\n`;
+            
+            reportContent += `----------------------------------------\n`;
+            reportContent += `[ RESULTS ]\n`;
+            reportContent += `Current Ratio      : ${currentRatio}\n`;
+            reportContent += `Quick Ratio        : ${quickRatio}\n`;
+            reportContent += `Status             : ${status}\n`;
+            reportContent += `----------------------------------------\n`;
+            reportContent += `Generated by LiquidityFlow Calculator`;
+
+            const blob = new Blob([reportContent], { type: "text/plain;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `Liquidity_Report_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>
