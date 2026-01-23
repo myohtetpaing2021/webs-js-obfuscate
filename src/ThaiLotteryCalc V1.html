@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Thai Lottery - Ultimate Suite</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        dark: {
+                            900: '#0B0F19', 
+                            800: '#151B2B',
+                        },
+                        neon: {
+                            blue: '#00f2ff',
+                            purple: '#bd00ff',
+                            gold: '#ffd700',
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pulse-glow': 'pulseGlow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 3s linear infinite',
+                        'spin-reverse': 'spin 2s linear infinite reverse',
+                        'toast-in': 'toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'toast-out': 'toastOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        slideUp: {
+                            'from': { opacity: 0, transform: 'translateY(20px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: 0.5, filter: 'brightness(1)' },
+                            '50%': { opacity: 0.8, filter: 'brightness(1.3)' },
+                        },
+                        toastIn: {
+                            'from': { opacity: 0, transform: 'translate(-50%, 20px) scale(0.9)' },
+                            'to': { opacity: 1, transform: 'translate(-50%, 0) scale(1)' },
+                        },
+                        toastOut: {
+                            'from': { opacity: 1, transform: 'translate(-50%, 0) scale(1)' },
+                            'to': { opacity: 0, transform: 'translate(-50%, -20px) scale(0.9)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0B0F19;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        /* Input Styling */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-gradient-border {
+            position: relative;
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(16px);
+            border-radius: 1.5rem;
+            z-index: 1;
+        }
+
+        .hero-gradient-border::before {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            border-radius: 1.6rem; 
+            padding: 2px; 
+            background: linear-gradient(135deg, #06b6d4, #3b82f6, #8b5cf6); 
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); 
+            -webkit-mask-composite: xor; 
+            mask-composite: exclude; 
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .input-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .input-box:focus-within {
+            background: rgba(15, 23, 42, 0.9);
+            border-color: rgba(6, 182, 212, 0.5);
+            box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .day-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .day-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
+        }
+
+        @media (min-width: 768px) {
+            .grid-responsive {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col font-sans selection:bg-cyan-500/30">
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#0B0F19] flex flex-col items-center justify-center transition-opacity duration-700 ease-in-out">
+        <!-- Background Grid -->
+        <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(#38bdf8 1px, transparent 1px); background-size: 30px 30px;"></div>
+        
+        <div class="relative flex flex-col items-center z-10">
+            <!-- Central Tech Loader -->
+            <div class="relative w-28 h-28 mb-10 flex items-center justify-center">
+                <!-- Outer Rings -->
+                <div class="absolute inset-0 border-2 border-slate-800 rounded-full"></div>
+                <div class="absolute inset-0 border-t-2 border-r-2 border-cyan-500/50 rounded-full animate-spin-slow"></div>
+                <div class="absolute inset-3 border-b-2 border-l-2 border-blue-500/50 rounded-full animate-spin-reverse"></div>
+                
+                <!-- Core Pulse -->
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="w-12 h-12 bg-cyan-500/10 rounded-full border border-cyan-500/30 shadow-[0_0_30px_rgba(6,182,212,0.3)] animate-pulse flex items-center justify-center">
+                         <i data-lucide="cpu" class="w-6 h-6 text-cyan-400"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text & Progress -->
+            <h2 class="text-3xl font-bold tracking-[0.2em] text-white font-mono mb-2 flex items-center gap-2">
+                LOTTERY<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">OS</span>
+            </h2>
+            
+            <div class="text-[10px] text-slate-500 font-mono tracking-widest mb-6 h-4" id="loader-status">
+                INITIALIZING SYSTEM...
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-64 h-1 bg-slate-800/50 rounded-full overflow-hidden relative border border-white/5">
+                <div id="progress-bar" class="absolute top-0 left-0 h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 w-0 transition-all duration-100 ease-out shadow-[0_0_15px_rgba(6,182,212,0.6)]">
+                    <div class="absolute inset-0 bg-white/30 animate-pulse"></div>
+                </div>
+            </div>
+            
+            <div class="mt-3 flex justify-between w-64 text-[10px] font-mono font-bold">
+                <span class="text-slate-600">v3.0.1</span>
+                <span class="text-cyan-400" id="progress-text">0%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Background Animation -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-blue-600/10 rounded-full mix-blend-screen filter blur-[100px] animate-blob"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-purple-600/10 rounded-full mix-blend-screen filter blur-[100px] animate-blob" style="animation-delay: 2s"></div>
+        <div class="absolute top-[40%] left-[30%] w-[30vw] h-[30vw] bg-cyan-600/10 rounded-full mix-blend-screen filter blur-[80px] animate-blob" style="animation-delay: 4s"></div>
+        <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 relative z-10 w-full max-w-5xl mx-auto pb-12">
+        
+        <!-- HEADER -->
+        <header class="pt-8 pb-6 px-6 flex justify-between items-center max-w-3xl mx-auto">
+            <div class="flex flex-col">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                    <span class="text-[10px] font-bold tracking-[0.3em] text-cyan-400 uppercase">Lottery Calc</span>
+                </div>
+                <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Ultimate <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Suite</span></h1>
+            </div>
+            <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-md shadow-lg group hover:bg-white/10 transition-colors">
+                <i data-lucide="bar-chart-2" class="text-cyan-400 w-5 h-5 md:w-6 md:h-6 group-hover:scale-110 transition-transform"></i>
+            </div>
+        </header>
+
+        <div class="px-4 space-y-6 max-w-3xl mx-auto">
+            
+            <!-- SUMMARY CARDS -->
+            <div class="glass-panel rounded-2xl p-1 animate-slide-up relative group/panel">
+                <div class="absolute -top-6 right-0 text-[10px] text-slate-500 font-mono opacity-0 group-hover/panel:opacity-100 transition-opacity">
+                    <span class="bg-black/40 px-2 py-1 rounded border border-white/5">Tip: Click values to copy</span>
+                </div>
+                <div class="grid grid-cols-4 divide-x divide-white/5">
+                    <!-- Total Bet -->
+                    <div class="p-3 md:p-4 flex flex-col items-center justify-center group cursor-pointer hover:bg-white/5 active:bg-white/10 transition-colors relative" onclick="copyToClipboard('grandTotalBet')">
+                        <span class="text-[9px] md:text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1 group-hover:text-white transition-colors">Bet</span>
+                        <span class="text-xs md:text-sm font-bold text-white font-mono transition-transform group-active:scale-95" id="grandTotalBet">0</span>
+                        <div class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i data-lucide="copy" class="w-3 h-3 text-slate-500"></i>
+                        </div>
+                    </div>
+                    <!-- Total P -->
+                    <div class="p-3 md:p-4 flex flex-col items-center justify-center group cursor-pointer hover:bg-white/5 active:bg-white/10 transition-colors relative" onclick="copyToClipboard('grandTotalP')">
+                        <span class="text-[9px] md:text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1 group-hover:text-cyan-300 transition-colors">P</span>
+                        <span class="text-xs md:text-sm font-bold text-cyan-400 font-mono transition-transform group-active:scale-95" id="grandTotalP">0</span>
+                        <div class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i data-lucide="copy" class="w-3 h-3 text-cyan-500/50"></i>
+                        </div>
+                    </div>
+                    <!-- Net -->
+                    <div class="p-3 md:p-4 flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer hover:bg-emerald-500/5 active:bg-emerald-500/10 transition-colors" onclick="copyToClipboard('netAmount')">
+                        <span class="text-[9px] md:text-[10px] text-emerald-400/80 uppercase font-bold tracking-wider mb-1">Net</span>
+                        <span class="text-xs md:text-sm font-bold text-emerald-400 font-mono transition-transform group-active:scale-95" id="netAmount">0</span>
+                         <div class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i data-lucide="copy" class="w-3 h-3 text-emerald-500/50"></i>
+                        </div>
+                    </div>
+                    <!-- Payout -->
+                    <div class="p-3 md:p-4 flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer hover:bg-rose-500/5 active:bg-rose-500/10 transition-colors" onclick="copyToClipboard('payoutAmount')">
+                        <span class="text-[9px] md:text-[10px] text-rose-400/80 uppercase font-bold tracking-wider mb-1">Pay</span>
+                        <span class="text-xs md:text-sm font-bold text-rose-400 font-mono transition-transform group-active:scale-95" id="payoutAmount">0</span>
+                         <div class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i data-lucide="copy" class="w-3 h-3 text-rose-500/50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HERO PROFIT CARD -->
+            <div class="hero-gradient-border p-6 md:p-8 relative overflow-hidden group animate-slide-up" style="animation-delay: 100ms;">
+                <!-- Background Glow -->
+                <div class="absolute top-0 right-0 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none animate-pulse-glow"></div>
+                <div class="absolute bottom-0 left-0 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none animate-pulse-glow" style="animation-delay: 1.5s"></div>
+                
+                <!-- CLICKABLE PROFIT AREA -->
+                <div class="relative z-10 flex flex-col items-center justify-center py-2 cursor-pointer hover:scale-[1.02] active:scale-95 transition-transform duration-300" onclick="copyToClipboard('finalProfit')" title="Click to Copy">
+                    <span class="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-[0.2em] mb-3 flex items-center gap-2 bg-black/20 px-3 py-1 rounded-full border border-white/5 group-hover:bg-black/40 group-hover:border-white/20 transition-all">
+                        Net Profit Estimate <i data-lucide="copy" class="w-3 h-3 ml-1 opacity-50"></i>
+                    </span>
+                    
+                    <div class="flex items-start gap-2">
+                        <span class="text-sm md:text-base text-slate-500 font-bold mt-3 md:mt-4">Ks</span>
+                        <span id="finalProfit" class="text-5xl md:text-7xl font-black tracking-tighter text-white font-mono drop-shadow-2xl transition-all duration-500">0</span>
+                    </div>
+                </div>
+                
+                <!-- Settings Bar -->
+                <div class="mt-8 flex flex-col sm:flex-row items-center gap-4 pt-6 border-t border-white/5 relative z-20">
+                    <div class="flex-1 w-full bg-black/20 rounded-xl p-3 flex items-center justify-between border border-white/5 hover:border-white/10 transition-colors">
+                        <div class="flex items-center gap-2">
+                            <div class="p-1.5 rounded-lg bg-cyan-500/10 text-cyan-400"><i data-lucide="percent" class="w-3 h-3"></i></div>
+                            <span class="text-[10px] md:text-xs text-slate-400 font-bold uppercase">Commission</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <input type="number" id="commissionRate" value="13" class="w-12 bg-transparent text-right font-mono font-bold text-white text-base outline-none focus:text-cyan-400 transition-colors" oninput="calculateTotal()">
+                            <span class="text-xs text-slate-600 font-bold">%</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 w-full bg-black/20 rounded-xl p-3 flex items-center justify-between border border-white/5 hover:border-white/10 transition-colors">
+                        <div class="flex items-center gap-2">
+                            <div class="p-1.5 rounded-lg bg-rose-500/10 text-rose-400"><i data-lucide="x" class="w-3 h-3"></i></div>
+                            <span class="text-[10px] md:text-xs text-slate-400 font-bold uppercase">Payout Ratio</span>
+                        </div>
+                        <input type="number" id="payoutRatio" value="80" class="w-16 bg-transparent text-right font-mono font-bold text-white text-base outline-none focus:text-rose-400 transition-colors" oninput="calculateTotal()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- INPUT LIST -->
+            <div id="daysContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- JS Renders Inputs Here -->
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="grid grid-cols-3 gap-3 pt-4">
+                <button onclick="openPasteModal()" class="py-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5 text-emerald-400 font-bold text-xs uppercase tracking-wider hover:bg-emerald-500/10 hover:border-emerald-500/30 transition-all flex items-center justify-center gap-2 active:scale-95 group shadow-lg shadow-emerald-900/5">
+                    <i data-lucide="clipboard-paste" class="w-4 h-4 group-hover:scale-110 transition-transform"></i> Paste Data
+                </button>
+                
+                <button onclick="openResetModal()" class="py-4 rounded-xl border border-rose-500/20 bg-rose-500/5 text-rose-400 font-bold text-xs uppercase tracking-wider hover:bg-rose-500/10 hover:border-rose-500/30 transition-all flex items-center justify-center gap-2 active:scale-95 group shadow-lg shadow-rose-900/5">
+                    <i data-lucide="refresh-cw" class="w-4 h-4 group-hover:-rotate-180 transition-transform duration-500"></i> Reset
+                </button>
+                
+                <button onclick="exportReport()" class="py-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-cyan-900/20 hover:shadow-cyan-900/40 hover:from-cyan-500 hover:to-blue-500 border border-white/10 transition-all flex items-center justify-center gap-2 active:scale-95 group">
+                    <i data-lucide="download" class="w-4 h-4 group-hover:translate-y-1 transition-transform"></i> Export
+                </button>
+            </div>
+            
+            <!-- Footer -->
+            <div class="text-center pb-8 pt-4">
+                <p class="text-[10px] text-slate-600 font-mono uppercase tracking-widest">v3.1 Ultimate Edition</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- CUSTOM PASTE MODAL -->
+    <div id="pasteModal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/90 backdrop-blur-md p-4 animate-fade-in">
+        <div class="glass-panel max-w-lg w-full rounded-2xl p-6 border border-white/10 shadow-2xl transform scale-100 transition-all relative">
+            <div class="text-center">
+                <div class="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center mx-auto mb-4 border border-emerald-500/20 shadow-[0_0_20px_rgba(16,185,129,0.15)]">
+                    <i data-lucide="clipboard-paste" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-base font-bold text-white mb-2">Smart Data Import</h3>
+                <p class="text-slate-400 text-xs mb-4 leading-relaxed">
+                    Paste your data below (Format: 1.62850 P.800). The system will auto-detect and fill the slots.
+                </p>
+                
+                <textarea id="pasteArea" class="w-full h-40 bg-black/30 border border-white/10 rounded-xl p-4 text-white font-mono text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 mb-6 resize-none" placeholder="1.62850 P.800&#10;2.60250 No.&#10;..."></textarea>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="closePasteModal()" class="py-2.5 rounded-lg border border-white/10 bg-white/5 text-slate-300 font-bold text-xs hover:bg-white/10 transition-colors">
+                        Cancel
+                    </button>
+                    <button onclick="processPaste()" class="py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg shadow-emerald-900/20 transition-colors">
+                        Process Data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM RESET MODAL -->
+    <div id="resetConfirmModal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/90 backdrop-blur-md p-4 animate-fade-in">
+        <div class="glass-panel max-w-sm w-full rounded-2xl p-6 border border-white/10 shadow-2xl transform scale-100 transition-all relative">
+            <div class="text-center">
+                <div class="w-16 h-16 rounded-full bg-rose-500/10 text-rose-500 flex items-center justify-center mx-auto mb-4 border border-rose-500/20 shadow-[0_0_30px_rgba(244,63,94,0.2)]">
+                    <i data-lucide="trash-2" class="w-7 h-7"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Clear All Data?</h3>
+                <p class="text-slate-400 text-sm mb-8 leading-relaxed px-4">
+                    This action cannot be undone. All values will be permanently reset to blank.
+                </p>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="closeResetModal()" class="py-3 rounded-xl border border-white/10 bg-white/5 text-slate-300 font-bold text-sm hover:bg-white/10 hover:text-white transition-all">
+                        Cancel
+                    </button>
+                    <button onclick="executeReset()" class="py-3 rounded-xl bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-bold text-sm shadow-lg shadow-rose-900/20 transition-all transform active:scale-95">
+                        Confirm Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-[70] hidden pointer-events-none">
+        <div class="glass-panel px-4 py-2 rounded-full border border-white/10 shadow-2xl flex items-center gap-3 backdrop-blur-xl">
+            <div class="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                <i data-lucide="check" class="w-3 h-3"></i>
+            </div>
+            <span class="text-xs font-bold text-white tracking-wide" id="toast-message">Copied!</span>
+        </div>
+    </div>
+
+    <script>
+        const initialData = [
+            { day: "MON", full: "Monday", am: { bet: '', p: '' }, pm: { bet: '', p: '' } },
+            { day: "TUE", full: "Tuesday", am: { bet: '', p: '' }, pm: { bet: '', p: '' } },
+            { day: "WED", full: "Wednesday", am: { bet: '', p: '' }, pm: { bet: '', p: '' } },
+            { day: "THU", full: "Thursday", am: { bet: '', p: '' }, pm: { bet: '', p: '' } },
+            { day: "FRI", full: "Friday", am: { bet: '', p: '' }, pm: { bet: '', p: '' } }
+        ];
+
+        function renderInputs() {
+            const container = document.getElementById('daysContainer');
+            let html = '';
+
+            initialData.forEach((data, index) => {
+                const delay = 200 + (index * 75);
+                html += `
+                <div class="glass-panel p-5 rounded-2xl day-card animate-slide-up hover:border-white/20" style="animation-delay: ${delay}ms">
+                    <div class="flex items-center justify-between mb-4 pb-3 border-b border-white/5">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-white/10 to-transparent flex items-center justify-center text-[11px] font-bold text-slate-300 border border-white/5 font-mono shadow-inner">
+                                ${data.day}
+                            </div>
+                            <div>
+                                <span class="text-xs text-cyan-400 font-bold tracking-wider uppercase block mb-0.5">Day ${index + 1}</span>
+                                <span class="text-sm text-slate-300 font-medium tracking-wide">${data.full}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <!-- AM Row -->
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 border border-amber-500/20 shrink-0">
+                                <i data-lucide="sun" class="w-4 h-4"></i>
+                            </div>
+                            <div class="flex-1 flex gap-2">
+                                <div class="input-box flex-1 rounded-xl relative flex items-center px-3 h-11 group/input">
+                                    <span class="text-[9px] text-slate-500 font-bold uppercase mr-2 group-focus-within/input:text-cyan-400 transition-colors">Bet</span>
+                                    <input type="number" value="${data.am.bet}" class="bet-input w-full bg-transparent text-right text-sm font-mono font-bold text-white outline-none placeholder-slate-700 transition-colors" placeholder="0" oninput="calculateTotal()">
+                                </div>
+                                <div class="input-box w-20 rounded-xl relative flex items-center px-2 h-11 group/p border-rose-500/10 focus-within:border-rose-500/40 focus-within:shadow-[0_0_15px_rgba(244,63,94,0.1)]">
+                                    <span class="text-[9px] text-rose-900 font-bold uppercase mr-1 group-focus-within/p:text-rose-500/70">P</span>
+                                    <input type="number" value="${data.am.p}" class="p-input w-full bg-transparent text-right text-sm font-mono font-bold text-rose-400 outline-none placeholder-rose-900/20 transition-colors" placeholder="-" oninput="calculateTotal()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PM Row -->
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 border border-indigo-500/20 shrink-0">
+                                <i data-lucide="moon" class="w-4 h-4"></i>
+                            </div>
+                            <div class="flex-1 flex gap-2">
+                                <div class="input-box flex-1 rounded-xl relative flex items-center px-3 h-11 group/input">
+                                    <span class="text-[9px] text-slate-500 font-bold uppercase mr-2 group-focus-within/input:text-cyan-400 transition-colors">Bet</span>
+                                    <input type="number" value="${data.pm.bet}" class="bet-input w-full bg-transparent text-right text-sm font-mono font-bold text-white outline-none placeholder-slate-700 transition-colors" placeholder="0" oninput="calculateTotal()">
+                                </div>
+                                <div class="input-box w-20 rounded-xl relative flex items-center px-2 h-11 group/p border-rose-500/10 focus-within:border-rose-500/40 focus-within:shadow-[0_0_15px_rgba(244,63,94,0.1)]">
+                                    <span class="text-[9px] text-rose-900 font-bold uppercase mr-1 group-focus-within/p:text-rose-500/70">P</span>
+                                    <input type="number" value="${data.pm.p}" class="p-input w-full bg-transparent text-right text-sm font-mono font-bold text-rose-400 outline-none placeholder-rose-900/20 transition-colors" placeholder="-" oninput="calculateTotal()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            });
+
+            container.innerHTML = html;
+            lucide.createIcons();
+            calculateTotal();
+        }
+
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function updateValue(id, newValue) {
+            document.getElementById(id).innerText = formatNumber(newValue);
+        }
+
+        function calculateTotal() {
+            let totalBet = 0;
+            let totalP = 0;
+
+            document.querySelectorAll('.bet-input').forEach(i => totalBet += Number(i.value) || 0);
+            document.querySelectorAll('.p-input').forEach(i => totalP += Number(i.value) || 0);
+
+            const comm = Number(document.getElementById('commissionRate').value) || 0;
+            const ratio = Number(document.getElementById('payoutRatio').value) || 80;
+
+            const net = totalBet - (totalBet * (comm / 100));
+            const payout = totalP * ratio;
+            const profit = net - payout;
+
+            updateValue('grandTotalBet', totalBet);
+            updateValue('grandTotalP', totalP);
+            updateValue('netAmount', Math.round(net));
+            updateValue('payoutAmount', Math.round(payout));
+
+            const profitEl = document.getElementById('finalProfit');
+            profitEl.innerText = formatNumber(Math.round(profit));
+
+            if (profit >= 0) {
+                profitEl.className = "text-5xl md:text-7xl font-black font-mono tracking-tighter text-emerald-400 drop-shadow-[0_0_20px_rgba(52,211,153,0.4)] transition-all duration-300";
+                profitEl.innerText = "+ " + profitEl.innerText;
+            } else {
+                profitEl.className = "text-5xl md:text-7xl font-black font-mono tracking-tighter text-rose-500 drop-shadow-[0_0_20px_rgba(244,63,94,0.4)] transition-all duration-300";
+            }
+        }
+
+        // COPY TO CLIPBOARD
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            let text = element.innerText;
+            // Remove special formatting for pure number copy, or keep as is.
+            // Removing "+ " if present
+            text = text.replace('+', '').trim();
+            
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showToast(`Copied: ${text}`);
+            } catch (err) {
+                console.error('Failed to copy', err);
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        let toastTimeout;
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            
+            toastMsg.innerText = message;
+            
+            toast.classList.remove('hidden');
+            toast.classList.remove('animate-toast-out');
+            toast.classList.add('animate-toast-in');
+            
+            if (toastTimeout) clearTimeout(toastTimeout);
+            
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('animate-toast-in');
+                toast.classList.add('animate-toast-out');
+                setTimeout(() => {
+                    toast.classList.add('hidden');
+                }, 300);
+            }, 2000);
+        }
+
+        // MODAL FUNCTIONS
+        function openResetModal() {
+            const modal = document.getElementById('resetConfirmModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeResetModal() {
+            const modal = document.getElementById('resetConfirmModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function executeReset() {
+            document.querySelectorAll('.bet-input').forEach(input => input.value = '');
+            document.querySelectorAll('.p-input').forEach(input => input.value = '');
+            calculateTotal();
+            closeResetModal();
+        }
+
+        // PASTE MODAL FUNCTIONS
+        function openPasteModal() {
+            const modal = document.getElementById('pasteModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.getElementById('pasteArea').focus();
+        }
+
+        function closePasteModal() {
+            const modal = document.getElementById('pasteModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function processPaste() {
+            const text = document.getElementById('pasteArea').value;
+            const lines = text.split(/\r?\n/);
+            const betInputs = document.querySelectorAll('.bet-input');
+            const pInputs = document.querySelectorAll('.p-input');
+            let updated = false;
+
+            lines.forEach(line => {
+                line = line.trim();
+                if (!line) return;
+
+                // Regex to handle "1.62850 P.800" or "1. 62850..."
+                // Matches: Start, digits, dot, optional space, digits (bet), space/rest
+                const match = line.match(/^(\d+)\.\s*(\d+)\s*(.*)$/);
+
+                if (match) {
+                    const index = parseInt(match[1]) - 1; // 1-based to 0-based
+                    const bet = match[2];
+                    const rest = match[3].toLowerCase();
+                    let p = 0;
+
+                    // Parse P value
+                    if (rest.includes('p')) {
+                        // Extract number after p or p.
+                        // Can be P.800 or P800 or P 800
+                        const pMatch = rest.match(/p\.?\s*(\d+)/);
+                        if (pMatch) p = pMatch[1];
+                    } 
+                    // if rest contains "no." or just "no", p is 0 (default)
+
+                    if (index >= 0 && index < betInputs.length) {
+                        betInputs[index].value = bet;
+                        pInputs[index].value = p > 0 ? p : ''; 
+                        updated = true;
+                    }
+                }
+            });
+
+            if (updated) {
+                calculateTotal();
+                showToast("Data Imported Successfully");
+            } else {
+                showToast("No Valid Data Found");
+            }
+            closePasteModal();
+            // Clear textarea
+            document.getElementById('pasteArea').value = '';
+        }
+
+        function exportReport() {
+            const comm = document.getElementById('commissionRate').value;
+            const ratio = document.getElementById('payoutRatio').value;
+            const totalBet = document.getElementById('grandTotalBet').innerText;
+            const totalP = document.getElementById('grandTotalP').innerText;
+            const net = document.getElementById('netAmount').innerText;
+            const payout = document.getElementById('payoutAmount').innerText;
+            const profit = document.getElementById('finalProfit').innerText;
+            
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-US') + ' ' + now.toLocaleTimeString('en-US');
+
+            let content = `THAI LOTTERY CALCULATOR REPORT\n`;
+            content += `Generated: ${dateStr}\n`;
+            content += `================================\n\n`;
+            
+            content += `SUMMARY\n`;
+            content += `-------\n`;
+            content += `Total Bet  : ${totalBet} Ks\n`;
+            content += `Total P    : ${totalP}\n`;
+            content += `Net (13%)  : ${net} Ks\n`;
+            content += `Payout     : ${payout} Ks\n`;
+            content += `--------------------------------\n`;
+            content += `PROFIT     : ${profit} Ks\n`;
+            content += `================================\n\n`;
+
+            content += `SETTINGS\n`;
+            content += `Commission : ${comm}%\n`;
+            content += `Ratio      : ${ratio}x\n\n`;
+
+            content += `DETAILS\n`;
+            content += `-------\n`;
+
+            const betInputs = document.querySelectorAll('.bet-input');
+            const pInputs = document.querySelectorAll('.p-input');
+            
+            let inputIndex = 0;
+            initialData.forEach(day => {
+                content += `${day.day} (${day.full})\n`;
+                
+                let amBet = Number(betInputs[inputIndex].value) || 0;
+                let amP = Number(pInputs[inputIndex].value) || 0;
+                content += `  AM - Bet: ${formatNumber(amBet)}, P: ${formatNumber(amP)}\n`;
+                inputIndex++;
+                
+                let pmBet = Number(betInputs[inputIndex].value) || 0;
+                let pmP = Number(pInputs[inputIndex].value) || 0;
+                content += `  PM - Bet: ${formatNumber(pmBet)}, P: ${formatNumber(pmP)}\n`;
+                inputIndex++;
+                
+                content += `\n`;
+            });
+
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Lottery_Report_${now.toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderInputs();
+
+            // Preloader Logic
+            const preloader = document.getElementById('preloader');
+            const bar = document.getElementById('progress-bar');
+            const text = document.getElementById('progress-text');
+            const status = document.getElementById('loader-status');
+            
+            let width = 0;
+            const interval = setInterval(() => {
+                width += Math.random() * 2;
+                if (width > 100) width = 100;
+                
+                if (bar) bar.style.width = width + '%';
+                if (text) text.innerText = Math.floor(width) + '%';
+                
+                if (status) {
+                    if (width > 30 && width < 60) status.innerText = "LOADING ASSETS...";
+                    if (width > 60 && width < 90) status.innerText = "CALCULATING RATIOS...";
+                    if (width > 90) status.innerText = "SYSTEM READY";
+                }
+
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        if (preloader) {
+                            preloader.classList.add('opacity-0', 'pointer-events-none');
+                            setTimeout(() => preloader.remove(), 700);
+                        }
+                    }, 500);
+                }
+            }, 20);
+        });
+    </script>
+</body>
+</html>
