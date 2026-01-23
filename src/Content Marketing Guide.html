@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Marketing Strategy Guide - Ultimate Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#020617', // Deep Space
+                        },
+                    },
+                    animation: {
+                        'float': 'float 8s ease-in-out infinite',
+                        'float-delayed': 'float 8s ease-in-out infinite 4s',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'slide-up': 'slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        slideUp: {
+                            'from': { opacity: 0, transform: 'translateY(40px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* Premium Glass Effect from SME.html */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.6) 100%);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 
+                        0 0 20px rgba(56, 189, 248, 0.1); /* Subtle blue glow */
+        }
+        
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Scroll Animation Utility */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Neon Text */
+        .text-neon {
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
+
+    <!-- PRELOADER from SME.html -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-all duration-1000 ease-out overflow-hidden">
+        <div class="absolute inset-0 opacity-20" 
+             style="background-image: radial-gradient(#38bdf8 1px, transparent 1px); background-size: 40px 40px; transform: perspective(500px) rotateX(20deg);">
+        </div>
+        <div class="relative flex flex-col items-center">
+            <div class="relative w-32 h-32 flex items-center justify-center mb-8">
+                <div class="absolute inset-0 rounded-full border-2 border-transparent border-t-cyan-500 border-l-cyan-500/30 animate-[spin_2s_linear_infinite] shadow-[0_0_30px_rgba(6,182,212,0.2)]"></div>
+                <div class="absolute inset-3 rounded-full border-2 border-transparent border-b-violet-500 border-r-violet-500/30 animate-[spin_3s_linear_infinite_reverse]"></div>
+                <div class="relative z-10 w-16 h-16 bg-gradient-to-br from-cyan-950 to-slate-900 rounded-full flex items-center justify-center border border-white/10 shadow-[0_0_50px_rgba(6,182,212,0.4)] animate-pulse">
+                    <i data-lucide="lightbulb" class="text-white w-6 h-6 relative z-10 drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]"></i>
+                </div>
+            </div>
+            <div class="text-center space-y-2">
+                <h2 class="text-2xl font-bold tracking-[0.2em] text-white font-num">CONTENT<span class="text-cyan-400">GUIDE</span></h2>
+                <div class="h-1 w-48 bg-slate-800/50 rounded-full overflow-hidden border border-white/5 mx-auto">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 w-0 shadow-[0_0_20px_rgba(6,182,212,0.8)]"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Background -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px] animate-float"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-emerald-600/10 rounded-full blur-[120px] animate-float-delayed"></div>
+        <div class="absolute top-[30%] left-[40%] w-[40%] h-[40%] bg-violet-600/5 rounded-full blur-[100px] animate-pulse-slow"></div>
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="relative z-10 min-h-screen">
+        
+        <!-- Hero Section -->
+        <section class="min-h-screen flex items-center justify-center px-4 relative">
+            <div class="container max-w-5xl mx-auto text-center animate-slide-up">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-cyan-400 text-xs font-bold tracking-widest uppercase mb-6 shadow-lg backdrop-blur-md">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                    Ultimate Strategy
+                </div>
+                
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                    Content Marketing ကို<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 text-neon">တကယ် ကျွမ်းကျင်ချင်ပါသလား?</span>
+                </h1>
+                
+                <p class="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+                    ရက် ၃၀၊ ရက် ၁၀၀ စာရေးရုံနဲ့ မလုံလောက်ပါဘူး။<br>လက်တွေ့ကျပြီး ထိရောက်တဲ့ လမ်းကြောင်းမှန်ကို ရှာဖွေလိုက်ပါ။
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="#strategy" class="group px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-xl font-bold shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all active:scale-95 flex items-center gap-2">
+                        <span>လေ့လာကြည့်မယ်</span>
+                        <i data-lucide="arrow-down" class="w-4 h-4 group-hover:translate-y-1 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Problem Section -->
+        <section class="py-20 px-4">
+            <div class="container max-w-4xl mx-auto reveal">
+                <div class="glass-panel p-8 md:p-12 rounded-3xl border border-rose-500/20 relative overflow-hidden group">
+                    <!-- Rose glow effect -->
+                    <div class="absolute -right-20 -top-20 w-64 h-64 bg-rose-500/10 rounded-full blur-[80px] group-hover:bg-rose-500/20 transition-all duration-500"></div>
+                    
+                    <div class="relative z-10 flex flex-col md:flex-row gap-8 items-start">
+                        <div class="w-16 h-16 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center shrink-0 border border-rose-500/20 shadow-[0_0_20px_rgba(244,63,94,0.2)]">
+                            <i data-lucide="alert-triangle" class="w-8 h-8"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl md:text-3xl font-bold text-white mb-4 flex items-center gap-3">
+                                <span class="text-rose-400">⚠️</span> အယူအဆအမှားများ
+                            </h2>
+                            <p class="text-slate-300 leading-relaxed text-lg">
+                                များသောအားဖြင့် Content ရေးတဲ့အခါ "ရက် ၃၀ challenge"၊ "ရက် ၁၀၀ challenge" ဆိုပြီး စိတ်ပါပါ မပါပါ ရေးချင်တာတွေ လျှောက်ရေးနေကြပါတယ်။ များများရေးရင် အချိန်တန်ရင် ကျွမ်းကျင်လာမယ်လို့ ထင်နေကြတာက <strong class="text-rose-400 font-bold border-b border-rose-500/30 pb-0.5">အရမ်းမှားယွင်းတဲ့ အယူအဆတစ်ခုပါ</strong>။ Strategy မရှိဘဲ ရေးနေတာဟာ အချိန်ကုန်ပြီး တိုးတက်မှုနှေးကွေးစေပါတယ်။
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Strategy Section -->
+        <section id="strategy" class="py-20 px-4 relative">
+            <div class="container max-w-6xl mx-auto">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-3xl md:text-5xl font-bold text-white mb-4">အောင်မြင်စေမယ့် <span class="text-emerald-400 text-neon">နည်းလမ်းမှန်</span></h2>
+                    <p class="text-slate-400">Brand တစ်ခုကို ကိုယ်တိုင်မန်နေဂျာလုပ်နေသလို ခံစားပြီး လေ့ကျင့်ပါ။</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                    
+                    <!-- Step 1 -->
+                    <div class="glass-card p-8 rounded-3xl group reveal">
+                        <div class="absolute top-0 right-0 p-6 text-6xl font-black font-num text-white/5 select-none group-hover:text-white/10 transition-colors">01</div>
+                        <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center mb-6 border border-cyan-500/20 shadow-[0_0_15px_rgba(6,182,212,0.2)] group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="target" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">Brand ရွေးချယ်ခြင်း</h3>
+                        <p class="text-slate-400 leading-relaxed">
+                            ပထမဦးဆုံး ကိုယ်ကြိုက်ပြီး ကိုယ်ကောင်းကောင်းသိတဲ့ Brand တစ်ခုကို ရွေးချယ်ပါ။ (ဥပမာ - <strong class="text-white">Nike</strong>)
+                        </p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="glass-card p-8 rounded-3xl group reveal" style="transition-delay: 100ms;">
+                        <div class="absolute top-0 right-0 p-6 text-6xl font-black font-num text-white/5 select-none group-hover:text-white/10 transition-colors">02</div>
+                        <div class="w-12 h-12 rounded-xl bg-violet-500/10 text-violet-400 flex items-center justify-center mb-6 border border-violet-500/20 shadow-[0_0_15px_rgba(139,92,246,0.2)] group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="search" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-violet-300 transition-colors">Brand Guideline လေ့လာခြင်း</h3>
+                        <p class="text-slate-400 mb-4">ထို Brand ရဲ့ အချက်အလက်တွေကို အသေးစိတ် ချရေးပါ။</p>
+                        <ul class="space-y-2 text-sm text-slate-500 font-medium">
+                            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-violet-500"></div> Brand Positioning</li>
+                            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-violet-500"></div> Personality & Tone of Voice</li>
+                            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-violet-500"></div> Target Customers & History</li>
+                        </ul>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="glass-card p-8 rounded-3xl group reveal" style="transition-delay: 200ms;">
+                        <div class="absolute top-0 right-0 p-6 text-6xl font-black font-num text-white/5 select-none group-hover:text-white/10 transition-colors">03</div>
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-6 border border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.2)] group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="calendar" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-emerald-300 transition-colors">Strategic Planning</h3>
+                        <p class="text-slate-400 leading-relaxed">
+                            Consumer Journey နဲ့ Objective တွေကို ချမှတ်ပြီး ၁ လစာ <strong class="text-emerald-400">Content Calendar</strong> ရေးဆွဲပါ။ ဘယ်ရက်မှာ ဘာတင်မယ်ဆိုတာ ကြိုတင်စီစဉ်ပါ။
+                        </p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="glass-card p-8 rounded-3xl group reveal" style="transition-delay: 300ms;">
+                        <div class="absolute top-0 right-0 p-6 text-6xl font-black font-num text-white/5 select-none group-hover:text-white/10 transition-colors">04</div>
+                        <div class="w-12 h-12 rounded-xl bg-orange-500/10 text-orange-400 flex items-center justify-center mb-6 border border-orange-500/20 shadow-[0_0_15px_rgba(249,115,22,0.2)] group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="pen-tool" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-orange-300 transition-colors">Execution</h3>
+                        <p class="text-slate-400 leading-relaxed">
+                            Calendar အတိုင်း Content တွေကို တကယ်ရေးပါ။ စိတ်ထဲရှိရာ လျှောက်ရေးတာထက် အများကြီး ပိုထိရောက်ပါတယ်။
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-20 px-4 border-t border-white/5 bg-[#020617] relative">
+            <div class="container max-w-4xl mx-auto text-center reveal">
+                <div class="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.3)]">
+                    <i data-lucide="check-circle-2" class="text-white w-8 h-8"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-4">ရလဒ်အနေနဲ့...</h2>
+                <p class="text-slate-400 max-w-lg mx-auto mb-10 leading-relaxed">
+                    ဒီနည်းလမ်းအတိုင်း လေ့ကျင့်မယ်ဆိုရင် Brand တစ်ခုကို တကယ်လက်တွေ့ ကိုင်တွယ်နေရသလို ခံစားရပြီး Content Marketing အမြင်တွေ ပိုမိုကျယ်ပြန့်လာပါလိမ့်မယ်။
+                </p>
+                <button class="px-8 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold border border-white/10 transition-all active:scale-95">
+                    အခုပဲ စတင်လိုက်ပါ
+                </button>
+                <div class="mt-12 text-xs text-slate-600 font-num">
+                    DESIGNED WITH MYO HTET PAING
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        // Init Lucide Icons
+        lucide.createIcons();
+
+        // Preloader Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const progress = document.getElementById('progress-bar');
+            const preloader = document.getElementById('preloader');
+            let width = 0;
+
+            const interval = setInterval(() => {
+                width += Math.random() * 10;
+                if (width > 100) width = 100;
+                
+                if (progress) progress.style.width = width + '%';
+
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        if(preloader) {
+                            preloader.classList.add('opacity-0', 'scale-105', 'pointer-events-none');
+                            setTimeout(() => preloader.remove(), 700);
+                        }
+                    }, 500);
+                }
+            }, 50);
+
+            // Scroll Animation Observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
