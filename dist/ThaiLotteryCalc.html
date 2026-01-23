@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Thai Lottery - Ultimate Suite</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+/* obfuscated */
+function _0x109e(){var _0x43222c=['translate(-50%,\x2020px)\x20scale(0.9)','115441wdTXHF','translate(30px,\x20-50px)\x20scale(1.1)','4667319HPDtQE','#00f2ff','Padauk','400KZwabk','blob\x2010s\x20infinite','spin\x202s\x20linear\x20infinite\x20reverse','translateY(20px)','#151B2B','translate(0px,\x200px)\x20scale(1)','pulseGlow\x203s\x20cubic-bezier(0.4,\x200,\x200.6,\x201)\x20infinite','translate(-50%,\x200)\x20scale(1)','30ykNCMV','slideUp\x200.6s\x20cubic-bezier(0.16,\x201,\x200.3,\x201)\x20forwards','3354576jjLtzo','1275780GnWReS','brightness(1.3)','translate(-50%,\x20-20px)\x20scale(0.9)','17930xBlZNz','JetBrains\x20Mono','Inter','translate(-20px,\x2020px)\x20scale(0.9)','770436YgLkjb','toastIn\x200.3s\x20cubic-bezier(0.16,\x201,\x200.3,\x201)\x20forwards','monospace','toastOut\x200.3s\x20cubic-bezier(0.16,\x201,\x200.3,\x201)\x20forwards','357574KHcaCa','brightness(1)','spin\x203s\x20linear\x20infinite','translateY(0)','#bd00ff','30FToRzq','sans-serif','#ffd700'];_0x109e=function(){return _0x43222c;};return _0x109e();}function _0x1590(_0x5b8b84,_0x3c3b9e){_0x5b8b84=_0x5b8b84-0x128;var _0x109e09=_0x109e();var _0x159071=_0x109e09[_0x5b8b84];return _0x159071;}var _0x544117=_0x1590;(function(_0x40bfa4,_0x1ca1bb){var _0xb1a8e4=_0x1590,_0x2a0dac=_0x40bfa4();while(!![]){try{var _0x860813=-parseInt(_0xb1a8e4(0x13a))/0x1+-parseInt(_0xb1a8e4(0x14a))/0x2+-parseInt(_0xb1a8e4(0x12d))/0x3+-parseInt(_0xb1a8e4(0x13f))/0x4*(parseInt(_0xb1a8e4(0x129))/0x5)+parseInt(_0xb1a8e4(0x136))/0x6*(-parseInt(_0xb1a8e4(0x131))/0x7)+parseInt(_0xb1a8e4(0x149))/0x8+-parseInt(_0xb1a8e4(0x13c))/0x9*(-parseInt(_0xb1a8e4(0x147))/0xa);if(_0x860813===_0x1ca1bb)break;else _0x2a0dac['push'](_0x2a0dac['shift']());}catch(_0x15053e){_0x2a0dac['push'](_0x2a0dac['shift']());}}}(_0x109e,0x55ade),tailwind['config']={'theme':{'extend':{'fontFamily':{'sans':[_0x544117(0x13e),_0x544117(0x137)],'num':[_0x544117(0x12b),_0x544117(0x137)],'mono':[_0x544117(0x12a),_0x544117(0x12f)]},'colors':{'dark':{0x384:'#0B0F19',0x320:_0x544117(0x143)},'neon':{'blue':_0x544117(0x13d),'purple':_0x544117(0x135),'gold':_0x544117(0x138)}},'animation':{'blob':_0x544117(0x140),'slide-up':_0x544117(0x148),'pulse-glow':_0x544117(0x145),'spin-slow':_0x544117(0x133),'spin-reverse':_0x544117(0x141),'toast-in':_0x544117(0x12e),'toast-out':_0x544117(0x130)},'keyframes':{'blob':{'0%':{'transform':_0x544117(0x144)},'33%':{'transform':_0x544117(0x13b)},'66%':{'transform':_0x544117(0x12c)},'100%':{'transform':_0x544117(0x144)}},'slideUp':{'from':{'opacity':0x0,'transform':_0x544117(0x142)},'to':{'opacity':0x1,'transform':_0x544117(0x134)}},'pulseGlow':{'0%,\x20100%':{'opacity':0.5,'filter':_0x544117(0x132)},'50%':{'opacity':0.8,'filter':_0x544117(0x14b)}},'toastIn':{'from':{'opacity':0x0,'transform':_0x544117(0x139)},'to':{'opacity':0x1,'transform':_0x544117(0x146)}},'toastOut':{'from':{'opacity':0x1,'transform':'translate(-50%,\x200)\x20scale(1)'},'to':{'opacity':0x0,'transform':_0x544117(0x128)}}}}}});
+</script>
+
+    <style>
+        body {
+            background-color: #0B0F19;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        /* Input Styling */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-gradient-border {
+            position: relative;
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(16px);
+            border-radius: 1.5rem;
+            z-index: 1;
+        }
+
+        .hero-gradient-border::before {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            border-radius: 1.6rem; 
+            padding: 2px; 
+            background: linear-gradient(135deg, #06b6d4, #3b82f6, #8b5cf6); 
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); 
+            -webkit-mask-composite: xor; 
+            mask-composite: exclude; 
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .input-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .input-box:focus-within {
+            background: rgba(15, 23, 42, 0.9);
+            border-color: rgba(6, 182, 212, 0.5);
+            box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .day-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .day-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
+        }
+
+        @media (min-width: 768px) {
+            .grid-responsive {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col font-sans selection:bg-cyan-500/30">
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#0B0F19] flex flex-col items-center justify-center transition-opacity duration-700 ease-in-out">
+        <!-- Background Grid -->
+        <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(#38bdf8 1px, transparent 1px); background-size: 30px 30px;"></div>
+        
+        <div class="relative flex flex-col items-center z-10">
+            <!-- Central Tech Loader -->
+            <div class="relative w-28 h-28 mb-10 flex items-center justify-center">
+                <!-- Outer Rings -->
+                <div class="absolute inset-0 border-2 border-slate-800 rounded-full"></div>
+                <div class="absolute inset-0 border-t-2 border-r-2 border-cyan-500/50 rounded-full animate-spin-slow"></div>
+                <div class="absolute inset-3 border-b-2 border-l-2 border-blue-500/50 rounded-full animate-spin-reverse"></div>
+                
+                <!-- Core Pulse -->
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="w-12 h-12 bg-cyan-500/10 rounded-full border border-cyan-500/30 shadow-[0_0_30px_rgba(6,182,212,0.3)] animate-pulse flex items-center justify-center">
+                         <i data-lucide="cpu" class="w-6 h-6 text-cyan-400"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text & Progress -->
+            <h2 class="text-3xl font-bold tracking-[0.2em] text-white font-mono mb-2 flex items-center gap-2">
+                LOTTERY<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">OS</span>
+            </h2>
+            
+            <div class="text-[10px] text-slate-500 font-mono tracking-widest mb-6 h-4" id="loader-status">
+                INITIALIZING SYSTEM...
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-64 h-1 bg-slate-800/50 rounded-full overflow-hidden relative border border-white/5">
+                <div id="progress-bar" class="absolute top-0 left-0 h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 w-0 transition-all duration-100 ease-out shadow-[0_0_15px_rgba(6,182,212,0.6)]">
+                    <div class="absolute inset-0 bg-white/30 animate-pulse"></div>
+                </div>
+            </div>
+            
+            <div class="mt-3 flex justify-between w-64 text-[10px] font-mono font-bold">
+                <span class="text-slate-600">v3.0.1</span>
+                <span class="text-cyan-400" id="progress-text">0%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Background Animation -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-blue-600/10 rounded-full mix-blend-screen filter blur-[100px] animate-blob"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-purple-600/10 rounded-full mix-blend-screen filter blur-[100px] animate-blob" style="animation-delay: 2s"></div>
+        <div class="absolute top-[40%] left-[30%] w-[30vw] h-[30vw] bg-cyan-600/10 rounded-full mix-blend-screen filter blur-[80px] animate-blob" style="animation-delay: 4s"></div>
+        <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 relative z-10 w-full max-w-5xl mx-auto pb-12">
+        
+        <!-- HEADER -->
+        <header class="pt-8 pb-6 px-6 flex justify-between items-center max-w-3xl mx-auto">
+            <div class="flex flex-col">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                    <span class="text-[10px] font-bold tracking-[0.3em] text-cyan-400 uppercase">Lottery Calc</span>
+                </div>
+                <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Ultimate <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Suite</span></h1>
+            </div>
+            <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-md shadow-lg group hover:bg-white/10 transition-colors">
+                <i data-lucide="bar-chart-2" class="text-cyan-400 w-5 h-5 md:w-6 md:h-6 group-hover:scale-110 transition-transform"></i>
+            </div>
+        </header>
+
+        <div class="px-4 space-y-6 max-w-3xl mx-auto">
+            
+            <!-- SUMMARY CARDS -->
+            <div class="glass-panel rounded-2xl p-1 animate-slide-up relative group/panel">
+                <div class="absolute -top-6 right-0 text-[10px] text-slate-500 font-mono opacity-0 group-hover/panel:opacity-100 transition-opacity">
+                    <span class="bg-black/40 px-2 py-1 rounded border border-white/5">Tip: Click values to copy</span>
+                </div>
+                <div class="grid grid-cols-4 divide-x divide-white/5">
+                    <!-- Total Bet -->
+                    <div class="p-3 md:p-4 flex flex-col items-center justify-center group cursor-pointer hover:bg-white/5 active:bg-white/10 transition-colors relative" onclick="copyToClipboard('grandTotalBet')">
+                        <span class="text-[9px] md:text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1 group-hover:text-white transition-colors">Bet</span>
+                        <span class="text-xs md:text-sm font-bold text-white font-mono transition-transform group-active:scale-95" id="grandTotalBet">0</span>
+                        <div class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i data-lucide="copy" class="w-3 h-3 text-slate-500"></i>
+                        </div>
+                    </div>
+                    <!-- Total P -->
+                    <div class="p-3 md:p-4 flex flex-col items-center justify-center group cursor-pointer hover:bg-white/5 active:bg-white/10 transition-colors relative" onclick="copyToClipboard('grandTotalP')">
+                        <span class="text-[9px] md:text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1 group-hover:text-cyan-300 transition-colors">P</span>
+                        <span class="text-xs md:text-sm font-bold text-cyan-400 font-mono transition-transform group-active:scale-95" id="grandTotalP">0</span>
+                        <div class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i data-lucide="copy" class="w-3 h-3 text-cyan-500/50"></i>
+                        </div>
+                    </div>
+                    <!-- Net -->
+                    <div class="p-3 md:p-4 flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer hover:bg-emerald-500/5 active:bg-emerald-500/10 transition-colors" onclick="copyToClipboard('netAmount')">
+                        <span class="text-[9px] md:text-[10px] text-emerald-400/80 uppercase font-bold tracking-wider mb-1">Net</span>
+                        <span class="text-xs md:text-sm font-bold text-emerald-400 font-mono transition-transform group-active:scale-95" id="netAmount">0</span>
+                         <div class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i data-lucide="copy" class="w-3 h-3 text-emerald-500/50"></i>
+                        </div>
+                    </div>
+                    <!-- Payout -->
+                    <div class="p-3 md:p-4 flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer hover:bg-rose-500/5 active:bg-rose-500/10 transition-colors" onclick="copyToClipboard('payoutAmount')">
+                        <span class="text-[9px] md:text-[10px] text-rose-400/80 uppercase font-bold tracking-wider mb-1">Pay</span>
+                        <span class="text-xs md:text-sm font-bold text-rose-400 font-mono transition-transform group-active:scale-95" id="payoutAmount">0</span>
+                         <div class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i data-lucide="copy" class="w-3 h-3 text-rose-500/50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HERO PROFIT CARD -->
+            <div class="hero-gradient-border p-6 md:p-8 relative overflow-hidden group animate-slide-up" style="animation-delay: 100ms;">
+                <!-- Background Glow -->
+                <div class="absolute top-0 right-0 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none animate-pulse-glow"></div>
+                <div class="absolute bottom-0 left-0 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none animate-pulse-glow" style="animation-delay: 1.5s"></div>
+                
+                <!-- CLICKABLE PROFIT AREA -->
+                <div class="relative z-10 flex flex-col items-center justify-center py-2 cursor-pointer hover:scale-[1.02] active:scale-95 transition-transform duration-300" onclick="copyToClipboard('finalProfit')" title="Click to Copy">
+                    <span class="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-[0.2em] mb-3 flex items-center gap-2 bg-black/20 px-3 py-1 rounded-full border border-white/5 group-hover:bg-black/40 group-hover:border-white/20 transition-all">
+                        Net Profit Estimate <i data-lucide="copy" class="w-3 h-3 ml-1 opacity-50"></i>
+                    </span>
+                    
+                    <div class="flex items-start gap-2">
+                        <span class="text-sm md:text-base text-slate-500 font-bold mt-3 md:mt-4">Ks</span>
+                        <span id="finalProfit" class="text-5xl md:text-7xl font-black tracking-tighter text-white font-mono drop-shadow-2xl transition-all duration-500">0</span>
+                    </div>
+                </div>
+                
+                <!-- Settings Bar -->
+                <div class="mt-8 flex flex-col sm:flex-row items-center gap-4 pt-6 border-t border-white/5 relative z-20">
+                    <div class="flex-1 w-full bg-black/20 rounded-xl p-3 flex items-center justify-between border border-white/5 hover:border-white/10 transition-colors">
+                        <div class="flex items-center gap-2">
+                            <div class="p-1.5 rounded-lg bg-cyan-500/10 text-cyan-400"><i data-lucide="percent" class="w-3 h-3"></i></div>
+                            <span class="text-[10px] md:text-xs text-slate-400 font-bold uppercase">Commission</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <input type="number" id="commissionRate" value="13" class="w-12 bg-transparent text-right font-mono font-bold text-white text-base outline-none focus:text-cyan-400 transition-colors" oninput="calculateTotal()">
+                            <span class="text-xs text-slate-600 font-bold">%</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 w-full bg-black/20 rounded-xl p-3 flex items-center justify-between border border-white/5 hover:border-white/10 transition-colors">
+                        <div class="flex items-center gap-2">
+                            <div class="p-1.5 rounded-lg bg-rose-500/10 text-rose-400"><i data-lucide="x" class="w-3 h-3"></i></div>
+                            <span class="text-[10px] md:text-xs text-slate-400 font-bold uppercase">Payout Ratio</span>
+                        </div>
+                        <input type="number" id="payoutRatio" value="80" class="w-16 bg-transparent text-right font-mono font-bold text-white text-base outline-none focus:text-rose-400 transition-colors" oninput="calculateTotal()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- INPUT LIST -->
+            <div id="daysContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- JS Renders Inputs Here -->
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="grid grid-cols-2 gap-4 pt-4">
+                <button onclick="openResetModal()" class="py-4 rounded-xl border border-rose-500/20 bg-rose-500/5 text-rose-400 font-bold text-xs uppercase tracking-wider hover:bg-rose-500/10 hover:border-rose-500/30 transition-all flex items-center justify-center gap-2 active:scale-95 group shadow-lg shadow-rose-900/5">
+                    <i data-lucide="refresh-cw" class="w-4 h-4 group-hover:-rotate-180 transition-transform duration-500"></i> Reset
+                </button>
+                <button onclick="exportReport()" class="py-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-cyan-900/20 hover:shadow-cyan-900/40 hover:from-cyan-500 hover:to-blue-500 border border-white/10 transition-all flex items-center justify-center gap-2 active:scale-95 group">
+                    <i data-lucide="download" class="w-4 h-4 group-hover:translate-y-1 transition-transform"></i> Export
+                </button>
+            </div>
+            
+            <!-- Footer -->
+            <div class="text-center pb-8 pt-4">
+                <p class="text-[10px] text-slate-600 font-mono uppercase tracking-widest">v3.0 Ultimate Edition</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- CUSTOM RESET MODAL -->
+    <div id="resetConfirmModal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/90 backdrop-blur-md p-4 animate-fade-in">
+        <div class="glass-panel max-w-sm w-full rounded-2xl p-6 border border-white/10 shadow-2xl transform scale-100 transition-all relative">
+            <div class="text-center">
+                <div class="w-16 h-16 rounded-full bg-rose-500/10 text-rose-500 flex items-center justify-center mx-auto mb-4 border border-rose-500/20 shadow-[0_0_30px_rgba(244,63,94,0.2)]">
+                    <i data-lucide="trash-2" class="w-7 h-7"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Clear All Data?</h3>
+                <p class="text-slate-400 text-sm mb-8 leading-relaxed px-4">
+                    This action cannot be undone. All values will be permanently reset to blank.
+                </p>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="closeResetModal()" class="py-3 rounded-xl border border-white/10 bg-white/5 text-slate-300 font-bold text-sm hover:bg-white/10 hover:text-white transition-all">
+                        Cancel
+                    </button>
+                    <button onclick="executeReset()" class="py-3 rounded-xl bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-bold text-sm shadow-lg shadow-rose-900/20 transition-all transform active:scale-95">
+                        Confirm Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-[70] hidden pointer-events-none">
+        <div class="glass-panel px-4 py-2 rounded-full border border-white/10 shadow-2xl flex items-center gap-3 backdrop-blur-xl">
+            <div class="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                <i data-lucide="check" class="w-3 h-3"></i>
+            </div>
+            <span class="text-xs font-bold text-white tracking-wide" id="toast-message">Copied!</span>
+        </div>
+    </div>
+
+    <script>
+/* obfuscated */
+const _0x4d089d=_0x5397;(function(_0x522c62,_0x551ca2){const _0x308476=_0x5397,_0x447370=_0x522c62();while(!![]){try{const _0x86f82f=-parseInt(_0x308476(0x16f))/0x1+parseInt(_0x308476(0x152))/0x2*(-parseInt(_0x308476(0x1a5))/0x3)+parseInt(_0x308476(0x1b5))/0x4+-parseInt(_0x308476(0x1f8))/0x5+parseInt(_0x308476(0x1fb))/0x6*(-parseInt(_0x308476(0x1c1))/0x7)+parseInt(_0x308476(0x19c))/0x8*(-parseInt(_0x308476(0x1e3))/0x9)+parseInt(_0x308476(0x1e6))/0xa*(parseInt(_0x308476(0x171))/0xb);if(_0x86f82f===_0x551ca2)break;else _0x447370['push'](_0x447370['shift']());}catch(_0x29f119){_0x447370['push'](_0x447370['shift']());}}}(_0x5978,0xa344d));const initialData=[{'day':_0x4d089d(0x1fd),'full':_0x4d089d(0x170),'am':{'bet':'','p':''},'pm':{'bet':'','p':''}},{'day':_0x4d089d(0x1e1),'full':_0x4d089d(0x1ff),'am':{'bet':'','p':''},'pm':{'bet':'','p':''}},{'day':_0x4d089d(0x183),'full':'Wednesday','am':{'bet':'','p':''},'pm':{'bet':'','p':''}},{'day':_0x4d089d(0x1e9),'full':_0x4d089d(0x1c5),'am':{'bet':'','p':''},'pm':{'bet':'','p':''}},{'day':_0x4d089d(0x1d0),'full':_0x4d089d(0x1df),'am':{'bet':'','p':''},'pm':{'bet':'','p':''}}];function renderInputs(){const _0x50bc61=_0x4d089d,_0x55cfe5={'LNfCt':_0x50bc61(0x1d8),'LrMob':_0x50bc61(0x1cc),'uZTSj':function(_0x1c2a3f){return _0x1c2a3f();},'mLLBw':'HpYfb','NmvHj':function(_0x46648e,_0x411572){return _0x46648e+_0x411572;},'bXOuA':_0x50bc61(0x1a1)},_0x47645d=document['getElementById'](_0x55cfe5[_0x50bc61(0x1bc)]);let _0x2a8afb='';initialData[_0x50bc61(0x1e4)]((_0x44b66c,_0x58857d)=>{const _0x47bc67=_0x50bc61;if(_0x55cfe5['mLLBw']!==_0x55cfe5['mLLBw'])_0xc3f60f[_0x47bc67(0x1f0)](_0x55cfe5[_0x47bc67(0x1dd)])['forEach'](_0x422879=>_0x422879[_0x47bc67(0x1c3)]=''),_0x41f0c7[_0x47bc67(0x1f0)](_0x55cfe5[_0x47bc67(0x16c)])['forEach'](_0x410b50=>_0x410b50[_0x47bc67(0x1c3)]=''),_0x55cfe5['uZTSj'](_0x2b3319),_0x2e28e7();else{const _0x41a4f7=_0x55cfe5[_0x47bc67(0x1b9)](0xc8,_0x58857d*0x4b);_0x2a8afb+=_0x47bc67(0x13c)+_0x41a4f7+_0x47bc67(0x1c4)+_0x44b66c[_0x47bc67(0x18a)]+'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-xs\x20text-cyan-400\x20font-bold\x20tracking-wider\x20uppercase\x20block\x20mb-0.5\x22>Day\x20'+(_0x58857d+0x1)+_0x47bc67(0x150)+_0x44b66c[_0x47bc67(0x141)]+_0x47bc67(0x15e)+_0x44b66c['am'][_0x47bc67(0x13d)]+'\x22\x20class=\x22bet-input\x20w-full\x20bg-transparent\x20text-right\x20text-sm\x20font-mono\x20font-bold\x20text-white\x20outline-none\x20placeholder-slate-700\x20transition-colors\x22\x20placeholder=\x220\x22\x20oninput=\x22calculateTotal()\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22input-box\x20w-20\x20rounded-xl\x20relative\x20flex\x20items-center\x20px-2\x20h-11\x20group/p\x20border-rose-500/10\x20focus-within:border-rose-500/40\x20focus-within:shadow-[0_0_15px_rgba(244,63,94,0.1)]\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-[9px]\x20text-rose-900\x20font-bold\x20uppercase\x20mr-1\x20group-focus-within/p:text-rose-500/70\x22>P</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20type=\x22number\x22\x20value=\x22'+_0x44b66c['am']['p']+_0x47bc67(0x140)+_0x44b66c['pm'][_0x47bc67(0x13d)]+_0x47bc67(0x168)+_0x44b66c['pm']['p']+'\x22\x20class=\x22p-input\x20w-full\x20bg-transparent\x20text-right\x20text-sm\x20font-mono\x20font-bold\x20text-rose-400\x20outline-none\x20placeholder-rose-900/20\x20transition-colors\x22\x20placeholder=\x22-\x22\x20oninput=\x22calculateTotal()\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>';}}),_0x47645d[_0x50bc61(0x1fc)]=_0x2a8afb,lucide[_0x50bc61(0x14c)](),_0x55cfe5[_0x50bc61(0x191)](calculateTotal);}function formatNumber(_0x2e590c){const _0x58a09d=_0x4d089d;return _0x2e590c[_0x58a09d(0x15c)]()[_0x58a09d(0x1fe)](/\B(?=(\d{3})+(?!\d))/g,',');}function updateValue(_0x5ea700,_0x10bc7f){const _0x467fb9=_0x4d089d;document[_0x467fb9(0x1a4)](_0x5ea700)[_0x467fb9(0x1d7)]=formatNumber(_0x10bc7f);}function calculateTotal(){const _0x290675=_0x4d089d,_0x1e8da9={'jZqzu':_0x290675(0x1ac),'yiDox':_0x290675(0x1d8),'SFwwJ':function(_0x3f96d1,_0x3ed7d0){return _0x3f96d1(_0x3ed7d0);},'QBajJ':'commissionRate','mFdqR':_0x290675(0x18b),'qYuQN':function(_0x304616,_0x4439ef){return _0x304616-_0x4439ef;},'tAJrt':function(_0xfadb98,_0xb8ad91){return _0xfadb98*_0xb8ad91;},'cCggl':function(_0x454aa2,_0x2781f3){return _0x454aa2/_0x2781f3;},'BYHaG':function(_0x323c23,_0x340fcb){return _0x323c23*_0x340fcb;},'YsmZz':function(_0xdd3b4c,_0x4d4051,_0x24f1e8){return _0xdd3b4c(_0x4d4051,_0x24f1e8);},'PinCn':'grandTotalBet','uniyf':function(_0xa9f8b,_0x58a45b,_0xe96408){return _0xa9f8b(_0x58a45b,_0xe96408);},'HIOOy':'grandTotalP','vKrZy':function(_0x9c5e83,_0x3470c7,_0x1fc0e3){return _0x9c5e83(_0x3470c7,_0x1fc0e3);},'dyqwh':_0x290675(0x17c),'zFqZt':_0x290675(0x185),'HTLWw':function(_0x1fc30d,_0x3303c8){return _0x1fc30d===_0x3303c8;},'nTXQv':_0x290675(0x1dc),'sCgIu':'text-5xl\x20md:text-7xl\x20font-black\x20font-mono\x20tracking-tighter\x20text-emerald-400\x20drop-shadow-[0_0_20px_rgba(52,211,153,0.4)]\x20transition-all\x20duration-300','oDZIc':function(_0x46382f,_0x2d1dba){return _0x46382f+_0x2d1dba;}};let _0x6edb9b=0x0,_0x2fea28=0x0;document[_0x290675(0x1f0)](_0x1e8da9[_0x290675(0x14f)])[_0x290675(0x1e4)](_0x16e74a=>_0x6edb9b+=Number(_0x16e74a['value'])||0x0),document[_0x290675(0x1f0)](_0x290675(0x1cc))[_0x290675(0x1e4)](_0x1b917c=>_0x2fea28+=Number(_0x1b917c[_0x290675(0x1c3)])||0x0);const _0x107622=_0x1e8da9[_0x290675(0x15b)](Number,document[_0x290675(0x1a4)](_0x1e8da9[_0x290675(0x186)])[_0x290675(0x1c3)])||0x0,_0x545630=_0x1e8da9['SFwwJ'](Number,document[_0x290675(0x1a4)](_0x1e8da9['mFdqR'])[_0x290675(0x1c3)])||0x50,_0x4a6aef=_0x1e8da9['qYuQN'](_0x6edb9b,_0x1e8da9['tAJrt'](_0x6edb9b,_0x1e8da9[_0x290675(0x132)](_0x107622,0x64))),_0x410fb2=_0x1e8da9[_0x290675(0x1ad)](_0x2fea28,_0x545630),_0x3c7fa7=_0x4a6aef-_0x410fb2;_0x1e8da9[_0x290675(0x1ec)](updateValue,_0x1e8da9[_0x290675(0x176)],_0x6edb9b),_0x1e8da9['uniyf'](updateValue,_0x1e8da9['HIOOy'],_0x2fea28),_0x1e8da9[_0x290675(0x197)](updateValue,_0x1e8da9[_0x290675(0x135)],Math[_0x290675(0x18e)](_0x4a6aef)),_0x1e8da9[_0x290675(0x197)](updateValue,_0x1e8da9[_0x290675(0x18c)],Math[_0x290675(0x18e)](_0x410fb2));const _0x5e1e28=document[_0x290675(0x1a4)](_0x290675(0x199));_0x5e1e28[_0x290675(0x1d7)]=formatNumber(Math[_0x290675(0x18e)](_0x3c7fa7)),_0x3c7fa7>=0x0?_0x1e8da9['HTLWw'](_0x290675(0x1c8),_0x1e8da9['nTXQv'])?_0x518d75[_0x290675(0x1f2)]['add'](_0x1e8da9['jZqzu']):(_0x5e1e28['className']=_0x1e8da9[_0x290675(0x182)],_0x5e1e28[_0x290675(0x1d7)]=_0x1e8da9[_0x290675(0x1c2)]('+\x20',_0x5e1e28['innerText'])):_0x5e1e28['className']='text-5xl\x20md:text-7xl\x20font-black\x20font-mono\x20tracking-tighter\x20text-rose-500\x20drop-shadow-[0_0_20px_rgba(244,63,94,0.4)]\x20transition-all\x20duration-300';}function copyToClipboard(_0x206574){const _0x361fb2=_0x4d089d,_0x2293bd={'gQfBE':function(_0x5a6fbc,_0x85505c){return _0x5a6fbc+_0x85505c;},'LOfhA':'textarea','AARoD':_0x361fb2(0x17b),'EfZQf':function(_0x59e45a,_0x721dd3){return _0x59e45a(_0x721dd3);},'GXKXA':function(_0x4ddde9,_0x4ffec4){return _0x4ddde9===_0x4ffec4;},'ydjhs':_0x361fb2(0x19d),'lYJXY':'UlitE','iEReg':_0x361fb2(0x1f5)},_0x5a6378=document[_0x361fb2(0x1a4)](_0x206574);if(!_0x5a6378)return;let _0x17846d=_0x5a6378['innerText'];_0x17846d=_0x17846d[_0x361fb2(0x1fe)]('+','')[_0x361fb2(0x163)]();const _0x393899=document[_0x361fb2(0x1a0)](_0x2293bd[_0x361fb2(0x1ed)]);_0x393899[_0x361fb2(0x1c3)]=_0x17846d,document[_0x361fb2(0x192)]['appendChild'](_0x393899),_0x393899[_0x361fb2(0x1a9)]();try{document[_0x361fb2(0x175)](_0x2293bd[_0x361fb2(0x1b2)]),_0x2293bd[_0x361fb2(0x14e)](showToast,'Copied:\x20'+_0x17846d);}catch(_0x3efb9a){if(_0x2293bd['GXKXA'](_0x2293bd[_0x361fb2(0x1fa)],_0x2293bd['lYJXY'])){const _0x4352f0=_0x2293bd['gQfBE'](0xc8,_0x30cc60*0x4b);_0x591c6f+=_0x361fb2(0x13c)+_0x4352f0+_0x361fb2(0x1c4)+_0x2448b0['day']+_0x361fb2(0x1a2)+_0x2293bd[_0x361fb2(0x138)](_0x4be0ac,0x1)+_0x361fb2(0x150)+_0x6b4737['full']+_0x361fb2(0x15e)+_0x5b2f34['am']['bet']+_0x361fb2(0x168)+_0xeb4cdd['am']['p']+_0x361fb2(0x140)+_0x279d22['pm'][_0x361fb2(0x13d)]+_0x361fb2(0x168)+_0x5067a7['pm']['p']+_0x361fb2(0x1f1);}else console['error'](_0x2293bd[_0x361fb2(0x178)],_0x3efb9a);}document[_0x361fb2(0x192)][_0x361fb2(0x189)](_0x393899);}let toastTimeout;function _0x5397(_0x232522,_0x42c485){_0x232522=_0x232522-0x12f;const _0x59786c=_0x5978();let _0x539768=_0x59786c[_0x232522];return _0x539768;}function showToast(_0x404fdb){const _0x3500a1=_0x4d089d,_0x35a861={'IlIhq':'copy','RcfPs':function(_0x34c6c1,_0x1b041e){return _0x34c6c1(_0x1b041e);},'qpdkA':_0x3500a1(0x1ab),'dfgtb':_0x3500a1(0x165),'AUeCc':_0x3500a1(0x199),'cpsfZ':function(_0x8c396a,_0x58c236){return _0x8c396a+_0x58c236;},'HmSQc':_0x3500a1(0x1d8),'TPaOn':_0x3500a1(0x1cc),'AKbVo':_0x3500a1(0x154),'tvPop':_0x3500a1(0x1ce),'XHvik':_0x3500a1(0x1ac),'euVUr':function(_0x18d5a3,_0x3266c6){return _0x18d5a3===_0x3266c6;},'aiuUp':_0x3500a1(0x1e5),'KwsAR':function(_0x54144d,_0x22f7f2,_0x36734e){return _0x54144d(_0x22f7f2,_0x36734e);},'DKeNu':_0x3500a1(0x13f),'vRSnB':'animate-toast-in','SezHL':function(_0x8ccfc2,_0xa3a554){return _0x8ccfc2(_0xa3a554);},'RjynV':function(_0x49462e,_0x1978c9,_0x482da2){return _0x49462e(_0x1978c9,_0x482da2);}},_0x1d9457=document['getElementById']('toast'),_0x2e757e=document[_0x3500a1(0x1a4)](_0x35a861[_0x3500a1(0x1f3)]);_0x2e757e['innerText']=_0x404fdb,_0x1d9457[_0x3500a1(0x1f2)][_0x3500a1(0x172)](_0x35a861['XHvik']),_0x1d9457[_0x3500a1(0x1f2)]['remove'](_0x35a861[_0x3500a1(0x187)]),_0x1d9457[_0x3500a1(0x1f2)]['add'](_0x35a861[_0x3500a1(0x155)]);if(toastTimeout)_0x35a861[_0x3500a1(0x184)](clearTimeout,toastTimeout);toastTimeout=_0x35a861[_0x3500a1(0x13b)](setTimeout,()=>{const _0x23118a=_0x3500a1,_0x1815a1={'TEKue':_0x35a861['qpdkA'],'JdetS':_0x23118a(0x18b),'pLZjM':_0x35a861[_0x23118a(0x143)],'LEDGY':'payoutAmount','XzUPp':_0x35a861[_0x23118a(0x190)],'nZdcd':function(_0x1f02da,_0x3849bb){const _0x958562=_0x23118a;return _0x35a861[_0x958562(0x1de)](_0x1f02da,_0x3849bb);},'xsMog':function(_0xea550b,_0x19e851){return _0xea550b+_0x19e851;},'rJasV':_0x23118a(0x1cf),'RJOPt':_0x35a861[_0x23118a(0x1ee)],'aynnd':_0x35a861[_0x23118a(0x136)],'cloNk':_0x35a861['AKbVo'],'PstmG':function(_0x3043b6,_0x3c830f){const _0x4ce11c=_0x23118a;return _0x35a861[_0x4ce11c(0x131)](_0x3043b6,_0x3c830f);},'jpTLr':function(_0x4046dc,_0x3d9297){const _0x5185f5=_0x23118a;return _0x35a861[_0x5185f5(0x131)](_0x4046dc,_0x3d9297);},'Xknlm':_0x23118a(0x1a6),'OepcJ':_0x35a861[_0x23118a(0x1b3)],'zkCDF':_0x35a861[_0x23118a(0x137)]};_0x35a861[_0x23118a(0x149)](_0x23118a(0x17a),_0x23118a(0x17a))?(_0x1d9457['classList'][_0x23118a(0x172)](_0x23118a(0x1a8)),_0x1d9457[_0x23118a(0x1f2)]['add'](_0x35a861[_0x23118a(0x187)]),_0x35a861[_0x23118a(0x158)](setTimeout,()=>{const _0xcfa7b2=_0x23118a,_0x20a7ba={'nAOEZ':function(_0x4b4a8d,_0x370207){const _0x1bc743=_0x5397;return _0x1815a1[_0x1bc743(0x1bf)](_0x4b4a8d,_0x370207);},'OOIRl':function(_0x4b443e,_0x8412a7){const _0x24fcd2=_0x5397;return _0x1815a1[_0x24fcd2(0x151)](_0x4b443e,_0x8412a7);},'XeiJw':function(_0x44260e,_0x2197f6){const _0xd104a1=_0x5397;return _0x1815a1[_0xd104a1(0x1bf)](_0x44260e,_0x2197f6);},'ZQIHE':function(_0x1fa2dc,_0x39f520){const _0x261343=_0x5397;return _0x1815a1[_0x261343(0x1bf)](_0x1fa2dc,_0x39f520);},'gZtbV':function(_0x59c40b,_0xd0f238){const _0x127ffd=_0x5397;return _0x1815a1[_0x127ffd(0x151)](_0x59c40b,_0xd0f238);}};if(_0x1815a1['Xknlm']!==_0x1815a1[_0xcfa7b2(0x139)])_0x1d9457[_0xcfa7b2(0x1f2)][_0xcfa7b2(0x161)](_0x1815a1['zkCDF']);else{const _0x2aaf01=_0x272206[_0xcfa7b2(0x1a4)](_0x1815a1[_0xcfa7b2(0x1b7)])[_0xcfa7b2(0x1c3)],_0x54e1ce=_0x2051bf[_0xcfa7b2(0x1a4)](_0x1815a1[_0xcfa7b2(0x1b4)])[_0xcfa7b2(0x1c3)],_0x1d5990=_0x1b9f6f[_0xcfa7b2(0x1a4)](_0xcfa7b2(0x1d6))[_0xcfa7b2(0x1d7)],_0x4b39f2=_0x48d40c[_0xcfa7b2(0x1a4)](_0x1815a1[_0xcfa7b2(0x1eb)])['innerText'],_0x51dc95=_0x29246c[_0xcfa7b2(0x1a4)](_0xcfa7b2(0x17c))['innerText'],_0x445f34=_0x2df4b5[_0xcfa7b2(0x1a4)](_0x1815a1[_0xcfa7b2(0x179)])[_0xcfa7b2(0x1d7)],_0x5a1f08=_0xdc80e7[_0xcfa7b2(0x1a4)](_0x1815a1[_0xcfa7b2(0x1d1)])[_0xcfa7b2(0x1d7)],_0x1be706=new _0x54287d(),_0x376f61=_0x1815a1[_0xcfa7b2(0x1ea)](_0x1815a1['xsMog'](_0x1be706[_0xcfa7b2(0x1ba)](_0xcfa7b2(0x1cf)),'\x20'),_0x1be706[_0xcfa7b2(0x180)](_0x1815a1[_0xcfa7b2(0x18d)]));let _0x8139a3=_0xcfa7b2(0x12f);_0x8139a3+=_0xcfa7b2(0x169)+_0x376f61+'\x0a',_0x8139a3+=_0xcfa7b2(0x173),_0x8139a3+=_0xcfa7b2(0x15d),_0x8139a3+=_0xcfa7b2(0x16a),_0x8139a3+=_0xcfa7b2(0x134)+_0x1d5990+_0xcfa7b2(0x1c6),_0x8139a3+=_0xcfa7b2(0x193)+_0x4b39f2+'\x0a',_0x8139a3+=_0xcfa7b2(0x19e)+_0x51dc95+_0xcfa7b2(0x1c6),_0x8139a3+=_0xcfa7b2(0x1bd)+_0x445f34+'\x20Ks\x0a',_0x8139a3+=_0xcfa7b2(0x15a),_0x8139a3+='PROFIT\x20\x20\x20\x20\x20:\x20'+_0x5a1f08+_0xcfa7b2(0x1c6),_0x8139a3+='================================\x0a\x0a',_0x8139a3+=_0xcfa7b2(0x19b),_0x8139a3+=_0xcfa7b2(0x16d)+_0x2aaf01+'%\x0a',_0x8139a3+=_0xcfa7b2(0x160)+_0x54e1ce+'x\x0a\x0a',_0x8139a3+=_0xcfa7b2(0x181),_0x8139a3+=_0xcfa7b2(0x16a);const _0x3c1ce9=_0x7db26d[_0xcfa7b2(0x1f0)](_0x1815a1[_0xcfa7b2(0x1ca)]),_0xed9210=_0x59118c[_0xcfa7b2(0x1f0)](_0x1815a1[_0xcfa7b2(0x13a)]);let _0x28e97f=0x0;_0x5411e3[_0xcfa7b2(0x1e4)](_0x52dfea=>{const _0x5953d3=_0xcfa7b2;_0x8139a3+=_0x52dfea['day']+'\x20('+_0x52dfea[_0x5953d3(0x141)]+')\x0a';let _0x26b400=_0x20a7ba[_0x5953d3(0x1f4)](_0x3e3ab5,_0x3c1ce9[_0x28e97f][_0x5953d3(0x1c3)])||0x0,_0x347434=_0x20a7ba[_0x5953d3(0x1d5)](_0x49b644,_0xed9210[_0x28e97f][_0x5953d3(0x1c3)])||0x0;_0x8139a3+='\x20\x20AM\x20-\x20Bet:\x20'+_0x20a7ba[_0x5953d3(0x177)](_0x4c37cd,_0x26b400)+_0x5953d3(0x148)+_0x20a7ba['XeiJw'](_0x1a0ffa,_0x347434)+'\x0a',_0x28e97f++;let _0x74dd46=_0x20a7ba['ZQIHE'](_0x5df167,_0x3c1ce9[_0x28e97f]['value'])||0x0,_0x373e3d=_0x20a7ba[_0x5953d3(0x1d9)](_0x43eb76,_0xed9210[_0x28e97f][_0x5953d3(0x1c3)])||0x0;_0x8139a3+=_0x5953d3(0x159)+_0x20a7ba[_0x5953d3(0x1f4)](_0x2a8dc4,_0x74dd46)+_0x5953d3(0x148)+_0x20a7ba[_0x5953d3(0x177)](_0x534eb6,_0x373e3d)+'\x0a',_0x28e97f++,_0x8139a3+='\x0a';});const _0x3c5612=new _0x5f576f([_0x8139a3],{'type':_0x1815a1[_0xcfa7b2(0x1e0)]}),_0x54801d=_0xdab51[_0xcfa7b2(0x16b)][_0xcfa7b2(0x1b0)](_0x3c5612),_0x3fdc31=_0x383688['createElement']('a');_0x3fdc31['href']=_0x54801d,_0x3fdc31['download']=_0xcfa7b2(0x130)+_0x1be706[_0xcfa7b2(0x1f7)]()[_0xcfa7b2(0x146)]('T')[0x0]+_0xcfa7b2(0x1be),_0x2ee212[_0xcfa7b2(0x192)]['appendChild'](_0x3fdc31),_0x3fdc31['click'](),_0xbbc334[_0xcfa7b2(0x192)][_0xcfa7b2(0x189)](_0x3fdc31),_0x140e71[_0xcfa7b2(0x16b)]['revokeObjectURL'](_0x54801d);}},0x12c)):(_0x319ec8['execCommand'](_0x35a861['IlIhq']),_0x35a861[_0x23118a(0x131)](_0x159773,_0x23118a(0x1b1)+_0x3b3b61));},0x7d0);}function openResetModal(){const _0x54898f=_0x4d089d,_0x3cd41a={'opjKI':_0x54898f(0x174)},_0x4e67dd=document[_0x54898f(0x1a4)]('resetConfirmModal');_0x4e67dd[_0x54898f(0x1f2)][_0x54898f(0x172)]('hidden'),_0x4e67dd['classList'][_0x54898f(0x161)](_0x3cd41a[_0x54898f(0x157)]);}function closeResetModal(){const _0x3348a2=_0x4d089d,_0x27f9d2={'OiQec':'resetConfirmModal'},_0x2d8bf0=document[_0x3348a2(0x1a4)](_0x27f9d2['OiQec']);_0x2d8bf0[_0x3348a2(0x1f2)]['add'](_0x3348a2(0x1ac)),_0x2d8bf0['classList'][_0x3348a2(0x172)](_0x3348a2(0x174));}function executeReset(){const _0x50b4f2=_0x4d089d,_0x286c11={'nAjpE':_0x50b4f2(0x1cc),'VZMnq':function(_0x306e69){return _0x306e69();}};document['querySelectorAll'](_0x50b4f2(0x1d8))[_0x50b4f2(0x1e4)](_0x556525=>_0x556525[_0x50b4f2(0x1c3)]=''),document[_0x50b4f2(0x1f0)](_0x286c11[_0x50b4f2(0x1c0)])[_0x50b4f2(0x1e4)](_0x47442c=>_0x47442c[_0x50b4f2(0x1c3)]=''),_0x286c11[_0x50b4f2(0x162)](calculateTotal),closeResetModal();}function _0x5978(){const _0x1ab455=['LOfhA','HmSQc','fcmKV','querySelectorAll','\x22\x20class=\x22p-input\x20w-full\x20bg-transparent\x20text-right\x20text-sm\x20font-mono\x20font-bold\x20text-rose-400\x20outline-none\x20placeholder-rose-900/20\x20transition-colors\x22\x20placeholder=\x22-\x22\x20oninput=\x22calculateTotal()\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>','classList','DKeNu','nAOEZ','Failed\x20to\x20copy','TSXSI','toISOString','3092525ZLpmVH','preloader','ydjhs','12VaXcXb','innerHTML','MON','replace','Tuesday','THAI\x20LOTTERY\x20CALCULATOR\x20REPORT\x0a','Lottery_Report_','RcfPs','cCggl','YMIYi','Total\x20Bet\x20\x20:\x20','dyqwh','TPaOn','XHvik','gQfBE','OepcJ','aynnd','RjynV','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22glass-panel\x20p-5\x20rounded-2xl\x20day-card\x20animate-slide-up\x20hover:border-white/20\x22\x20style=\x22animation-delay:\x20','bet','revokeObjectURL','toast-message','\x22\x20class=\x22p-input\x20w-full\x20bg-transparent\x20text-right\x20text-sm\x20font-mono\x20font-bold\x20text-rose-400\x20outline-none\x20placeholder-rose-900/20\x20transition-colors\x22\x20placeholder=\x22-\x22\x20oninput=\x22calculateTotal()\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<!--\x20PM\x20Row\x20-->\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20items-center\x20gap-3\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22w-8\x20h-8\x20rounded-lg\x20bg-indigo-500/10\x20flex\x20items-center\x20justify-center\x20text-indigo-400\x20border\x20border-indigo-500/20\x20shrink-0\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22moon\x22\x20class=\x22w-4\x20h-4\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex-1\x20flex\x20gap-2\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22input-box\x20flex-1\x20rounded-xl\x20relative\x20flex\x20items-center\x20px-3\x20h-11\x20group/input\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-[9px]\x20text-slate-500\x20font-bold\x20uppercase\x20mr-2\x20group-focus-within/input:text-cyan-400\x20transition-colors\x22>Bet</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20type=\x22number\x22\x20value=\x22','full','TpITN','dfgtb','CALCULATING\x20RATIOS...','SNzSq','split','download',',\x20P:\x20','euVUr','PROFIT\x20\x20\x20\x20\x20:\x20','GCByg','createIcons','opacity-0','EfZQf','yiDox','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-sm\x20text-slate-300\x20font-medium\x20tracking-wide\x22>','jpTLr','2276YfsqXm','xWgoS','text/plain','vRSnB','appendChild','opjKI','KwsAR','\x20\x20PM\x20-\x20Bet:\x20','--------------------------------\x0a','SFwwJ','toString','SUMMARY\x0a','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22space-y-3\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<!--\x20AM\x20Row\x20-->\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20items-center\x20gap-3\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22w-8\x20h-8\x20rounded-lg\x20bg-amber-500/10\x20flex\x20items-center\x20justify-center\x20text-amber-400\x20border\x20border-amber-500/20\x20shrink-0\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22sun\x22\x20class=\x22w-4\x20h-4\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex-1\x20flex\x20gap-2\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22input-box\x20flex-1\x20rounded-xl\x20relative\x20flex\x20items-center\x20px-3\x20h-11\x20group/input\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-[9px]\x20text-slate-500\x20font-bold\x20uppercase\x20mr-2\x20group-focus-within/input:text-cyan-400\x20transition-colors\x22>Bet</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20type=\x22number\x22\x20value=\x22','RwQRb','Ratio\x20\x20\x20\x20\x20\x20:\x20','add','VZMnq','trim','className','grandTotalP','NaAtI','jmTwX','\x22\x20class=\x22bet-input\x20w-full\x20bg-transparent\x20text-right\x20text-sm\x20font-mono\x20font-bold\x20text-white\x20outline-none\x20placeholder-slate-700\x20transition-colors\x22\x20placeholder=\x220\x22\x20oninput=\x22calculateTotal()\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22input-box\x20w-20\x20rounded-xl\x20relative\x20flex\x20items-center\x20px-2\x20h-11\x20group/p\x20border-rose-500/10\x20focus-within:border-rose-500/40\x20focus-within:shadow-[0_0_15px_rgba(244,63,94,0.1)]\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-[9px]\x20text-rose-900\x20font-bold\x20uppercase\x20mr-1\x20group-focus-within/p:text-rose-500/70\x22>P</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20type=\x22number\x22\x20value=\x22','Generated:\x20','-------\x0a','URL','LrMob','Commission\x20:\x20','WSgEX','648948txKJSO','Monday','20391349udBOQY','remove','================================\x0a\x0a','flex','execCommand','PinCn','XeiJw','iEReg','LEDGY','BaxqG','copy','netAmount','PssyN','prkpw','addEventListener','toLocaleTimeString','DETAILS\x0a','sCgIu','WED','SezHL','payoutAmount','QBajJ','aiuUp','DhgRS','removeChild','day','payoutRatio','zFqZt','rJasV','round','MOvzd','AUeCc','uZTSj','body','Total\x20P\x20\x20\x20\x20:\x20','ZDnMu','click','UrSCN','vKrZy','DOMContentLoaded','finalProfit','FboYe','SETTINGS\x0a','568rNghsH','VzePi','Net\x20(13%)\x20\x20:\x20','ahrVw','createElement','daysContainer','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-xs\x20text-cyan-400\x20font-bold\x20tracking-wider\x20uppercase\x20block\x20mb-0.5\x22>Day\x20','x\x0a\x0a','getElementById','177ltpaGH','axbZb','EyfcG','animate-toast-in','select','NiBGl','commissionRate','hidden','BYHaG','progress-text','AzWEH','createObjectURL','Copied:\x20','AARoD','tvPop','JdetS','2957736zoyJcC','awtFL','TEKue','\x20\x20AM\x20-\x20Bet:\x20','NmvHj','toLocaleDateString','text-5xl\x20md:text-7xl\x20font-black\x20font-mono\x20tracking-tighter\x20text-emerald-400\x20drop-shadow-[0_0_20px_rgba(52,211,153,0.4)]\x20transition-all\x20duration-300','bXOuA','Payout\x20\x20\x20\x20\x20:\x20','.txt','PstmG','nAjpE','391321wzqpcq','oDZIc','value','ms\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20items-center\x20justify-between\x20mb-4\x20pb-3\x20border-b\x20border-white/5\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20items-center\x20gap-3\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22w-10\x20h-10\x20rounded-xl\x20bg-gradient-to-br\x20from-white/10\x20to-transparent\x20flex\x20items-center\x20justify-center\x20text-[11px]\x20font-bold\x20text-slate-300\x20border\x20border-white/5\x20font-mono\x20shadow-inner\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','Thursday','\x20Ks\x0a','TWKlq','bAdEW','UWIkV','RJOPt','resetConfirmModal','.p-input','ZWkbO','ZvRxT','en-US','FRI','XzUPp','pointer-events-none','wEOdw','XfSpb','OOIRl','grandTotalBet','innerText','.bet-input','gZtbV','sFdzY','xFzfY','QjSGc','LNfCt','cpsfZ','Friday','cloNk','TUE','XBfzz','60597lLkkGB','forEach','animate-toast-out','10fknlKl','CFwgw','SkniJ','THU','nZdcd','pLZjM','YsmZz'];_0x5978=function(){return _0x1ab455;};return _0x5978();}function exportReport(){const _0x163232=_0x4d089d,_0x56ef25={'ZDnMu':function(_0x5a6246,_0x38a0f5){return _0x5a6246(_0x38a0f5);},'HanmA':_0x163232(0x1ab),'SNzSq':_0x163232(0x18b),'xWgoS':_0x163232(0x165),'sFdzY':_0x163232(0x17c),'wEOdw':_0x163232(0x185),'GCByg':_0x163232(0x199),'XBfzz':function(_0x1d3191,_0x4ba386){return _0x1d3191+_0x4ba386;},'FboYe':_0x163232(0x1cf),'awtFL':_0x163232(0x1d8),'ahrVw':'.p-input','NaAtI':_0x163232(0x154)},_0x2615df=document['getElementById'](_0x56ef25['HanmA'])['value'],_0x52c9c9=document[_0x163232(0x1a4)](_0x56ef25[_0x163232(0x145)])[_0x163232(0x1c3)],_0x4db37b=document[_0x163232(0x1a4)](_0x163232(0x1d6))['innerText'],_0x10b2c7=document[_0x163232(0x1a4)](_0x56ef25[_0x163232(0x153)])[_0x163232(0x1d7)],_0x57fcad=document[_0x163232(0x1a4)](_0x56ef25[_0x163232(0x1da)])[_0x163232(0x1d7)],_0x3c360f=document[_0x163232(0x1a4)](_0x56ef25[_0x163232(0x1d3)])[_0x163232(0x1d7)],_0x4f7a97=document[_0x163232(0x1a4)](_0x56ef25[_0x163232(0x14b)])[_0x163232(0x1d7)],_0x2200c5=new Date(),_0x7b1463=_0x56ef25[_0x163232(0x1e2)](_0x2200c5['toLocaleDateString'](_0x163232(0x1cf)),'\x20')+_0x2200c5[_0x163232(0x180)](_0x56ef25[_0x163232(0x19a)]);let _0x3950ea=_0x163232(0x12f);_0x3950ea+=_0x163232(0x169)+_0x7b1463+'\x0a',_0x3950ea+=_0x163232(0x173),_0x3950ea+='SUMMARY\x0a',_0x3950ea+=_0x163232(0x16a),_0x3950ea+=_0x163232(0x134)+_0x4db37b+'\x20Ks\x0a',_0x3950ea+=_0x163232(0x193)+_0x10b2c7+'\x0a',_0x3950ea+='Net\x20(13%)\x20\x20:\x20'+_0x57fcad+_0x163232(0x1c6),_0x3950ea+=_0x163232(0x1bd)+_0x3c360f+'\x20Ks\x0a',_0x3950ea+=_0x163232(0x15a),_0x3950ea+=_0x163232(0x14a)+_0x4f7a97+'\x20Ks\x0a',_0x3950ea+=_0x163232(0x173),_0x3950ea+=_0x163232(0x19b),_0x3950ea+='Commission\x20:\x20'+_0x2615df+'%\x0a',_0x3950ea+=_0x163232(0x160)+_0x52c9c9+_0x163232(0x1a3),_0x3950ea+=_0x163232(0x181),_0x3950ea+=_0x163232(0x16a);const _0x19e6bc=document[_0x163232(0x1f0)](_0x56ef25[_0x163232(0x1b6)]),_0x280bc8=document[_0x163232(0x1f0)](_0x56ef25[_0x163232(0x19f)]);let _0x50c05e=0x0;initialData[_0x163232(0x1e4)](_0x13254e=>{const _0x243b76=_0x163232;_0x3950ea+=_0x13254e[_0x243b76(0x18a)]+'\x20('+_0x13254e[_0x243b76(0x141)]+')\x0a';let _0x42c404=Number(_0x19e6bc[_0x50c05e][_0x243b76(0x1c3)])||0x0,_0x298faa=Number(_0x280bc8[_0x50c05e][_0x243b76(0x1c3)])||0x0;_0x3950ea+=_0x243b76(0x1b8)+formatNumber(_0x42c404)+',\x20P:\x20'+_0x56ef25['ZDnMu'](formatNumber,_0x298faa)+'\x0a',_0x50c05e++;let _0x23961b=Number(_0x19e6bc[_0x50c05e][_0x243b76(0x1c3)])||0x0,_0x41c39b=_0x56ef25[_0x243b76(0x194)](Number,_0x280bc8[_0x50c05e][_0x243b76(0x1c3)])||0x0;_0x3950ea+='\x20\x20PM\x20-\x20Bet:\x20'+_0x56ef25[_0x243b76(0x194)](formatNumber,_0x23961b)+_0x243b76(0x148)+formatNumber(_0x41c39b)+'\x0a',_0x50c05e++,_0x3950ea+='\x0a';});const _0x16592d=new Blob([_0x3950ea],{'type':_0x56ef25[_0x163232(0x166)]}),_0x1192d0=window[_0x163232(0x16b)][_0x163232(0x1b0)](_0x16592d),_0x5cb4e6=document['createElement']('a');_0x5cb4e6['href']=_0x1192d0,_0x5cb4e6[_0x163232(0x147)]=_0x163232(0x130)+_0x2200c5[_0x163232(0x1f7)]()[_0x163232(0x146)]('T')[0x0]+_0x163232(0x1be),document[_0x163232(0x192)][_0x163232(0x156)](_0x5cb4e6),_0x5cb4e6[_0x163232(0x195)](),document[_0x163232(0x192)]['removeChild'](_0x5cb4e6),window[_0x163232(0x16b)][_0x163232(0x13e)](_0x1192d0);}document[_0x4d089d(0x17f)](_0x4d089d(0x198),()=>{const _0xd09c61=_0x4d089d,_0x3cab99={'PssyN':_0xd09c61(0x14d),'MOvzd':_0xd09c61(0x1d2),'NiBGl':function(_0x374c36,_0x551ef2){return _0x374c36+_0x551ef2;},'EyfcG':'hidden','DhgRS':_0xd09c61(0x1f6),'jmTwX':function(_0x598dd4,_0x5245da){return _0x598dd4*_0x5245da;},'TpITN':function(_0x398c9a,_0x55e580){return _0x398c9a>_0x55e580;},'YMIYi':function(_0x4c81e7,_0x186d5d){return _0x4c81e7+_0x186d5d;},'fcmKV':function(_0x50b086,_0x118649){return _0x50b086!==_0x118649;},'XfSpb':_0xd09c61(0x1c9),'UrSCN':function(_0x29c535,_0x21e741){return _0x29c535>_0x21e741;},'UxLuQ':function(_0x4ac98b,_0x5babff){return _0x4ac98b<_0x5babff;},'SkniJ':_0xd09c61(0x144),'BArEr':'SYSTEM\x20READY','xFzfY':function(_0x23b2ef,_0x438c78){return _0x23b2ef>=_0x438c78;},'CFwgw':function(_0x4c1e4e,_0x135ad4,_0x17d65d){return _0x4c1e4e(_0x135ad4,_0x17d65d);},'ElJkU':function(_0x3dd918){return _0x3dd918();},'RwQRb':'progress-bar','WSgEX':_0xd09c61(0x1ae),'ZWkbO':'loader-status','TWKlq':function(_0x402d7c,_0x192869,_0xf2353b){return _0x402d7c(_0x192869,_0xf2353b);}};_0x3cab99['ElJkU'](renderInputs);const _0x2d4989=document[_0xd09c61(0x1a4)](_0xd09c61(0x1f9)),_0x42d4e7=document[_0xd09c61(0x1a4)](_0x3cab99[_0xd09c61(0x15f)]),_0x292ae1=document[_0xd09c61(0x1a4)](_0x3cab99[_0xd09c61(0x16e)]),_0x5f155f=document[_0xd09c61(0x1a4)](_0x3cab99[_0xd09c61(0x1cd)]);let _0x332d3e=0x0;const _0x2b7146=_0x3cab99[_0xd09c61(0x1c7)](setInterval,()=>{const _0x1a1ba1=_0xd09c61,_0x58b6eb={'AzWEH':_0x3cab99[_0x1a1ba1(0x1a7)]};if(_0x1a1ba1(0x17e)!==_0x3cab99[_0x1a1ba1(0x188)]){_0x332d3e+=_0x3cab99[_0x1a1ba1(0x167)](Math['random'](),0x2);if(_0x3cab99[_0x1a1ba1(0x142)](_0x332d3e,0x64))_0x332d3e=0x64;if(_0x42d4e7)_0x42d4e7['style']['width']=_0x3cab99[_0x1a1ba1(0x133)](_0x332d3e,'%');if(_0x292ae1)_0x292ae1[_0x1a1ba1(0x1d7)]=Math['floor'](_0x332d3e)+'%';if(_0x5f155f){if(_0x3cab99[_0x1a1ba1(0x1ef)](_0x3cab99[_0x1a1ba1(0x1d4)],'DNMnk')){if(_0x3cab99[_0x1a1ba1(0x196)](_0x332d3e,0x1e)&&_0x332d3e<0x3c)_0x5f155f[_0x1a1ba1(0x1d7)]='LOADING\x20ASSETS...';if(_0x332d3e>0x3c&&_0x3cab99['UxLuQ'](_0x332d3e,0x5a))_0x5f155f[_0x1a1ba1(0x1d7)]=_0x3cab99[_0x1a1ba1(0x1e8)];if(_0x3cab99[_0x1a1ba1(0x142)](_0x332d3e,0x5a))_0x5f155f[_0x1a1ba1(0x1d7)]=_0x3cab99['BArEr'];}else{const _0x5cf5a8=_0x3ed39d[_0x1a1ba1(0x1a4)](_0x1a1ba1(0x1cb));_0x5cf5a8[_0x1a1ba1(0x1f2)]['add'](_0x58b6eb[_0x1a1ba1(0x1af)]),_0x5cf5a8[_0x1a1ba1(0x1f2)][_0x1a1ba1(0x172)](_0x1a1ba1(0x174));}}_0x3cab99[_0x1a1ba1(0x1db)](_0x332d3e,0x64)&&(clearInterval(_0x2b7146),_0x3cab99[_0x1a1ba1(0x1e7)](setTimeout,()=>{const _0x464cd9=_0x1a1ba1;_0x2d4989&&(_0x2d4989[_0x464cd9(0x1f2)][_0x464cd9(0x161)](_0x3cab99[_0x464cd9(0x17d)],_0x3cab99[_0x464cd9(0x18f)]),setTimeout(()=>_0x2d4989[_0x464cd9(0x172)](),0x2bc));},0x1f4));}else _0x3e3a91[_0x1a1ba1(0x164)]=_0x1a1ba1(0x1bb),_0x132c27['innerText']=_0x3cab99[_0x1a1ba1(0x1aa)]('+\x20',_0x5dacba[_0x1a1ba1(0x1d7)]);},0x14);});
+</script>
+</body>
+</html>
