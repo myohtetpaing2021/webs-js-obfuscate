@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Liquidity Flow - Ultra Performance</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts (Optimized Loading) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        bg: {
+                            main: '#020617',
+                            card: 'rgba(30, 41, 59, 0.7)',
+                            input: 'rgba(15, 23, 42, 0.6)'
+                        },
+                        accent: {
+                            cyan: '#06b6d4',
+                            emerald: '#10b981',
+                            rose: '#f43f5e',
+                            violet: '#8b5cf6'
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            'from': { opacity: 0 },
+                            'to': { opacity: 1 },
+                        },
+                        slideUp: {
+                            'from': { opacity: 0, transform: 'translateY(15px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base Reset & Optimization */
+        :root {
+            color-scheme: dark;
+        }
+        
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+            overscroll-behavior-y: none; /* Prevent bounce effect */
+        }
+
+        /* Hardware Accelerated Glass Effect */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px); /* Reduced blur for performance */
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transform: translateZ(0); /* Force GPU */
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1.5rem;
+            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                        background-color 0.3s ease, 
+                        border-color 0.3s ease,
+                        box-shadow 0.3s ease;
+            transform: translateZ(0); /* Force GPU */
+            will-change: transform;
+        }
+
+        .glass-card:active {
+            transform: scale(0.98);
+        }
+
+        @media (hover: hover) {
+            .glass-card:hover {
+                transform: translateY(-2px);
+                border-color: rgba(255, 255, 255, 0.1);
+                background: linear-gradient(145deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.6) 100%);
+                box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        /* Optimized Inputs */
+        input[type=number] {
+            -moz-appearance: textfield;
+            appearance: none;
+        }
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+
+        .input-field {
+            transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .input-field:focus {
+            box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.3);
+            border-color: rgba(6, 182, 212, 0.5);
+            background: rgba(30, 41, 59, 0.9);
+        }
+
+        /* Safe Areas for Mobile */
+        .pb-safe { padding-bottom: calc(6rem + env(safe-area-inset-bottom)); }
+        .pt-safe { padding-top: env(safe-area-inset-top); }
+
+        /* Typography */
+        .text-glow { text-shadow: 0 0 20px rgba(6, 182, 212, 0.4); }
+        .text-glow-emerald { text-shadow: 0 0 20px rgba(16, 185, 129, 0.4); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+
+        /* Preloader Animation */
+        .loader-ring {
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-200 overflow-hidden">
+
+    <!-- LIGHTWEIGHT PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
+        <div class="w-16 h-16 border-4 border-slate-800 border-t-cyan-500 rounded-full loader-ring"></div>
+        <p class="mt-4 text-xs font-num tracking-[0.3em] text-cyan-500 animate-pulse">LOADING</p>
+    </div>
+
+    <!-- OPTIMIZED BACKGROUND (Static Gradients instead of Heavy Animations on Mobile) -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+        <div class="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] bg-blue-600/10 rounded-full blur-[80px] translate-z-0"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-emerald-600/10 rounded-full blur-[80px] translate-z-0"></div>
+        <div class="absolute inset-0 opacity-[0.02]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+    </div>
+
+    <div class="min-h-screen flex flex-col md:flex-row relative z-10">
+        
+        <!-- SIDEBAR (Desktop) -->
+        <aside class="hidden md:flex w-72 glass-panel border-r border-white/5 flex-col m-4 rounded-3xl h-[calc(100vh-2rem)] sticky top-4 shadow-xl z-20">
+            <div class="p-8 pb-6">
+                <div class="flex items-center gap-3 mb-1">
+                    <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-900/20">
+                        <i data-lucide="droplet" class="text-white w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-white tracking-tight font-num">Liquidity<span class="text-cyan-400">Flow</span></h1>
+                        <p class="text-[10px] text-slate-400 font-medium tracking-[0.2em] uppercase">Ultra</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="flex-1 px-4 space-y-1 mt-4" id="desktop-nav"></nav>
+
+            <div class="p-6 mt-auto">
+                <div class="p-4 rounded-2xl bg-slate-800/50 border border-white/5">
+                    <div class="flex items-center gap-3">
+                        <div class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
+                        <p class="text-[10px] text-slate-400 font-num">System Optimized</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MOBILE HEADER -->
+        <div class="md:hidden fixed top-0 left-0 right-0 z-40 bg-[#020617]/90 backdrop-blur-md border-b border-white/5 px-4 pt-safe pb-3 flex justify-between items-center shadow-lg transition-transform duration-300" id="mobile-header">
+            <div class="flex items-center gap-2 mt-2">
+                <div class="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center">
+                    <i data-lucide="droplet" class="text-white w-4 h-4"></i>
+                </div>
+                <span class="font-bold text-lg text-white font-num">Liquidity<span class="text-cyan-400">Flow</span></span>
+            </div>
+             <button onclick="resetData()" class="w-8 h-8 rounded-full bg-slate-800/80 border border-white/10 flex items-center justify-center text-slate-400 active:bg-slate-700 mt-2">
+                <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 relative z-10 pt-24 md:pt-6 md:px-0 pb-28 md:pb-6 h-screen overflow-y-auto custom-scrollbar scroll-smooth" id="main-scroll">
+            <div id="app-content" class="max-w-7xl mx-auto px-4 md:px-8 space-y-6 md:space-y-8 animate-fade-in pb-10">
+                <!-- Dynamic Content -->
+            </div>
+        </main>
+
+        <!-- MOBILE BOTTOM NAV -->
+        <div class="md:hidden fixed bottom-6 left-4 right-4 h-[65px] glass-panel rounded-2xl border border-white/10 z-50 flex items-center justify-between px-2 shadow-[0_10px_30px_rgba(0,0,0,0.5)]" id="mobile-nav"></div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // State Management
+        const state = {
+            activeTab: 'dashboard',
+            inputs: {
+                cashOnHand: '',
+                monthlyExpense: '',
+                liquidAssets: '',
+                netWorth: ''
+            }
+        };
+
+        const formatMoney = (amount) => Number(amount).toLocaleString();
+        
+        // --- Navigation Rendering ---
+        function renderNavigation() {
+            const tabs = [
+                { id: 'dashboard', label: 'Dashboard', labelMy: 'ပင်မ', icon: 'layout-dashboard' },
+                { id: 'emergency', label: 'Emergency', labelMy: 'အရေးပေါ်', icon: 'shield-check' },
+                { id: 'ratio', label: 'Net Worth', labelMy: 'အချိုး', icon: 'pie-chart' },
+            ];
+
+            // Desktop Nav
+            const desktopNav = document.getElementById('desktop-nav');
+            desktopNav.innerHTML = tabs.map(tab => `
+                <button onclick="switchTab('${tab.id}')" 
+                    class="w-full flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-200 group relative overflow-hidden ${state.activeTab === tab.id ? 'bg-white/5 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}">
+                    ${state.activeTab === tab.id ? '<div class="absolute left-0 top-2 bottom-2 w-1 bg-cyan-400 rounded-full"></div>' : ''}
+                    <i data-lucide="${tab.icon}" class="w-5 h-5 transition-colors ${state.activeTab === tab.id ? 'text-cyan-400' : 'group-hover:text-cyan-200'}"></i>
+                    <span class="font-medium text-sm font-padauk">${tab.labelMy}</span>
+                </button>
+            `).join('');
+
+            // Mobile Nav
+            const mobileNav = document.getElementById('mobile-nav');
+            mobileNav.innerHTML = tabs.map(tab => {
+                const isActive = state.activeTab === tab.id;
+                return `
+                    <button onclick="switchTab('${tab.id}')" class="flex-1 flex flex-col items-center justify-center h-full relative" style="-webkit-tap-highlight-color: transparent;">
+                        <div class="p-1.5 rounded-xl transition-transform duration-200 ${isActive ? 'bg-cyan-500/10 scale-110' : 'active:scale-95'}">
+                            <i data-lucide="${tab.icon}" class="w-6 h-6 ${isActive ? 'text-cyan-400 stroke-[2.5px]' : 'text-slate-500'}"></i>
+                        </div>
+                        <span class="text-[10px] mt-1 font-bold ${isActive ? 'text-cyan-400' : 'text-slate-600'}">${tab.labelMy}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function switchTab(tabId) {
+            if (state.activeTab === tabId) return;
+            state.activeTab = tabId;
+            
+            // Smooth Transition
+            const content = document.getElementById('app-content');
+            content.style.opacity = '0';
+            content.style.transform = 'translateY(10px)';
+            
+            setTimeout(() => {
+                renderApp();
+                // Trigger reflow
+                void content.offsetWidth;
+                content.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                content.style.opacity = '1';
+                content.style.transform = 'translateY(0)';
+            }, 150);
+
+            // Scroll to top
+            document.getElementById('main-scroll').scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        // --- View Renderers ---
+
+        function renderDashboard() {
+            return `
+                <div class="flex flex-col gap-1 mb-6">
+                    <h2 class="text-2xl md:text-3xl font-bold text-white font-num tracking-tight">Financial Overview</h2>
+                    <p class="text-slate-400 text-xs md:text-sm font-padauk">ငွေကြေးကျန်းမာရေး အခြေအနေ သုံးသပ်ချက်</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8">
+                    <!-- Liquid Assets Card -->
+                    <div class="glass-card p-5 md:p-6 relative overflow-hidden group border-l-4 border-l-cyan-500">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-3 bg-cyan-500/10 rounded-xl text-cyan-400 border border-cyan-500/10">
+                                <i data-lucide="droplet" class="w-6 h-6"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-1">Liquid Assets</h3>
+                        <p class="text-slate-400 text-xs md:text-sm leading-relaxed mb-4 font-padauk">
+                            ချက်ချင်းငွေသားအဖြစ် ပြောင်းလဲနိုင်သော ပိုင်ဆိုင်မှုများ။
+                        </p>
+                        <div class="flex gap-2">
+                            <span class="px-2 py-1 rounded bg-slate-800 text-[10px] text-cyan-300 font-bold border border-white/5">ငွေသား</span>
+                            <span class="px-2 py-1 rounded bg-slate-800 text-[10px] text-cyan-300 font-bold border border-white/5">ရွှေ</span>
+                        </div>
+                    </div>
+
+                    <!-- Illiquid Assets Card -->
+                    <div class="glass-card p-5 md:p-6 relative overflow-hidden group border-l-4 border-l-rose-500">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-3 bg-rose-500/10 rounded-xl text-rose-400 border border-rose-500/10">
+                                <i data-lucide="lock" class="w-6 h-6"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-1">Illiquid Assets</h3>
+                        <p class="text-slate-400 text-xs md:text-sm leading-relaxed mb-4 font-padauk">
+                            ရောင်းချရန် အချိန်ယူရသော ပိုင်ဆိုင်မှုများ။
+                        </p>
+                         <div class="flex gap-2">
+                            <span class="px-2 py-1 rounded bg-slate-800 text-[10px] text-rose-300 font-bold border border-white/5">အိမ်ခြံမြေ</span>
+                            <span class="px-2 py-1 rounded bg-slate-800 text-[10px] text-rose-300 font-bold border border-white/5">ကား</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 md:p-8 rounded-3xl relative overflow-hidden">
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                         <div class="flex-1">
+                             <div class="flex items-center gap-2 mb-2 text-yellow-400 text-sm font-bold uppercase tracking-wider">
+                                <i data-lucide="zap" class="w-4 h-4"></i> Pro Tip
+                             </div>
+                             <h3 class="text-xl font-bold text-white mb-2">Cash is King</h3>
+                             <p class="text-slate-300 text-sm leading-6 font-padauk opacity-90">
+                                အရေးပေါ်အခြေအနေအတွက် အနည်းဆုံး <span class="text-emerald-400 font-bold">၃ လစာမှ ၆ လစာ</span> အရေးပေါ်သုံးငွေ (Emergency Fund) ရှိထားသင့်ပါသည်။
+                             </p>
+                         </div>
+                         <button onclick="switchTab('emergency')" class="w-full md:w-auto bg-emerald-600 active:bg-emerald-700 text-white px-6 py-3 rounded-xl font-bold text-sm shadow-lg shadow-emerald-900/20 transition-transform active:scale-95 flex items-center justify-center gap-2">
+                            စတင်တွက်ချက်မည် <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                         </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderEmergencyCalc() {
+            return `
+                <div class="flex flex-col gap-1 mb-6">
+                    <h2 class="text-2xl font-bold text-white font-num">Emergency Fund</h2>
+                    <p class="text-slate-400 text-xs font-padauk">အရေးပေါ်သုံးငွေ တွက်ချက်ရန်</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                    <!-- Form -->
+                    <div class="glass-card p-5 md:p-8 rounded-3xl">
+                        <div class="space-y-6">
+                            ${renderInput('cashOnHand', 'လက်ရှိငွေသား (ကျပ်)', 'number', state.inputs.cashOnHand, '2000000', 'wallet')}
+                            ${renderInput('monthlyExpense', 'လစဉ်အသုံးစရိတ် (ကျပ်)', 'number', state.inputs.monthlyExpense, '500000', 'credit-card')}
+                            
+                            <button onclick="calculateEmergency()" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 active:to-blue-700 text-white px-6 py-4 rounded-xl font-bold text-base shadow-lg shadow-cyan-900/30 transition-transform active:scale-95 flex items-center justify-center gap-2 mt-4">
+                                တွက်ချက်မည် <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Result -->
+                    <div id="emergency-result" class="glass-card p-6 md:p-8 rounded-3xl min-h-[300px] flex flex-col items-center justify-center text-center relative border-white/10 transition-all duration-500 ${!state.inputs.cashOnHand ? 'opacity-50 grayscale' : 'opacity-100'}">
+                        
+                        <!-- SVG Gauge using Stroke Dasharray -->
+                        <div class="relative w-64 h-32 mb-4 overflow-hidden">
+                             <svg viewBox="0 0 200 100" class="w-full h-full">
+                                <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#1e293b" stroke-width="20" stroke-linecap="round"/>
+                                <path id="gauge-path" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="url(#gradient)" stroke-width="20" stroke-linecap="round" stroke-dasharray="251.2" stroke-dashoffset="251.2" class="transition-all duration-1000 ease-out"/>
+                                <defs>
+                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#06b6d4" />
+                                        <stop offset="100%" stop-color="#10b981" />
+                                    </linearGradient>
+                                </defs>
+                             </svg>
+                             <div class="absolute bottom-0 left-0 w-full text-center">
+                                <span id="result-months" class="text-5xl font-bold text-white font-num tracking-tight block">0</span>
+                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Months</span>
+                             </div>
+                        </div>
+
+                        <div id="result-badge" class="mb-4 h-8"></div>
+                        <p id="result-advice" class="text-slate-300 text-sm leading-relaxed max-w-sm font-padauk">
+                            အချက်အလက်များ ထည့်သွင်းပြီး တွက်ချက်မှုပြုလုပ်ပါ။
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderNetWorthCalc() {
+             return `
+                <div class="flex flex-col gap-1 mb-6">
+                    <h2 class="text-2xl font-bold text-white font-num">Net Worth Ratio</h2>
+                    <p class="text-slate-400 text-xs font-padauk">ပိုင်ဆိုင်မှုအချိုး တွက်ချက်ရန်</p>
+                </div>
+
+                <div class="glass-card p-5 md:p-8 rounded-3xl relative overflow-hidden mb-6">
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div class="space-y-6 relative z-10">
+                            ${renderInput('liquidAssets', 'Liquid Assets (ကျပ်)', 'number', state.inputs.liquidAssets, '20000000', 'droplet')}
+                            ${renderInput('netWorth', 'Total Net Worth (ကျပ်)', 'number', state.inputs.netWorth, '100000000', 'layers')}
+                             <button onclick="calculateRatio()" class="w-full bg-emerald-600 active:bg-emerald-700 text-white px-6 py-4 rounded-xl font-bold text-base shadow-lg shadow-emerald-900/30 transition-transform active:scale-95 flex items-center justify-center gap-2 mt-2">
+                                အချိုးတွက်မည် <i data-lucide="pie-chart" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Circular Chart Area -->
+                        <div class="flex flex-col items-center justify-center relative">
+                            <div class="relative w-48 h-48">
+                                <svg class="w-full h-full transform -rotate-90">
+                                    <circle cx="96" cy="96" r="88" stroke="#1e293b" stroke-width="12" fill="transparent" />
+                                    <circle id="progress-ring" cx="96" cy="96" r="88" stroke="#10b981" stroke-width="12" fill="transparent" 
+                                        stroke-dasharray="552" stroke-dashoffset="552"
+                                        stroke-linecap="round"
+                                        class="transition-all duration-1000 ease-out" />
+                                </svg>
+                                <div class="absolute inset-0 flex items-center justify-center flex-col">
+                                    <span id="ratio-percent" class="text-4xl font-bold text-white font-num">0%</span>
+                                    <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Liquidity</span>
+                                </div>
+                            </div>
+                            <div id="ratio-text-container" class="mt-6 text-center opacity-50 transition-opacity duration-300">
+                                <h4 id="ratio-title" class="text-lg font-bold text-white mb-1">Result</h4>
+                                <p id="ratio-desc" class="text-xs text-slate-400 font-padauk">Target: 15%</p>
+                            </div>
+                        </div>
+                     </div>
+                </div>
+            `;
+        }
+
+        // --- Logic ---
+
+        function renderInput(id, label, type, value, placeholder, icon) {
+            return `
+            <div class="group">
+                <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 pl-1">${label}</label>
+                <div class="relative">
+                    <input id="${id}" type="${type}" value="${value}" placeholder="${placeholder}" inputmode="numeric" 
+                        class="input-field w-full bg-bg-input border border-white/10 rounded-xl pl-4 pr-10 py-3.5 text-base text-white placeholder-slate-600 focus:outline-none font-num"
+                    />
+                    <div class="absolute right-3 top-3.5 text-slate-500 pointer-events-none">
+                        <i data-lucide="${icon}" class="w-5 h-5"></i>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function calculateEmergency() {
+            // Get inputs
+            const cashVal = document.getElementById('cashOnHand').value;
+            const expVal = document.getElementById('monthlyExpense').value;
+            
+            // Save state
+            state.inputs.cashOnHand = cashVal;
+            state.inputs.monthlyExpense = expVal;
+
+            const cash = parseFloat(cashVal);
+            const expense = parseFloat(expVal);
+
+            if (!cash || !expense || expense <= 0) return;
+
+            // Logic
+            const months = cash / expense;
+            const cappedMonths = Math.min(months, 12); // Cap visual at 12
+            
+            // Update UI
+            const resultDiv = document.getElementById('emergency-result');
+            resultDiv.classList.remove('opacity-50', 'grayscale');
+            
+            // Animate Number
+            animateNumber(document.getElementById('result-months'), 0, months, 1000, 1);
+
+            // Animate Gauge (251.2 is circumference of radius 40 (viewbox scale logic))
+            // The path is effectively half circle length ~ 251.2
+            // ViewBox 200x100. Path length approx PI * 80 = 251.3
+            const pathLength = 251.2; 
+            const offset = pathLength - (Math.min(months, 6) / 6) * pathLength; // 0 to 6 months scale
+            document.getElementById('gauge-path').style.strokeDashoffset = Math.max(0, offset);
+
+            // Text Logic
+            const badge = document.getElementById('result-badge');
+            const advice = document.getElementById('result-advice');
+            const path = document.getElementById('gauge-path');
+
+            if (months >= 6) {
+                path.setAttribute('stroke', '#10b981'); // Emerald
+                badge.innerHTML = `<span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold border border-emerald-500/20">Healthy (ကောင်းမွန်)</span>`;
+                advice.innerHTML = "သင့်တွင် အရေးပေါ်သုံးငွေ လုံလောက်စွာ ရှိနေပါသည်။";
+                document.getElementById('result-months').className = "text-5xl font-bold text-emerald-400 font-num tracking-tight block text-glow-emerald";
+            } else if (months >= 3) {
+                path.setAttribute('stroke', '#fbbf24'); // Amber
+                badge.innerHTML = `<span class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold border border-amber-500/20">Moderate (အသင့်အတင့်)</span>`;
+                advice.innerHTML = "အနည်းဆုံး ၆ လစာအထိ ဆက်လက်စုဆောင်းပါ။";
+                document.getElementById('result-months').className = "text-5xl font-bold text-amber-400 font-num tracking-tight block";
+            } else {
+                path.setAttribute('stroke', '#f43f5e'); // Rose
+                badge.innerHTML = `<span class="px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 text-xs font-bold border border-rose-500/20">Risk (လိုအပ်)</span>`;
+                advice.innerHTML = "သတိပြုပါ! အနည်းဆုံး ၃ လစာ ရှိထားသင့်ပါသည်။";
+                document.getElementById('result-months').className = "text-5xl font-bold text-rose-400 font-num tracking-tight block";
+            }
+        }
+
+        function calculateRatio() {
+            const liquidVal = document.getElementById('liquidAssets').value;
+            const netVal = document.getElementById('netWorth').value;
+
+            state.inputs.liquidAssets = liquidVal;
+            state.inputs.netWorth = netVal;
+
+            const liquid = parseFloat(liquidVal);
+            const net = parseFloat(netVal);
+
+            if (!liquid || !net || net <= 0) return;
+
+            const ratio = Math.min((liquid / net) * 100, 100);
+            
+            // UI Updates
+            const container = document.getElementById('ratio-text-container');
+            container.classList.remove('opacity-50');
+            container.classList.add('opacity-100');
+
+            // Ring Animation
+            const ring = document.getElementById('progress-ring');
+            const circumference = 552;
+            const offset = circumference - (ratio / 100) * circumference;
+            
+            ring.style.strokeDashoffset = offset;
+            
+            // Color Logic
+            if (ratio >= 15) {
+                ring.setAttribute('stroke', '#10b981');
+                document.getElementById('ratio-title').innerText = "Safe Zone (စိတ်ချရ)";
+                document.getElementById('ratio-title').className = "text-lg font-bold text-emerald-400 mb-1";
+                document.getElementById('ratio-percent').className = "text-4xl font-bold text-emerald-400 font-num text-glow-emerald";
+            } else {
+                ring.setAttribute('stroke', '#f43f5e');
+                document.getElementById('ratio-title').innerText = "Low Liquidity";
+                document.getElementById('ratio-title').className = "text-lg font-bold text-rose-400 mb-1";
+                document.getElementById('ratio-percent').className = "text-4xl font-bold text-rose-400 font-num";
+            }
+
+            animateNumber(document.getElementById('ratio-percent'), 0, ratio, 1000, 1, '%');
+        }
+
+        // Utils
+        function animateNumber(element, start, end, duration, decimals = 0, suffix = '') {
+            let startTime = null;
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min((timestamp - startTime) / duration, 1);
+                // Ease out cubic
+                const ease = 1 - Math.pow(1 - progress, 3);
+                const current = start + (end - start) * ease;
+                
+                element.innerText = current.toFixed(decimals) + suffix;
+                
+                if (progress < 1) window.requestAnimationFrame(step);
+            }
+            window.requestAnimationFrame(step);
+        }
+        
+        function resetData() {
+            state.inputs = { cashOnHand: '', monthlyExpense: '', liquidAssets: '', netWorth: '' };
+            renderApp();
+        }
+
+        function renderApp() {
+            renderNavigation();
+            const content = document.getElementById('app-content');
+            
+            if (state.activeTab === 'dashboard') content.innerHTML = renderDashboard();
+            else if (state.activeTab === 'emergency') content.innerHTML = renderEmergencyCalc();
+            else if (state.activeTab === 'ratio') content.innerHTML = renderNetWorthCalc();
+            
+            lucide.createIcons();
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            renderApp();
+            
+            // Remove Preloader after load
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                if(preloader) {
+                    preloader.style.opacity = '0';
+                    setTimeout(() => preloader.remove(), 500);
+                }
+            }, 800);
+        });
+
+    </script>
+</body>
+</html>
