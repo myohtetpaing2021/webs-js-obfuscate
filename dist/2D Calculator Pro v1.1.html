@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2D Pro Calculator - Cyber Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+/* obfuscated */
+function _0x5b57(_0x4b1689,_0x10ffca){_0x4b1689=_0x4b1689-0xb9;var _0x3bba7d=_0x3bba();var _0x5b5780=_0x3bba7d[_0x4b1689];return _0x5b5780;}var _0x5985f9=_0x5b57;(function(_0x1ce127,_0x4a7f9e){var _0x3f8216=_0x5b57,_0x539cfc=_0x1ce127();while(!![]){try{var _0x125f02=parseInt(_0x3f8216(0xbb))/0x1*(-parseInt(_0x3f8216(0xcc))/0x2)+parseInt(_0x3f8216(0xb9))/0x3*(-parseInt(_0x3f8216(0xc1))/0x4)+-parseInt(_0x3f8216(0xbf))/0x5+parseInt(_0x3f8216(0xc2))/0x6*(-parseInt(_0x3f8216(0xc4))/0x7)+-parseInt(_0x3f8216(0xca))/0x8*(parseInt(_0x3f8216(0xc3))/0x9)+parseInt(_0x3f8216(0xc6))/0xa+parseInt(_0x3f8216(0xce))/0xb*(parseInt(_0x3f8216(0xba))/0xc);if(_0x125f02===_0x4a7f9e)break;else _0x539cfc['push'](_0x539cfc['shift']());}catch(_0x25f18e){_0x539cfc['push'](_0x539cfc['shift']());}}}(_0x3bba,0x434a5),tailwind['config']={'theme':{'extend':{'fontFamily':{'sans':[_0x5985f9(0xd0),'sans-serif'],'num':[_0x5985f9(0xc0),'sans-serif'],'mono':[_0x5985f9(0xbc),_0x5985f9(0xc8)]},'colors':{'cyber':{'bg':_0x5985f9(0xc7),'card':_0x5985f9(0xc9),'accent':_0x5985f9(0xbe),'glow':'rgba(6,\x20182,\x20212,\x200.5)'}},'animation':{'float':'float\x206s\x20ease-in-out\x20infinite','pulse-glow':_0x5985f9(0xcf),'slide-up':_0x5985f9(0xcb),'pop-in':_0x5985f9(0xbd)},'keyframes':{'float':{'0%,\x20100%':{'transform':_0x5985f9(0xc5)},'50%':{'transform':'translateY(-10px)'}},'pulseGlow':{'0%,\x20100%':{'boxShadow':_0x5985f9(0xd2)},'50%':{'boxShadow':_0x5985f9(0xd1)}},'slideUp':{'from':{'opacity':0x0,'transform':_0x5985f9(0xcd)},'to':{'opacity':0x1,'transform':_0x5985f9(0xc5)}},'popIn':{'from':{'opacity':0x0,'transform':'scale(0.9)'},'to':{'opacity':0x1,'transform':'scale(1)'}}}}}});function _0x3bba(){var _0x4b32b6=['7RLgjQV','translateY(0)','853660ToLNNP','#09090b','monospace','#18181b','3085752qBcIOh','slideUp\x200.4s\x20ease-out\x20forwards','12qnRFNE','translateY(20px)','128051ptxjdq','pulseGlow\x202s\x20cubic-bezier(0.4,\x200,\x200.6,\x201)\x20infinite','Padauk','0\x200\x2020px\x20rgba(6,\x20182,\x20212,\x200.5)','0\x200\x2010px\x20rgba(6,\x20182,\x20212,\x200.2)','50754qUhsCF','2028wJVOIL','57433NEXdiJ','JetBrains\x20Mono','popIn\x200.3s\x20cubic-bezier(0.175,\x200.885,\x200.32,\x201.275)\x20forwards','#06b6d4','1252890NEWGln','Inter','100XNtlPk','2239374OzYsjv','9pkltIl'];_0x3bba=function(){return _0x4b32b6;};return _0x3bba();}
+</script>
+
+    <style>
+        body {
+            background-color: #09090b;
+            color: #e4e4e7;
+            /* Cyberpunk Gradient Background */
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(6, 182, 212, 0.15), transparent 25%), 
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.15), transparent 25%);
+            background-attachment: fixed;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Glassmorphism Panel */
+        .glass-panel {
+            background: rgba(24, 24, 27, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* Neon Borders on Hover */
+        .neon-border {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .neon-border:hover {
+            border-color: rgba(6, 182, 212, 0.5);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+            background: rgba(39, 39, 42, 0.8);
+        }
+
+        /* Input Area with Glowing Focus */
+        .cyber-input {
+            background: rgba(9, 9, 11, 0.6);
+            border: 1px solid rgba(63, 63, 70, 0.5);
+            transition: all 0.3s ease;
+            color: #22d3ee;
+        }
+        .cyber-input:focus {
+            outline: none;
+            border-color: #06b6d4;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
+            background: rgba(9, 9, 11, 0.8);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
+
+        /* Grid Background Pattern */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-size: 50px 50px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(to right, #22d3ee, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans overflow-x-hidden selection:bg-cyan-500/30 selection:text-cyan-200">
+
+    <!-- Preloader -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#09090b] flex flex-col items-center justify-center transition-all duration-700">
+        <div class="relative w-24 h-24 mb-6">
+            <!-- Outer Ring -->
+            <div class="absolute inset-0 border-4 border-slate-800 rounded-full"></div>
+            <!-- Spinning Gradient Ring -->
+            <div class="absolute inset-0 border-4 border-t-cyan-500 border-r-purple-500 border-b-transparent border-l-transparent rounded-full animate-spin"></div>
+            <!-- Center Logo -->
+            <div class="absolute inset-0 flex items-center justify-center">
+                <i data-lucide="cpu" class="w-10 h-10 text-cyan-400 animate-pulse"></i>
+            </div>
+        </div>
+        <div class="text-cyan-500 font-mono tracking-[0.3em] text-xs font-bold animate-pulse">INITIALIZING...</div>
+    </div>
+
+    <!-- Background Grid -->
+    <div class="bg-grid"></div>
+
+    <!-- Header -->
+    <header class="relative z-10 w-full max-w-7xl mx-auto p-4 md:p-6 flex justify-between items-center animate-slide-up">
+        <div class="flex items-center gap-4">
+            <div class="relative w-12 h-12 flex items-center justify-center">
+                <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500 to-purple-600 rounded-xl blur opacity-40 animate-pulse-glow"></div>
+                <div class="relative w-full h-full bg-[#18181b] rounded-xl border border-white/10 flex items-center justify-center">
+                    <i data-lucide="zap" class="text-cyan-400 w-6 h-6"></i>
+                </div>
+            </div>
+            <div>
+                <h1 class="text-2xl font-bold font-num tracking-tight text-white">2D<span class="text-cyan-400">Pro</span></h1>
+                <div class="flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <p class="text-[10px] text-slate-400 font-mono uppercase tracking-wider">System Online</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="glass-panel px-4 py-2 rounded-full border border-white/5 flex items-center gap-3">
+            <i data-lucide="clock" class="w-4 h-4 text-purple-400"></i>
+            <div class="h-4 w-[1px] bg-white/10"></div>
+            <span class="text-xs text-slate-300 font-mono font-bold" id="currentTime">--:--</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="relative z-10 flex-grow w-full max-w-7xl mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        
+        <!-- Left Panel: Input -->
+        <div class="flex flex-col h-full animate-slide-up" style="animation-delay: 0.1s;">
+            <div class="flex justify-between items-center mb-4 px-1">
+                <label class="text-sm font-bold text-slate-200 flex items-center gap-2">
+                    <i data-lucide="terminal" class="w-4 h-4 text-cyan-400"></i>
+                    <span class="tracking-wide">INPUT DATA</span>
+                </label>
+                <button onclick="clearInput()" class="group flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-red-400 transition-colors px-3 py-1.5 rounded-lg hover:bg-red-500/10 border border-transparent hover:border-red-500/20">
+                    <i data-lucide="trash" class="w-3.5 h-3.5 transition-transform group-hover:scale-110"></i> Clear
+                </button>
+            </div>
+
+            <div class="relative flex-grow group">
+                <!-- Decorative Frame -->
+                <div class="absolute -inset-[1px] bg-gradient-to-b from-cyan-500/20 to-purple-500/20 rounded-2xl opacity-50 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                
+                <textarea id="inputArea" class="relative w-full h-[400px] lg:h-[600px] cyber-input rounded-2xl p-6 text-sm font-mono placeholder-slate-600 resize-none leading-relaxed" 
+                placeholder="// Enter data here...
+ပါဝါ - 100
+1 B - 1,000
+25 - 2,500R2,000
+79 91 95 71 75 R 1000"></textarea>
+                
+                <!-- Paste Button -->
+                <div class="absolute bottom-5 right-5 z-20">
+                    <button onclick="pasteFromClipboard()" class="w-10 h-10 bg-slate-800 hover:bg-slate-700 text-white rounded-xl shadow-lg border border-slate-600 flex items-center justify-center transition-all hover:scale-105 active:scale-95 group/paste">
+                        <i data-lucide="clipboard-copy" class="w-5 h-5 text-slate-400 group-hover/paste:text-cyan-400 transition-colors"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button onclick="calculateTotal()" class="mt-6 w-full relative overflow-hidden group rounded-xl">
+                <div class="absolute inset-0 bg-gradient-to-r from-cyan-600 to-blue-600 transition-all duration-300 group-hover:scale-105"></div>
+                <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                <div class="relative py-4 flex items-center justify-center gap-2 text-white font-bold tracking-wider shadow-lg">
+                    <i data-lucide="cpu" class="w-5 h-5 group-hover:animate-pulse"></i>
+                    <span>PROCESS DATA</span>
+                </div>
+            </button>
+        </div>
+
+        <!-- Right Panel: Result -->
+        <div class="flex flex-col h-full animate-slide-up" style="animation-delay: 0.2s;">
+            
+            <!-- Dashboard Stats -->
+            <div class="grid grid-cols-3 gap-4 mb-6">
+                <!-- Stat 1 -->
+                <div class="glass-panel p-4 rounded-2xl relative overflow-hidden group hover:border-cyan-500/30 transition-colors">
+                    <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i data-lucide="file-text" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <span class="text-[10px] text-slate-400 font-mono uppercase tracking-widest">Lines</span>
+                    <div id="stat-lines" class="text-2xl font-bold text-white font-num mt-1 group-hover:text-cyan-400 transition-colors">0</div>
+                </div>
+                
+                <!-- Stat 2 -->
+                <div class="glass-panel p-4 rounded-2xl relative overflow-hidden group hover:border-purple-500/30 transition-colors">
+                     <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i data-lucide="layers" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <span class="text-[10px] text-slate-400 font-mono uppercase tracking-widest">Items</span>
+                    <div id="stat-items" class="text-2xl font-bold text-white font-num mt-1 group-hover:text-purple-400 transition-colors">0</div>
+                </div>
+
+                <!-- Stat 3 -->
+                <div class="glass-panel p-4 rounded-2xl relative overflow-hidden flex flex-col justify-center items-center bg-gradient-to-br from-emerald-900/20 to-transparent border-emerald-500/20">
+                    <span class="text-[10px] text-emerald-400 font-mono uppercase tracking-widest mb-1">System</span>
+                    <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm">
+                        <span class="relative flex h-2 w-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        READY
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-end mb-4 px-1">
+                <label class="text-sm font-bold text-slate-200 flex items-center gap-2">
+                     <i data-lucide="list-video" class="w-4 h-4 text-purple-400"></i>
+                    <span class="tracking-wide">RESULTS</span>
+                </label>
+                <div id="valid-count" class="text-[10px] font-mono font-bold text-cyan-400 bg-cyan-950/50 border border-cyan-500/30 px-2 py-1 rounded">0 VALID ITEMS</div>
+            </div>
+
+            <!-- Result Container -->
+            <div class="glass-panel rounded-2xl flex-grow flex flex-col overflow-hidden h-[400px] lg:h-[600px] border border-white/10 relative shadow-2xl">
+                
+                <!-- Scrollable List -->
+                <div id="resultTable" class="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar relative">
+                    <!-- Empty State -->
+                    <div class="absolute inset-0 flex flex-col items-center justify-center opacity-40 pointer-events-none">
+                        <div class="w-20 h-20 rounded-full border-2 border-dashed border-slate-600 flex items-center justify-center mb-4 animate-[spin_10s_linear_infinite]">
+                            <i data-lucide="binary" class="w-8 h-8 text-slate-500"></i>
+                        </div>
+                        <p class="text-xs font-mono text-slate-500 tracking-[0.2em]">AWAITING INPUT_</p>
+                    </div>
+                </div>
+
+                <!-- Sticky Total Footer -->
+                <div class="p-5 bg-[#09090b]/90 backdrop-blur-xl border-t border-white/10 z-20 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+                    <div class="flex justify-between items-end">
+                        <div>
+                            <p class="text-[10px] text-purple-400 font-mono uppercase tracking-widest mb-1">Grand Total</p>
+                            <p class="text-xs text-slate-400">စုစုပေါင်း ကျသင့်ငွေ</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="flex items-baseline justify-end gap-1">
+                                <span class="text-3xl md:text-4xl font-bold text-white font-num tracking-tighter drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]" id="grandTotal">0</span>
+                                <span class="text-sm text-cyan-500 font-bold font-mono">Ks</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Bottom Toolbar -->
+    <div class="relative z-10 w-full max-w-7xl mx-auto p-4 md:p-6 pt-0 animate-slide-up" style="animation-delay: 0.3s;">
+        <div class="glass-panel p-3 rounded-2xl flex justify-around md:justify-center md:gap-8 items-center border border-white/5">
+            
+             <!-- Reset -->
+             <button onclick="clearInput()" class="flex flex-col items-center gap-1 group w-20">
+                <div class="p-2 rounded-xl bg-slate-800/50 group-hover:bg-red-500/20 text-slate-400 group-hover:text-red-400 transition-all duration-300">
+                    <i data-lucide="rotate-ccw" class="w-5 h-5 transition-transform group-hover:-rotate-180"></i>
+                </div>
+                <span class="text-[10px] font-bold text-slate-500 group-hover:text-red-400 transition-colors">Reset</span>
+            </button>
+
+            <!-- Divider -->
+            <div class="w-[1px] h-8 bg-white/10"></div>
+
+            <!-- Guide -->
+            <button onclick="document.getElementById('help-modal').classList.remove('hidden')" class="flex flex-col items-center gap-1 group w-20">
+                <div class="p-2 rounded-xl bg-slate-800/50 group-hover:bg-purple-500/20 text-slate-400 group-hover:text-purple-400 transition-all duration-300">
+                    <i data-lucide="book-open" class="w-5 h-5 transition-transform group-hover:scale-110"></i>
+                </div>
+                <span class="text-[10px] font-bold text-slate-500 group-hover:text-purple-400 transition-colors">Guide</span>
+            </button>
+
+            <!-- Divider -->
+            <div class="w-[1px] h-8 bg-white/10"></div>
+
+            <!-- Export -->
+            <button onclick="exportReport()" class="flex flex-col items-center gap-1 group w-20">
+                <div class="p-2 rounded-xl bg-slate-800/50 group-hover:bg-emerald-500/20 text-slate-400 group-hover:text-emerald-400 transition-all duration-300">
+                    <i data-lucide="download" class="w-5 h-5 transition-transform group-hover:translate-y-1"></i>
+                </div>
+                <span class="text-[10px] font-bold text-slate-500 group-hover:text-emerald-400 transition-colors">Export</span>
+            </button>
+
+        </div>
+    </div>
+
+    <!-- CONFIRM MODAL (Glassmorphism) -->
+    <div id="confirm-modal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4 transition-all duration-300 opacity-0 scale-95">
+        <div class="glass-panel w-full max-w-sm rounded-3xl p-8 relative border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] text-center">
+            
+            <div class="w-16 h-16 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mx-auto mb-6 ring-1 ring-red-500/30 shadow-[0_0_20px_rgba(239,68,68,0.2)]">
+                <i data-lucide="alert-triangle" class="w-8 h-8"></i>
+            </div>
+            
+            <h3 class="text-xl font-bold text-white mb-2">Are you sure?</h3>
+            <p class="text-xs text-slate-400 mb-8 font-padauk leading-relaxed tracking-wide" id="confirm-message">This action cannot be undone.</p>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="closeConfirmModal()" class="py-3 rounded-xl text-slate-300 bg-slate-800 hover:bg-slate-700 text-xs font-bold transition-all border border-slate-600">Cancel</button>
+                <button id="confirm-yes-btn" onclick="executeConfirm()" class="bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white py-3 rounded-xl font-bold text-xs shadow-lg shadow-red-900/40 transition-all">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HELP MODAL -->
+    <div id="help-modal" class="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 transition-all duration-300 opacity-0 scale-95">
+        <div class="glass-panel w-full max-w-md rounded-3xl p-6 relative border border-white/10 shadow-2xl">
+            <div class="flex justify-between items-center mb-6 pb-4 border-b border-white/5">
+                 <h3 class="text-lg font-bold text-white flex items-center gap-3">
+                    <div class="p-1.5 bg-cyan-500/20 rounded-lg text-cyan-400"><i data-lucide="book" class="w-4 h-4"></i></div>
+                    Syntax Guide
+                </h3>
+                <button onclick="closeModal('help-modal')" class="p-2 rounded-full hover:bg-white/5 text-slate-400 hover:text-white transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+           
+            <div class="space-y-4 max-h-[60vh] overflow-y-auto custom-scrollbar pr-2">
+                <!-- Section 1 -->
+                <div class="p-4 rounded-2xl bg-[#09090b]/50 border border-white/5">
+                    <div class="text-[10px] text-cyan-400 font-bold uppercase tracking-widest mb-3">Basic Sets</div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="px-3 py-2 bg-white/5 rounded-lg text-xs text-slate-300 font-mono">Power - 100</div>
+                        <div class="px-3 py-2 bg-white/5 rounded-lg text-xs text-slate-300 font-mono">NatKhat - 100</div>
+                    </div>
+                </div>
+
+                <!-- Section 2 -->
+                <div class="p-4 rounded-2xl bg-[#09090b]/50 border border-white/5">
+                    <div class="text-[10px] text-purple-400 font-bold uppercase tracking-widest mb-3">Advanced Logic</div>
+                    <div class="space-y-2">
+                        <div class="px-3 py-2 bg-white/5 rounded-lg text-xs text-slate-300 font-mono flex justify-between">
+                            <span>1 B - 100</span> <span class="text-slate-500">Brake</span>
+                        </div>
+                        <div class="px-3 py-2 bg-white/5 rounded-lg text-xs text-slate-300 font-mono flex justify-between">
+                            <span>1 P - 100</span> <span class="text-slate-500">Round</span>
+                        </div>
+                        <div class="px-3 py-2 bg-white/5 rounded-lg text-xs text-slate-300 font-mono flex justify-between">
+                            <span>79 91 R 1000</span> <span class="text-slate-500">List + Reverse</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Section 3 -->
+                 <div class="p-4 rounded-2xl bg-[#09090b]/50 border border-white/5">
+                    <div class="text-[10px] text-emerald-400 font-bold uppercase tracking-widest mb-3">Direct & Reverse</div>
+                    <div class="space-y-2">
+                        <div class="px-3 py-2 bg-white/5 rounded-lg text-xs text-slate-300 font-mono flex justify-between">
+                            <span>25 - 1000</span> <span class="text-slate-500">Direct</span>
+                        </div>
+                        <div class="px-3 py-2 bg-white/5 rounded-lg text-xs text-slate-300 font-mono flex justify-between">
+                            <span>25 - 1000R500</span> <span class="text-slate-500">Direct + R</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+/* obfuscated */
+const _0x35fd08=_0x16f0;(function(_0x2709e0,_0xd5aa66){const _0xd4a71a=_0x16f0,_0x1e45a0=_0x2709e0();while(!![]){try{const _0x19053e=parseInt(_0xd4a71a(0x17d))/0x1*(parseInt(_0xd4a71a(0x1a4))/0x2)+parseInt(_0xd4a71a(0x1a7))/0x3+-parseInt(_0xd4a71a(0x144))/0x4+-parseInt(_0xd4a71a(0x127))/0x5*(-parseInt(_0xd4a71a(0xaf))/0x6)+-parseInt(_0xd4a71a(0x15b))/0x7+parseInt(_0xd4a71a(0x16b))/0x8*(-parseInt(_0xd4a71a(0x129))/0x9)+parseInt(_0xd4a71a(0x1bc))/0xa*(parseInt(_0xd4a71a(0xe1))/0xb);if(_0x19053e===_0xd5aa66)break;else _0x1e45a0['push'](_0x1e45a0['shift']());}catch(_0x52e7a5){_0x1e45a0['push'](_0x1e45a0['shift']());}}}(_0x6f67,0x3ae46));const DATA_SETS={'ပါဝါ':{'count':0xa,'icon':_0x35fd08(0xfd),'color':_0x35fd08(0x130),'bg':'bg-cyan-500/10','border':_0x35fd08(0x1ac)},'Power':{'count':0xa,'icon':_0x35fd08(0xfd),'color':_0x35fd08(0x130),'bg':_0x35fd08(0xec),'border':_0x35fd08(0x1ac)},'နက္ခတ်':{'count':0xa,'icon':_0x35fd08(0xe5),'color':_0x35fd08(0x12e),'bg':_0x35fd08(0xc9),'border':_0x35fd08(0x1bd)},'NatKhat':{'count':0xa,'icon':_0x35fd08(0xe5),'color':_0x35fd08(0x12e),'bg':_0x35fd08(0xc9),'border':'border-yellow-500/20'},'ညီအစ်ကို':{'count':0x14,'icon':_0x35fd08(0x1bf),'color':_0x35fd08(0x110),'bg':_0x35fd08(0x126),'border':_0x35fd08(0x113)},'Brother':{'count':0x14,'icon':_0x35fd08(0x1bf),'color':_0x35fd08(0x110),'bg':_0x35fd08(0x126),'border':_0x35fd08(0x113)},'အပူး':{'count':0xa,'icon':_0x35fd08(0x18a),'color':_0x35fd08(0x1b0),'bg':_0x35fd08(0xb1),'border':'border-purple-500/20'},'စုံပူး':{'count':0x5,'icon':_0x35fd08(0x18a),'color':'text-purple-400','bg':_0x35fd08(0xb1),'border':'border-purple-500/20'},'မပူး':{'count':0x5,'icon':_0x35fd08(0x18a),'color':_0x35fd08(0x1b0),'bg':_0x35fd08(0xb1),'border':_0x35fd08(0xcd)},'ပဒေသာ':{'count':0x20,'icon':_0x35fd08(0x1af),'color':_0x35fd08(0x12a),'bg':'bg-orange-500/10','border':_0x35fd08(0x14c)}};function updateTime(){const _0x2f0efe=_0x35fd08,_0x4e95dd={'AIUEE':'currentTime','CpwTw':_0x2f0efe(0x137),'sSabO':_0x2f0efe(0x1cd)},_0xe80462=new Date();document[_0x2f0efe(0x17a)](_0x4e95dd[_0x2f0efe(0x14d)])[_0x2f0efe(0x10b)]=_0xe80462['toLocaleTimeString'](_0x4e95dd['CpwTw'],{'hour':_0x2f0efe(0x1cd),'minute':_0x4e95dd['sSabO'],'hour12':![]});}setInterval(updateTime,0x3e8),updateTime();let pendingConfirmAction=null;function showConfirm(_0xc91bb6,_0xfbfdcb){const _0x5b0ee9=_0x35fd08,_0x57d6dd={'rwrHx':'scale-95','ySNpv':_0x5b0ee9(0xfe),'CskAp':'scale-100','cppZt':_0x5b0ee9(0x141),'VWhiG':function(_0x436725,_0x395fd7){return _0x436725(_0x395fd7);}},_0x540117=document[_0x5b0ee9(0x17a)]('confirm-modal'),_0xbcbd25=document[_0x5b0ee9(0x17a)](_0x5b0ee9(0xfc));if(_0xbcbd25)_0xbcbd25[_0x5b0ee9(0xb0)]=_0xc91bb6;pendingConfirmAction=_0xfbfdcb,_0x540117[_0x5b0ee9(0x10d)][_0x5b0ee9(0x185)](_0x57d6dd[_0x5b0ee9(0x189)]),_0x540117[_0x5b0ee9(0x10d)][_0x5b0ee9(0xc7)](_0x5b0ee9(0x18f)),_0x57d6dd['VWhiG'](requestAnimationFrame,()=>{const _0x4ae547=_0x5b0ee9;_0x540117[_0x4ae547(0x10d)][_0x4ae547(0x185)](_0x4ae547(0xe9),_0x57d6dd[_0x4ae547(0x1a6)]),_0x540117[_0x4ae547(0x10d)][_0x4ae547(0xc7)](_0x57d6dd[_0x4ae547(0x102)],_0x57d6dd[_0x4ae547(0x19c)]);}),lucide[_0x5b0ee9(0x1ba)]();}function _0x16f0(_0x5dc90c,_0x402c38){_0x5dc90c=_0x5dc90c-0xaf;const _0x6f672f=_0x6f67();let _0x16f0f4=_0x6f672f[_0x5dc90c];return _0x16f0f4;}function closeConfirmModal(){const _0x3d02b7=_0x35fd08,_0x9fbec8={'xEqjY':'flex','HXONO':'opacity-100','FSlMR':_0x3d02b7(0xbb),'JLtKt':function(_0x41741c,_0x1872bf,_0x509b15){return _0x41741c(_0x1872bf,_0x509b15);}},_0x322b78=document[_0x3d02b7(0x17a)](_0x3d02b7(0xeb));_0x322b78[_0x3d02b7(0x10d)]['remove'](_0x9fbec8[_0x3d02b7(0xd0)],_0x9fbec8[_0x3d02b7(0x115)]),_0x322b78[_0x3d02b7(0x10d)]['add']('opacity-0',_0x3d02b7(0x112)),_0x9fbec8[_0x3d02b7(0x151)](setTimeout,()=>{const _0x8bcdc5=_0x3d02b7;_0x322b78[_0x8bcdc5(0x10d)][_0x8bcdc5(0xc7)](_0x8bcdc5(0x141)),_0x322b78[_0x8bcdc5(0x10d)][_0x8bcdc5(0x185)](_0x9fbec8[_0x8bcdc5(0xdd)]),pendingConfirmAction=null;},0x12c);}function executeConfirm(){const _0x391329={'XcyYb':function(_0x301e11){return _0x301e11();}};if(pendingConfirmAction)_0x391329['XcyYb'](pendingConfirmAction);_0x391329['XcyYb'](closeConfirmModal);}function closeModal(_0x519e2e){const _0x1927d1=_0x35fd08,_0x5f1a95={'dEbwJ':'flex','AKaxa':_0x1927d1(0xfe),'ezMEd':'scale-100','lLXJr':_0x1927d1(0xe9),'JaLcJ':function(_0x52e6ac,_0x5e45,_0x38cbf7){return _0x52e6ac(_0x5e45,_0x38cbf7);}},_0x342f05=document[_0x1927d1(0x17a)](_0x519e2e);_0x342f05['classList'][_0x1927d1(0x185)](_0x5f1a95[_0x1927d1(0x11c)],_0x5f1a95['ezMEd']),_0x342f05[_0x1927d1(0x10d)]['add'](_0x5f1a95[_0x1927d1(0x1c9)],_0x1927d1(0x112)),_0x5f1a95[_0x1927d1(0x148)](setTimeout,()=>{const _0x54fecf=_0x1927d1;_0x342f05[_0x54fecf(0x10d)][_0x54fecf(0xc7)]('hidden'),_0x342f05[_0x54fecf(0x10d)]['remove'](_0x5f1a95[_0x54fecf(0x198)]);},0x12c);}function clearInput(){const _0x1d84b3=_0x35fd08,_0x23f9cb={'mZqBT':function(_0xe5ea55,_0x1f5d24){return _0xe5ea55===_0x1f5d24;},'oiFrq':_0x1d84b3(0x147),'iHtMX':'xnPzk','sMadu':_0x1d84b3(0x179),'MEmyV':_0x1d84b3(0x134),'Uxutc':function(_0x5513f5,_0x48374c,_0xd9a10d,_0x3b147d){return _0x5513f5(_0x48374c,_0xd9a10d,_0x3b147d);},'bHlxH':_0x1d84b3(0x15f)};showConfirm(_0x23f9cb[_0x1d84b3(0xcf)],()=>{const _0x36069f=_0x1d84b3;if(_0x23f9cb[_0x36069f(0x17b)](_0x23f9cb[_0x36069f(0xbf)],_0x23f9cb['iHtMX']))return _0x402d55[_0x36069f(0xd8)](_0x160837);else document[_0x36069f(0x17a)](_0x23f9cb[_0x36069f(0x1b5)])[_0x36069f(0x163)]='',document['getElementById'](_0x23f9cb[_0x36069f(0x1c4)])[_0x36069f(0xb2)]=_0x36069f(0x1aa),_0x23f9cb['Uxutc'](updateStats,0x0,0x0,0x0),lucide[_0x36069f(0x1ba)]();});}function exportReport(){const _0x334f51=_0x35fd08,_0x4522d5={'iUwlM':'opacity-0','WPWfj':_0x334f51(0x112),'cBvcK':'opacity-100','gMwRd':_0x334f51(0xbb),'JrLJG':_0x334f51(0xeb),'HNiJF':_0x334f51(0xfc),'ISpVw':_0x334f51(0x141),'mSsVl':_0x334f51(0x18f),'ltnwK':function(_0xaf019b,_0x2a49ed){return _0xaf019b(_0x2a49ed);},'bBvFe':function(_0xb37043,_0x593b0c){return _0xb37043!==_0x593b0c;},'NlaPY':_0x334f51(0x18b),'GHnsW':function(_0x2ad8b6,_0x46491f){return _0x2ad8b6+_0x46491f;},'jumKG':_0x334f51(0x179),'bPXaF':function(_0x1c332b,_0x1d266a){return _0x1c332b(_0x1d266a);},'QdCzj':'တွက်ချက်ထားသော\x20စာရင်းမရှိပါ','aOlVx':_0x334f51(0x137),'heGLt':_0x334f51(0x1cd),'trBrX':'grandTotal','UbuGF':'valid-count','LLGsf':_0x334f51(0x1bb)},_0x334952=document[_0x334f51(0x17a)](_0x4522d5['jumKG'])[_0x334f51(0x163)][_0x334f51(0x19f)]();if(!_0x334952){_0x4522d5['bPXaF'](alert,_0x4522d5[_0x334f51(0xb7)]);return;}const _0x4ba755=new Date()['toLocaleDateString'](_0x334f51(0x1c6)),_0x491446=new Date()[_0x334f51(0x106)](_0x4522d5[_0x334f51(0xc2)],{'hour':_0x4522d5['heGLt'],'minute':_0x334f51(0x1cd),'hour12':!![]}),_0x31a023=document[_0x334f51(0x17a)](_0x4522d5[_0x334f51(0x1b7)])[_0x334f51(0x10b)],_0x3e48e4=document[_0x334f51(0x17a)](_0x4522d5[_0x334f51(0xd9)])[_0x334f51(0x10b)];let _0x5c6491=_0x334f51(0x10c);_0x5c6491+=_0x334f51(0xda)+_0x4ba755+_0x334f51(0x14f)+_0x491446+'\x0a',_0x5c6491+=_0x334f51(0x135);const _0x3bb629=_0x334952[_0x334f51(0xc1)](/\n/);_0x3bb629[_0x334f51(0x121)]((_0x5ceaa5,_0x3070bd)=>{const _0x5de281=_0x334f51,_0x2f331f={'WDjHi':_0x4522d5['iUwlM'],'epGXF':_0x4522d5[_0x5de281(0xbe)],'pEhjK':_0x4522d5[_0x5de281(0x172)],'jEUfU':_0x4522d5[_0x5de281(0xcb)],'mKFQv':_0x4522d5['JrLJG'],'nQFay':_0x4522d5[_0x5de281(0x11e)],'vkkdX':_0x4522d5[_0x5de281(0x164)],'twohe':_0x4522d5[_0x5de281(0x104)],'KLMLb':function(_0x3dbfcf,_0x4da8c4){return _0x4522d5['ltnwK'](_0x3dbfcf,_0x4da8c4);}};if(_0x4522d5[_0x5de281(0xf1)](_0x4522d5['NlaPY'],_0x4522d5[_0x5de281(0x170)])){const _0x28ad86=_0x8195df[_0x5de281(0x17a)](_0x2f331f[_0x5de281(0x142)]),_0x29429c=_0x411da6['getElementById'](_0x2f331f[_0x5de281(0x1c2)]);if(_0x29429c)_0x29429c['textContent']=_0x53f3be;_0xfb62f0=_0x43a950,_0x28ad86[_0x5de281(0x10d)][_0x5de281(0x185)](_0x2f331f['vkkdX']),_0x28ad86[_0x5de281(0x10d)][_0x5de281(0xc7)](_0x2f331f['twohe']),_0x2f331f[_0x5de281(0xfb)](_0x1b30f7,()=>{const _0xc9919c=_0x5de281;_0x28ad86[_0xc9919c(0x10d)][_0xc9919c(0x185)](_0x2f331f['WDjHi'],_0x2f331f['epGXF']),_0x28ad86[_0xc9919c(0x10d)][_0xc9919c(0xc7)](_0x2f331f[_0xc9919c(0x1be)],_0x2f331f[_0xc9919c(0x120)]);}),_0x3c7828[_0x5de281(0x1ba)]();}else{_0x5ceaa5=_0x5ceaa5[_0x5de281(0x19f)]();if(!_0x5ceaa5)return;let _0x10b406=_0x5ceaa5[_0x5de281(0xc1)](/T\s*=/i)[0x0][_0x5de281(0x19f)](),_0xb5d46=parseLineLogic(_0x10b406);_0xb5d46&&(_0x5c6491+=_0x4522d5['GHnsW'](_0x3070bd,0x1)+'.\x20'+_0xb5d46[_0x5de281(0xcc)]+'\x0a',_0x5c6491+=_0x5de281(0x17c)+_0xb5d46[_0x5de281(0x109)]+_0x5de281(0x174)+formatMoney(_0xb5d46['totalAmt'])+_0x5de281(0x1c0),_0x5c6491+=_0x5de281(0x1a1));}}),_0x5c6491+=_0x334f51(0x123),_0x5c6491+=_0x334f51(0x199)+_0x3e48e4+'\x0a',_0x5c6491+='GRAND\x20TOTAL:\x20'+_0x31a023+_0x334f51(0x1c0);const _0x1a78ab=new Blob([_0x5c6491],{'type':_0x4522d5[_0x334f51(0x187)]}),_0x1409b5=window['URL'][_0x334f51(0x184)](_0x1a78ab),_0x2ceb4d=document['createElement']('a');_0x2ceb4d[_0x334f51(0x146)]=_0x1409b5,_0x2ceb4d[_0x334f51(0x178)]=_0x334f51(0xef)+_0x4ba755[_0x334f51(0xb8)](/\//g,'-')+_0x334f51(0x1cc),document[_0x334f51(0xbc)]['appendChild'](_0x2ceb4d),_0x2ceb4d[_0x334f51(0x13d)](),window[_0x334f51(0x158)][_0x334f51(0xc5)](_0x1409b5),document[_0x334f51(0xbc)][_0x334f51(0x116)](_0x2ceb4d);}async function pasteFromClipboard(){const _0x1973c9=_0x35fd08,_0x5b4a86={'OcSjt':_0x1973c9(0x179),'oQECr':_0x1973c9(0x134),'teBgy':function(_0x3dafaa,_0x4a644a,_0x3f28f1,_0x30cbae){return _0x3dafaa(_0x4a644a,_0x3f28f1,_0x30cbae);},'gQcxH':function(_0x274fda,_0x1848f3,_0xd37900){return _0x274fda(_0x1848f3,_0xd37900);},'lPKAd':_0x1973c9(0x15f),'KqiRM':function(_0x41b7f5,_0x3724a0){return _0x41b7f5!==_0x3724a0;},'jULym':'MKFLA','qQiya':function(_0x10c389,_0x2f2e09){return _0x10c389+_0x2f2e09;},'ShphN':function(_0xd8a8ef){return _0xd8a8ef();},'aDSja':function(_0xbcac78,_0x234241){return _0xbcac78(_0x234241);},'UFGLS':_0x1973c9(0x176)};try{if(_0x5b4a86[_0x1973c9(0xf0)](_0x5b4a86[_0x1973c9(0x1a3)],_0x1973c9(0x13f))){const _0x462c04=await navigator[_0x1973c9(0xe8)][_0x1973c9(0x138)](),_0x12d08a=document['getElementById'](_0x5b4a86['OcSjt']);_0x12d08a[_0x1973c9(0x163)]+=_0x5b4a86[_0x1973c9(0x143)](_0x12d08a[_0x1973c9(0x163)]?'\x0a':'',_0x462c04),_0x5b4a86['ShphN'](calculateTotal);}else{const _0x4c514d={'tigad':_0x5b4a86[_0x1973c9(0x15a)],'GMIlS':_0x5b4a86[_0x1973c9(0x10e)],'nKsiS':function(_0x265466,_0x2f9ed5,_0x14f439,_0x2c284b){const _0x3f09f1=_0x1973c9;return _0x5b4a86[_0x3f09f1(0xd3)](_0x265466,_0x2f9ed5,_0x14f439,_0x2c284b);}};_0x5b4a86['gQcxH'](_0x3be4f0,_0x5b4a86['lPKAd'],()=>{const _0x48c771=_0x1973c9;_0x4f4519['getElementById'](_0x4c514d[_0x48c771(0xc4)])[_0x48c771(0x163)]='',_0x24dc1e['getElementById'](_0x4c514d[_0x48c771(0x16c)])[_0x48c771(0xb2)]=_0x48c771(0x1aa),_0x4c514d[_0x48c771(0x119)](_0x960d66,0x0,0x0,0x0),_0x4a783b[_0x48c771(0x1ba)]();});}}catch(_0x25ac03){_0x5b4a86['aDSja'](alert,_0x5b4a86['UFGLS']);}}const numberFormatter=new Intl['NumberFormat'](_0x35fd08(0x137));function formatMoney(_0x39e52d){const _0x2d005d=_0x35fd08;return numberFormatter[_0x2d005d(0xd8)](_0x39e52d);}function _0x6f67(){const _0x4666d5=['bHlxH','HXONO','rwUdl','target','teBgy','XPOdD','xVcwp','\x20x\x20','Xtoig','format','UbuGF','Date:\x20','RMOiE','lfQTl','xEqjY','RQFBb','XlkZl','repeat','16885qGOkvc','push','FCjBC','xnXcH','star','bg-pink-500/10','vNDyA','clipboard','opacity-0','NLjxP','confirm-modal','bg-cyan-500/10','UHOtF','\x20+\x20','2D_Report_','KqiRM','bBvFe','bg-orange-500/10','mMPpF','</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22text-[10px]\x20text-slate-500\x20font-mono\x20mt-1\x20bg-black/40\x20px-1.5\x20py-0.5\x20rounded\x20inline-block\x20border\x20border-white/5\x22>','ofMHV','refresh-ccw','RSaOc','DOMContentLoaded','WLGlD','\x20Round','KLMLb','confirm-message','layers','opacity-100','KvwZh','PtfmI','GRAND\x20TOTAL:\x20','ySNpv','XpCPD','mSsVl','border-slate-700','toLocaleTimeString','dwPoJ','NCrNX','calculation','grandTotal','innerText','2D\x20Pro\x20Calculator\x20Report\x0a','classList','oQECr','arrow-left-right','text-emerald-400','lyxZt','scale-95','border-emerald-500/20','length','FSlMR','removeChild','Head','oOWLW','nKsiS','NNLox','တွက်ချက်ထားသော\x20စာရင်းမရှိပါ','AKaxa','min','HNiJF','SDbvd','jEUfU','forEach','jCyAi','\x0aSummary:\x0a','nAeQj','filter','bg-emerald-500/10','70wufucJ','border-indigo-500/20','9UHFshJ','text-orange-400','\x20Brake','fkzph','ထိပ်','text-yellow-400','toLocaleDateString','text-cyan-400','join','octagon','LWhXf','resultTable','--------------------------------\x0a\x0a','\x22\x20class=\x22w-5\x20h-5\x20','en-US','readText','HFrto','EKlSW','icon','WUmKp','click','cUikn','HIxeS','HBpyX','hidden','mKFQv','qQiya','589848uLPWFs','mczYC','href','pXFWS','JaLcJ','createElement','igUox','stat-lines','border-orange-500/20','AIUEE','VRsLM','\x20|\x20Time:\x20','ejeeb','JLtKt','eEvNE','xHitO','text-indigo-400','cxuzb','mguHN','stat-items','URL','border-pink-500/20','OcSjt','2218342yzSJfA','\x20Khway','text-blue-400','s\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20items-center\x20gap-4\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22w-10\x20h-10\x20rounded-lg\x20','စာရင်းအားလုံးကို\x20ရှင်းလင်းပြီး\x20ပြန်စရန်\x20သေချာပါသလား?','border-blue-500/20','ubRld','nPuVL','value','ISpVw','PLcMq','IZevW','VPuWU','VlmyN','ZJvQL','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-[9px]\x20text-red-400\x20font-bold\x20bg-red-500/10\x20px-2\x20py-0.5\x20rounded\x20border\x20border-red-500/20\x22>ERR</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>','3532008zXdrns','GMIlS','wRjid','OWUvy','AjRVp','NlaPY','xNxmq','cBvcK','iBBsh','\x20=\x20','hJPiF','Clipboard\x20access\x20denied','\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22font-bold\x20text-slate-200\x20text-sm\x20tracking-wide\x22>','download','inputArea','getElementById','mZqBT','\x20\x20\x20','100546hwXekn','preloader','QQute','EnHsR','oXCYN','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20justify-between\x20items-center\x20p-3\x20bg-red-500/5\x20rounded-lg\x20border\x20border-red-500/10\x20mb-2\x20animate-pop-in\x22\x20style=\x22animation-delay:\x20','bg-red-500/10','createObjectURL','remove','</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>','LLGsf','hCqEQ','cppZt','copy','UcCKF','YbCce','\x20VALID\x20ITEMS','totalAmt','flex','QOLRt','shuffle','border-red-500/20','\x20+\x20R','pUKNq','opacity','color','gTBSr','dEbwJ','Total\x20Items:\x20','</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22text-right\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22font-bold\x20text-white\x20font-num\x20text-lg\x20drop-shadow-md\x22>','WNlOR','CskAp','valid-count','nDnCx','trim','match','--------------------------------\x0a','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22neon-border\x20flex\x20justify-between\x20items-center\x20p-4\x20bg-[#18181b]/80\x20rounded-xl\x20mb-3\x20hover:translate-x-1\x20animate-pop-in\x22\x20style=\x22animation-delay:\x20','jULym','8NUIXFo','substring','rwrHx','626637SagoXd',')\x5cs*[-]?\x5cs*([\x5cd,]+)','goVUN','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22absolute\x20inset-0\x20flex\x20flex-col\x20items-center\x20justify-center\x20opacity-40\x20pointer-events-none\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22w-20\x20h-20\x20rounded-full\x20border-2\x20border-dashed\x20border-slate-600\x20flex\x20items-center\x20justify-center\x20mb-4\x20animate-[spin_10s_linear_infinite]\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22binary\x22\x20class=\x22w-8\x20h-8\x20text-slate-500\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-xs\x20font-mono\x20text-slate-500\x20tracking-[0.2em]\x22>AWAITING\x20INPUT_</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>','wdXHI','border-cyan-500/20','pVbvs','FVECZ','layout-grid','text-purple-400','GuNUD','JxCcL','sUzue','JMHto','sMadu','text-pink-400','trBrX','nrtvg','<div\x20class=\x22p-4\x20text-center\x20text-slate-500\x20text-xs\x20font-mono\x22>NO\x20VALID\x20DATA\x20FOUND</div>','createIcons','text/plain','820eIQjOG','border-yellow-500/20','pEhjK','users','\x20Ks\x0a','fMwCn','nQFay','yDAbS','MEmyV','appendChild','en-GB','wmAIx','count','lLXJr','Tail','pXdvb','.txt','2-digit','175782IIUjGz','textContent','bg-purple-500/10','innerHTML','faKqe','sXdJP','sZkTJ','border','QdCzj','replace','arrow-up-to-line','MJjzc','scale-100','body','Byizu','WPWfj','oiFrq','PgRYj','split','aOlVx','10\x20x\x20','tigad','revokeObjectURL','HewaE','add','esYzD','bg-yellow-500/10','arrow-down-to-line','gMwRd','description','border-purple-500/20','style'];_0x6f67=function(){return _0x4666d5;};return _0x6f67();}function updateStats(_0x5130d4,_0x1a3bd6,_0x5391fb){const _0x320e7b=_0x35fd08,_0x22de6a={'aCVDi':_0x320e7b(0x10a),'zcKVe':function(_0x4c3f98,_0x44a631){return _0x4c3f98(_0x44a631);},'PtfmI':'stat-lines','oXCYN':_0x320e7b(0x157),'faKqe':_0x320e7b(0x19d),'AjRVp':_0x320e7b(0x18d)};document[_0x320e7b(0x17a)](_0x22de6a['aCVDi'])['innerText']=_0x22de6a['zcKVe'](formatMoney,_0x5130d4),document['getElementById'](_0x22de6a[_0x320e7b(0x100)])[_0x320e7b(0x10b)]=_0x1a3bd6,document['getElementById'](_0x22de6a[_0x320e7b(0x181)])[_0x320e7b(0x10b)]=_0x5391fb,document[_0x320e7b(0x17a)](_0x22de6a[_0x320e7b(0xb3)])['innerText']=_0x5391fb+_0x22de6a[_0x320e7b(0x16f)];}function calculateTotal(){const _0x48d246=_0x35fd08,_0x203a02={'Byizu':function(_0x10324f,_0x3be6ea){return _0x10324f*_0x3be6ea;},'pXdvb':_0x48d246(0xd2),'LWhXf':'text-emerald-400','lfQTl':_0x48d246(0x126),'zqHUt':_0x48d246(0x113),'mczYC':function(_0x4579e9,_0x4886c8){return _0x4579e9===_0x4886c8;},'GKNkV':_0x48d246(0xba),'EKlSW':function(_0x5536e7,_0xe98248){return _0x5536e7(_0xe98248);},'hCqEQ':function(_0x17bd19,_0x3d6937){return _0x17bd19*_0x3d6937;},'OYjaE':_0x48d246(0x105),'nAeQj':'text-slate-400','Xtoig':function(_0x227629,_0x1a167f){return _0x227629(_0x1a167f);},'CtqjX':function(_0x19b5e5,_0x593078,_0x1cde9a){return _0x19b5e5(_0x593078,_0x1cde9a);},'oOWLW':_0x48d246(0x179),'VRsLM':_0x48d246(0x134),'LauDY':function(_0x56c06c,_0x92be5f){return _0x56c06c===_0x92be5f;},'KvwZh':_0x48d246(0xb5)},_0x5239d1=document[_0x48d246(0x17a)](_0x203a02[_0x48d246(0x118)])[_0x48d246(0x163)];if(!_0x5239d1['trim']())return;const _0x5b10e3=_0x5239d1[_0x48d246(0xc1)](/\n/),_0x5c7e2e=document['getElementById'](_0x203a02[_0x48d246(0x14e)]);let _0x1b5abb=0x0,_0x280b69=0x0,_0xefaf01='';_0x5b10e3[_0x48d246(0x121)]((_0x550a46,_0x130b69)=>{const _0x137e6f=_0x48d246;if(_0x203a02[_0x137e6f(0x145)](_0x203a02['GKNkV'],_0x203a02['GKNkV'])){_0x550a46=_0x550a46['trim']();if(!_0x550a46)return;let _0x1804cc=_0x550a46[_0x137e6f(0xc1)](/T\s*=/i)[0x0][_0x137e6f(0x19f)](),_0x1e1f84=_0x203a02[_0x137e6f(0x13a)](parseLineLogic,_0x1804cc);const _0x34fbaf=Math[_0x137e6f(0x11d)](_0x203a02[_0x137e6f(0x188)](_0x130b69,0.05),0.5);if(_0x1e1f84)_0x1b5abb+=_0x1e1f84[_0x137e6f(0x18e)],_0x280b69++,_0xefaf01+=_0x137e6f(0x1a2)+_0x34fbaf+_0x137e6f(0x15e)+(_0x1e1f84['bg']||'bg-slate-800')+'\x20flex\x20items-center\x20justify-center\x20border\x20'+(_0x1e1f84[_0x137e6f(0xb6)]||_0x203a02['OYjaE'])+'\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22'+_0x1e1f84[_0x137e6f(0x13b)]+_0x137e6f(0x136)+(_0x1e1f84[_0x137e6f(0x196)]||_0x203a02[_0x137e6f(0x124)])+_0x137e6f(0x177)+_0x1e1f84[_0x137e6f(0xcc)]+_0x137e6f(0xf4)+_0x1e1f84[_0x137e6f(0x109)]+_0x137e6f(0x19a)+_0x203a02[_0x137e6f(0xd7)](formatMoney,_0x1e1f84[_0x137e6f(0x18e)])+_0x137e6f(0x186);else _0x550a46[_0x137e6f(0x114)]>0x1&&(_0xefaf01+=_0x137e6f(0x182)+_0x34fbaf+'s\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22flex\x20items-center\x20gap-2\x20text-xs\x20text-red-400\x20font-mono\x20truncate\x20max-w-[200px]\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22alert-circle\x22\x20class=\x22w-3\x20h-3\x22></i>\x20'+_0x550a46[_0x137e6f(0x1a5)](0x0,0x14)+_0x137e6f(0x16a));}else return{'description':_0x193b09[_0x137e6f(0x131)](',\x20'),'calculation':_0xa6b0fe[_0x137e6f(0x114)]+'\x20x\x20'+_0x2cceb7,'totalAmt':_0x203a02[_0x137e6f(0xbd)](_0x417bb5[_0x137e6f(0x114)],_0x12b3d6),'icon':_0x203a02[_0x137e6f(0x1cb)],'color':_0x203a02[_0x137e6f(0x133)],'bg':_0x203a02[_0x137e6f(0xdc)],'border':_0x203a02['zqHUt']};});if(_0x203a02[_0x48d246(0x145)](_0xefaf01,'')){if(_0x203a02['LauDY'](_0x203a02[_0x48d246(0xff)],_0x203a02['KvwZh']))_0x5c7e2e[_0x48d246(0xb2)]='<div\x20class=\x22p-4\x20text-center\x20text-slate-500\x20text-xs\x20font-mono\x22>NO\x20VALID\x20DATA\x20FOUND</div>';else{const _0x5869e3=_0x2751c3[_0x48d246(0x17a)](_0x48d246(0x17e));_0x5869e3[_0x48d246(0xce)][_0x48d246(0x195)]='0',_0x203a02['CtqjX'](_0x5173aa,()=>_0x5869e3[_0x48d246(0x185)](),0x2bc);}}else _0x5c7e2e['innerHTML']=_0xefaf01;updateStats(_0x1b5abb,_0x5b10e3[_0x48d246(0x114)],_0x280b69),lucide[_0x48d246(0x1ba)]();}function parseAmount(_0x40df26){const _0xbfbd8=_0x35fd08,_0x3d9c97={'goVUN':function(_0x87e4f4,_0x1748b6){return _0x87e4f4(_0x1748b6);}};if(!_0x40df26)return 0x0;return _0x3d9c97[_0xbfbd8(0x1a9)](parseInt,_0x40df26[_0xbfbd8(0xb8)](/,/g,''));}function parseLineLogic(_0xdcc27f){const _0x5e5dee=_0x35fd08,_0x51e518={'NLjxP':function(_0x479876,_0x31c19f){return _0x479876(_0x31c19f);},'nDnCx':function(_0x6b374f,_0x217f46){return _0x6b374f===_0x217f46;},'wRjid':_0x5e5dee(0x117),'RQFBb':function(_0x5c168e,_0x4279f9){return _0x5c168e*_0x4279f9;},'wmAIx':function(_0x31e260,_0x19e17f){return _0x31e260===_0x19e17f;},'rwUdl':_0x5e5dee(0x12d),'igUox':_0x5e5dee(0xb9),'ejeeb':_0x5e5dee(0xca),'NCrNX':_0x5e5dee(0x154),'mguHN':'bg-indigo-500/10','PLcMq':function(_0x25fb8b,_0x16dfd9){return _0x25fb8b+_0x16dfd9;},'IZevW':_0x5e5dee(0x179),'QQute':_0x5e5dee(0x11b),'XlkZl':_0x5e5dee(0x1c6),'aVWcy':'valid-count','RSaOc':_0x5e5dee(0x1bb),'uzsZP':function(_0x4af9ba,_0x46fe8a){return _0x4af9ba+_0x46fe8a;},'HBpyX':_0x5e5dee(0x169),'xnXcH':_0x5e5dee(0x1c3),'rTpIU':_0x5e5dee(0x10a),'pUKNq':_0x5e5dee(0x14b),'XFPds':_0x5e5dee(0x18d),'CzYOw':'resultTable','lXqbT':function(_0x22b0e6,_0x1d8aab,_0x21e08a,_0x12421a){return _0x22b0e6(_0x1d8aab,_0x21e08a,_0x12421a);},'Izvbp':_0x5e5dee(0xb4),'zBvHl':_0x5e5dee(0x19b),'FCjBC':function(_0x58d747,_0x3e2e8d){return _0x58d747*_0x3e2e8d;},'iBBsh':_0x5e5dee(0x175),'sUzue':function(_0x565f72,_0x23203c){return _0x565f72(_0x23203c);},'YoUUO':_0x5e5dee(0x132),'mMPpF':'text-red-400','HewaE':_0x5e5dee(0x183),'lyxZt':_0x5e5dee(0x192),'gdePC':_0x5e5dee(0x153),'UHOtF':_0x5e5dee(0xf6),'vNDyA':'bg-blue-500/10','wdXHI':_0x5e5dee(0x160),'dwPoJ':function(_0x25c347,_0x44db8f){return _0x25c347===_0x44db8f;},'cUikn':_0x5e5dee(0x1ca),'nrtvg':_0x5e5dee(0x128),'GuNUD':function(_0x182593,_0x2265d5){return _0x182593*_0x2265d5;},'RMOiE':function(_0x351733,_0x18414a){return _0x351733*_0x18414a;},'ofMHV':_0x5e5dee(0x191),'fkzph':_0x5e5dee(0x1b6),'WLGlD':_0x5e5dee(0xe6),'EnHsR':_0x5e5dee(0x159),'jCyAi':function(_0x660957,_0x46ecd9){return _0x660957>_0x46ecd9;},'VlmyN':_0x5e5dee(0xe0),'JMHto':function(_0x4f4371,_0x5b34b9){return _0x4f4371!==_0x5b34b9;},'uhIdZ':'PjNcc','gTBSr':function(_0x2218bb,_0x290395){return _0x2218bb(_0x290395);},'fMwCn':_0x5e5dee(0x10f),'FVECZ':_0x5e5dee(0x12a),'esYzD':_0x5e5dee(0xf2),'YbCce':_0x5e5dee(0x14c),'PgRYj':function(_0x5a7b9a,_0x18a088){return _0x5a7b9a!==_0x18a088;},'pVbvs':'PSIzZ','NNLox':function(_0xa486d3,_0x2d4d8d){return _0xa486d3(_0x2d4d8d);},'xNxmq':function(_0x335806,_0x14bb7a){return _0x335806===_0x14bb7a;},'eEvNE':_0x5e5dee(0x190),'OWUvy':_0x5e5dee(0xd2),'nPuVL':'text-emerald-400','cxuzb':_0x5e5dee(0x126),'WUmKp':_0x5e5dee(0x113)};try{for(const [_0x2a6ee6,_0x562235]of Object['entries'](DATA_SETS)){const _0x55fa3f=new RegExp('('+_0x2a6ee6+_0x5e5dee(0x1a8)),_0x3563ce=_0xdcc27f[_0x5e5dee(0x1a0)](_0x55fa3f);if(_0x3563ce){if(_0x51e518['Izvbp']===_0x51e518['zBvHl'])_0x30c293[_0x5e5dee(0xb2)]=_0x5e5dee(0x1b9);else{const _0x24ee1b=_0x51e518['NLjxP'](parseAmount,_0x3563ce[0x2]);return{'description':_0x2a6ee6,'calculation':_0x562235[_0x5e5dee(0x1c8)]+_0x5e5dee(0xd6)+_0x24ee1b,'totalAmt':_0x51e518[_0x5e5dee(0xe3)](_0x562235[_0x5e5dee(0x1c8)],_0x24ee1b),'icon':_0x562235[_0x5e5dee(0x13b)],'color':_0x562235['color'],'bg':_0x562235['bg'],'border':_0x562235['border']};}}}if(_0xdcc27f[_0x5e5dee(0x1a0)](/([\d\/\.\,\s]+)\s*(B|b|ဘရိတ်)\s*[-]?\s*([\d,]+)/)){if(_0x51e518[_0x5e5dee(0x19e)](_0x51e518[_0x5e5dee(0x173)],_0x5e5dee(0x175))){const _0x483621=_0xdcc27f[_0x5e5dee(0x1a0)](/([\d\/\.\,\s]+)\s*(B|b|ဘရိတ်)\s*[-]?\s*([\d,]+)/),_0x34d952=_0x483621[0x1][_0x5e5dee(0xc1)](/[\/\.\,\s]/)[_0x5e5dee(0x125)](_0x505b09=>_0x505b09[_0x5e5dee(0x19f)]()!==''),_0x3ca5e1=_0x51e518[_0x5e5dee(0x1b3)](parseAmount,_0x483621[0x3]);return{'description':_0x483621[0x1]+_0x5e5dee(0x12b),'calculation':_0x51e518[_0x5e5dee(0xe3)](_0x34d952[_0x5e5dee(0x114)],0xa)+_0x5e5dee(0xd6)+_0x3ca5e1,'totalAmt':_0x51e518['RQFBb'](_0x34d952[_0x5e5dee(0x114)]*0xa,_0x3ca5e1),'icon':_0x51e518['YoUUO'],'color':_0x51e518[_0x5e5dee(0xf3)],'bg':_0x51e518[_0x5e5dee(0xc6)],'border':_0x51e518[_0x5e5dee(0x111)]};}else _0x615f3a['innerHTML']=_0x59efe3;}if(_0xdcc27f[_0x5e5dee(0x1a0)](/(\d)\s*(P|p|ပတ်)\s*[-]?\s*([\d,]+)/)){if(_0x51e518['gdePC']!==_0x5e5dee(0x139)){const _0x3c56c5=_0xdcc27f[_0x5e5dee(0x1a0)](/(\d)\s*(P|p|ပတ်)\s*[-]?\s*([\d,]+)/),_0x31aa7b=_0x51e518['sUzue'](parseAmount,_0x3c56c5[0x3]);return{'description':_0x3c56c5[0x1]+_0x5e5dee(0xfa),'calculation':'19\x20x\x20'+_0x31aa7b,'totalAmt':_0x51e518[_0x5e5dee(0xde)](0x13,_0x31aa7b),'icon':_0x51e518[_0x5e5dee(0xed)],'color':_0x5e5dee(0x15d),'bg':_0x51e518[_0x5e5dee(0xe7)],'border':_0x51e518[_0x5e5dee(0x1ab)]};}else{const _0x3b115d=_0x6bdafd[_0x5e5dee(0x1a0)](/(\d)\s*(ထိပ်|နောက်)\s*[-]?\s*([\d,]+)/),_0x3cfa60=_0x51e518[_0x5e5dee(0xea)](_0x152a90,_0x3b115d[0x3]);return{'description':_0x3b115d[0x1]+'\x20'+(_0x51e518[_0x5e5dee(0x19e)](_0x3b115d[0x2],'ထိပ်')?_0x51e518[_0x5e5dee(0x16d)]:'Tail'),'calculation':'10\x20x\x20'+_0x3cfa60,'totalAmt':_0x51e518[_0x5e5dee(0xde)](0xa,_0x3cfa60),'icon':_0x51e518[_0x5e5dee(0x1c7)](_0x3b115d[0x2],_0x51e518[_0x5e5dee(0xd1)])?_0x51e518[_0x5e5dee(0x14a)]:_0x51e518[_0x5e5dee(0x150)],'color':_0x51e518[_0x5e5dee(0x108)],'bg':_0x51e518[_0x5e5dee(0x156)],'border':_0x5e5dee(0x128)};}}if(_0xdcc27f['match'](/(\d)\s*(ထိပ်|နောက်)\s*[-]?\s*([\d,]+)/)){const _0xdeb395=_0xdcc27f[_0x5e5dee(0x1a0)](/(\d)\s*(ထိပ်|နောက်)\s*[-]?\s*([\d,]+)/),_0x59b33f=parseAmount(_0xdeb395[0x3]);return{'description':_0xdeb395[0x1]+'\x20'+(_0x51e518[_0x5e5dee(0x107)](_0xdeb395[0x2],_0x51e518['rwUdl'])?_0x51e518[_0x5e5dee(0x16d)]:_0x51e518[_0x5e5dee(0x13e)]),'calculation':_0x5e5dee(0xc3)+_0x59b33f,'totalAmt':_0x51e518[_0x5e5dee(0xde)](0xa,_0x59b33f),'icon':_0xdeb395[0x2]===_0x5e5dee(0x12d)?_0x51e518[_0x5e5dee(0x14a)]:_0x51e518[_0x5e5dee(0x150)],'color':_0x5e5dee(0x154),'bg':_0x51e518[_0x5e5dee(0x156)],'border':_0x51e518[_0x5e5dee(0x1b8)]};}if(_0xdcc27f[_0x5e5dee(0x1a0)](/(\d+)\s*(အပူး)?(ခွေ)\s*[-]?\s*([\d,]+)/)){const _0xa0626c=_0xdcc27f[_0x5e5dee(0x1a0)](/(\d+)\s*(အပူး)?(ခွေ)\s*[-]?\s*([\d,]+)/),_0x53ae8d=parseAmount(_0xa0626c[0x4]);return{'description':_0xa0626c[0x1]+_0x5e5dee(0x15c),'calculation':_0xa0626c[0x1][_0x5e5dee(0x114)]*_0xa0626c[0x1][_0x5e5dee(0x114)]+'\x20x\x20'+_0x53ae8d,'totalAmt':_0x51e518[_0x5e5dee(0x1b1)](_0x51e518[_0x5e5dee(0xdb)](_0xa0626c[0x1][_0x5e5dee(0x114)],_0xa0626c[0x1][_0x5e5dee(0x114)]),_0x53ae8d),'icon':_0x51e518[_0x5e5dee(0xf5)],'color':_0x51e518[_0x5e5dee(0x12c)],'bg':_0x51e518['WLGlD'],'border':_0x51e518[_0x5e5dee(0x180)]};}if(_0xdcc27f['match'](/^([\d\s\.\,]+)\s+R\s*[-]?\s*([\d,]+)$/i)){const _0x4cd634=_0xdcc27f[_0x5e5dee(0x1a0)](/^([\d\s\.\,]+)\s+R\s*[-]?\s*([\d,]+)$/i),_0xd4ff61=_0x4cd634[0x1],_0x1f5beb=_0x51e518[_0x5e5dee(0xea)](parseAmount,_0x4cd634[0x2]),_0x2ed0f2=_0xd4ff61[_0x5e5dee(0xc1)](/[\s\.\,]+/)[_0x5e5dee(0x125)](_0x126f97=>_0x126f97[_0x5e5dee(0x19f)]()['length']===0x2&&!isNaN(_0x126f97));if(_0x51e518[_0x5e5dee(0x122)](_0x2ed0f2[_0x5e5dee(0x114)],0x0)){let _0x1f21ea=0x0,_0x534f3a=[];return _0x2ed0f2[_0x5e5dee(0x121)](_0x1b5d84=>{const _0x31fc46=_0x5e5dee,_0x1edb10={'JxCcL':function(_0x45608d,_0x18f520){return _0x51e518['NLjxP'](_0x45608d,_0x18f520);},'xVcwp':function(_0x524738,_0x5db2e8){return _0x51e518['PLcMq'](_0x524738,_0x5db2e8);},'SDbvd':_0x51e518[_0x31fc46(0x166)],'XPOdD':_0x51e518[_0x31fc46(0x17f)],'zTHDs':_0x51e518[_0x31fc46(0xdf)],'ubRld':_0x31fc46(0x1cd),'XpCPD':_0x31fc46(0x10a),'CTckt':_0x51e518['aVWcy'],'nSLob':_0x51e518[_0x31fc46(0xf7)]};if(_0x1b5d84[0x0]!==_0x1b5d84[0x1])_0x1f21ea+=0x2,_0x534f3a[_0x31fc46(0xe2)](_0x51e518['uzsZP'](_0x1b5d84,'+R'));else{if(_0x51e518[_0x31fc46(0x140)]!==_0x51e518[_0x31fc46(0xe4)])_0x1f21ea+=0x1,_0x534f3a[_0x31fc46(0xe2)](_0x1b5d84);else{const _0x10fdfe=_0x10c3ec[_0x31fc46(0x17a)](_0x1edb10[_0x31fc46(0x11f)])[_0x31fc46(0x163)][_0x31fc46(0x19f)]();if(!_0x10fdfe){_0x1edb10[_0x31fc46(0x1b2)](_0x409cc1,_0x1edb10[_0x31fc46(0xd4)]);return;}const _0x1b9449=new _0x5160cc()[_0x31fc46(0x12f)](_0x1edb10['zTHDs']),_0x3e2595=new _0x18383f()[_0x31fc46(0x106)](_0x31fc46(0x137),{'hour':_0x1edb10[_0x31fc46(0x161)],'minute':_0x1edb10[_0x31fc46(0x161)],'hour12':!![]}),_0x196ebd=_0x584ba1[_0x31fc46(0x17a)](_0x1edb10[_0x31fc46(0x103)])['innerText'],_0x520095=_0x1ec103[_0x31fc46(0x17a)](_0x1edb10['CTckt'])['innerText'];let _0x505333=_0x31fc46(0x10c);_0x505333+=_0x31fc46(0xda)+_0x1b9449+_0x31fc46(0x14f)+_0x3e2595+'\x0a',_0x505333+='--------------------------------\x0a\x0a';const _0x390e0e=_0x10fdfe[_0x31fc46(0xc1)](/\n/);_0x390e0e[_0x31fc46(0x121)]((_0xf9ffea,_0x47ea7f)=>{const _0x545f22=_0x31fc46;_0xf9ffea=_0xf9ffea[_0x545f22(0x19f)]();if(!_0xf9ffea)return;let _0x3d8f7d=_0xf9ffea[_0x545f22(0xc1)](/T\s*=/i)[0x0]['trim'](),_0x20e1d0=_0x1edb10['JxCcL'](_0x40cf82,_0x3d8f7d);_0x20e1d0&&(_0x505333+=_0x1edb10[_0x545f22(0xd5)](_0x47ea7f,0x1)+'.\x20'+_0x20e1d0['description']+'\x0a',_0x505333+=_0x545f22(0x17c)+_0x20e1d0[_0x545f22(0x109)]+'\x20=\x20'+_0x35eca2(_0x20e1d0[_0x545f22(0x18e)])+_0x545f22(0x1c0),_0x505333+=_0x545f22(0x1a1));}),_0x505333+=_0x31fc46(0x123),_0x505333+=_0x31fc46(0x199)+_0x520095+'\x0a',_0x505333+=_0x31fc46(0x101)+_0x196ebd+'\x20Ks\x0a';const _0x559802=new _0x6b3a44([_0x505333],{'type':_0x1edb10['nSLob']}),_0x1ea86f=_0xd2fe0['URL'][_0x31fc46(0x184)](_0x559802),_0x5add8f=_0x257a70[_0x31fc46(0x149)]('a');_0x5add8f[_0x31fc46(0x146)]=_0x1ea86f,_0x5add8f[_0x31fc46(0x178)]=_0x31fc46(0xef)+_0x1b9449['replace'](/\//g,'-')+_0x31fc46(0x1cc),_0x2e3413[_0x31fc46(0xbc)][_0x31fc46(0x1c5)](_0x5add8f),_0x5add8f['click'](),_0x37c9ac[_0x31fc46(0x158)]['revokeObjectURL'](_0x1ea86f),_0x30c9bb[_0x31fc46(0xbc)]['removeChild'](_0x5add8f);}}}),{'description':_0x534f3a[_0x5e5dee(0x131)](',\x20'),'calculation':_0x1f21ea+_0x5e5dee(0xd6)+_0x1f5beb,'totalAmt':_0x51e518[_0x5e5dee(0xdb)](_0x1f21ea,_0x1f5beb),'icon':_0x51e518[_0x5e5dee(0x168)],'color':_0x51e518[_0x5e5dee(0x12c)],'bg':_0x51e518[_0x5e5dee(0xf9)],'border':_0x51e518[_0x5e5dee(0x180)]};}}if(_0xdcc27f['match'](/(\d{2})\s*[-]\s*([\d,]+)[R]([\d,]+)/i)){if(_0x51e518[_0x5e5dee(0x1b4)](_0x51e518['uhIdZ'],_0x51e518['uhIdZ'])){const _0x17c743=_0x2431f5(_0x52b57c[0x2]);return{'description':_0x284f29,'calculation':_0xb1d910[_0x5e5dee(0x1c8)]+_0x5e5dee(0xd6)+_0x17c743,'totalAmt':_0x51e518[_0x5e5dee(0xde)](_0x5094a2[_0x5e5dee(0x1c8)],_0x17c743),'icon':_0x32d846[_0x5e5dee(0x13b)],'color':_0x1eb6c8[_0x5e5dee(0x196)],'bg':_0x53bc93['bg'],'border':_0x132ef6[_0x5e5dee(0xb6)]};}else{const _0x40eb3c=_0xdcc27f[_0x5e5dee(0x1a0)](/(\d{2})\s*[-]\s*([\d,]+)[R]([\d,]+)/i);let _0x4505fe=_0x51e518[_0x5e5dee(0x197)](parseAmount,_0x40eb3c[0x2]),_0x2cac68=_0x40eb3c[0x1],_0xb1377c=_0x51e518[_0x5e5dee(0x1b3)](parseAmount,_0x40eb3c[0x2]),_0x3e7b2d=_0x51e518[_0x5e5dee(0x1b3)](parseAmount,_0x40eb3c[0x3]);return _0x40eb3c[0x1][0x0]!==_0x40eb3c[0x1][0x1]&&(_0x4505fe+=_0x3e7b2d,_0x2cac68+=_0x5e5dee(0x193),_0xb1377c+=_0x5e5dee(0xee)+_0x3e7b2d),{'description':_0x2cac68,'calculation':_0xb1377c,'totalAmt':_0x4505fe,'icon':_0x51e518[_0x5e5dee(0x1c1)],'color':_0x51e518[_0x5e5dee(0x1ae)],'bg':_0x51e518[_0x5e5dee(0xc8)],'border':_0x51e518[_0x5e5dee(0x18c)]};}}if(_0xdcc27f['match'](/([\d\/\.\,\s]+)\s*[-]\s*([\d,]+)$/)){if(_0x51e518[_0x5e5dee(0xc0)](_0x51e518[_0x5e5dee(0x1ad)],_0x51e518[_0x5e5dee(0x1ad)]))_0x10cb0e[_0x5e5dee(0x17a)](_0x51e518['rTpIU'])[_0x5e5dee(0x10b)]=_0x51e518[_0x5e5dee(0xea)](_0x3fc2f3,_0x4bc2f),_0x135bb0[_0x5e5dee(0x17a)](_0x51e518[_0x5e5dee(0x194)])[_0x5e5dee(0x10b)]=_0x1ccb47,_0x1e1334['getElementById'](_0x5e5dee(0x157))[_0x5e5dee(0x10b)]=_0x2b55d1,_0x40755a[_0x5e5dee(0x17a)]('valid-count')[_0x5e5dee(0x10b)]=_0x51e518[_0x5e5dee(0x165)](_0x219ab1,_0x51e518['XFPds']);else{const _0x23778d=_0xdcc27f[_0x5e5dee(0x1a0)](/([\d\/\.\,\s]+)\s*[-]\s*([\d,]+)$/),_0x3a9bc3=_0x23778d[0x1][_0x5e5dee(0xc1)](/[\/\.\,\s]/)[_0x5e5dee(0x125)](_0x2cabc2=>_0x2cabc2[_0x5e5dee(0x19f)]()[_0x5e5dee(0x114)]===0x2),_0x1d62cd=_0x51e518[_0x5e5dee(0x11a)](parseAmount,_0x23778d[0x2]);if(_0x51e518[_0x5e5dee(0x122)](_0x3a9bc3['length'],0x0)){if(_0x51e518[_0x5e5dee(0x171)](_0x51e518[_0x5e5dee(0x152)],_0x5e5dee(0x190)))return{'description':_0x3a9bc3[_0x5e5dee(0x131)](',\x20'),'calculation':_0x3a9bc3[_0x5e5dee(0x114)]+_0x5e5dee(0xd6)+_0x1d62cd,'totalAmt':_0x51e518[_0x5e5dee(0xdb)](_0x3a9bc3[_0x5e5dee(0x114)],_0x1d62cd),'icon':_0x51e518[_0x5e5dee(0x16e)],'color':_0x51e518[_0x5e5dee(0x162)],'bg':_0x51e518[_0x5e5dee(0x155)],'border':_0x51e518[_0x5e5dee(0x13c)]};else _0x388efb[_0x5e5dee(0x17a)](_0x51e518[_0x5e5dee(0x166)])[_0x5e5dee(0x163)]='',_0x41903b['getElementById'](_0x51e518['CzYOw'])[_0x5e5dee(0xb2)]=_0x5e5dee(0x1aa),_0x51e518['lXqbT'](_0xd31f7,0x0,0x0,0x0),_0x4fe998['createIcons']();}}}}catch(_0x128d76){return null;}return null;}document['addEventListener'](_0x35fd08(0xf8),()=>{const _0x4f59d8=_0x35fd08,_0x1384c0={'VPuWU':function(_0x2636c3,_0x5d4a8b,_0x4ef70c){return _0x2636c3(_0x5d4a8b,_0x4ef70c);}};_0x1384c0[_0x4f59d8(0x167)](setTimeout,()=>{const _0x22db4b=_0x4f59d8,_0x5a7c1c=document[_0x22db4b(0x17a)](_0x22db4b(0x17e));_0x5a7c1c[_0x22db4b(0xce)][_0x22db4b(0x195)]='0',_0x1384c0['VPuWU'](setTimeout,()=>_0x5a7c1c['remove'](),0x2bc);},0x320);});
+</script>
+</body>
+</html>
