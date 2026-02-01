@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>2D/3D Calculator - Pro</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        dark: {
+                            bg: '#0f172a',
+                            surface: '#1e293b',
+                            border: '#334155'
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'slide-up': 'slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            'from': { opacity: 0 },
+                            'to': { opacity: 1 },
+                        },
+                        slideUp: {
+                            'from': { opacity: 0, transform: 'translateY(10px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Hardware Acceleration for Performance */
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background-color: #0f172a; /* Slate 900 */
+            color: #f8fafc;
+            overflow: hidden; /* Prevent body scroll */
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                        background 0.2s ease,
+                        border-color 0.2s ease;
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(56, 189, 248, 0.3); /* Sky 400 */
+        }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+        
+        textarea, input { font-size: 16px; }
+        .number-badge { font-variant-numeric: tabular-nums; }
+
+        .smooth-transition {
+            transition-property: transform, opacity, background-color, border-color;
+            transition-duration: 300ms;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="flex flex-col h-[100dvh]">
+
+    <!-- Header -->
+    <header class="h-16 shrink-0 glass-panel flex justify-between items-center px-4 md:px-6 z-50">
+        <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/20">
+                <i data-lucide="calculator" class="text-white w-5 h-5"></i>
+            </div>
+            <div>
+                <h1 class="font-bold text-lg text-white font-num tracking-tight leading-none">2D/3D <span class="text-cyan-400">Pro</span></h1>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Fast & Accurate</p>
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/50 border border-white/5">
+            <div class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] animate-pulse"></div>
+            <span class="text-[10px] text-slate-300 font-num hidden md:inline">SYSTEM ONLINE</span>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <main class="flex-1 flex flex-col md:flex-row overflow-hidden relative z-10 p-2 md:p-4 gap-2 md:gap-4">
+        
+        <!-- Input Section -->
+        <section class="flex-1 md:flex-[0.4] flex flex-col glass-card rounded-2xl md:rounded-3xl overflow-hidden animate-slide-up">
+            <div class="p-3 md:p-4 border-b border-white/5 flex justify-between items-center bg-slate-800/30">
+                <div class="flex items-center gap-2 text-slate-300 text-sm font-bold">
+                    <i data-lucide="keyboard" class="w-4 h-4 text-cyan-400"></i>
+                    <span>Input</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-[10px] font-mono text-slate-400 bg-slate-900 px-2 py-1 rounded" id="lineCount">L: 0</span>
+                    <button onclick="clearData()" class="p-1.5 rounded-lg hover:bg-rose-500/10 text-rose-400 transition-colors" title="Clear">
+                        <i data-lucide="eraser" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="flex-1 relative bg-slate-900/40">
+                <textarea id="inputData" 
+                    class="w-full h-full bg-transparent text-slate-200 p-4 font-mono text-sm leading-relaxed focus:outline-none resize-none placeholder-slate-600 font-num"
+                    placeholder="// Data ရိုက်ထည့်ပါ...
+667 R 500
+513 - 1000R500"></textarea>
+            </div>
+            
+            <div class="py-1.5 px-3 bg-slate-800/50 border-t border-white/5 text-[10px] text-slate-500 text-center font-sans">
+                Type freely. System auto-saves & calculates.
+            </div>
+        </section>
+
+        <!-- Output Section -->
+        <section class="flex-1 md:flex-[0.6] flex flex-col gap-2 md:gap-4 h-[50%] md:h-auto animate-slide-up" style="animation-delay: 0.1s;">
+            
+            <!-- Total Card (Figma Style) -->
+            <div class="glass-card rounded-2xl md:rounded-3xl p-4 md:p-6 relative overflow-hidden shrink-0 bg-gradient-to-br from-slate-800/50 to-slate-900/50">
+                <div class="absolute -right-10 -top-10 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div class="w-full sm:w-auto">
+                        <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Total Amount</p>
+                        <div class="flex items-baseline gap-2">
+                            <h2 class="text-3xl md:text-5xl font-bold text-white font-num tracking-tight number-badge" id="grandTotal">0</h2>
+                            <span class="text-cyan-500 text-sm md:text-lg font-bold">MMK</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col items-end gap-2 w-full sm:w-auto">
+                         <div class="bg-slate-950/30 px-3 py-1 rounded-lg border border-white/5 text-right w-full sm:w-auto">
+                             <span class="block text-lg font-bold text-white font-num leading-none" id="itemCount">0</span>
+                             <span class="text-[9px] text-slate-500 uppercase">Items</span>
+                         </div>
+                         
+                         <!-- Action Buttons -->
+                         <div class="flex gap-2 w-full sm:w-auto">
+                            <button onclick="copyTotal()" class="smooth-transition flex-1 sm:flex-none flex items-center justify-center gap-2 bg-cyan-600 hover:bg-cyan-500 text-white px-3 py-2 rounded-xl text-xs font-bold shadow-lg shadow-cyan-900/20 active:scale-95" title="Copy Total">
+                                <i data-lucide="copy" class="w-3 h-3"></i> <span class="sm:hidden lg:inline">Copy</span>
+                            </button>
+                            <button onclick="exportReport()" class="smooth-transition flex-1 sm:flex-none flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-2 rounded-xl text-xs font-bold shadow-lg shadow-indigo-900/20 active:scale-95" title="Export Report">
+                                <i data-lucide="file-text" class="w-3 h-3"></i> <span class="sm:hidden lg:inline">Export</span>
+                            </button>
+                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- List (Virtual Scroller Feel) -->
+            <div class="glass-card rounded-2xl md:rounded-3xl flex-1 flex flex-col overflow-hidden relative">
+                <div class="p-3 bg-slate-800/80 border-b border-white/5 backdrop-blur-md flex justify-between items-center z-10">
+                    <span class="text-xs font-bold text-slate-300 flex items-center gap-2">
+                        <i data-lucide="list-checks" class="w-4 h-4 text-emerald-400"></i> Result List
+                    </span>
+                </div>
+                
+                <div class="flex-1 overflow-y-auto custom-scrollbar bg-slate-900/20">
+                    <table class="w-full text-left text-sm border-collapse">
+                        <thead class="bg-slate-900/90 text-slate-500 text-[10px] font-bold uppercase tracking-widest sticky top-0 z-10 backdrop-blur-sm shadow-sm">
+                            <tr>
+                                <th class="py-3 px-4 md:px-6 font-mono font-medium">Number</th>
+                                <th class="py-3 px-4 md:px-6 text-right font-mono font-medium">Amount</th>
+                                <th class="py-3 px-4 md:px-6 text-center font-mono font-medium">Type</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTableBody" class="divide-y divide-white/5 text-slate-300">
+                            <!-- JS injects here -->
+                            <tr>
+                                <td colspan="3" class="text-center py-12 text-slate-600">
+                                    <div class="flex flex-col items-center gap-2">
+                                        <i data-lucide="inbox" class="w-8 h-8 opacity-20"></i>
+                                        <span class="text-xs font-mono opacity-40">Ready to calculate</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed top-4 right-4 z-[100] translate-x-[150%] transition-transform duration-300 cubic-bezier(0.175, 0.885, 0.32, 1.275) pointer-events-none">
+        <div class="bg-slate-800/90 backdrop-blur-xl px-4 py-3 rounded-xl border border-white/10 flex items-center gap-3 shadow-2xl">
+            <div class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                <i data-lucide="check" class="w-3 h-3"></i>
+            </div>
+            <p id="toastMsg" class="text-xs font-bold text-white">Action successful!</p>
+        </div>
+    </div>
+
+<script>
+    lucide.createIcons();
+
+    const inputArea = document.getElementById('inputData');
+    const tableBody = document.getElementById('resultTableBody');
+    const grandTotalDisplay = document.getElementById('grandTotal');
+    const itemCountDisplay = document.getElementById('itemCount');
+    const lineCountDisplay = document.getElementById('lineCount');
+    
+    // Global state to store calculated data for export
+    let lastCalculatedData = {
+        total: 0,
+        items: []
+    };
+
+    function debounce(func, wait) {
+        let timeout;
+        return function(...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+        };
+    }
+
+    inputArea.addEventListener('input', debounce(calculate, 300));
+
+    // Clear input function
+    function clearData() {
+        inputArea.value = '';
+        calculate();
+        inputArea.focus();
+    }
+
+    function copyTotal() {
+        const total = grandTotalDisplay.innerText;
+        const text = `Total = ${total}`;
+        
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(() => showToast('Total Copied!'));
+        } else {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textArea);
+            showToast('Total Copied!');
+        }
+    }
+
+    function exportReport() {
+        if (lastCalculatedData.items.length === 0) {
+            showToast('Export ရန် Data မရှိပါ');
+            return;
+        }
+
+        const date = new Date().toLocaleString('my-MM');
+        let content = `2D/3D Calculator Report\n`;
+        content += `Date: ${date}\n`;
+        content += `----------------------------------------\n`;
+        content += `Number  |     Amount | Type\n`;
+        content += `----------------------------------------\n`;
+
+        lastCalculatedData.items.forEach(item => {
+            // Padding for alignment in text file
+            const num = item.num.padEnd(7, ' ');
+            const amt = item.amount.toLocaleString().padStart(10, ' ');
+            content += `${num} | ${amt} | ${item.type}\n`;
+        });
+
+        content += `----------------------------------------\n`;
+        content += `Total Items : ${lastCalculatedData.items.length}\n`;
+        content += `Grand Total : ${lastCalculatedData.total.toLocaleString()} MMK\n`;
+        content += `----------------------------------------\n`;
+
+        // Create download link
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Lottery_Report_${Date.now()}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        
+        showToast('Report Downloaded!');
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        const toastMsg = document.getElementById('toastMsg');
+        toastMsg.innerText = msg || 'Action successful!';
+        
+        toast.style.transform = 'translateX(0)';
+        setTimeout(() => {
+            toast.style.transform = 'translateX(150%)';
+        }, 2000);
+    }
+
+    function calculate() {
+        const rawText = inputArea.value;
+        const lines = rawText.split(/\n/);
+        
+        lineCountDisplay.innerText = `L: ${lines.filter(l => l.trim()).length}`;
+
+        let totalAmount = 0;
+        let breakdown = [];
+
+        for(let i=0; i < lines.length; i++) {
+            let line = lines[i].trim();
+            if (!line) continue;
+            if (line.toLowerCase().startsWith('t=') || line.toLowerCase().startsWith('total')) continue;
+
+            let normalized = line.replace(/\s+/g, ' '); 
+            let parts, numbersPart = "", amountPart = "";
+            
+            if (normalized.includes('-')) {
+                parts = normalized.split('-');
+            } else if (normalized.includes(' R ')) {
+                let rIndex = normalized.indexOf(' R ');
+                parts = [normalized.substring(0, rIndex), "R " + normalized.substring(rIndex + 3)];
+            } else {
+                parts = [normalized];
+            }
+
+            numbersPart = parts[0] ? parts[0].trim() : "";
+            amountPart = parts[1] ? parts[1].trim() : "";
+
+            if (!amountPart && numbersPart.toUpperCase().includes('R')) {
+                 let match = numbersPart.match(/^([\d\s]+)\s(R|r)\s*(\d+)$/);
+                 if (match) {
+                     numbersPart = match[1];
+                     amountPart = 'R ' + match[3];
+                 }
+            }
+
+            if (!numbersPart || !amountPart) continue;
+
+            let numbers = numbersPart.match(/\d{2,3}/g);
+            if (!numbers) continue;
+
+            let directAmt = 0, rAmt = 0;
+            let cleanAmount = amountPart.replace(/T=.*$/i, '').replace(/Total.*$/i, '').trim();
+
+            if (cleanAmount.toUpperCase().includes('R')) {
+                let amtParts = cleanAmount.toUpperCase().split('R');
+                let left = amtParts[0].trim();
+                let right = amtParts[1].trim();
+                if (left) directAmt = parseInt(left) || 0;
+                if (right) rAmt = parseInt(right) || 0;
+            } else {
+                directAmt = parseInt(cleanAmount.replace(/[^\d]/g, '')) || 0;
+            }
+
+            for(let j=0; j < numbers.length; j++) {
+                let num = numbers[j];
+                if (directAmt > 0) {
+                    totalAmount += directAmt;
+                    breakdown.push({ num: num, amount: directAmt, type: 'Direct' });
+                }
+
+                if (rAmt > 0) {
+                    let perms = getPermutations(num);
+                    let permsToBet = (directAmt > 0) ? perms.filter(p => p !== num) : perms;
+                    
+                    permsToBet.forEach(p => {
+                        totalAmount += rAmt;
+                        breakdown.push({ num: p, amount: rAmt, type: 'R (' + num + ')' });
+                    });
+                }
+            }
+        }
+
+        // Store data globally for export
+        lastCalculatedData = {
+            total: totalAmount,
+            items: breakdown
+        };
+
+        renderTableOptimized(breakdown);
+        grandTotalDisplay.innerText = totalAmount.toLocaleString();
+        itemCountDisplay.innerText = breakdown.length;
+    }
+
+    const permCache = {}; 
+    function getPermutations(numStr) {
+        if(permCache[numStr]) return permCache[numStr];
+
+        let results = [];
+        if (numStr.length === 2) {
+            let rev = numStr[1] + numStr[0];
+            results.push(numStr);
+            if (numStr[0] !== numStr[1]) results.push(rev);
+        } else if (numStr.length === 3) {
+            let digits = numStr.split('');
+            let uniquePerms = new Set();
+            function permute(arr, m = []) {
+                if (arr.length === 0) uniquePerms.add(m.join(''));
+                else {
+                    for (let i = 0; i < arr.length; i++) {
+                        let curr = arr.slice();
+                        let next = curr.splice(i, 1);
+                        permute(curr.slice(), m.concat(next));
+                    }
+                }
+            }
+            permute(digits);
+            results = Array.from(uniquePerms);
+        }
+        permCache[numStr] = results;
+        return results;
+    }
+
+    function renderTableOptimized(data) {
+        tableBody.innerHTML = '';
+        
+        if (data.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="3" class="text-center py-12 text-slate-600"><div class="flex flex-col items-center gap-2"><i data-lucide="inbox" class="w-8 h-8 opacity-20"></i><span class="text-xs font-mono opacity-40">Ready</span></div></td></tr>`;
+            lucide.createIcons();
+            return;
+        }
+
+        const fragment = document.createDocumentFragment();
+        const renderLimit = data.length > 2000 ? 2000 : data.length;
+        
+        for(let i=0; i < renderLimit; i++) {
+            const row = data[i];
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-white/[0.02] transition-colors border-b border-white/[0.02] group";
+            
+            const isDirect = row.type === 'Direct';
+            const badgeColor = isDirect ? 'text-emerald-400 bg-emerald-500/10' : 'text-amber-400 bg-amber-500/10';
+            
+            tr.innerHTML = `
+                <td class="py-2.5 px-4 md:px-6 font-mono font-bold text-slate-400 group-hover:text-slate-200 transition-colors">${row.num}</td>
+                <td class="py-2.5 px-4 md:px-6 text-right font-mono text-cyan-500 font-medium">${row.amount.toLocaleString()}</td>
+                <td class="py-2.5 px-4 md:px-6 text-center">
+                    <span class="${badgeColor} text-[10px] px-2 py-0.5 rounded border border-white/5 font-bold uppercase tracking-wider">
+                        ${isDirect ? 'Direct' : 'R'}
+                    </span>
+                </td>
+            `;
+            fragment.appendChild(tr);
+        }
+
+        if (data.length > renderLimit) {
+            const infoTr = document.createElement('tr');
+            infoTr.innerHTML = `<td colspan="3" class="text-center py-2 text-xs text-slate-500 italic">... showing first ${renderLimit} items only (Optimization active) ...</td>`;
+            fragment.appendChild(infoTr);
+        }
+
+        tableBody.appendChild(fragment);
+    }
+</script>
+
+</body>
+</html>
