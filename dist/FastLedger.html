@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Debt Ledger - Speed Edition</title>
+    
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+/* obfuscated */
+var _0x8a44e9=_0x15df;(function(_0xe84dda,_0x12ff00){var _0x55575c=_0x15df,_0x4b025f=_0xe84dda();while(!![]){try{var _0x781c5b=-parseInt(_0x55575c(0x16a))/0x1+parseInt(_0x55575c(0x169))/0x2*(-parseInt(_0x55575c(0x166))/0x3)+parseInt(_0x55575c(0x16d))/0x4*(-parseInt(_0x55575c(0x178))/0x5)+-parseInt(_0x55575c(0x174))/0x6+parseInt(_0x55575c(0x16e))/0x7*(-parseInt(_0x55575c(0x171))/0x8)+-parseInt(_0x55575c(0x175))/0x9+parseInt(_0x55575c(0x173))/0xa;if(_0x781c5b===_0x12ff00)break;else _0x4b025f['push'](_0x4b025f['shift']());}catch(_0x293aa8){_0x4b025f['push'](_0x4b025f['shift']());}}}(_0xd1e7,0x95242),tailwind[_0x8a44e9(0x179)]={'theme':{'extend':{'fontFamily':{'sans':[_0x8a44e9(0x176),_0x8a44e9(0x17a)],'num':[_0x8a44e9(0x167),_0x8a44e9(0x17a)]},'colors':{'dark':{0x3b6:_0x8a44e9(0x16f),0x384:'#0f172a',0x320:_0x8a44e9(0x170)}},'animation':{'float':'float\x2010s\x20ease-in-out\x20infinite','slide-up':_0x8a44e9(0x168),'fade-in':_0x8a44e9(0x16c)},'keyframes':{'float':{'0%,\x20100%':{'transform':_0x8a44e9(0x16b)},'50%':{'transform':_0x8a44e9(0x172)}},'slideUp':{'from':{'opacity':0x0,'transform':_0x8a44e9(0x177)},'to':{'opacity':0x1,'transform':_0x8a44e9(0x16b)}},'fadeIn':{'from':{'opacity':0x0},'to':{'opacity':0x1}}}}}});function _0x15df(_0x236236,_0x74f95a){_0x236236=_0x236236-0x166;var _0xd1e7ea=_0xd1e7();var _0x15dfa3=_0xd1e7ea[_0x236236];return _0x15dfa3;}function _0xd1e7(){var _0x55bd67=['config','sans-serif','21lgXqDD','Inter','slideUp\x200.4s\x20cubic-bezier(0.16,\x201,\x200.3,\x201)\x20forwards','314554KXtSAo','6974OpKKqp','translate3d(0,\x200,\x200)','fadeIn\x200.2s\x20ease-out\x20forwards','414268zBjbPf','2970044yctUcu','#020617','#1e293b','16hoMiWK','translate3d(0,\x20-20px,\x200)','42240800WBSuNY','1736106HYgNPd','9509841PcwFKG','Padauk','translate3d(0,\x2020px,\x200)','15PKeWxy'];_0xd1e7=function(){return _0x55bd67;};return _0xd1e7();}
+</script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] { -moz-appearance: textfield; }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s ease, background 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            will-change: transform; 
+            transform: translateZ(0); 
+        }
+
+        .glass-card:active {
+            transform: scale(0.98);
+        }
+
+        .input-field:focus {
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2);
+            background: rgba(30, 41, 59, 0.95);
+        }
+
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 30px #0f172a inset !important;
+            -webkit-text-fill-color: white !important;
+            caret-color: white;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        
+        body.paused * {
+            animation-play-state: paused !important;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Ambient Background -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" id="ambient-bg">
+        <div class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-blue-600/5 rounded-full blur-[60px] animate-float will-change-transform"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-emerald-600/5 rounded-full blur-[60px] animate-float will-change-transform" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div class="min-h-screen flex flex-col md:flex-row relative z-10">
+        
+        <!-- SIDEBAR (Desktop Only) -->
+        <aside class="hidden md:flex w-64 glass-panel border-r border-white/5 flex-col m-4 rounded-3xl h-[calc(100vh-2rem)] sticky top-4 shadow-xl z-20">
+            <div class="p-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 bg-gradient-to-br from-cyan-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg border border-white/10">
+                        <i data-lucide="zap" class="text-white w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-white tracking-tight font-num">Fast<span class="text-cyan-400">Ledger</span></h1>
+                    </div>
+                </div>
+                <nav class="space-y-2">
+                    <button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 text-white border border-white/5 shadow-sm">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5 text-cyan-400"></i>
+                        <span class="font-medium text-sm">Dashboard</span>
+                    </button>
+                    
+                    <div class="pt-4 mt-4 border-t border-white/5 space-y-2">
+                        <p class="text-[10px] uppercase text-slate-500 font-bold px-2 mb-1">Data Tools</p>
+                        
+                        <button onclick="exportReport()" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+                            <i data-lucide="file-text" class="w-4 h-4"></i><span class="text-sm">Export Report</span>
+                        </button>
+
+                        <button onclick="exportDataJSON()" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-400 hover:text-cyan-400 hover:bg-cyan-500/10 transition-colors">
+                            <i data-lucide="download-cloud" class="w-4 h-4"></i><span class="text-sm">Backup (JSON)</span>
+                        </button>
+                        <button onclick="triggerImport()" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-400 hover:text-violet-400 hover:bg-violet-500/10 transition-colors">
+                            <i data-lucide="upload-cloud" class="w-4 h-4"></i><span class="text-sm">Restore</span>
+                        </button>
+                        <button onclick="clearAllData()" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i><span class="text-sm">Reset</span>
+                        </button>
+                    </div>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- MOBILE HEADER (Updated) -->
+        <div class="md:hidden fixed top-0 left-0 right-0 z-40 bg-[#020617]/90 backdrop-blur-md border-b border-white/5 px-4 py-3 flex justify-between items-center shadow-sm">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-gradient-to-br from-cyan-600 to-blue-700 rounded-lg flex items-center justify-center">
+                    <i data-lucide="zap" class="text-white w-4 h-4"></i>
+                </div>
+                <span class="font-bold text-lg text-white font-num">Fast<span class="text-cyan-400">Ledger</span></span>
+            </div>
+            <div class="flex gap-2">
+                <!-- Quick Export Report -->
+                 <button onclick="exportReport()" class="w-9 h-9 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center text-emerald-400 active:scale-95 transition-transform">
+                    <i data-lucide="file-text" class="w-4 h-4"></i>
+                </button>
+                <!-- Menu Button for Backup/Restore/Reset -->
+                <button onclick="openMobileMenu()" class="w-9 h-9 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center text-cyan-400 active:scale-95 transition-transform">
+                    <i data-lucide="menu" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 relative z-10 pt-20 md:pt-4 md:px-0 pb-10 h-screen overflow-y-auto">
+            <div class="max-w-7xl mx-auto px-4 md:px-8 space-y-5 animate-slide-up">
+                
+                <!-- STATS ROW -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div class="glass-card p-4 rounded-2xl flex flex-col">
+                        <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">လက်ရှိငွေ</span>
+                        <span class="text-2xl font-bold text-white font-num" id="totalCurrent">0</span>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl flex flex-col">
+                        <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">သုံးငွေ</span>
+                        <span class="text-2xl font-bold text-rose-400 font-num" id="totalExpense">0</span>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl flex flex-col">
+                        <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">လက်ကျန်</span>
+                        <span class="text-2xl font-bold text-emerald-400 font-num" id="totalBalance">0</span>
+                    </div>
+                </div>
+
+                <!-- MAIN AREA -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                    
+                    <!-- FORM -->
+                    <div class="lg:col-span-1">
+                        <div class="glass-panel rounded-2xl p-5 border-t-4 border-t-cyan-500">
+                            <h3 class="text-white font-bold text-base mb-4 flex items-center gap-2">
+                                <i data-lucide="plus-circle" class="w-4 h-4 text-cyan-400"></i> စာရင်းသစ်
+                            </h3>
+                            
+                            <form id="ledgerForm" onsubmit="addRecord(event)" class="space-y-4">
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-400 uppercase">အမည်</label>
+                                    <input type="text" id="name" placeholder="မောင်မောင်" required class="input-field w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white mt-1 focus:outline-none">
+                                </div>
+
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-400 uppercase">မှတ်ချက်</label>
+                                    <input type="text" id="generalRemark" class="input-field w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white mt-1 focus:outline-none">
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="text-[10px] font-bold text-cyan-400 uppercase">လက်ရှိငွေ</label>
+                                        <input type="number" id="currentMoney" placeholder="0" class="input-field w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white mt-1 font-num focus:outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="text-[10px] font-bold text-emerald-400 uppercase">ရငွေ/အနိုင်</label>
+                                        <input type="number" id="income" placeholder="0" class="input-field w-full bg-emerald-900/10 border border-emerald-500/20 rounded-lg px-3 py-2.5 text-sm text-white mt-1 font-num focus:outline-none">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="text-[10px] font-bold text-rose-400 uppercase">သုံးငွေ</label>
+                                        <input type="number" id="expense" placeholder="0" class="input-field w-full bg-rose-900/10 border border-rose-500/20 rounded-lg px-3 py-2.5 text-sm text-white mt-1 font-num focus:outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase">မှတ်ချက်</label>
+                                        <input type="text" id="expenseRemark" placeholder="2D..." class="input-field w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white mt-1 focus:outline-none">
+                                    </div>
+                                </div>
+
+                                <div class="pt-2 flex gap-3">
+                                    <button type="submit" class="flex-1 bg-cyan-600 hover:bg-cyan-500 text-white py-2.5 rounded-lg font-bold text-sm shadow-lg transition-transform active:scale-95 flex items-center justify-center gap-2">
+                                        <i data-lucide="save" class="w-4 h-4"></i> သိမ်းမည်
+                                    </button>
+                                    <button type="button" onclick="resetForm()" class="px-3 rounded-lg bg-slate-800 text-slate-400 hover:bg-slate-700">
+                                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- LIST/TABLE -->
+                    <div class="lg:col-span-2">
+                        <div class="glass-card rounded-2xl overflow-hidden border border-white/5 flex flex-col h-full min-h-[500px]">
+                            <div class="p-4 border-b border-white/5 bg-slate-900/60 backdrop-blur-sm sticky top-0 z-10 flex gap-3">
+                                <div class="relative flex-1">
+                                    <i data-lucide="search" class="absolute left-3 top-2.5 w-4 h-4 text-slate-500"></i>
+                                    <input type="text" id="searchInput" oninput="debounceSearch()" placeholder="ရှာရန်..." 
+                                        class="w-full bg-slate-800 border border-white/10 rounded-lg py-2 pl-9 pr-4 text-sm text-white focus:outline-none focus:border-cyan-500/50">
+                                </div>
+                            </div>
+
+                            <div id="listContainer" class="flex-1 overflow-y-auto p-4 space-y-3">
+                                <!-- JS Injected Content -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- MOBILE MENU MODAL (New) -->
+        <div id="mobile-menu-modal" class="fixed inset-0 z-[80] hidden items-end sm:items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
+            <div class="glass-panel w-full max-w-sm rounded-2xl p-6 relative" onclick="event.stopPropagation()">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i data-lucide="settings-2" class="w-5 h-5 text-cyan-400"></i> Data Tools
+                    </h3>
+                    <button onclick="closeMobileMenu()" class="p-2 rounded-full bg-white/5 text-slate-400 hover:text-white">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                
+                <div class="space-y-3">
+                    <button onclick="exportReport(); closeMobileMenu()" class="w-full flex items-center gap-4 px-4 py-3.5 rounded-xl bg-slate-800/50 hover:bg-emerald-500/10 border border-white/5 text-slate-300 hover:text-emerald-400 transition-all group">
+                        <div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 group-hover:scale-110 transition-transform"><i data-lucide="file-text" class="w-5 h-5"></i></div>
+                        <span class="font-medium">Export Report</span>
+                    </button>
+
+                    <button onclick="exportDataJSON(); closeMobileMenu()" class="w-full flex items-center gap-4 px-4 py-3.5 rounded-xl bg-slate-800/50 hover:bg-cyan-500/10 border border-white/5 text-slate-300 hover:text-cyan-400 transition-all group">
+                        <div class="p-2 rounded-lg bg-cyan-500/10 text-cyan-400 group-hover:scale-110 transition-transform"><i data-lucide="download-cloud" class="w-5 h-5"></i></div>
+                        <span class="font-medium">Backup Data</span>
+                    </button>
+                    
+                    <button onclick="triggerImport(); closeMobileMenu()" class="w-full flex items-center gap-4 px-4 py-3.5 rounded-xl bg-slate-800/50 hover:bg-violet-500/10 border border-white/5 text-slate-300 hover:text-violet-400 transition-all group">
+                        <div class="p-2 rounded-lg bg-violet-500/10 text-violet-400 group-hover:scale-110 transition-transform"><i data-lucide="upload-cloud" class="w-5 h-5"></i></div>
+                        <span class="font-medium">Restore Data</span>
+                    </button>
+                    
+                    <button onclick="clearAllData(); closeMobileMenu()" class="w-full flex items-center gap-4 px-4 py-3.5 rounded-xl bg-slate-800/50 hover:bg-rose-500/10 border border-white/5 text-slate-300 hover:text-rose-400 transition-all group">
+                        <div class="p-2 rounded-lg bg-rose-500/10 text-rose-400 group-hover:scale-110 transition-transform"><i data-lucide="trash-2" class="w-5 h-5"></i></div>
+                        <span class="font-medium">Reset All</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden Input -->
+        <input type="file" id="importFile" hidden accept=".json" onchange="importData(this)">
+        
+        <!-- CONFIRM MODAL -->
+        <div id="confirm-modal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+            <div class="glass-panel w-full max-w-xs rounded-2xl p-5 text-center">
+                <div class="w-12 h-12 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mx-auto mb-3">
+                    <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+                </div>
+                <h3 id="confirm-title" class="text-white font-bold mb-1">ဖျက်မည်လား?</h3>
+                <p id="confirm-desc" class="text-xs text-slate-400 mb-4">ပြန်ယူ၍မရနိုင်ပါ။</p>
+                <div class="flex gap-2 justify-center">
+                    <button onclick="closeConfirmModal()" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold">မလုပ်ပါ</button>
+                    <button id="confirm-yes-btn" class="px-4 py-2 rounded-lg bg-red-600 text-white text-xs font-bold shadow-lg">အတည်ပြုသည်</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOAST -->
+        <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[70] hidden transition-all duration-300 translate-y-10 opacity-0">
+            <div class="bg-slate-800 text-white px-4 py-2 rounded-full shadow-2xl border border-white/10 flex items-center gap-2 text-xs font-bold">
+                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+                <span id="toast-message">Success</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+/* obfuscated */
+function _0xbd54(_0x252c4a,_0x36ecc4){_0x252c4a=_0x252c4a-0xea;const _0x2ac3ba=_0x2ac3();let _0xbd54e8=_0x2ac3ba[_0x252c4a];return _0xbd54e8;}function _0x2ac3(){const _0x4ba98a=['balance','KzJce','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20justify-between\x20items-start\x20mb-2\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h4\x20class=\x22font-bold\x20text-white\x20text-sm\x22>','myanLedgerDataPro','p-4\x20rounded-xl\x20bg-slate-800/50\x20border-l-4\x20','error','PlDpL','HOdAg','Reset\x20လုပ်ပြီးပါပြီ','files','sUdoY','ohYdJ','trFGZ','UOplc','\x20Ks\x0a','GNUQD','6|1|3|7|5|4|0|2','rLbtd','ပြန်ယူ၍မရနိုင်ပါ။','<div\x20class=\x22text-center\x20py-10\x20text-slate-500\x20text-xs\x22>စာရင်းမရှိပါ</div>','bVIaf','bgmkQ','Data\x20Corrupted','wWtNY','ynkUZ','div','jdBXx','hocPT','sort','reset','flex','nXaSA','createObjectURL','split','currentMoney','DkBBp','removeItem','meFZu','eZNBV','</h4>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-[10px]\x20text-slate-500\x22>','getElementById','aRWQY','\x20hover:bg-slate-800\x20transition-colors','Report\x20ဒေါင်းလုတ်ဆွဲပြီးပါပြီ','slice','name','date','wUjIn','Debt\x20Ledger\x20Report','hkgPK','onload','NAqMA','CFEgU','includes','AIjLS','ncqXw','now','pJuDA','vEgcN','360lwAViF','Oetyf','innerText','fxcXZ','setItem','bOrej','oemSu','DXddp','RNVKS','add','PZRZP','createIcons','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22confirmDelete(','qLkeO','generalRemark','confirm-desc','createElement','LcqVn','HgYea','mBvMU','forEach','No\x20Data','toLowerCase','filter','Ledger_Report','ဖျက်ပြီးပါပြီ','confirm-title','mPQwC','14279078ciidiG',')\x22\x20class=\x22text-slate-600\x20p-1\x20hover:text-rose-400\x22><i\x20data-lucide=\x22trash-2\x22\x20class=\x22w-4\x20h-4\x22></i></button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20justify-between\x20items-end\x20text-xs\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22space-y-1\x20text-slate-400\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div>သုံး:\x20<span\x20class=\x22text-rose-400\x22>','GvpTj','COgVd','stringify','zKKxR','MsjCT','unshift','Hulyv','hpTNp','30YxEzTB','bzVWQ','WYwTk','KUyxb','visibilitychange','eZnpq','WCOOO','aDwfc','gHcXm','FjYku','innerHTML','cyzJt','Hiibr','jGKku','VLQZK','aaiUs','wZYMX','getItem','text-white','PLwkK','Invalid\x20File','4IKPBGR','xhzoj','QQvir','365553rQgYTJ','expense','TYYRq','သိမ်းပြီးပါပြီ','jAZvi','RhgXk','sNYew','HlZwH','expenseRemark','PMCqf','.json','\x20more','RPtbA','FXcxZ','ledgerForm','EtDhS','88809sZPGEJ','IifUq','BtnSt','စုစုပေါင်း\x20လက်ကျန်ငွေ:\x20','totalExpense','FqUsi','နေ့စွဲ:\x20','LnVTO','WEJRc','HQfzI','PRMHN','.txt','sAnnx','KAyyR','zNtyu','readAsText','VmWWj','href','efoAF','eZjhn','format','3911607NonMvF','parse','စာရင်းအားလုံး\x20ပျက်သွားပါမည်။','nDnTv','length','lZjKo','QWUeg','NSKdW','6618256kMciqW','KvhGI','ourPL','Memory\x20Full!\x20Cannot\x20save.','totalBalance','3691404onjibH','body','jjnkf','mobile-menu-modal','စာရင်းအသေးစိတ်:\x0a\x0a','NGBqi','value','toast','paused','cWEpS','toISOString','ynjlV','border-l-cyan-500','ရငွေ:\x20','sxPpl','toast-message','fBuId','RqhES','TrnFy','KaeYC','</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22font-bold\x20text-base\x20font-num\x20','income','----------------------------------------\x0a\x0a','TAGcB','className','လက်ရှိငွေ:\x20','--------------------\x0a','sNOgV','Error\x20reading\x20file','addEventListener','အမည်:\x20','jeBcu','izoxT','သုံးငွေ:\x20','BvZAs','873205juLbgd','translate-y-10','text-rose-500','confirm-modal','isArray','...\x20and\x20','20QnJqzm','လက်ကျန်:\x20','download','</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','စုစုပေါင်း\x20လက်ရှိငွေ:\x20','remove','preventDefault','listContainer','classList','XJUYu','AaXEp','စုစုပေါင်း\x20သုံးငွေ:\x20','hidden','RBmiv','click','appendChild','imLpP','GxEEh','sZPkN','pYkQa','searchInput'];_0x2ac3=function(){return _0x4ba98a;};return _0x2ac3();}const _0x42488f=_0xbd54;(function(_0x4d7114,_0x89a685){const _0x26bee6=_0xbd54,_0x5df7b1=_0x4d7114();while(!![]){try{const _0x336212=parseInt(_0x26bee6(0x17c))/0x1*(-parseInt(_0x26bee6(0x179))/0x2)+-parseInt(_0x26bee6(0x1ae))/0x3+parseInt(_0x26bee6(0xee))/0x4*(-parseInt(_0x26bee6(0x1d1))/0x5)+-parseInt(_0x26bee6(0x13e))/0x6*(parseInt(_0x26bee6(0x18c))/0x7)+parseInt(_0x26bee6(0x1a9))/0x8+-parseInt(_0x26bee6(0x1a1))/0x9+parseInt(_0x26bee6(0x164))/0xa*(parseInt(_0x26bee6(0x15a))/0xb);if(_0x336212===_0x89a685)break;else _0x5df7b1['push'](_0x5df7b1['shift']());}catch(_0x509e58){_0x5df7b1['push'](_0x5df7b1['shift']());}}}(_0x2ac3,0xa8b0a));let records=[],confirmCallback=null,searchTimeout=null;document['addEventListener']('DOMContentLoaded',()=>{const _0x1bff83=_0xbd54,_0x3b8c9a={'NGBqi':_0x1bff83(0x125),'WYwTk':function(_0x16fb64,_0x5d63d2){return _0x16fb64(_0x5d63d2);},'KvhGI':'expense','CFEgU':function(_0x511a8f,_0x3b5ec0){return _0x511a8f(_0x3b5ec0);},'vuJLD':_0x1bff83(0x1c3),'iBBfU':function(_0x4c5ee7,_0x197b92){return _0x4c5ee7(_0x197b92);},'bgmkQ':_0x1bff83(0x130),'FjYku':_0x1bff83(0x14c),'jeBcu':function(_0x3e7ee7,_0x371c68){return _0x3e7ee7+_0x371c68;},'PRMHN':function(_0x5a82aa,_0x5d661f){return _0x5a82aa-_0x5d661f;},'efoAF':function(_0x3bb2bf){return _0x3bb2bf();},'mPQwC':'searchInput','GNUQD':_0x1bff83(0x17f),'jdBXx':'myanLedgerDataPro','fxcXZ':_0x1bff83(0x119),'UOplc':function(_0x1c27d6,_0x3f8d4c){return _0x1c27d6===_0x3f8d4c;},'PMCqf':_0x1bff83(0x101),'HlZwH':_0x1bff83(0x1b9),'bOrej':_0x1bff83(0x1b6),'RqhES':function(_0x4fbf5f,_0x30786c){return _0x4fbf5f!==_0x30786c;},'PZRZP':_0x1bff83(0x1b7),'DXddp':function(_0x4fb882,_0x57a45f){return _0x4fb882!==_0x57a45f;},'TAGcB':_0x1bff83(0x13d),'ourPL':function(_0x1a2956){return _0x1a2956();}};try{if(_0x3b8c9a[_0x1bff83(0x1bf)](_0x3b8c9a[_0x1bff83(0x148)],'cWEpS')){_0x55bd36['preventDefault']();const _0x5cd661=new _0x5158f2()[_0x1bff83(0x1b8)]()['split']('T')[0x0],_0x19f70f=_0x4431fc=>_0x18757e[_0x1bff83(0x12b)](_0x4431fc)[_0x1bff83(0x1b4)],_0x256b56=_0xe4b05e=>_0x4ec4c0(_0x10a7c6['getElementById'](_0xe4b05e)[_0x1bff83(0x1b4)])||0x0,_0x26cd41=_0x256b56(_0x3b8c9a[_0x1bff83(0x1b3)]),_0xd7bf9c=_0x3b8c9a['WYwTk'](_0x256b56,_0x3b8c9a[_0x1bff83(0x1aa)]),_0x5cc7f1=_0x3b8c9a[_0x1bff83(0x137)](_0x256b56,_0x3b8c9a['vuJLD']),_0x53024f={'id':_0x5a8098['now'](),'date':_0x5cd661,'name':_0x3b8c9a['iBBfU'](_0x19f70f,_0x3b8c9a[_0x1bff83(0x118)]),'generalRemark':_0x19f70f(_0x3b8c9a[_0x1bff83(0x16d)]),'currentMoney':_0x26cd41,'expense':_0xd7bf9c,'expenseRemark':_0x3b8c9a[_0x1bff83(0x166)](_0x19f70f,_0x1bff83(0x184)),'income':_0x5cc7f1,'balance':_0x3b8c9a[_0x1bff83(0x1cd)](_0x3b8c9a[_0x1bff83(0x196)](_0x26cd41,_0xd7bf9c),_0x5cc7f1)};_0x51a067[_0x1bff83(0x161)](_0x53024f),_0x3b8c9a[_0x1bff83(0x19e)](_0x327ea3);const _0x3c711d=_0x5d2eed[_0x1bff83(0x12b)](_0x3b8c9a[_0x1bff83(0x159)])[_0x1bff83(0x1b4)];if(!_0x3c711d)_0x3b8c9a['efoAF'](_0x42662a);else _0x3b8c9a['efoAF'](_0x1122f8);_0x7ed4b5(),_0x15d0bd(_0x3b8c9a[_0x1bff83(0x112)]);}else{const _0x14233f=localStorage[_0x1bff83(0x175)](_0x3b8c9a['jdBXx']);if(_0x14233f)records=JSON['parse'](_0x14233f);}}catch(_0x39f678){if(_0x3b8c9a[_0x1bff83(0x145)](_0x3b8c9a[_0x1bff83(0x1c5)],'wTxTH'))console[_0x1bff83(0x108)](_0x3b8c9a[_0x1bff83(0x141)],_0x39f678),localStorage[_0x1bff83(0x127)](_0x3b8c9a[_0x1bff83(0x11d)]);else try{_0x442029[_0x1bff83(0x142)](_0x3b8c9a[_0x1bff83(0x11d)],_0x267e5c[_0x1bff83(0x15e)](_0xf8046c));}catch(_0x17b9ea){_0x3b8c9a['iBBfU'](_0x1551fc,_0x1bff83(0x1ac));}}_0x3b8c9a[_0x1bff83(0x1ab)](renderList),lucide['createIcons'](),document[_0x1bff83(0x1cb)](_0x1bff83(0x168),()=>{const _0x20ed8b=_0x1bff83,_0x4737c8={'bzVWQ':_0x3b8c9a[_0x20ed8b(0x141)],'oDwMp':_0x3b8c9a[_0x20ed8b(0x11d)]};if(_0x3b8c9a[_0x20ed8b(0x110)](_0x3b8c9a[_0x20ed8b(0x185)],_0x3b8c9a[_0x20ed8b(0x183)]))_0x860d6e[_0x20ed8b(0x108)](_0x4737c8[_0x20ed8b(0x165)],_0x55b65b),_0x1785bf[_0x20ed8b(0x127)](_0x4737c8['oDwMp']);else{if(document[_0x20ed8b(0xfa)]){if(_0x3b8c9a['UOplc']('euqrm',_0x20ed8b(0x1a8))){const _0x329d35=_0x53d484['createElement'](_0x20ed8b(0x11c));_0x329d35[_0x20ed8b(0x1c6)]='text-center\x20text-xs\x20text-slate-500\x20py-2',_0x329d35[_0x20ed8b(0x140)]=_0x20ed8b(0xed)+_0x3b8c9a[_0x20ed8b(0x196)](_0x123d6d[_0x20ed8b(0x1a5)],_0xa44a86)+_0x20ed8b(0x187),_0x2bce14[_0x20ed8b(0xfd)](_0x329d35);}else document[_0x20ed8b(0x1af)][_0x20ed8b(0xf6)][_0x20ed8b(0x147)](_0x3b8c9a[_0x20ed8b(0x143)]);}else document[_0x20ed8b(0x1af)][_0x20ed8b(0xf6)][_0x20ed8b(0xf3)](_0x3b8c9a[_0x20ed8b(0x143)]);}});});const formatNum=_0x504e28=>new Intl['NumberFormat']('en-US')[_0x42488f(0x1a0)](_0x504e28);function showToast(_0x4958f3){const _0x4b7c1d=_0x42488f,_0x4b6aa7={'eZnpq':_0x4b7c1d(0x1b5),'wZYMX':_0x4b7c1d(0x1bd),'trFGZ':_0x4b7c1d(0x1d2),'NAqMA':'opacity-0','Hulyv':function(_0x1a82c7,_0x391304,_0x4bac17){return _0x1a82c7(_0x391304,_0x4bac17);}},_0x51210d=document[_0x4b7c1d(0x12b)](_0x4b6aa7[_0x4b7c1d(0x169)]);document[_0x4b7c1d(0x12b)](_0x4b6aa7[_0x4b7c1d(0x174)])[_0x4b7c1d(0x140)]=_0x4958f3,_0x51210d[_0x4b7c1d(0xf6)][_0x4b7c1d(0xf3)](_0x4b7c1d(0xfa),_0x4b6aa7[_0x4b7c1d(0x10f)],_0x4b6aa7[_0x4b7c1d(0x136)]),_0x4b6aa7[_0x4b7c1d(0x162)](setTimeout,()=>_0x51210d[_0x4b7c1d(0xf6)][_0x4b7c1d(0x147)](_0x4b7c1d(0x1d2),'opacity-0'),0x7d0),_0x4b6aa7[_0x4b7c1d(0x162)](setTimeout,()=>_0x51210d[_0x4b7c1d(0xf6)][_0x4b7c1d(0x147)](_0x4b7c1d(0xfa)),0x8fc);}function saveData(){const _0x13a30a=_0x42488f,_0x49480a={'jjnkf':function(_0x15f47a,_0x29e7b8){return _0x15f47a(_0x29e7b8);},'lZjKo':'Memory\x20Full!\x20Cannot\x20save.'};try{localStorage[_0x13a30a(0x142)](_0x13a30a(0x106),JSON[_0x13a30a(0x15e)](records));}catch(_0x495d40){_0x49480a[_0x13a30a(0x1b0)](alert,_0x49480a[_0x13a30a(0x1a6)]);}}function openMobileMenu(){const _0x2e8807=_0x42488f,_0x54fc2b={'HgYea':_0x2e8807(0x1b1),'tzliS':_0x2e8807(0x121)},_0x116320=document[_0x2e8807(0x12b)](_0x54fc2b[_0x2e8807(0x150)]);_0x116320[_0x2e8807(0xf6)][_0x2e8807(0xf3)](_0x2e8807(0xfa)),_0x116320[_0x2e8807(0xf6)][_0x2e8807(0x147)](_0x54fc2b['tzliS']),lucide[_0x2e8807(0x149)]();}function closeMobileMenu(){const _0x50041e=_0x42488f,_0x110b78={'wUjIn':'mobile-menu-modal','SnKMW':_0x50041e(0xfa),'ohYdJ':'flex'},_0x565779=document[_0x50041e(0x12b)](_0x110b78[_0x50041e(0x132)]);_0x565779[_0x50041e(0xf6)][_0x50041e(0x147)](_0x110b78['SnKMW']),_0x565779[_0x50041e(0xf6)][_0x50041e(0xf3)](_0x110b78[_0x50041e(0x10e)]);}function debounceSearch(){const _0x2ca637=_0x42488f,_0x10fb42={'eWxQE':function(_0x1cde29,_0x124100){return _0x1cde29(_0x124100);},'hkgPK':function(_0x2085a5,_0x16b85a,_0x568ee0){return _0x2085a5(_0x16b85a,_0x568ee0);}};clearTimeout(searchTimeout),searchTimeout=_0x10fb42[_0x2ca637(0x134)](setTimeout,()=>{const _0x3336fa=_0x2ca637,_0x129ac1=document['getElementById'](_0x3336fa(0x102))[_0x3336fa(0x1b4)][_0x3336fa(0x154)]();_0x10fb42['eWxQE'](renderList,_0x129ac1);},0x12c);}function renderList(_0x3266c7=''){const _0x26b8ec=_0x42488f,_0x3609b2={'QQvir':_0x26b8ec(0x1ca),'MsjCT':_0x26b8ec(0x102),'BtnSt':function(_0x1e5930,_0x2da905){return _0x1e5930!==_0x2da905;},'sxPpl':_0x26b8ec(0x11e),'rhkbc':_0x26b8ec(0x1be),'QWUeg':_0x26b8ec(0x11c),'IifUq':function(_0x2e6cd5,_0x2e17df){return _0x2e6cd5>_0x2e17df;},'Hiibr':function(_0x5cd05f,_0x15e015){return _0x5cd05f(_0x15e015);},'imLpP':function(_0x54010f,_0x238ae1){return _0x54010f||_0x238ae1;},'BvZAs':function(_0x29d324,_0x3f05ac){return _0x29d324<_0x3f05ac;},'jGKku':_0x26b8ec(0x176),'GvpTj':_0x26b8ec(0xf5),'bVIaf':function(_0x758cc7,_0x4294df){return _0x758cc7===_0x4294df;},'XJUYu':_0x26b8ec(0x189),'aRWQY':'text-center\x20text-xs\x20text-slate-500\x20py-2','TrnFy':function(_0x1fdaff,_0x12c9ea){return _0x1fdaff-_0x12c9ea;},'meFZu':_0x26b8ec(0x190),'AaXEp':function(_0x17d92a,_0x187d28){return _0x17d92a(_0x187d28);}},_0x360b2d=document[_0x26b8ec(0x12b)](_0x3609b2[_0x26b8ec(0x15c)]);_0x360b2d[_0x26b8ec(0x16e)]='';let _0x281817=0x0,_0x5be452=0x0,_0x3518af=0x0;const _0x944f69=document['createDocumentFragment'](),_0x4baeb9=_0x3266c7?records[_0x26b8ec(0x155)](_0x37054e=>_0x37054e['name'][_0x26b8ec(0x154)]()['includes'](_0x3266c7)||_0x37054e[_0x26b8ec(0x14c)]&&_0x37054e['generalRemark']['toLowerCase']()['includes'](_0x3266c7)):records;_0x4baeb9[_0x26b8ec(0x11f)]((_0x26e414,_0x5b76c0)=>_0x5b76c0['id']-_0x26e414['id']);if(_0x3609b2[_0x26b8ec(0x117)](_0x4baeb9[_0x26b8ec(0x1a5)],0x0))_0x360b2d[_0x26b8ec(0x16e)]=_0x26b8ec(0x116);else{if(_0x3609b2['BtnSt'](_0x3609b2[_0x26b8ec(0xf7)],_0x3609b2[_0x26b8ec(0xf7)]))_0x2cc85b(_0x3609b2[_0x26b8ec(0x17b)]);else{const _0x3559d8=_0x3266c7?_0x4baeb9[_0x26b8ec(0x1a5)]:0x32;_0x4baeb9[_0x26b8ec(0x152)](_0x3725b3=>{const _0x5ad919=_0x26b8ec,_0x5898a5={'ynkUZ':_0x3609b2[_0x5ad919(0x160)]};if(_0x3609b2[_0x5ad919(0x18e)](_0x3609b2[_0x5ad919(0x1bc)],_0x3609b2['rhkbc']))_0x281817+=_0x3725b3[_0x5ad919(0x125)],_0x5be452+=_0x3725b3['expense'],_0x3518af+=_0x3725b3['balance'];else{const _0x2d9aac=_0x1a4774['getElementById'](_0x5898a5[_0x5ad919(0x11b)])['value']['toLowerCase']();_0x31376b(_0x2d9aac);}}),_0x4baeb9[_0x26b8ec(0x12f)](0x0,_0x3559d8)[_0x26b8ec(0x152)](_0x32a3ab=>{const _0x297ed8=_0x26b8ec,_0x5ed15f=document[_0x297ed8(0x14e)](_0x3609b2[_0x297ed8(0x1a7)]);_0x5ed15f[_0x297ed8(0x1c6)]=_0x297ed8(0x107)+(_0x32a3ab['balance']<0x0?'border-l-rose-500':_0x297ed8(0x1ba))+_0x297ed8(0x12d);const _0x4061b0=_0x3609b2[_0x297ed8(0x18d)](_0x32a3ab[_0x297ed8(0x17d)],0x0)?'-'+_0x3609b2[_0x297ed8(0x170)](formatNum,_0x32a3ab['expense']):'-',_0x42b228=_0x3609b2[_0x297ed8(0x18d)](_0x32a3ab[_0x297ed8(0x1c3)],0x0)?'+'+formatNum(_0x32a3ab['income']):'';_0x5ed15f[_0x297ed8(0x16e)]=_0x297ed8(0x105)+_0x32a3ab[_0x297ed8(0x130)]+_0x297ed8(0x12a)+_0x32a3ab[_0x297ed8(0x131)]+_0x297ed8(0x14a)+_0x32a3ab['id']+_0x297ed8(0x15b)+_0x4061b0+'</span>\x20<span\x20class=\x22text-[9px]\x22>('+(_0x32a3ab[_0x297ed8(0x184)]||'-')+')</span></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div>ရ:\x20<span\x20class=\x22text-emerald-400\x22>'+_0x3609b2[_0x297ed8(0xfe)](_0x42b228,'-')+'</span></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22text-right\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22text-[10px]\x20text-slate-500\x22>'+(_0x32a3ab[_0x297ed8(0x14c)]||'')+_0x297ed8(0x1c2)+(_0x3609b2[_0x297ed8(0x1d0)](_0x32a3ab[_0x297ed8(0x103)],0x0)?_0x297ed8(0xea):_0x3609b2[_0x297ed8(0x171)])+'\x22>'+formatNum(_0x32a3ab[_0x297ed8(0x103)])+_0x297ed8(0xf1),_0x944f69[_0x297ed8(0xfd)](_0x5ed15f);});if(_0x3609b2[_0x26b8ec(0x18d)](_0x4baeb9[_0x26b8ec(0x1a5)],_0x3559d8)){const _0x4bf5f=document[_0x26b8ec(0x14e)](_0x3609b2[_0x26b8ec(0x1a7)]);_0x4bf5f['className']=_0x3609b2[_0x26b8ec(0x12c)],_0x4bf5f[_0x26b8ec(0x140)]=_0x26b8ec(0xed)+_0x3609b2[_0x26b8ec(0x1c0)](_0x4baeb9['length'],_0x3559d8)+_0x26b8ec(0x187),_0x944f69[_0x26b8ec(0xfd)](_0x4bf5f);}_0x360b2d[_0x26b8ec(0xfd)](_0x944f69);}}document['getElementById']('totalCurrent')[_0x26b8ec(0x140)]=_0x3609b2[_0x26b8ec(0x170)](formatNum,_0x281817),document['getElementById'](_0x3609b2[_0x26b8ec(0x128)])[_0x26b8ec(0x140)]=_0x3609b2[_0x26b8ec(0xf8)](formatNum,_0x5be452),document[_0x26b8ec(0x12b)](_0x26b8ec(0x1ad))[_0x26b8ec(0x140)]=_0x3609b2[_0x26b8ec(0xf8)](formatNum,_0x3518af),lucide['createIcons']();}function addRecord(_0x409e5a){const _0x1e2a3e=_0x42488f,_0x2595dd={'PlDpL':function(_0x160368,_0x418d20){return _0x160368(_0x418d20);},'cyzJt':function(_0x40059d,_0x16e7fe){return _0x40059d(_0x16e7fe);},'sUdoY':_0x1e2a3e(0x1c3),'PcNSe':'name','VLQZK':function(_0x2ad03c,_0x252146){return _0x2ad03c(_0x252146);},'sNOgV':_0x1e2a3e(0x184),'WEJRc':function(_0x66723e,_0x556809){return _0x66723e+_0x556809;},'rPIlc':function(_0x43f410,_0x1c3c16){return _0x43f410-_0x1c3c16;},'LcqVn':function(_0x1e0e31){return _0x1e0e31();},'nDnTv':_0x1e2a3e(0x102),'BiwdP':function(_0x3601cc){return _0x3601cc();},'FqUsi':'သိမ်းပြီးပါပြီ'};_0x409e5a[_0x1e2a3e(0xf4)]();const _0xab146d=new Date()[_0x1e2a3e(0x1b8)]()['split']('T')[0x0],_0x36ba92=_0x5ea018=>document[_0x1e2a3e(0x12b)](_0x5ea018)[_0x1e2a3e(0x1b4)],_0x386f61=_0x35faaf=>parseFloat(document['getElementById'](_0x35faaf)['value'])||0x0,_0x8e865a=_0x2595dd[_0x1e2a3e(0x109)](_0x386f61,_0x1e2a3e(0x125)),_0x4380bd=_0x2595dd['PlDpL'](_0x386f61,_0x1e2a3e(0x17d)),_0x2b863d=_0x2595dd[_0x1e2a3e(0x16f)](_0x386f61,_0x2595dd[_0x1e2a3e(0x10d)]),_0x45ccfb={'id':Date[_0x1e2a3e(0x13b)](),'date':_0xab146d,'name':_0x2595dd[_0x1e2a3e(0x16f)](_0x36ba92,_0x2595dd['PcNSe']),'generalRemark':_0x36ba92('generalRemark'),'currentMoney':_0x8e865a,'expense':_0x4380bd,'expenseRemark':_0x2595dd[_0x1e2a3e(0x172)](_0x36ba92,_0x2595dd[_0x1e2a3e(0x1c9)]),'income':_0x2b863d,'balance':_0x2595dd[_0x1e2a3e(0x194)](_0x2595dd['rPIlc'](_0x8e865a,_0x4380bd),_0x2b863d)};records[_0x1e2a3e(0x161)](_0x45ccfb),_0x2595dd[_0x1e2a3e(0x14f)](saveData);const _0x163152=document['getElementById'](_0x2595dd[_0x1e2a3e(0x1a4)])[_0x1e2a3e(0x1b4)];if(!_0x163152)_0x2595dd['LcqVn'](renderList);else _0x2595dd['BiwdP'](debounceSearch);resetForm(),_0x2595dd[_0x1e2a3e(0x172)](showToast,_0x2595dd[_0x1e2a3e(0x191)]);}function resetForm(){const _0xc3f721=_0x42488f;document[_0xc3f721(0x12b)](_0xc3f721(0x18a))[_0xc3f721(0x120)]();}function openConfirmModal(_0x3a898b,_0x211310,_0x426799){const _0x3ea63c=_0x42488f,_0x11b3c0={'TYYRq':_0x3ea63c(0x14d),'ggXsB':'confirm-modal','eZNBV':_0x3ea63c(0xfa)};document[_0x3ea63c(0x12b)](_0x3ea63c(0x158))[_0x3ea63c(0x140)]=_0x3a898b,document[_0x3ea63c(0x12b)](_0x11b3c0[_0x3ea63c(0x17e)])[_0x3ea63c(0x140)]=_0x211310,confirmCallback=_0x426799;const _0x228ea6=document[_0x3ea63c(0x12b)](_0x11b3c0['ggXsB']);_0x228ea6[_0x3ea63c(0xf6)][_0x3ea63c(0xf3)](_0x11b3c0[_0x3ea63c(0x129)]),_0x228ea6[_0x3ea63c(0xf6)][_0x3ea63c(0x147)](_0x3ea63c(0x121));}function confirmDelete(_0x536519){const _0x40badb=_0x42488f,_0x3be488={'xhzoj':function(_0x10f0c8){return _0x10f0c8();},'HQfzI':_0x40badb(0x102),'gHcXm':function(_0x424464,_0x5d23cc){return _0x424464(_0x5d23cc);},'AIjLS':function(_0x32a7b4,_0x107fee){return _0x32a7b4(_0x107fee);},'iLpWc':_0x40badb(0x157),'zKKxR':function(_0x920519,_0x2e4d03,_0x388122,_0x22c36c){return _0x920519(_0x2e4d03,_0x388122,_0x22c36c);},'pQSHz':'ဖျက်မည်လား?'};_0x3be488[_0x40badb(0x15f)](openConfirmModal,_0x3be488['pQSHz'],_0x40badb(0x115),()=>{const _0x51361d=_0x40badb;records=records[_0x51361d(0x155)](_0x5ca7a4=>_0x5ca7a4['id']!==_0x536519),_0x3be488[_0x51361d(0x17a)](saveData);const _0x366684=document[_0x51361d(0x12b)](_0x3be488[_0x51361d(0x195)])[_0x51361d(0x1b4)];_0x3be488[_0x51361d(0x16c)](renderList,_0x366684),_0x3be488[_0x51361d(0x139)](showToast,_0x3be488['iLpWc']);});}document[_0x42488f(0x12b)]('confirm-yes-btn')['onclick']=()=>{const _0x3f177d=_0x42488f,_0x2cdb69={'izoxT':function(_0x440d0c){return _0x440d0c();}};if(confirmCallback)_0x2cdb69['izoxT'](confirmCallback);_0x2cdb69[_0x3f177d(0x1ce)](closeConfirmModal);};function closeConfirmModal(){const _0xf9e7e2=_0x42488f,_0x245f03={'RPtbA':_0xf9e7e2(0xeb),'EtxEI':_0xf9e7e2(0xfa),'VmWWj':_0xf9e7e2(0x121)};document[_0xf9e7e2(0x12b)](_0x245f03[_0xf9e7e2(0x188)])[_0xf9e7e2(0xf6)][_0xf9e7e2(0x147)](_0x245f03['EtxEI']),document[_0xf9e7e2(0x12b)](_0x245f03['RPtbA'])[_0xf9e7e2(0xf6)][_0xf9e7e2(0xf3)](_0x245f03[_0xf9e7e2(0x19c)]),confirmCallback=null;}function clearAllData(){const _0x5b6c1a=_0x42488f,_0x3c796d={'jAZvi':_0x5b6c1a(0x1b6),'PvLcq':_0x5b6c1a(0x198),'jQFoY':_0x5b6c1a(0x13a),'ReLtQ':function(_0x1640ad,_0x4d2436){return _0x1640ad(_0x4d2436);},'LJzaW':_0x5b6c1a(0x10b),'whBrz':function(_0x1f8f78,_0x47eded,_0x48c58c,_0x5d74dc){return _0x1f8f78(_0x47eded,_0x48c58c,_0x5d74dc);},'eZjhn':'Reset\x20လုပ်မည်လား?','zNtyu':_0x5b6c1a(0x1a3)};_0x3c796d['whBrz'](openConfirmModal,_0x3c796d[_0x5b6c1a(0x19f)],_0x3c796d[_0x5b6c1a(0x19a)],()=>{const _0xb5bde5=_0x5b6c1a;_0x3c796d['PvLcq']===_0x3c796d['jQFoY']?_0x11b411[_0xb5bde5(0xfa)]?_0x44c091[_0xb5bde5(0x1af)][_0xb5bde5(0xf6)][_0xb5bde5(0x147)](_0x3c796d[_0xb5bde5(0x180)]):_0x559cce['body']['classList']['remove'](_0x3c796d['jAZvi']):(records=[],saveData(),renderList(),_0x3c796d['ReLtQ'](showToast,_0x3c796d['LJzaW']));});}function exportReport(){const _0x187ee8=_0x42488f,_0x579095={'KUyxb':function(_0x12fa6b,_0x56baec){return _0x12fa6b(_0x56baec);},'MvuxF':_0x187ee8(0x1c8),'EtDhS':function(_0x3db14f,_0x53ac71){return _0x3db14f(_0x53ac71);},'aDwfc':_0x187ee8(0x102),'oemSu':'ထုတ်ယူရန်\x20စာရင်းမရှိပါ\x20(သို့)\x20ရှာထားသော\x20အမည်နှင့်\x20ကိုက်ညီမှုမရှိပါ','sZPkN':_0x187ee8(0x133),'rLbtd':function(_0xf5bd0c,_0x38ba2f){return _0xf5bd0c+_0x38ba2f;},'pJuDA':'ထုတ်ယူသည့်ရက်စွဲ:\x20','mBvMU':_0x187ee8(0x1c4),'GxEEh':function(_0x54d491,_0x44f450){return _0x54d491(_0x44f450);},'LnVTO':_0x187ee8(0x1b2),'DJgPA':'text/plain;charset=utf-8','bEFNm':_0x187ee8(0x12e)},_0x5c8c68=document[_0x187ee8(0x12b)](_0x579095[_0x187ee8(0x16b)])[_0x187ee8(0x1b4)][_0x187ee8(0x154)](),_0x4e5522=_0x5c8c68?records[_0x187ee8(0x155)](_0x2a66ac=>_0x2a66ac[_0x187ee8(0x130)][_0x187ee8(0x154)]()[_0x187ee8(0x138)](_0x5c8c68)||_0x2a66ac[_0x187ee8(0x14c)]&&_0x2a66ac[_0x187ee8(0x14c)][_0x187ee8(0x154)]()[_0x187ee8(0x138)](_0x5c8c68)):records;if(!_0x4e5522[_0x187ee8(0x1a5)])return _0x579095[_0x187ee8(0x18b)](alert,_0x579095[_0x187ee8(0x144)]);let _0x2bcddb=_0x5c8c68?'Debt\x20Ledger\x20Report\x20for\x20\x22'+_0x5c8c68+'\x22':_0x579095[_0x187ee8(0x100)],_0x173cdb=_0x579095['rLbtd'](_0x2bcddb,'\x0a');_0x173cdb+=_0x579095[_0x187ee8(0x114)](_0x579095[_0x187ee8(0x13c)],new Date()['toLocaleString']())+'\x0a',_0x173cdb+=_0x579095[_0x187ee8(0x151)];let _0x4fce79=0x0,_0x254af9=0x0,_0x12585a=0x0;_0x4e5522[_0x187ee8(0x152)](_0x3c9dd3=>{const _0x25384e=_0x187ee8;_0x4fce79+=_0x3c9dd3['currentMoney'],_0x254af9+=_0x3c9dd3[_0x25384e(0x17d)],_0x12585a+=_0x3c9dd3['balance'];}),_0x173cdb+=_0x187ee8(0xf2)+formatNum(_0x4fce79)+'\x20Ks\x0a',_0x173cdb+=_0x187ee8(0xf9)+_0x579095[_0x187ee8(0xff)](formatNum,_0x254af9)+'\x20Ks\x0a',_0x173cdb+=_0x187ee8(0x18f)+_0x579095[_0x187ee8(0x167)](formatNum,_0x12585a)+_0x187ee8(0x111),_0x173cdb+=_0x579095[_0x187ee8(0x151)],_0x173cdb+=_0x579095[_0x187ee8(0x193)],_0x4e5522[_0x187ee8(0x152)](_0xe61726=>{const _0x254f66=_0x187ee8,_0x221788=_0x254f66(0x113)['split']('|');let _0x53413b=0x0;while(!![]){switch(_0x221788[_0x53413b++]){case'0':_0x173cdb+=_0x254f66(0xef)+_0x579095[_0x254f66(0x167)](formatNum,_0xe61726[_0x254f66(0x103)])+'\x0a';continue;case'1':_0x173cdb+=_0x254f66(0x1cc)+_0xe61726[_0x254f66(0x130)]+'\x0a';continue;case'2':_0x173cdb+=_0x579095['MvuxF'];continue;case'3':if(_0xe61726[_0x254f66(0x14c)])_0x173cdb+='မှတ်ချက်:\x20'+_0xe61726[_0x254f66(0x14c)]+'\x0a';continue;case'4':_0x173cdb+=_0x254f66(0x1bb)+formatNum(_0xe61726[_0x254f66(0x1c3)])+'\x0a';continue;case'5':_0x173cdb+=_0x254f66(0x1cf)+_0x579095[_0x254f66(0x167)](formatNum,_0xe61726[_0x254f66(0x17d)])+'\x20('+(_0xe61726['expenseRemark']||'-')+')\x0a';continue;case'6':_0x173cdb+=_0x254f66(0x192)+_0xe61726[_0x254f66(0x131)]+'\x0a';continue;case'7':_0x173cdb+=_0x254f66(0x1c7)+_0x579095['EtDhS'](formatNum,_0xe61726[_0x254f66(0x125)])+'\x0a';continue;}break;}});const _0x4157c5=new Blob([_0x173cdb],{'type':_0x579095['DJgPA']}),_0x2f97e4=URL[_0x187ee8(0x123)](_0x4157c5),_0x1dc1fe=document[_0x187ee8(0x14e)]('a');_0x1dc1fe[_0x187ee8(0x19d)]=_0x2f97e4;const _0xcf239=_0x5c8c68?'_'+_0x5c8c68:'';_0x1dc1fe[_0x187ee8(0xf0)]=_0x187ee8(0x156)+_0xcf239+'_'+new Date()['toISOString']()[_0x187ee8(0x124)]('T')[0x0]+_0x187ee8(0x197),document[_0x187ee8(0x1af)][_0x187ee8(0xfd)](_0x1dc1fe),_0x1dc1fe['click'](),document[_0x187ee8(0x1af)]['removeChild'](_0x1dc1fe),showToast(_0x579095['bEFNm']);}function exportDataJSON(){const _0x5243e0=_0x42488f,_0x46a538={'RBmiv':function(_0x2c2731,_0x4c9275){return _0x2c2731(_0x4c9275);},'DkBBp':'data:text/json;charset=utf-8,'};if(!records[_0x5243e0(0x1a5)])return _0x46a538[_0x5243e0(0xfb)](alert,_0x5243e0(0x153));const _0x33bdb3=_0x46a538[_0x5243e0(0x126)]+_0x46a538['RBmiv'](encodeURIComponent,JSON[_0x5243e0(0x15e)](records)),_0x169fe8=document[_0x5243e0(0x14e)]('a');_0x169fe8['href']=_0x33bdb3,_0x169fe8[_0x5243e0(0xf0)]='FastLedger_Backup_'+new Date()['toISOString']()[_0x5243e0(0x124)]('T')[0x0]+_0x5243e0(0x186),_0x169fe8[_0x5243e0(0xfc)]();}function triggerImport(){const _0x4ba615=_0x42488f,_0x407f0f={'sNYew':'importFile'};document[_0x4ba615(0x12b)](_0x407f0f[_0x4ba615(0x182)])['click']();}function importData(_0xe7cf89){const _0x563504=_0x42488f,_0x88bb5d={'aaiUs':'Reset\x20လုပ်မည်လား?','wWtNY':_0x563504(0x1a3),'MOSnk':function(_0x165cbd){return _0x165cbd();},'RNVKS':_0x563504(0x10b),'HOdAg':_0x563504(0x177),'qLkeO':function(_0x5a745b){return _0x5a745b();},'hpTNp':function(_0x39f0af,_0x5e105e){return _0x39f0af(_0x5e105e);},'KRYPA':'Restore\x20အောင်မြင်သည်','nXaSA':_0x563504(0x178),'Oetyf':function(_0x4e6a13,_0x503a59){return _0x4e6a13===_0x503a59;},'WCOOO':'ctYhX','RhgXk':function(_0x540efc,_0xdc2983){return _0x540efc(_0xdc2983);}},_0x5baab4=_0xe7cf89[_0x563504(0x10c)][0x0];if(!_0x5baab4)return;const _0x210c35=new FileReader();_0x210c35[_0x563504(0x135)]=_0x29fa3d=>{const _0x1b12d9=_0x563504,_0x56b40d={'COgVd':function(_0x846a1f){return _0x846a1f();},'mbzYk':function(_0x924309){return _0x88bb5d['MOSnk'](_0x924309);},'KaeYC':function(_0x4b0d7f,_0x30f272){return _0x4b0d7f(_0x30f272);},'KAyyR':_0x88bb5d[_0x1b12d9(0x146)]};try{const _0x550336=JSON[_0x1b12d9(0x1a2)](_0x29fa3d['target']['result']);if(Array[_0x1b12d9(0xec)](_0x550336))_0x1b12d9(0x177)!==_0x88bb5d[_0x1b12d9(0x10a)]?_0x12a48d(_0x88bb5d[_0x1b12d9(0x173)],_0x88bb5d[_0x1b12d9(0x11a)],()=>{const _0x552c2a=_0x1b12d9;_0x3e58ac=[],_0x56b40d[_0x552c2a(0x15d)](_0x525af6),_0x56b40d['mbzYk'](_0x2a1777),_0x56b40d[_0x552c2a(0x1c1)](_0x256504,_0x56b40d[_0x552c2a(0x199)]);}):(records=_0x550336,saveData(),_0x88bb5d[_0x1b12d9(0x14b)](renderList),_0x88bb5d[_0x1b12d9(0x163)](showToast,_0x88bb5d['KRYPA']));else alert(_0x88bb5d[_0x1b12d9(0x122)]);}catch(_0x56cce9){_0x88bb5d[_0x1b12d9(0x13f)](_0x88bb5d[_0x1b12d9(0x16a)],_0x1b12d9(0x104))?_0x493b3c[_0x1b12d9(0x12b)](_0x1b12d9(0x18a))['reset']():_0x88bb5d[_0x1b12d9(0x181)](alert,_0x1b12d9(0x1ca));}},_0x210c35[_0x563504(0x19b)](_0x5baab4),_0xe7cf89[_0x563504(0x1b4)]='';}
+</script>
+</body>
+</html>
