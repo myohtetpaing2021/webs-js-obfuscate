@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Subtitle Pro - Ultimate Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#020617', // Deep Space
+                            900: '#0f172a',
+                            800: '#1e293b',
+                            700: '#334155',
+                        },
+                        brand: {
+                            cyan: '#06b6d4',
+                            violet: '#8b5cf6',
+                            emerald: '#10b981',
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'slide-up': 'slideUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
+                        'pulse-glow': 'pulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 3s linear infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        slideUp: {
+                            'from': { opacity: 0, transform: 'translateY(20px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: 1, boxShadow: '0 0 20px rgba(6, 182, 212, 0.5)' },
+                            '50%': { opacity: .8, boxShadow: '0 0 10px rgba(6, 182, 212, 0.2)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        /* --- REMOVE SPINNERS (ARROWS) FROM NUMBER INPUTS --- */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Glassmorphism Utilities */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-input {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .glass-input:focus {
+            background: rgba(30, 41, 59, 0.6);
+            border-color: rgba(6, 182, 212, 0.5);
+            box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.1);
+        }
+        
+        .drag-active {
+            border-color: #06b6d4 !important;
+            background: rgba(6, 182, 212, 0.1) !important;
+            transform: scale(1.01);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 50;
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Selection Color */
+        ::selection { background: rgba(6, 182, 212, 0.3); color: #fff; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans text-slate-300">
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-all duration-1000 ease-in-out overflow-hidden">
+        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#38bdf8 1px, transparent 1px); background-size: 40px 40px; transform: perspective(500px) rotateX(20deg);"></div>
+        <div class="relative flex flex-col items-center z-10">
+            <div class="relative w-40 h-40 flex items-center justify-center mb-10">
+                <div class="absolute inset-0 rounded-full border-2 border-transparent border-t-cyan-500 border-l-cyan-500/30 animate-[spin_2s_linear_infinite] shadow-[0_0_30px_rgba(6,182,212,0.2)]"></div>
+                <div class="absolute inset-3 rounded-full border-2 border-transparent border-b-violet-500 border-r-violet-500/30 animate-[spin_3s_linear_infinite_reverse]"></div>
+                <div class="relative z-10 w-20 h-20 bg-gradient-to-br from-cyan-950 to-slate-900 rounded-full flex items-center justify-center border border-white/10 shadow-[0_0_50px_rgba(6,182,212,0.4)] animate-pulse">
+                    <div class="absolute inset-0 bg-cyan-500/20 rounded-full blur-xl animate-pulse"></div>
+                    <i data-lucide="zap" class="text-white w-8 h-8 relative z-10 drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]"></i>
+                </div>
+            </div>
+            <div class="w-64 space-y-4">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-[0.2em] text-white font-num mb-1">SUBTITLE<span class="text-cyan-400">PRO</span></h2>
+                    <p class="text-[10px] text-cyan-500/70 font-num tracking-[0.4em] uppercase">Loading Ultimate Engine</p>
+                </div>
+                <div class="h-1 w-full bg-slate-800/50 rounded-full overflow-hidden border border-white/5 relative">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 w-0 shadow-[0_0_20px_rgba(6,182,212,0.8)] relative transition-all duration-100">
+                        <div class="absolute right-0 top-0 bottom-0 w-2 bg-white/50 blur-[2px]"></div>
+                    </div>
+                </div>
+                <div class="flex justify-between text-[10px] font-num text-slate-400 font-medium tracking-wider">
+                    <span class="animate-pulse">LOADING MODULES...</span>
+                    <span id="progress-text" class="text-cyan-400 font-bold">0%</span>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-8 text-[9px] text-slate-600 font-num tracking-widest uppercase">v4.1 Polished UI</div>
+    </div>
+
+    <!-- BACKGROUND -->
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-brand-cyan/20 rounded-full blur-[128px] animate-blob"></div>
+        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-brand-violet/20 rounded-full blur-[128px] animate-blob" style="animation-delay: 2s"></div>
+        <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="relative z-10 flex-1 w-full max-w-7xl mx-auto p-4 md:p-8 lg:p-12 opacity-0 transition-opacity duration-1000" id="main-content">
+        
+        <!-- HEADER -->
+        <header class="flex flex-col md:flex-row items-center justify-between mb-10 md:mb-16 gap-6 animate-slide-up">
+            <div class="flex items-center gap-4">
+                <div class="relative w-12 h-12 flex items-center justify-center bg-gradient-to-tr from-cyan-500 to-blue-600 rounded-2xl shadow-lg shadow-cyan-500/20 group cursor-pointer overflow-hidden">
+                    <div class="absolute inset-0 bg-white/30 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+                    <i data-lucide="clapperboard" class="text-white w-6 h-6 relative z-10"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-bold text-white tracking-tight font-num">
+                        Subtitle<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Pro</span>
+                    </h1>
+                    <p class="text-xs text-slate-400 font-medium tracking-[0.2em] uppercase mt-1">AI-Powered Generator</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <div id="statusIndicator" class="px-4 py-2 rounded-xl bg-slate-900/50 border border-white/5 backdrop-blur-md flex items-center gap-3 transition-all">
+                    <span class="flex h-2 w-2 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <span class="text-xs font-bold text-slate-300 uppercase tracking-wider" id="statusText">System Ready</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- APP GRID -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            
+            <!-- LEFT COLUMN: CONTROLS (lg:col-span-5) -->
+            <div class="lg:col-span-5 space-y-6 animate-slide-up" style="animation-delay: 100ms">
+                
+                <!-- INPUT CARD with DRAG & DROP -->
+                <div class="glass-panel p-1 rounded-3xl shadow-2xl group">
+                    <div class="bg-dark-950/40 rounded-[22px] p-6 md:p-8 relative" id="dropZone">
+                        <div class="flex justify-between items-center mb-4">
+                            <label class="text-sm font-bold text-white flex items-center gap-2">
+                                <i data-lucide="file-text" class="w-4 h-4 text-cyan-400"></i>
+                                Script Input
+                            </label>
+                            <div class="flex gap-2">
+                                <button onclick="loadDemo()" class="text-[10px] font-bold text-cyan-400 hover:text-cyan-300 bg-cyan-500/10 hover:bg-cyan-500/20 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5">
+                                    <i data-lucide="flask-conical" class="w-3 h-3"></i> Demo
+                                </button>
+                                <button onclick="clearInput()" class="text-[10px] font-bold text-rose-400 hover:text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5">
+                                    <i data-lucide="trash-2" class="w-3 h-3"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="relative">
+                            <textarea id="scriptInput" 
+                                class="w-full h-[300px] glass-input rounded-xl p-5 text-sm font-mono leading-relaxed resize-none placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-cyan-500/50 transition-all"
+                                placeholder="Paste your script here OR Drag & Drop a text file...&#10;&#10;0:00&#10;On a bright sunny day..."></textarea>
+                            
+                            <!-- Drag Overlay -->
+                            <div id="dragOverlay" class="absolute inset-0 bg-dark-900/90 rounded-xl flex flex-col items-center justify-center pointer-events-none opacity-0 transition-opacity">
+                                <i data-lucide="upload-cloud" class="w-10 h-10 text-cyan-400 mb-2 animate-bounce"></i>
+                                <span class="text-sm font-bold text-cyan-200">Drop Text File Here</span>
+                            </div>
+
+                            <div class="absolute bottom-3 right-3 pointer-events-none">
+                                <span class="text-[10px] text-slate-500 bg-dark-900/80 px-2 py-1 rounded border border-white/5">Auto-Parser Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SETTINGS CARD (Pro Features) -->
+                <div class="glass-panel p-6 md:p-8 rounded-3xl">
+                    <div class="flex items-center justify-between mb-5">
+                        <label class="text-sm font-bold text-white flex items-center gap-2">
+                            <i data-lucide="sliders" class="w-4 h-4 text-violet-400"></i>
+                            Configuration
+                        </label>
+                        <span class="text-[10px] bg-violet-500/20 text-violet-300 px-2 py-0.5 rounded border border-violet-500/30">PRO</span>
+                    </div>
+
+                    <!-- Gen Mode -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+                        <label class="relative group cursor-pointer">
+                            <input type="radio" name="genMethod" value="method1" checked class="peer sr-only" onchange="generateSubtitles(true)">
+                            <div class="p-3 rounded-xl bg-slate-900/40 border border-white/10 peer-checked:border-cyan-500/50 peer-checked:bg-cyan-500/5 transition-all">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <i data-lucide="align-left" class="w-4 h-4 text-slate-400 peer-checked:text-cyan-400"></i>
+                                    <span class="font-bold text-xs text-slate-200 peer-checked:text-cyan-400">Standard Mode</span>
+                                </div>
+                                <p class="text-[10px] text-slate-500">Full blocks (Movies)</p>
+                            </div>
+                        </label>
+
+                        <label class="relative group cursor-pointer">
+                            <input type="radio" name="genMethod" value="method2" class="peer sr-only" onchange="generateSubtitles(true)">
+                            <div class="p-3 rounded-xl bg-slate-900/40 border border-white/10 peer-checked:border-violet-500/50 peer-checked:bg-violet-500/5 transition-all">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <i data-lucide="smartphone" class="w-4 h-4 text-slate-400 peer-checked:text-violet-400"></i>
+                                    <span class="font-bold text-xs text-slate-200 peer-checked:text-violet-400">Shorts Mode</span>
+                                </div>
+                                <p class="text-[10px] text-slate-500">Fast clips (TikTok)</p>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Advanced Settings -->
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-400 mb-1.5 block">Filename</label>
+                            <input type="text" id="fileNameInput" value="subtitle" class="w-full bg-slate-900/60 border border-white/10 rounded-lg px-3 py-2 text-xs text-slate-300 focus:border-cyan-500/50 focus:outline-none" placeholder="subtitle">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-400 mb-1.5 block flex justify-between">
+                                Time Offset (sec)
+                                <span class="text-[9px] text-slate-500">+Delay / -Early</span>
+                            </label>
+                            <div class="flex items-center gap-2">
+                                <button onclick="adjustOffset(-0.5)" class="w-6 h-full bg-slate-800 rounded hover:bg-slate-700 text-xs">-</button>
+                                <input type="number" id="timeOffset" value="0" step="0.1" class="w-full bg-slate-900/60 border border-white/10 rounded-lg px-2 py-2 text-xs text-center text-slate-300 focus:border-cyan-500/50 focus:outline-none" onchange="generateSubtitles(true)">
+                                <button onclick="adjustOffset(0.5)" class="w-6 h-full bg-slate-800 rounded hover:bg-slate-700 text-xs">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="generateSubtitles()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold tracking-wide shadow-lg shadow-cyan-900/20 border border-white/10 flex items-center justify-center gap-2 transition-all active:scale-95 group overflow-hidden relative">
+                        <i data-lucide="refresh-cw" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-500"></i>
+                        <span>Refresh Output</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: PREVIEW -->
+            <div class="lg:col-span-7 animate-slide-up lg:sticky lg:top-8" style="animation-delay: 200ms">
+                <div class="glass-panel rounded-3xl overflow-hidden flex flex-col h-[700px] lg:h-[800px] shadow-2xl border border-white/10 relative">
+                    
+                    <div class="bg-slate-900/80 backdrop-blur-md px-6 py-4 border-b border-white/5 flex items-center justify-between z-10">
+                        <div class="flex items-center gap-3">
+                            <div class="flex gap-1.5">
+                                <div class="w-3 h-3 rounded-full bg-rose-500/50"></div>
+                                <div class="w-3 h-3 rounded-full bg-amber-500/50"></div>
+                                <div class="w-3 h-3 rounded-full bg-emerald-500/50"></div>
+                            </div>
+                            <div class="h-4 w-px bg-white/10 mx-2"></div>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                                <i data-lucide="eye" class="w-3.5 h-3.5 text-cyan-400 animate-pulse"></i> Live Preview
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span id="lineCount" class="text-[10px] font-mono text-cyan-400 bg-cyan-950/50 px-3 py-1 rounded-full border border-cyan-500/20">0 lines</span>
+                            <button onclick="copyToClipboard()" class="text-slate-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-lg" title="Copy Text">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="relative flex-1 bg-dark-950/60 group">
+                        <div class="absolute left-0 top-0 bottom-0 w-12 bg-slate-900/50 border-r border-white/5 flex flex-col items-end pt-6 pr-3 gap-[1.65rem] text-[10px] font-mono text-slate-700 select-none pointer-events-none overflow-hidden">
+                            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span>
+                        </div>
+                        <textarea id="previewOutput" readonly 
+                            class="w-full h-full bg-transparent text-slate-300 pl-16 pr-6 py-6 text-sm font-mono leading-loose outline-none resize-none border-none focus:ring-0 custom-scrollbar whitespace-pre"
+                            placeholder="// Drop a file or paste script..."></textarea>
+                    </div>
+
+                    <div id="downloadSection" class="hidden bg-slate-900/90 backdrop-blur-xl border-t border-white/5 p-6 animate-slide-up absolute bottom-0 left-0 right-0 z-20">
+                        <div class="flex items-center justify-between gap-4">
+                            <div class="hidden sm:block">
+                                <h4 class="text-white font-bold text-sm">Ready to Export</h4>
+                                <p class="text-[10px] text-slate-500">SRT file compiled.</p>
+                            </div>
+                            <a id="downloadLink" href="#" class="flex-1 sm:flex-none py-3.5 px-8 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-bold shadow-lg shadow-emerald-900/30 transition-all active:scale-95 flex items-center justify-center gap-2 group">
+                                <i data-lucide="download" class="w-5 h-5 group-hover:-translate-y-1 transition-transform"></i>
+                                <span>Download .SRT</span>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <footer class="mt-16 border-t border-white/5 pt-8 text-center pb-8">
+            <p class="text-xs text-slate-600 font-num">
+                &copy; 2026 Subtitle Pro Ultimate. Optimized for All Devices.
+            </p>
+        </footer>
+
+    </main>
+
+    <!-- TOAST CONTAINER -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <script>
+        lucide.createIcons();
+
+        // 1. PRELOADER
+        window.addEventListener('DOMContentLoaded', () => {
+            const progress = document.getElementById('progress-bar');
+            const text = document.getElementById('progress-text');
+            const preloader = document.getElementById('preloader');
+            const mainContent = document.getElementById('main-content');
+            
+            let width = 0;
+            const interval = setInterval(() => {
+                const diff = Math.random() * 8; 
+                width += diff;
+                if (width > 100) width = 100;
+                if (progress) progress.style.width = width + '%';
+                if (text) text.innerText = Math.floor(width) + '%';
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        if(preloader) {
+                            preloader.classList.add('opacity-0', 'scale-105', 'pointer-events-none');
+                            if(mainContent) mainContent.classList.remove('opacity-0');
+                            setTimeout(() => preloader.remove(), 1000);
+                        }
+                    }, 500); 
+                }
+            }, 50);
+        });
+
+        // 2. REAL-TIME DEBOUNCE
+        let debounceTimer;
+        const scriptInput = document.getElementById('scriptInput');
+        scriptInput.addEventListener('input', () => {
+            updateStatus("Processing...", "cyan");
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                generateSubtitles(true);
+                updateStatus("System Ready", "emerald");
+            }, 300);
+        });
+
+        function updateStatus(msg, color) {
+            const statusIndicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            statusText.innerText = msg;
+            
+            if(color === 'cyan') {
+                statusText.className = "text-xs font-bold text-cyan-300 uppercase tracking-wider";
+                statusIndicator.querySelector('span.animate-ping').className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75";
+                statusIndicator.querySelector('span.relative').className = "relative inline-flex rounded-full h-2 w-2 bg-cyan-500";
+            } else {
+                statusText.className = "text-xs font-bold text-slate-300 uppercase tracking-wider";
+                statusIndicator.querySelector('span.animate-ping').className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75";
+                statusIndicator.querySelector('span.relative').className = "relative inline-flex rounded-full h-2 w-2 bg-emerald-500";
+            }
+        }
+
+        // 3. DRAG & DROP LOGIC
+        const dropZone = document.getElementById('dropZone');
+        const dragOverlay = document.getElementById('dragOverlay');
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            dragOverlay.classList.remove('opacity-0');
+            dropZone.classList.add('border-cyan-500/50', 'ring-1', 'ring-cyan-500/30');
+        }
+
+        function unhighlight(e) {
+            dragOverlay.classList.add('opacity-0');
+            dropZone.classList.remove('border-cyan-500/50', 'ring-1', 'ring-cyan-500/30');
+        }
+
+        dropZone.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+
+        function handleFiles(files) {
+            const file = files[0];
+            if (file && file.type.startsWith('text')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    scriptInput.value = e.target.result;
+                    generateSubtitles(true);
+                    showToast("File uploaded successfully", "success");
+                };
+                reader.readAsText(file);
+            } else {
+                showToast("Please drop a valid text file", "error");
+            }
+        }
+
+        // 4. UTILITIES
+        function clearInput() {
+            scriptInput.value = '';
+            scriptInput.focus();
+            generateSubtitles(true);
+            showToast("Input cleared", "info");
+        }
+
+        function loadDemo() {
+            scriptInput.value = `0:00\nOn a bright sunny day, Mansu and his\n\n0:02\nfamily are having a wonderful lunch\n\n0:05\nthanks to the expensive meat sent by the company`;
+            generateSubtitles(true);
+            showToast("Demo loaded", "success");
+        }
+
+        function adjustOffset(val) {
+            const offsetInput = document.getElementById('timeOffset');
+            let current = parseFloat(offsetInput.value) || 0;
+            offsetInput.value = (current + val).toFixed(1);
+            generateSubtitles(true);
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            
+            let icon = type === 'success' ? 'check-circle' : type === 'error' ? 'alert-circle' : 'info';
+            let color = type === 'success' ? 'text-emerald-400' : type === 'error' ? 'text-rose-400' : 'text-cyan-400';
+
+            toast.className = `bg-slate-900/90 backdrop-blur-md border border-white/10 text-slate-200 px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 transform translate-y-10 opacity-0 transition-all duration-300`;
+            toast.innerHTML = `<i data-lucide="${icon}" class="w-5 h-5 ${color}"></i> <span class="text-xs font-bold">${message}</span>`;
+            
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            // Animate in
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-10', 'opacity-0');
+            });
+
+            // Remove
+            setTimeout(() => {
+                toast.classList.add('translate-y-10', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // 5. PARSER ENGINE
+        function parseTime(timeStr) {
+            timeStr = timeStr.replace(/[\[\]]/g, '').trim();
+            const parts = timeStr.split(':').map(parseFloat);
+            let seconds = 0;
+            if (parts.length === 3) seconds = parts[0] * 3600 + parts[1] * 60 + parts[2];
+            else if (parts.length === 2) seconds = parts[0] * 60 + parts[1];
+            return seconds;
+        }
+
+        function formatTime(totalSeconds) {
+            totalSeconds = Math.max(0, totalSeconds); // Prevent negative time
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = Math.floor(totalSeconds % 60);
+            const ms = Math.round((totalSeconds % 1) * 1000);
+            const p = (n, z=2) => n.toString().padStart(z, '0');
+            return `${p(hours)}:${p(minutes)}:${p(seconds)},${p(ms, 3)}`;
+        }
+
+        function generateSubtitles(isAuto = false) {
+            const input = scriptInput.value;
+            const method = document.querySelector('input[name="genMethod"]:checked').value;
+            const preview = document.getElementById('previewOutput');
+            const dlSection = document.getElementById('downloadSection');
+            const dlLink = document.getElementById('downloadLink');
+            const lineCountDisplay = document.getElementById('lineCount');
+            
+            // Get Configs
+            const fileName = document.getElementById('fileNameInput').value || 'subtitle';
+            const offset = parseFloat(document.getElementById('timeOffset').value) || 0;
+
+            if(!input.trim()) { 
+                preview.value = '';
+                preview.placeholder = "// Waiting for input...";
+                lineCountDisplay.innerText = "0 lines";
+                dlSection.classList.add('hidden');
+                return; 
+            }
+
+            // SCANNING LOGIC
+            const lines = input.split('\n');
+            let segments = [];
+            let currentStart = null;
+            let currentText = [];
+
+            const timeRegex = /^(?:\[)?(\d{1,2}:\d{2}(?::\d{2})?)(?:\])?/;
+
+            for (let line of lines) {
+                const trimmedLine = line.trim();
+                if (!trimmedLine) continue;
+
+                const timeMatch = trimmedLine.match(timeRegex);
+
+                if (timeMatch) {
+                    if (currentStart !== null && currentText.length > 0) {
+                        segments.push({
+                            start: parseTime(currentStart),
+                            text: currentText.join(' ')
+                        });
+                    }
+                    currentStart = timeMatch[1];
+                    currentText = [];
+                    const textAfterTime = trimmedLine.replace(timeRegex, '').trim();
+                    if (textAfterTime) currentText.push(textAfterTime);
+                } else {
+                    if (currentStart !== null) currentText.push(trimmedLine);
+                }
+            }
+
+            if (currentStart !== null && currentText.length > 0) {
+                segments.push({
+                    start: parseTime(currentStart),
+                    text: currentText.join(' ')
+                });
+            }
+
+            if(segments.length === 0) {
+                if(!isAuto) showToast("No valid timestamps found", "error");
+                else preview.value = "// No timestamps detected yet...";
+                return;
+            }
+
+            // GENERATION LOOP
+            let srtOutput = "";
+            let counter = 1;
+
+            for(let i=0; i<segments.length; i++) {
+                const current = segments[i];
+                const next = segments[i+1];
+                
+                // Apply Offset here
+                let startTime = current.start + offset;
+                let endTime = (next ? next.start : (current.start + 3)) + offset;
+                let duration = endTime - startTime;
+
+                // Smart Text Clean
+                let cleanText = current.text.replace(/\s+/g, ' ').trim();
+
+                if (method === 'method1') { 
+                    // Standard
+                    if(cleanText.length > 50) {
+                        const mid = Math.floor(cleanText.length/2);
+                        const spaceIdx = cleanText.lastIndexOf(' ', mid + 10);
+                        if(spaceIdx > 0) cleanText = cleanText.substring(0, spaceIdx) + '\n' + cleanText.substring(spaceIdx+1);
+                    }
+                    srtOutput += `${counter}\n${formatTime(startTime)} --> ${formatTime(endTime)}\n${cleanText}\n\n`;
+                    counter++;
+                } else {
+                    // Shorts
+                    const words = cleanText.split(' ');
+                    const wordsPerChunk = 6;
+                    const finalChunks = Math.ceil(words.length / wordsPerChunk);
+                    const timePerChunk = duration / finalChunks;
+
+                    for(let c=0; c < finalChunks; c++) {
+                        const startIdx = c * wordsPerChunk;
+                        const chunkText = words.slice(startIdx, startIdx + wordsPerChunk).join(' ');
+                        if(!chunkText) continue;
+                        const chunkStart = startTime + (c * timePerChunk);
+                        const chunkEnd = chunkStart + timePerChunk;
+                        srtOutput += `${counter}\n${formatTime(chunkStart)} --> ${formatTime(chunkEnd)}\n${chunkText}\n\n`;
+                        counter++;
+                    }
+                }
+            }
+
+            preview.value = srtOutput;
+            lineCountDisplay.innerText = `${counter-1} lines`;
+            
+            const blob = new Blob([srtOutput], {type: 'text/srt'});
+            const url = URL.createObjectURL(blob);
+            dlLink.href = url;
+            dlLink.download = `${fileName}.srt`;
+            
+            dlSection.classList.remove('hidden');
+            dlSection.classList.add('flex');
+            
+            if(!isAuto && window.innerWidth < 1024) {
+                dlSection.scrollIntoView({ behavior: 'smooth' });
+                showToast("SRT Generated successfully", "success");
+            }
+        }
+
+        function copyToClipboard() {
+            const preview = document.getElementById('previewOutput');
+            preview.select();
+            document.execCommand('copy');
+            showToast("Copied to clipboard", "success");
+        }
+    </script>
+</body>
+</html>
