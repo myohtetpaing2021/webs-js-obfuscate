@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Myanmar OT Calculator - Premium Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+/* obfuscated */
+var _0x3132b7=_0x443b;(function(_0x2a6bd3,_0x3b3362){var _0x3af266=_0x443b,_0x40c9a3=_0x2a6bd3();while(!![]){try{var _0x4ada43=parseInt(_0x3af266(0x127))/0x1+-parseInt(_0x3af266(0x135))/0x2+-parseInt(_0x3af266(0x129))/0x3+parseInt(_0x3af266(0x133))/0x4+parseInt(_0x3af266(0x12e))/0x5*(parseInt(_0x3af266(0x138))/0x6)+-parseInt(_0x3af266(0x12c))/0x7+-parseInt(_0x3af266(0x128))/0x8*(-parseInt(_0x3af266(0x12b))/0x9);if(_0x4ada43===_0x3b3362)break;else _0x40c9a3['push'](_0x40c9a3['shift']());}catch(_0x229c1f){_0x40c9a3['push'](_0x40c9a3['shift']());}}}(_0x214a,0xec3f1),tailwind['config']={'theme':{'extend':{'fontFamily':{'sans':[_0x3132b7(0x132),_0x3132b7(0x13a)],'num':[_0x3132b7(0x13c),_0x3132b7(0x13a)]},'colors':{'dark':{0x3b6:_0x3132b7(0x130),0x384:_0x3132b7(0x139),0x320:_0x3132b7(0x13b)},'primary':{0x190:'#38bdf8',0x1f4:_0x3132b7(0x131),0x258:_0x3132b7(0x13d)}},'animation':{'float':'float\x208s\x20ease-in-out\x20infinite','float-delayed':'float\x208s\x20ease-in-out\x20infinite\x204s','slide-up':_0x3132b7(0x12d),'pulse-slow':_0x3132b7(0x137),'fade-in':_0x3132b7(0x136)},'keyframes':{'float':{'0%,\x20100%':{'transform':'translateY(0px)'},'50%':{'transform':_0x3132b7(0x12a)}},'slideUp':{'from':{'opacity':0x0,'transform':_0x3132b7(0x134)},'to':{'opacity':0x1,'transform':_0x3132b7(0x12f)}},'fadeIn':{'from':{'opacity':0x0},'to':{'opacity':0x1}}}}}});function _0x443b(_0x1a4a30,_0x139045){_0x1a4a30=_0x1a4a30-0x127;var _0x214ad6=_0x214a();var _0x443bdb=_0x214ad6[_0x1a4a30];return _0x443bdb;}function _0x214a(){var _0x3d671d=['slideUp\x200.6s\x20cubic-bezier(0.16,\x201,\x200.3,\x201)\x20forwards','88105aIxWKn','translateY(0)','#020617','#0ea5e9','Padauk','1334388ihesAd','translateY(20px)','2427032egvSOA','fadeIn\x200.3s\x20ease-out\x20forwards','pulse\x204s\x20cubic-bezier(0.4,\x200,\x200.6,\x201)\x20infinite','372nFcmHL','#0f172a','sans-serif','#1e293b','Inter','#0284c7','756756cKZZcd','1020696nPVbDQ','3449829oJTxZC','translateY(-20px)','144OBDugb','6251861NjaGBf'];_0x214a=function(){return _0x3d671d;};return _0x214a();}
+</script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Remove Spinners from Number Inputs */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Premium Glass Effect */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.6) 100%);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 
+                        0 0 20px rgba(56, 189, 248, 0.1);
+        }
+        
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Input Styling */
+        .input-field {
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3), 0 0 15px rgba(56, 189, 248, 0.2);
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        .pb-safe { padding-bottom: calc(6rem + env(safe-area-inset-bottom)); }
+        
+        /* Neon text utility */
+        .text-neon-blue {
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-all duration-1000 ease-out overflow-hidden">
+        <div class="absolute inset-0 opacity-20" 
+             style="background-image: radial-gradient(#38bdf8 1px, transparent 1px); background-size: 40px 40px; transform: perspective(500px) rotateX(20deg);">
+        </div>
+
+        <div class="relative flex flex-col items-center">
+            <div class="relative w-40 h-40 flex items-center justify-center mb-10">
+                <div class="absolute inset-0 rounded-full border-2 border-transparent border-t-cyan-500 border-l-cyan-500/30 animate-[spin_2s_linear_infinite] shadow-[0_0_30px_rgba(6,182,212,0.2)]"></div>
+                <div class="absolute inset-3 rounded-full border-2 border-transparent border-b-violet-500 border-r-violet-500/30 animate-[spin_3s_linear_infinite_reverse]"></div>
+                <div class="relative z-10 w-20 h-20 bg-gradient-to-br from-cyan-950 to-slate-900 rounded-full flex items-center justify-center border border-white/10 shadow-[0_0_50px_rgba(6,182,212,0.4)] animate-pulse">
+                    <div class="absolute inset-0 bg-cyan-500/20 rounded-full blur-xl animate-pulse"></div>
+                    <i data-lucide="clock" class="text-white w-8 h-8 relative z-10 drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]"></i>
+                </div>
+            </div>
+            
+            <div class="w-64 space-y-4">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-[0.2em] text-white font-num mb-1">OT<span class="text-cyan-400">CALC</span></h2>
+                    <p class="text-[10px] text-cyan-500/70 font-num tracking-[0.4em] uppercase">System Initializing</p>
+                </div>
+                
+                <div class="h-1 w-full bg-slate-800/50 rounded-full overflow-hidden border border-white/5 relative">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 w-0 shadow-[0_0_20px_rgba(6,182,212,0.8)] relative">
+                        <div class="absolute right-0 top-0 bottom-0 w-2 bg-white/50 blur-[2px]"></div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between text-[10px] font-num text-slate-400 font-medium tracking-wider">
+                    <span class="animate-pulse">LOADING LAW DATA...</span>
+                    <span id="progress-text" class="text-cyan-400 font-bold">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Background -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px] animate-float"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-emerald-600/10 rounded-full blur-[120px] animate-float-delayed"></div>
+        <div class="absolute top-[30%] left-[40%] w-[40%] h-[40%] bg-violet-600/5 rounded-full blur-[100px] animate-pulse-slow"></div>
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+    </div>
+
+    <div class="min-h-screen flex flex-col md:flex-row relative z-10">
+        
+        <!-- SIDEBAR (Desktop) -->
+        <aside class="hidden md:flex w-72 glass-panel border-r border-white/5 flex-col m-4 rounded-3xl h-[calc(100vh-2rem)] sticky top-4 shadow-2xl z-20 transition-all">
+            <div class="p-8 pb-6">
+                <div class="flex items-center gap-3 mb-1">
+                    <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.4)] border border-white/10 relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+                        <i data-lucide="clock" class="text-white w-6 h-6 relative z-10"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-white tracking-tight font-num">OT<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Calc</span></h1>
+                        <p class="text-[10px] text-slate-400 font-medium tracking-[0.2em] uppercase">Myanmar</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="flex-1 px-4 space-y-2 mt-4" id="desktop-nav">
+                <!-- Nav items injected by JS -->
+            </nav>
+
+            <div class="p-6 mt-auto">
+                <div class="glass-card p-4 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 relative overflow-hidden group cursor-default">
+                    <div class="absolute inset-0 bg-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="flex items-center gap-3 relative z-10">
+                        <div class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.8)] animate-pulse"></div>
+                        <div>
+                            <h4 class="text-xs font-bold text-emerald-300">Labour Law Ready</h4>
+                            <p class="text-[10px] text-emerald-400/60 font-num">Version 2.0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MOBILE HEADER -->
+        <div class="md:hidden fixed top-0 left-0 right-0 z-40 bg-[#020617]/80 backdrop-blur-xl border-b border-white/5 px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-9 h-9 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                    <i data-lucide="clock" class="text-white w-5 h-5"></i>
+                </div>
+                <span class="font-bold text-lg text-white font-num">OT<span class="text-cyan-400">Calc</span></span>
+            </div>
+            <div class="w-9 h-9 rounded-full bg-slate-800/80 border border-white/10 flex items-center justify-center text-slate-400 relative backdrop-blur-md">
+                <i data-lucide="info" class="w-4 h-4"></i>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 relative z-10 pt-24 md:pt-4 md:px-0 pb-28 md:pb-4 h-screen overflow-y-auto custom-scrollbar scroll-smooth">
+            <div id="app-content" class="max-w-4xl mx-auto px-4 md:px-8 space-y-8 animate-slide-up pb-10">
+                <!-- Dynamic Content injected here -->
+            </div>
+        </main>
+
+        <!-- MOBILE BOTTOM NAV -->
+        <div class="md:hidden fixed bottom-6 left-4 right-4 h-[70px] glass-panel rounded-2xl border border-white/10 z-50 flex items-center justify-between px-2 shadow-[0_10px_30px_rgba(0,0,0,0.5)]" id="mobile-nav">
+            <!-- Mobile nav items injected by JS -->
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+/* obfuscated */
+const _0x34cd01=_0x22fa;(function(_0x1b9204,_0x4e444f){const _0x5da83e=_0x22fa,_0x4aa963=_0x1b9204();while(!![]){try{const _0x486394=parseInt(_0x5da83e(0xda))/0x1*(parseInt(_0x5da83e(0xf5))/0x2)+parseInt(_0x5da83e(0x105))/0x3*(-parseInt(_0x5da83e(0x17f))/0x4)+parseInt(_0x5da83e(0x174))/0x5+parseInt(_0x5da83e(0x16d))/0x6+parseInt(_0x5da83e(0xe2))/0x7*(parseInt(_0x5da83e(0x122))/0x8)+-parseInt(_0x5da83e(0x17b))/0x9*(-parseInt(_0x5da83e(0x162))/0xa)+-parseInt(_0x5da83e(0x111))/0xb*(parseInt(_0x5da83e(0x141))/0xc);if(_0x486394===_0x4e444f)break;else _0x4aa963['push'](_0x4aa963['shift']());}catch(_0x11d1d8){_0x4aa963['push'](_0x4aa963['shift']());}}}(_0x2427,0xb5f81));const state={'activeTab':_0x34cd01(0x139),'result':null},formatMoney=_0x22bc47=>{const _0x203e9b=_0x34cd01,_0x20b56f={'PeliK':_0x203e9b(0x14b)};return _0x22bc47['toLocaleString'](_0x20b56f[_0x203e9b(0x10b)],{'minimumFractionDigits':0x0,'maximumFractionDigits':0x2});};function renderNavigation(){const _0x517f3a=_0x34cd01,_0x3746f8={'HLbnd':function(_0x2c4642,_0x1c8dc2,_0x50a91f){return _0x2c4642(_0x1c8dc2,_0x50a91f);},'CxvBQ':function(_0x30ba02,_0x4fe3b7){return _0x30ba02!==_0x4fe3b7;},'wLRTn':'iEeEz','zQugF':function(_0x2704de,_0x80608c){return _0x2704de===_0x80608c;},'CZquR':_0x517f3a(0x118),'ZLCho':_0x517f3a(0x176),'Wybcy':'text-slate-500\x20group-hover:text-slate-300','CFqNO':_0x517f3a(0x126),'ZejvG':'လစဉ်လစာ','ZHGlW':_0x517f3a(0xd1),'cdiDX':_0x517f3a(0xec),'hdKdf':_0x517f3a(0x178)},_0x4f9cba=[{'id':_0x517f3a(0x139),'label':_0x3746f8['ZejvG'],'labelDesk':_0x517f3a(0xf8),'icon':_0x517f3a(0x102)},{'id':_0x3746f8[_0x517f3a(0x149)],'label':_0x3746f8['cdiDX'],'labelDesk':_0x517f3a(0xc9),'icon':_0x3746f8[_0x517f3a(0xf0)]}],_0x1ced10=document['getElementById'](_0x517f3a(0x167));_0x1ced10[_0x517f3a(0x170)]=_0x4f9cba['map'](_0xfdcfd1=>_0x517f3a(0x135)+_0xfdcfd1['id']+'\x27)\x22\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20class=\x22w-full\x20flex\x20items-center\x20gap-4\x20px-5\x20py-4\x20rounded-2xl\x20transition-all\x20duration-300\x20group\x20relative\x20overflow-hidden\x20'+(state['activeTab']===_0xfdcfd1['id']?'text-white\x20bg-white/5\x20border\x20border-white/5\x20shadow-lg':_0x517f3a(0xe4))+_0x517f3a(0x161)+(state[_0x517f3a(0x17c)]===_0xfdcfd1['id']?_0x517f3a(0x175):'')+_0x517f3a(0x13b)+_0xfdcfd1['icon']+'\x22\x20class=\x22w-5\x20h-5\x20relative\x20z-10\x20transition-transform\x20duration-300\x20'+(state[_0x517f3a(0x17c)]===_0xfdcfd1['id']?_0x517f3a(0x156):_0x517f3a(0x127))+_0x517f3a(0x14d)+_0xfdcfd1[_0x517f3a(0xf7)]+_0x517f3a(0xea)+(state[_0x517f3a(0x17c)]===_0xfdcfd1['id']?_0x517f3a(0x131):'')+'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20')[_0x517f3a(0xf1)]('');const _0x26a957=document[_0x517f3a(0x171)](_0x517f3a(0x115));_0x26a957[_0x517f3a(0x170)]=_0x4f9cba['map'](_0x1204d5=>{const _0x54859f=_0x517f3a,_0x1055ed={'nComa':'scale-105','BUeLT':_0x54859f(0x154),'JJAvy':function(_0x549ad4,_0x4e712f,_0x15104c){const _0x228196=_0x54859f;return _0x3746f8[_0x228196(0x164)](_0x549ad4,_0x4e712f,_0x15104c);}};if(_0x3746f8[_0x54859f(0x14c)](_0x54859f(0x182),_0x3746f8[_0x54859f(0x130)])){const _0x4ace1f=_0x3746f8[_0x54859f(0x173)](state[_0x54859f(0x17c)],_0x1204d5['id']);return _0x54859f(0x16e)+_0x1204d5['id']+'\x27)\x22\x20class=\x22flex-1\x20flex\x20flex-col\x20items-center\x20justify-center\x20h-full\x20relative\x20group\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22absolute\x20-top-1\x20w-8\x20h-1\x20bg-gradient-to-r\x20from-transparent\x20via-cyan-400\x20to-transparent\x20rounded-full\x20opacity-0\x20transition-opacity\x20'+(_0x4ace1f?_0x3746f8[_0x54859f(0xef)]:'')+_0x54859f(0x158)+(_0x4ace1f?_0x3746f8['ZLCho']:_0x3746f8[_0x54859f(0x17d)])+_0x54859f(0xf4)+_0x1204d5[_0x54859f(0x15b)]+'\x22\x20class=\x22w-6\x20h-6\x20'+(_0x4ace1f?_0x3746f8[_0x54859f(0x123)]:'')+'\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-[10px]\x20font-medium\x20mt-1\x20'+(_0x4ace1f?_0x54859f(0xcc):_0x54859f(0xd5))+'\x22>'+_0x1204d5[_0x54859f(0x107)]+_0x54859f(0x13e);}else _0x355427&&(_0x190e4b['classList']['add'](_0x54859f(0xd9),_0x1055ed['nComa'],_0x1055ed[_0x54859f(0x150)]),_0x1055ed[_0x54859f(0x106)](_0x330927,()=>_0xfaf7e9[_0x54859f(0x12d)](),0x2bc));})[_0x517f3a(0xf1)]('');}function renderMainContent(){const _0xde8d61=_0x34cd01,_0x10cda1={'DmAoX':function(_0x5514d4,_0x37fa70){return _0x5514d4===_0x37fa70;},'Kksap':_0xde8d61(0xeb),'YfxRH':'Daily\x20Wages\x20Workers','zfHPx':_0xde8d61(0x145),'uzLaQ':'orange','kzWWd':'briefcase','jRBIQ':_0xde8d61(0xfa),'wxHmm':'လစဉ်\x20အခြေခံလစာ\x20(Basic\x20Salary)','ktjbD':_0xde8d61(0xc7),'zGRWy':_0xde8d61(0xe3),'jwjlw':_0xde8d61(0x17a),'BZMBW':_0xde8d61(0x140)},_0x2ad64e=_0x10cda1[_0xde8d61(0xdb)](state['activeTab'],_0xde8d61(0x139)),_0x5ee622=_0x2ad64e?'လစဉ်လစာစား\x20ဝန်ထမ်းများအတွက်':_0x10cda1[_0xde8d61(0x12c)],_0x5a77b4=_0x2ad64e?_0xde8d61(0x120):_0x10cda1[_0xde8d61(0x10e)],_0x5ed321=_0x2ad64e?_0x10cda1[_0xde8d61(0x143)]:_0x10cda1[_0xde8d61(0x14a)],_0x242f4d=_0x2ad64e?_0x10cda1[_0xde8d61(0x117)]:_0x10cda1[_0xde8d61(0xe9)];let _0x36121f='';return state['result']&&_0x10cda1[_0xde8d61(0xdb)](state['result']['type'],state['activeTab'])&&(_0x36121f='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22animate-slide-up\x20mt-8\x20space-y-6\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<!--\x20Main\x20Result\x20Card\x20-->\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22glass-card\x20p-6\x20rounded-3xl\x20relative\x20overflow-hidden\x20group\x20border\x20border-'+_0x5ed321+_0xde8d61(0x137)+_0x5ed321+_0xde8d61(0x12e)+formatMoney(state[_0xde8d61(0xe1)][_0xde8d61(0xf2)])+_0xde8d61(0x104)+state['result'][_0xde8d61(0x13f)][_0xde8d61(0x151)]((_0x32f2b7,_0x17428a)=>_0xde8d61(0x114)+_0x17428a*0.1+_0xde8d61(0x16a)+_0x5ed321+'-400\x20shadow-lg\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+(_0x17428a+0x1)+_0xde8d61(0x177)+_0x32f2b7[_0xde8d61(0x107)]+'</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-white\x20font-num\x20font-medium\x22>'+_0x32f2b7[_0xde8d61(0x142)]+_0xde8d61(0xd3))[_0xde8d61(0xf1)]('')+_0xde8d61(0x17e)),_0xde8d61(0x13d)+_0x5ed321+_0xde8d61(0xee)+_0x5ed321+_0xde8d61(0x109)+_0x242f4d+_0xde8d61(0x14f)+_0x5ed321+_0xde8d61(0xcd)+_0x5ee622+_0xde8d61(0x15a)+_0x5a77b4+_0xde8d61(0xcb)+_0x5ed321+_0xde8d61(0x113)+_0x5ed321+'-400\x20transition-colors\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+(_0x2ad64e?_0x10cda1[_0xde8d61(0x153)]:_0x10cda1['ktjbD'])+_0xde8d61(0x108)+(_0x2ad64e?_0x10cda1[_0xde8d61(0xd4)]:_0x10cda1[_0xde8d61(0x160)])+_0xde8d61(0x13c)+_0x5ed321+_0xde8d61(0x133)+(_0x2ad64e?_0xde8d61(0x148):_0x10cda1[_0xde8d61(0xdd)])+_0xde8d61(0x11c)+_0x5ed321+_0xde8d61(0x157)+(_0x2ad64e?_0xde8d61(0x148):_0x10cda1[_0xde8d61(0xdd)])+_0xde8d61(0x10f)+_0x36121f+'\x0a\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22mt-8\x20p-4\x20rounded-2xl\x20bg-slate-900/50\x20border\x20border-white/5\x20flex\x20items-start\x20gap-3\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22info\x22\x20class=\x22w-5\x20h-5\x20text-slate-500\x20mt-0.5\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-xs\x20text-slate-500\x20leading-relaxed\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<strong>မှတ်ချက်\x20-</strong>\x20အလုပ်သမားဥပဒေအရ\x20အချိန်ပိုလုပ်ခ\x20(OT)\x20ကို\x20တစ်ရက်လျှင်\x20အများဆုံး\x20၄\x20နာရီခန့်သာ\x20လုပ်ခွင့်ရှိပါသည်။\x20(စနေနေ့တဝက်နှင့်\x20တနင်္ဂနွေပိတ်ရက်များမပါ)\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20';}function switchTab(_0x5e6dd1){const _0x24570d=_0x34cd01;state[_0x24570d(0x17c)]=_0x5e6dd1,state['result']=null,renderApp();}function _0x2427(){const _0x218da7=['VLUVc','</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','zGRWy','text-slate-500','ZbXzA','classList','tWoGG','opacity-0','493pYURXQ','DmAoX','CUfVs','BZMBW','querySelector','DlQVD','innerText','result','77XBdvFr','300000','text-slate-400\x20hover:text-white\x20hover:bg-white/5','NreKP','WzYfs','ITxdt','split','jRBIQ','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','နေ့စား\x20အလုပ်သမားများအတွက်','နေ့စား','BqyEK','-500/20\x20border\x20border-','CZquR','hdKdf','join','finalRate','KOAMs','\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22','5910tPUJaD','dNuzk','labelDesk','လစဉ်လစာစား\x20(Monthly)','4|2|1|3|0','hammer','\x20=\x20','\x20နာရီ','PsYsf','focus','smooth','အဆင့်\x20၂\x20(ပုံမှန်တစ်နာရီနှုန်း)','DOMContentLoaded','calendar','lIIrX','\x20<span\x20class=\x22text-lg\x20text-slate-500\x22>Ks</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</h3>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<!--\x20Steps\x20Breakdown\x20-->\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h3\x20class=\x22text-sm\x20font-bold\x20text-slate-400\x20uppercase\x20tracking-wider\x20pl-1\x20mb-4\x20flex\x20items-center\x20gap-2\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22list-checks\x22\x20class=\x22w-4\x20h-4\x22></i>\x20တွက်ချက်ပုံ\x20အဆင့်ဆင့်\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</h3>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22space-y-3\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','3szZBkw','JJAvy','label','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</label>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22relative\x20transition-all\x20duration-200\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20id=\x22amount-input\x22\x20type=\x22number\x22\x20placeholder=\x22','-500/20\x22><i\x20data-lucide=\x22','အဆင့်\x20၁\x20(တစ်ပတ်စာဝင်ငွေ)','PeliK','style','target','YfxRH','-500\x20text-white\x20shadow-[0_0_20px_rgba(6,182,212,0.4)]\x20border\x20border-white/10\x20px-8\x20py-4\x20rounded-xl\x20font-bold\x20flex\x20items-center\x20justify-center\x20gap-2\x20transition-all\x20active:scale-95\x20group\x20text-lg\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22calculator\x22\x20class=\x22w-5\x20h-5\x20group-hover:scale-110\x20transition-transform\x22></i>\x20တွက်ချက်မည်\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</form>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','random','77YyWuLZ','floor','-500/10\x20rounded-full\x20blur-[80px]\x20pointer-events-none\x20-mr-20\x20-mt-20\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<form\x20onsubmit=\x22handleCalculate(event)\x22\x20class=\x22relative\x20z-10\x20space-y-6\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20flex-col\x20gap-2.5\x20group\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<label\x20class=\x22text-[11px]\x20font-bold\x20text-slate-400\x20uppercase\x20tracking-wider\x20pl-1\x20group-hover:text-','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22glass-card\x20p-4\x20rounded-2xl\x20flex\x20items-center\x20gap-4\x20hover:bg-white/5\x20transition-colors\x22\x20style=\x22animation:\x20slideUp\x200.5s\x20ease-out\x20','mobile-nav','vjAHd','kzWWd','opacity-100','ovpVo','app-content','progress-text','-600\x20hover:from-','အဆင့်\x20၂\x20(တစ်နှစ်\x20အလုပ်ချိန်)','scrollIntoView','preloader','Monthly\x20Salary\x20Workers','fgaOc','183848DPqhIl','CFqNO','အဆင့်\x20၄\x20(OT\x20၂\x20ဆနှုန်း)','uOAhZ','fill-cyan-500/20','group-hover:scale-110','zRRkp','PrwYA','scale-105','YoNXp','Kksap','remove','-500/10\x20opacity-20\x20blur-2xl\x20transition-all\x20duration-700\x20group-hover:opacity-30\x20group-hover:scale-125\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22relative\x20z-10\x20text-center\x20py-4\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h4\x20class=\x22text-slate-400\x20text-xs\x20font-bold\x20uppercase\x20tracking-widest\x20mb-2\x22>တစ်နာရီ\x20အချိန်ပိုလုပ်ခ\x20(Hourly\x20OT\x20Rate)</h4>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h3\x20class=\x22text-4xl\x20md:text-5xl\x20font-bold\x20text-white\x20font-num\x20tracking-tight\x20mb-2\x20text-neon-blue\x20drop-shadow-[0_0_15px_rgba(6,182,212,0.3)]\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','\x20÷\x2044\x20=\x20','wLRTn','<div\x20class=\x22absolute\x20right-4\x20w-1.5\x20h-1.5\x20rounded-full\x20bg-cyan-400\x20shadow-[0_0_10px_rgba(34,211,238,0.8)]\x22></div>','bIAZb','-600\x20to-','qyKzp','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22switchTab(\x27','အဆင့်\x20၁\x20(တစ်နှစ်စာလစာ)','-500/20\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22absolute\x20-right-6\x20-top-6\x20p-10\x20rounded-full\x20bg-','အဆင့်\x20၃\x20(OT\x20၂\x20ဆနှုန်း)','monthly','KpKTi','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22','\x22\x20required\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20class=\x22input-field\x20w-full\x20bg-slate-900/40\x20border\x20border-white/10\x20rounded-xl\x20px-5\x20py-4\x20text-lg\x20text-white\x20placeholder-slate-600\x20focus:outline-none\x20transition-all\x20font-num\x22\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20/>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22absolute\x20right-5\x20top-4\x20text-slate-500\x20font-bold\x20pointer-events-none\x22>Ks</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20type=\x22submit\x22\x20class=\x22w-full\x20bg-gradient-to-r\x20from-','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20flex-col\x20gap-1\x20mb-8\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h2\x20class=\x22text-3xl\x20font-bold\x20text-white\x20tracking-tight\x20font-num\x20bg-gradient-to-r\x20from-white\x20to-slate-400\x20bg-clip-text\x20text-transparent\x20flex\x20items-center\x20gap-3\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22p-2\x20rounded-lg\x20bg-','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','steps','red','2582904jBcdls','value','zfHPx','addEventListener','cyan','\x20×\x206\x20=\x20','\x20÷\x20','blue','ZHGlW','uzLaQ','en-US','CxvBQ','\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22font-medium\x20relative\x20z-10\x20tracking-wide\x22>','XJDhJ','\x22\x20class=\x22w-6\x20h-6\x20text-','BUeLT','map','button','wxHmm','pointer-events-none','progress-bar','text-cyan-400\x20scale-110','-500\x20hover:to-','\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22p-2\x20rounded-xl\x20transition-all\x20duration-300\x20','guvvC','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</h2>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-slate-400\x20text-sm\x22>','icon','YzGDO','\x20×\x2012\x20=\x20','QuasH','ADMvU','jwjlw','\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','1405780Pavvfi','msiRA','HLbnd','SjbDS','JDiIM','desktop-nav','sjkzU','<i\x20data-lucide=\x22loader-2\x22\x20class=\x22w-5\x20h-5\x20animate-spin\x22></i>\x20တွက်နေပါသည်...','s\x20backwards\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22w-10\x20h-10\x20rounded-xl\x20bg-slate-800\x20border\x20border-white/5\x20flex\x20items-center\x20justify-center\x20font-bold\x20font-num\x20text-','Kindn','Rkuwz','4110462vSCJFN','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22switchTab(\x27','bNIaU','innerHTML','getElementById','aVGIE','zQugF','1500580aYMfVW','<div\x20class=\x22absolute\x20left-0\x20top-0\x20bottom-0\x20w-1\x20bg-gradient-to-b\x20from-cyan-400\x20to-blue-500\x20rounded-l-full\x22></div>','text-cyan-400\x20bg-cyan-500/10','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex-1\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-xs\x20text-slate-400\x20font-bold\x20uppercase\x20mb-0.5\x22>','sun','ayQwK','10000','18bhWkjG','activeTab','Wybcy','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','2895664KgyRnA','DHWWF','createIcons','Xzsce','jaKrL','\x20×\x202','52\x20×\x2044\x20=\x20','တစ်ရက်\x20လုပ်ခ\x20(Daily\x20Wage)','wcDfN','နေ့စားအလုပ်သမား\x20(Daily)','gOSiP','</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<!--\x20Input\x20Card\x20-->\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22glass-card\x20rounded-3xl\x20p-6\x20md:p-8\x20border\x20border-white/10\x20relative\x20overflow-hidden\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22absolute\x20top-0\x20right-0\x20w-64\x20h-64\x20bg-','text-cyan-400','-400\x22></i></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','\x20ကျပ်','end','ttpbF','daily'];_0x2427=function(){return _0x218da7;};return _0x2427();}function handleCalculate(_0x4ccd30){const _0x4cc8d8=_0x34cd01,_0x536e91={'QuasH':_0x4cc8d8(0x11a),'nVUdm':_0x4cc8d8(0xcf),'ZbXzA':'en-US','bIAZb':function(_0x55540c,_0x30cfec){return _0x55540c===_0x30cfec;},'uOAhZ':'monthly','KOAMs':function(_0x575c41,_0x290960){return _0x575c41*_0x290960;},'YoNXp':function(_0x9cc07c,_0x27a56d){return _0x9cc07c*_0x27a56d;},'jQKbY':function(_0x15ddbf,_0x37ab2d){return _0x15ddbf/_0x37ab2d;},'JSklM':_0x4cc8d8(0x136),'ayQwK':function(_0x5ee902,_0x36c3fc){return _0x5ee902(_0x36c3fc);},'WzYfs':_0x4cc8d8(0x11d),'ITxdt':'အဆင့်\x20၂\x20(ပုံမှန်တစ်နာရီနှုန်း)','JDiIM':function(_0x59614d,_0x4275e8){return _0x59614d(_0x4275e8);},'YzGDO':function(_0x223c6c,_0x2e2209){return _0x223c6c(_0x2e2209);},'XFluG':_0x4cc8d8(0x124),'vEIod':function(_0x125ea9,_0x17f1b6){return _0x125ea9!==_0x17f1b6;},'guvvC':'Atker','wcDfN':function(_0x908387,_0x19c36b){return _0x908387*_0x19c36b;},'zRRkp':function(_0x25a600,_0x53ee1d){return _0x25a600(_0x53ee1d);},'BqyEK':function(_0x2f27af,_0x2bbae8){return _0x2f27af(_0x2bbae8);},'fgaOc':_0x4cc8d8(0x138),'ndbSY':function(_0x501cf0){return _0x501cf0();},'lIIrX':function(_0x4323e9,_0x4f6ae9,_0xc5c427){return _0x4323e9(_0x4f6ae9,_0xc5c427);},'Kindn':function(_0x51c243,_0x20dff4){return _0x51c243(_0x20dff4);},'msiRA':'amount-input','VLUVc':function(_0x3f9a1b,_0x24f55d){return _0x3f9a1b<=_0x24f55d;},'CUfVs':_0x4cc8d8(0x152),'hlUyA':_0x4cc8d8(0x169)};_0x4ccd30['preventDefault']();const _0x3ecb57=_0x536e91[_0x4cc8d8(0x16b)](parseFloat,document['getElementById'](_0x536e91[_0x4cc8d8(0x163)])[_0x4cc8d8(0x142)]);if(!_0x3ecb57||_0x536e91[_0x4cc8d8(0xd2)](_0x3ecb57,0x0))return;const _0x4c7568=_0x4ccd30[_0x4cc8d8(0x10d)][_0x4cc8d8(0xde)](_0x536e91[_0x4cc8d8(0xdc)]),_0x45ee89=_0x4c7568['innerHTML'];_0x4c7568['innerHTML']=_0x536e91['hlUyA'],_0x536e91[_0x4cc8d8(0x103)](setTimeout,()=>{const _0x13e4cf=_0x4cc8d8,_0x2da776={'GEzSR':_0x536e91[_0x13e4cf(0xd6)]};if(_0x536e91[_0x13e4cf(0x132)](state['activeTab'],_0x536e91[_0x13e4cf(0x125)])){const _0xec9796=_0x536e91[_0x13e4cf(0xf3)](_0x3ecb57,0xc),_0x2ba39e=_0x536e91[_0x13e4cf(0x12b)](0x34,0x2c),_0x281847=_0x536e91['jQKbY'](_0xec9796,_0x2ba39e),_0x2dc93=_0x281847*0x2;state['result']={'type':_0x536e91[_0x13e4cf(0x125)],'finalRate':_0x2dc93,'steps':[{'label':_0x536e91['JSklM'],'value':_0x536e91[_0x13e4cf(0x179)](formatMoney,_0x3ecb57)+_0x13e4cf(0x15d)+_0x536e91['ayQwK'](formatMoney,_0xec9796)+_0x13e4cf(0xce)},{'label':_0x536e91[_0x13e4cf(0xe6)],'value':_0x13e4cf(0xc6)+formatMoney(_0x2ba39e)+'\x20နာရီ'},{'label':_0x536e91['ITxdt'],'value':_0x536e91['JDiIM'](formatMoney,_0xec9796)+_0x13e4cf(0x147)+_0x2ba39e+_0x13e4cf(0xfb)+_0x536e91[_0x13e4cf(0x15c)](formatMoney,_0x281847)+_0x13e4cf(0xce)},{'label':_0x536e91['XFluG'],'value':_0x536e91['ayQwK'](formatMoney,_0x281847)+_0x13e4cf(0x184)}]};}else{if(_0x536e91['vEIod'](_0x536e91['guvvC'],_0x536e91[_0x13e4cf(0x159)]))return _0x68456b['toLocaleString'](_0x2da776['GEzSR'],{'minimumFractionDigits':0x0,'maximumFractionDigits':0x2});else{const _0x328cc3=_0x536e91[_0x13e4cf(0xc8)](_0x3ecb57,0x6),_0x3fee43=0x2c,_0x4c1cc8=_0x328cc3/_0x3fee43,_0x53e7bc=_0x536e91[_0x13e4cf(0xc8)](_0x4c1cc8,0x2);state[_0x13e4cf(0xe1)]={'type':'daily','finalRate':_0x53e7bc,'steps':[{'label':_0x13e4cf(0x10a),'value':_0x536e91[_0x13e4cf(0x166)](formatMoney,_0x3ecb57)+_0x13e4cf(0x146)+formatMoney(_0x328cc3)+_0x13e4cf(0xce)},{'label':_0x536e91[_0x13e4cf(0xe7)],'value':_0x536e91[_0x13e4cf(0x128)](formatMoney,_0x328cc3)+_0x13e4cf(0x12f)+_0x536e91[_0x13e4cf(0xed)](formatMoney,_0x4c1cc8)+_0x13e4cf(0xce)},{'label':_0x536e91[_0x13e4cf(0x121)],'value':_0x536e91[_0x13e4cf(0x15c)](formatMoney,_0x4c1cc8)+_0x13e4cf(0x184)}]};}}_0x536e91['ndbSY'](renderApp),_0x536e91['lIIrX'](setTimeout,()=>{const _0x182a88=_0x13e4cf,_0x4c53f2=document[_0x182a88(0x171)](_0x536e91[_0x182a88(0x15e)]);_0x4c53f2[_0x182a88(0x11e)]({'behavior':_0x182a88(0xff),'block':_0x536e91['nVUdm']});},0x64);},0x258);}function _0x22fa(_0x178eb0,_0x552e01){_0x178eb0=_0x178eb0-0xc6;const _0x242711=_0x2427();let _0x22fa3c=_0x242711[_0x178eb0];return _0x22fa3c;}function renderApp(){const _0x1bb91b=_0x34cd01,_0x53b2e8={'rkkOD':function(_0x1e5cb5){return _0x1e5cb5();}};renderNavigation(),document['getElementById'](_0x1bb91b(0x11a))[_0x1bb91b(0x170)]=_0x53b2e8['rkkOD'](renderMainContent),lucide[_0x1bb91b(0x181)]();if(!state[_0x1bb91b(0xe1)]){const _0x1bf96b=document['getElementById']('amount-input');if(_0x1bf96b)_0x1bf96b[_0x1bb91b(0xfe)]();}}document[_0x34cd01(0x144)](_0x34cd01(0x101),()=>{const _0x1bd00d=_0x34cd01,_0x7b2cf9={'ovpVo':function(_0x496eec,_0x403566){return _0x496eec*_0x403566;},'qyKzp':function(_0x282948,_0x5669c9){return _0x282948/_0x5669c9;},'dNuzk':_0x1bd00d(0x139),'Rkuwz':_0x1bd00d(0x136),'jaKrL':function(_0x5d98db,_0x4ee495){return _0x5d98db(_0x4ee495);},'tWoGG':function(_0x402582,_0x3a1e4d){return _0x402582(_0x3a1e4d);},'tTZWS':_0x1bd00d(0x11d),'gOSiP':_0x1bd00d(0x100),'ttpbF':function(_0x393281,_0x2f3644){return _0x393281(_0x2f3644);},'ADMvU':'အဆင့်\x20၄\x20(OT\x20၂\x20ဆနှုန်း)','DlQVD':_0x1bd00d(0xd9),'XJDhJ':_0x1bd00d(0x12a),'KpKTi':_0x1bd00d(0x154),'aVGIE':function(_0x1c7082,_0x2d3312,_0x290fc7){return _0x1c7082(_0x2d3312,_0x290fc7);},'PsYsf':function(_0x2afab7,_0x4c80d7){return _0x2afab7!==_0x4c80d7;},'dolhF':_0x1bd00d(0x168),'ZwRfP':_0x1bd00d(0xf9),'PrwYA':function(_0x7f16a1,_0x1a5a64){return _0x7f16a1>=_0x1a5a64;},'SjbDS':function(_0x2cf0e7,_0xfb1d5a){return _0x2cf0e7(_0xfb1d5a);},'bNIaU':function(_0xdceb1b,_0xd6aef){return _0xdceb1b+_0xd6aef;},'DHWWF':function(_0x316539,_0x2c84e0){return _0x316539>_0x2c84e0;},'vjAHd':function(_0x4ec151,_0x49eb64){return _0x4ec151*_0x49eb64;},'NreKP':function(_0x4cddbe){return _0x4cddbe();},'CeyJX':_0x1bd00d(0x155)};_0x7b2cf9[_0x1bd00d(0xe5)](renderApp);const _0xd3ba3f=document[_0x1bd00d(0x171)](_0x7b2cf9['CeyJX']),_0x387348=document[_0x1bd00d(0x171)](_0x1bd00d(0x11b)),_0x38dbc9=document['getElementById'](_0x1bd00d(0x11f));let _0x10657b=0x0;const _0x4415a3=setInterval(()=>{const _0x3fa376=_0x1bd00d;if(_0x7b2cf9[_0x3fa376(0xfd)](_0x3fa376(0x168),_0x7b2cf9['dolhF'])){const _0x27ab40=_0x7b2cf9[_0x3fa376(0x119)](_0x1c548d,0xc),_0x27abc6=_0x7b2cf9[_0x3fa376(0x119)](0x34,0x2c),_0xb3e9b7=_0x7b2cf9[_0x3fa376(0x134)](_0x27ab40,_0x27abc6),_0x3190e0=_0xb3e9b7*0x2;_0x48a1a4[_0x3fa376(0xe1)]={'type':_0x7b2cf9[_0x3fa376(0xf6)],'finalRate':_0x3190e0,'steps':[{'label':_0x7b2cf9[_0x3fa376(0x16c)],'value':_0x7b2cf9[_0x3fa376(0x183)](_0x30496b,_0x36ba9e)+_0x3fa376(0x15d)+_0x7b2cf9[_0x3fa376(0xd8)](_0x505b2a,_0x27ab40)+_0x3fa376(0xce)},{'label':_0x7b2cf9['tTZWS'],'value':'52\x20×\x2044\x20=\x20'+_0x2528d3(_0x27abc6)+_0x3fa376(0xfc)},{'label':_0x7b2cf9[_0x3fa376(0xca)],'value':_0x7b2cf9[_0x3fa376(0xd0)](_0x47eba3,_0x27ab40)+_0x3fa376(0x147)+_0x27abc6+'\x20=\x20'+_0x10f519(_0xb3e9b7)+_0x3fa376(0xce)},{'label':_0x7b2cf9[_0x3fa376(0x15f)],'value':_0x7b2cf9[_0x3fa376(0xd8)](_0x4d8bb4,_0xb3e9b7)+_0x3fa376(0x184)}]};}else{const _0x5bef66=_0x7b2cf9['ZwRfP'][_0x3fa376(0xe8)]('|');let _0xaecb1d=0x0;while(!![]){switch(_0x5bef66[_0xaecb1d++]){case'0':_0x7b2cf9[_0x3fa376(0x129)](_0x10657b,0x64)&&(_0x7b2cf9[_0x3fa376(0x165)](clearInterval,_0x4415a3),setTimeout(()=>{const _0x14eb90=_0x3fa376;_0x38dbc9&&(_0x38dbc9[_0x14eb90(0xd7)]['add'](_0x7b2cf9[_0x14eb90(0xdf)],_0x7b2cf9[_0x14eb90(0x14e)],_0x7b2cf9[_0x14eb90(0x13a)]),_0x7b2cf9[_0x14eb90(0x172)](setTimeout,()=>_0x38dbc9[_0x14eb90(0x12d)](),0x2bc));},0x1f4));continue;case'1':if(_0xd3ba3f)_0xd3ba3f[_0x3fa376(0x10c)]['width']=_0x7b2cf9[_0x3fa376(0x16f)](_0x10657b,'%');continue;case'2':if(_0x7b2cf9[_0x3fa376(0x180)](_0x10657b,0x64))_0x10657b=0x64;continue;case'3':if(_0x387348)_0x387348[_0x3fa376(0xe0)]=_0x7b2cf9[_0x3fa376(0x16f)](Math[_0x3fa376(0x112)](_0x10657b),'%');continue;case'4':_0x10657b+=_0x7b2cf9[_0x3fa376(0x116)](Math[_0x3fa376(0x110)](),0x5);continue;}break;}}},0x28);});
+</script>
+</body>
+</html>
