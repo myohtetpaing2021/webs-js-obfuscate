@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Inventory Pro Management - Ultimate Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#020617', // Deep Space
+                            900: '#0f172a',
+                            800: '#1e293b',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 8s ease-in-out infinite',
+                        'float-delayed': 'float 8s ease-in-out infinite 4s',
+                        'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        slideUp: {
+                            'from': { opacity: 0, transform: 'translateY(20px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        fadeIn: {
+                            'from': { opacity: 0 },
+                            'to': { opacity: 1 },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Remove Spinners from Number Inputs */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Premium Glass Effect */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.6) 100%);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 
+                        0 0 20px rgba(56, 189, 248, 0.1);
+        }
+        
+        .glass-card:hover::before { opacity: 1; }
+
+        /* Input Styling */
+        .input-field { transition: all 0.3s ease; }
+        .input-field:focus {
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3), 0 0 15px rgba(56, 189, 248, 0.2);
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        .pb-safe { padding-bottom: calc(6rem + env(safe-area-inset-bottom)); }
+        
+        .text-neon-blue { text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-all duration-1000 ease-out overflow-hidden">
+        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#38bdf8 1px, transparent 1px); background-size: 40px 40px; transform: perspective(500px) rotateX(20deg);"></div>
+        <div class="relative flex flex-col items-center">
+            <div class="relative w-40 h-40 flex items-center justify-center mb-10">
+                <div class="absolute inset-0 rounded-full border-2 border-transparent border-t-cyan-500 border-l-cyan-500/30 animate-[spin_2s_linear_infinite] shadow-[0_0_30px_rgba(6,182,212,0.2)]"></div>
+                <div class="absolute inset-3 rounded-full border-2 border-transparent border-b-violet-500 border-r-violet-500/30 animate-[spin_3s_linear_infinite_reverse]"></div>
+                <div class="relative z-10 w-20 h-20 bg-gradient-to-br from-cyan-950 to-slate-900 rounded-full flex items-center justify-center border border-white/10 shadow-[0_0_50px_rgba(6,182,212,0.4)] animate-pulse">
+                    <i data-lucide="layers" class="text-white w-8 h-8 relative z-10 drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]"></i>
+                </div>
+            </div>
+            <div class="w-64 space-y-4">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-[0.2em] text-white font-num mb-1">INVENTORY<span class="text-cyan-400">PRO</span></h2>
+                    <p class="text-[10px] text-cyan-500/70 font-num tracking-[0.4em] uppercase">System Initializing</p>
+                </div>
+                <div class="h-1 w-full bg-slate-800/50 rounded-full overflow-hidden border border-white/5 relative">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 w-0 shadow-[0_0_20px_rgba(6,182,212,0.8)]"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Background -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px] animate-float"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-emerald-600/10 rounded-full blur-[120px] animate-float-delayed"></div>
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+    </div>
+
+    <div class="min-h-screen flex flex-col md:flex-row relative z-10">
+        
+        <!-- SIDEBAR WRAPPER (Desktop) -->
+        <div class="hidden md:block w-24 shrink-0 mx-4 my-4 relative z-50">
+            <aside class="absolute left-0 top-0 w-24 hover:w-72 glass-panel border border-white/5 flex-col rounded-3xl h-[calc(100vh-2rem)] shadow-[0_0_40px_rgba(0,0,0,0.5)] transition-all duration-300 ease-in-out group/sidebar overflow-hidden flex bg-slate-950/80 hover:bg-slate-900/90 backdrop-blur-2xl">
+                <div class="p-6 pb-4 flex items-center gap-4 shrink-0">
+                    <div class="w-12 h-12 shrink-0 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.4)] border border-white/10 relative overflow-hidden group">
+                        <i data-lucide="layers" class="text-white w-6 h-6 relative z-10"></i>
+                    </div>
+                    <div class="opacity-0 group-hover/sidebar:opacity-100 transition-all duration-300 translate-x-2 group-hover/sidebar:translate-x-0 whitespace-nowrap">
+                        <h1 class="text-2xl font-bold text-white tracking-tight font-num">INV<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">PRO</span></h1>
+                        <p class="text-[10px] text-slate-400 font-medium tracking-[0.2em] uppercase">Management</p>
+                    </div>
+                </div>
+                
+                <!-- Fixed overflow to allow scrolling if screen is too small -->
+                <nav class="flex-1 px-3 space-y-1.5 mt-2 overflow-y-auto overflow-x-hidden custom-scrollbar" id="desktop-nav"></nav>
+                
+                <!-- Settings & Actions (Toggle Panel) -->
+                <div class="p-4 mt-auto shrink-0 flex flex-col gap-1.5 border-t border-white/5 pt-3 bg-slate-950/50">
+                    
+                    <!-- Toggle Button -->
+                    <button onclick="toggleDesktopSettingsPanel()" class="w-full py-3 px-0 rounded-xl bg-slate-800/40 hover:bg-slate-800/80 text-xs font-bold text-slate-300 transition-all flex items-center gap-4 group/btn relative overflow-hidden">
+                        <div class="w-12 flex justify-center shrink-0 relative z-10">
+                            <i data-lucide="settings" id="settings-spin-icon" class="w-5 h-5 transition-transform duration-500"></i>
+                        </div>
+                        <span class="whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-300 translate-x-2 group-hover/sidebar:translate-x-0 relative z-10 flex-1 text-left">Settings & Data</span>
+                        <div class="w-8 shrink-0 opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 flex justify-center">
+                            <i data-lucide="chevron-down" id="settings-chevron" class="w-4 h-4 transition-transform duration-300 text-slate-500"></i>
+                        </div>
+                    </button>
+
+                    <!-- Hidden Collapsible Panel -->
+                    <div id="desktop-settings-panel" class="hidden flex-col gap-1.5 mt-1 transition-all duration-300">
+                        <button onclick="exportReport()" class="w-full py-3 px-0 rounded-xl bg-gradient-to-r from-emerald-600/10 to-green-600/10 hover:from-emerald-600/20 hover:to-green-600/20 text-xs font-bold text-emerald-400 border border-emerald-500/20 transition-all flex items-center gap-4 group/action relative overflow-hidden">
+                            <div class="w-12 flex justify-center shrink-0 relative z-10">
+                                <i data-lucide="file-text" class="w-5 h-5 group-hover/action:scale-110 transition-transform"></i>
+                            </div>
+                            <span class="whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-300 translate-x-2 group-hover/sidebar:translate-x-0 relative z-10">Export Report</span>
+                        </button>
+
+                        <button onclick="exportDataJSON()" class="w-full py-3 px-0 rounded-xl bg-gradient-to-r from-cyan-600/10 to-blue-600/10 hover:from-cyan-600/20 hover:to-blue-600/20 text-xs font-bold text-cyan-400 border border-cyan-500/20 transition-all flex items-center gap-4 group/action relative overflow-hidden">
+                            <div class="w-12 flex justify-center shrink-0 relative z-10">
+                                <i data-lucide="download-cloud" class="w-5 h-5 group-hover/action:scale-110 transition-transform"></i>
+                            </div>
+                            <span class="whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-300 translate-x-2 group-hover/sidebar:translate-x-0 relative z-10">Backup Data</span>
+                        </button>
+
+                        <button onclick="triggerImport()" class="w-full py-3 px-0 rounded-xl bg-gradient-to-r from-violet-600/10 to-purple-600/10 hover:from-violet-600/20 hover:to-purple-600/20 text-xs font-bold text-violet-400 border border-violet-500/20 transition-all flex items-center gap-4 group/action relative overflow-hidden">
+                            <div class="w-12 flex justify-center shrink-0 relative z-10">
+                                <i data-lucide="upload-cloud" class="w-5 h-5 group-hover/action:scale-110 transition-transform"></i>
+                            </div>
+                            <span class="whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-300 translate-x-2 group-hover/sidebar:translate-x-0 relative z-10">Restore Data</span>
+                        </button>
+
+                        <button onclick="resetData()" class="w-full py-3 px-0 rounded-xl bg-gradient-to-r from-rose-600/10 to-red-600/10 hover:from-rose-600/20 hover:to-red-600/20 text-xs font-bold text-rose-400 border border-rose-500/20 transition-all flex items-center gap-4 group/action relative overflow-hidden mt-1">
+                            <div class="w-12 flex justify-center shrink-0 relative z-10">
+                                <i data-lucide="trash-2" class="w-5 h-5 group-hover/action:rotate-12 transition-transform"></i>
+                            </div>
+                            <span class="whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-300 translate-x-2 group-hover/sidebar:translate-x-0 relative z-10">ဒေတာအားလုံးဖျက်မည်</span>
+                        </button>
+                    </div>
+
+                </div>
+            </aside>
+        </div>
+
+        <!-- MOBILE HEADER -->
+        <div class="md:hidden fixed top-0 left-0 right-0 z-40 bg-[#020617]/80 backdrop-blur-xl border-b border-white/5 px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-9 h-9 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                    <i data-lucide="layers" class="text-white w-5 h-5"></i>
+                </div>
+                <span class="font-bold text-lg text-white font-num">INV<span class="text-cyan-400">PRO</span></span>
+            </div>
+            <button onclick="toggleMobileSettings()" class="w-9 h-9 rounded-full bg-slate-800/80 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-colors relative backdrop-blur-md">
+                <i data-lucide="settings" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 relative z-10 pt-20 md:pt-4 md:px-0 pb-28 md:pb-4 h-screen overflow-y-auto custom-scrollbar scroll-smooth">
+            <div id="app-content" class="max-w-7xl mx-auto px-4 md:px-8 space-y-8 animate-slide-up pb-10">
+                <!-- Dynamic Content -->
+            </div>
+        </main>
+
+        <!-- MOBILE SETTINGS MODAL -->
+        <div id="mobile-settings-modal" class="fixed inset-0 z-[60] hidden items-end sm:items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in" onclick="if(event.target === this) toggleMobileSettings()">
+            <div class="glass-panel w-full max-w-sm rounded-3xl p-6 relative border border-white/10 shadow-2xl animate-slide-up mb-20 sm:mb-0">
+                <button onclick="toggleMobileSettings()" class="absolute right-5 top-5 p-2 rounded-full bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+                <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                    <i data-lucide="settings" class="w-5 h-5 text-cyan-400"></i> Settings & Data
+                </h3>
+                <div class="flex flex-col gap-3">
+                    <button onclick="exportReport(); toggleMobileSettings()" class="w-full py-3 px-4 rounded-xl bg-emerald-500/10 text-sm font-bold text-emerald-400 border border-emerald-500/20 flex items-center justify-between transition-colors hover:bg-emerald-500/20">
+                        <span>Export Report (.txt)</span> <i data-lucide="file-text" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="exportDataJSON(); toggleMobileSettings()" class="w-full py-3 px-4 rounded-xl bg-cyan-500/10 text-sm font-bold text-cyan-400 border border-cyan-500/20 flex items-center justify-between transition-colors hover:bg-cyan-500/20">
+                        <span>Backup Data (.json)</span> <i data-lucide="download-cloud" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="triggerImport(); toggleMobileSettings()" class="w-full py-3 px-4 rounded-xl bg-violet-500/10 text-sm font-bold text-violet-400 border border-violet-500/20 flex items-center justify-between transition-colors hover:bg-violet-500/20">
+                        <span>Restore Data (.json)</span> <i data-lucide="upload-cloud" class="w-4 h-4"></i>
+                    </button>
+                    <div class="h-px w-full bg-white/10 my-1"></div>
+                    <button onclick="resetData(); toggleMobileSettings()" class="w-full py-3 px-4 rounded-xl bg-rose-500/10 text-sm font-bold text-rose-400 border border-rose-500/20 flex items-center justify-between transition-colors hover:bg-rose-500/20">
+                        <span>ဒေတာအားလုံးဖျက်မည်</span> <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CUSTOM CONFIRM MODAL -->
+        <div id="confirm-modal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
+            <div class="glass-panel w-full max-w-sm rounded-3xl p-6 relative border border-white/10 shadow-2xl text-center">
+                <div class="w-16 h-16 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mx-auto mb-4 border border-red-500/20">
+                    <i data-lucide="alert-triangle" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">သေချာပါသလား?</h3>
+                <p class="text-xs text-slate-400 mb-6" id="confirm-message">ဤလုပ်ဆောင်မှုကို ပြန်ပြင်၍မရပါ။</p>
+                <div class="flex justify-center gap-3">
+                    <button onclick="closeConfirmModal()" class="px-5 py-2.5 rounded-xl text-slate-300 hover:bg-white/10 text-sm font-bold transition-colors">မလုပ်တော့ပါ</button>
+                    <button id="confirm-yes-btn" onclick="executeConfirm()" class="bg-red-600 hover:bg-red-500 text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg">သေချာသည်</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOAST NOTIFICATION -->
+        <div id="toast-notification" class="fixed top-4 right-4 z-[70] hidden transition-all duration-500 translate-x-full">
+            <div class="glass-panel px-5 py-4 rounded-xl border border-emerald-500/20 shadow-2xl flex items-center gap-4 bg-[#020617]/90 backdrop-blur-xl">
+                <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
+                    <i data-lucide="check" class="w-4 h-4"></i>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-white">အောင်မြင်ပါသည်</h4>
+                    <p class="text-xs text-slate-400" id="toast-message">လုပ်ဆောင်မှု ပြီးစီးပါပြီ။</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- HIDDEN IMPORT INPUT -->
+        <input type="file" id="import-file" style="display:none" accept=".json" onchange="importDataJSON(event)" />
+
+        <!-- MOBILE BOTTOM NAV -->
+        <div class="md:hidden fixed bottom-6 left-4 right-4 h-[70px] glass-panel rounded-2xl border border-white/10 z-50 flex items-center justify-between px-2 shadow-[0_10px_30px_rgba(0,0,0,0.5)]" id="mobile-nav">
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- Helper Functions & Bug Fixes ---
+        const saveData = () => localStorage.setItem('myanmarInventoryAppV2', JSON.stringify(state));
+        const formatMoney = (amount) => Number(amount).toLocaleString('en-US');
+        const generateId = () => Date.now().toString();
+
+        // Pagination State & Helpers
+        const ITEMS_PER_PAGE = 10;
+        let pages = { products: 1, purchases: 1, sales: 1, inventory: 1, expenses: 1 };
+
+        window.goToPage = function(tab, pageNum) {
+            pages[tab] = pageNum;
+            renderApp();
+        };
+
+        function getPaginatedData(data, tab) {
+            const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE) || 1;
+            if (pages[tab] > totalPages) pages[tab] = totalPages;
+            if (pages[tab] < 1) pages[tab] = 1;
+            const start = (pages[tab] - 1) * ITEMS_PER_PAGE;
+            return data.slice(start, start + ITEMS_PER_PAGE);
+        }
+
+        function renderPaginationUI(totalItems, currentPage, tab) {
+            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
+            if (totalItems <= ITEMS_PER_PAGE) return '';
+            
+            return `
+            <div class="flex items-center justify-between px-5 py-3 border-t border-white/5 bg-slate-900/30">
+                <span class="text-xs text-slate-400">စုစုပေါင်း: <span class="text-white font-bold font-num">${totalItems}</span> ခု</span>
+                <div class="flex items-center gap-2">
+                    <button onclick="goToPage('${tab}', ${currentPage - 1})" class="p-1.5 rounded-lg bg-white/5 text-slate-300 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors" ${currentPage <= 1 ? 'disabled' : ''}>
+                        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                    </button>
+                    <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Page <span class="text-white">${currentPage}</span> / ${totalPages}</span>
+                    <button onclick="goToPage('${tab}', ${currentPage + 1})" class="p-1.5 rounded-lg bg-white/5 text-slate-300 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors" ${currentPage >= totalPages ? 'disabled' : ''}>
+                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>`;
+        }
+
+        // 1. Fixed Timezone Bug (Using Local Time instead of UTC)
+        const getTodayDate = () => {
+            const d = new Date();
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+
+        const getCurrentMonth = () => {
+            const d = new Date();
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+        };
+
+        // --- State Management ---
+        const state = JSON.parse(localStorage.getItem('myanmarInventoryAppV2')) || {
+            activeTab: 'dashboard',
+            pnlMonth: getCurrentMonth(),
+            products: [],
+            purchases: [],
+            sales: [],
+            expenses: []
+        };
+        
+        // Safety check for legacy data
+        if (!state.pnlMonth) state.pnlMonth = getCurrentMonth();
+        let pendingConfirmAction = null;
+
+        // Custom Alerts
+        function showToast(message) {
+            const toast = document.getElementById('toast-notification');
+            document.getElementById('toast-message').textContent = message;
+            toast.classList.remove('hidden', 'translate-x-full');
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+                setTimeout(() => toast.classList.add('hidden'), 500);
+            }, 3000);
+        }
+
+        function showConfirm(message, actionCallback) {
+            const modal = document.getElementById('confirm-modal');
+            document.getElementById('confirm-message').textContent = message;
+            pendingConfirmAction = actionCallback;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirm-modal').classList.add('hidden');
+            document.getElementById('confirm-modal').classList.remove('flex');
+            pendingConfirmAction = null;
+        }
+
+        function executeConfirm() {
+            if (pendingConfirmAction) pendingConfirmAction();
+            closeConfirmModal();
+        }
+
+        // Settings / Modal Handlers
+        function toggleDesktopSettingsPanel() {
+            const panel = document.getElementById('desktop-settings-panel');
+            const chevron = document.getElementById('settings-chevron');
+            const spinIcon = document.getElementById('settings-spin-icon');
+            
+            if (panel.classList.contains('hidden')) {
+                panel.classList.remove('hidden');
+                panel.classList.add('flex');
+                chevron.classList.add('rotate-180');
+                spinIcon.classList.add('rotate-90');
+            } else {
+                panel.classList.add('hidden');
+                panel.classList.remove('flex');
+                chevron.classList.remove('rotate-180');
+                spinIcon.classList.remove('rotate-90');
+            }
+        }
+
+        function toggleMobileSettings() {
+            const m = document.getElementById('mobile-settings-modal');
+            if (m.classList.contains('hidden')) {
+                m.classList.remove('hidden');
+                m.classList.add('flex');
+                lucide.createIcons();
+            } else {
+                m.classList.add('hidden');
+                m.classList.remove('flex');
+            }
+        }
+
+        // --- Settings Action (Export / Import / Reset) ---
+        function exportReport() {
+            const date = new Date().toLocaleDateString('en-GB');
+            const month = state.pnlMonth || getCurrentMonth();
+            let report = `SME Inventory PRO - Report\nGenerated on: ${date}\n--------------------------------\n\n`;
+
+            // Calculate P&L for selected month
+            report += `=== P&L SUMMARY (${month}) ===\n`;
+            const isSameMonth = (d) => d.startsWith(month);
+            const mSales = state.sales.filter(s => isSameMonth(s.date));
+            const mPurchases = state.purchases.filter(p => isSameMonth(p.date));
+            const mExp = state.expenses.filter(e => isSameMonth(e.date));
+
+            let totalSales = 0, totalCogs = 0;
+            mSales.forEach(s => { 
+                totalSales += s.total; 
+                // 2. Fixed NaN Error fallback
+                totalCogs += ((s.costAtSaleTime || 0) * s.qty); 
+            });
+            const gross = totalSales - totalCogs;
+            const expenses = mExp.reduce((sum, e) => sum + e.amount, 0);
+            const net = gross - expenses;
+
+            report += `Total Sales :  ${formatMoney(totalSales)} Ks\n`;
+            report += `COGS        : -${formatMoney(totalCogs)} Ks\n`;
+            report += `Gross Profit:  ${formatMoney(gross)} Ks\n`;
+            report += `Expenses    : -${formatMoney(expenses)} Ks\n`;
+            report += `Net Profit  :  ${formatMoney(net)} Ks\n\n`;
+
+            // Detailed Sales History
+            report += `=== အရောင်းစာရင်း (SALES - ${month}) ===\n`;
+            if (mSales.length > 0) {
+                mSales.forEach(s => {
+                    report += `[${s.date}] ${s.productName} | အရေအတွက်: ${s.qty} | ရောင်းစျေး: ${formatMoney(s.price)} | စုစုပေါင်း: ${formatMoney(s.total)} Ks\n`;
+                });
+            } else {
+                report += `ယခုလအတွက် အရောင်းစာရင်း မရှိသေးပါ။\n`;
+            }
+            report += `\n`;
+
+            // Detailed Purchases History
+            report += `=== အဝယ်စာရင်း (PURCHASES - ${month}) ===\n`;
+            if (mPurchases.length > 0) {
+                mPurchases.forEach(p => {
+                    report += `[${p.date}] ${p.productName} | အရေအတွက်: ${p.qty} | ဝယ်စျေး: ${formatMoney(p.cost)} | စုစုပေါင်း: ${formatMoney(p.total)} Ks\n`;
+                });
+            } else {
+                report += `ယခုလအတွက် အဝယ်စာရင်း မရှိသေးပါ။\n`;
+            }
+            report += `\n`;
+
+            // Detailed Expenses
+            report += `=== အသုံးစရိတ် (EXPENSES - ${month}) ===\n`;
+            if (mExp.length > 0) {
+                mExp.forEach(e => {
+                    report += `[${e.date}] ${e.desc} | ပမာဏ: ${formatMoney(e.amount)} Ks\n`;
+                });
+            } else {
+                report += `ယခုလအတွက် အသုံးစရိတ် မရှိသေးပါ။\n`;
+            }
+            report += `\n`;
+
+            // Calculate overall inventory status
+            report += `=== လက်ကျန်စာရင်း (CURRENT INVENTORY) ===\n`;
+            state.products.forEach(p => {
+                const tIn = state.purchases.filter(pur => pur.productId === p.id).reduce((s, r) => s + r.qty, 0);
+                const tOut = state.sales.filter(s => s.productId === p.id).reduce((s, r) => s + r.qty, 0);
+                const bal = tIn - tOut;
+                report += `- ${p.id} (${p.name}): လက်ကျန် ${bal} ခု\n`;
+            });
+
+            // Trigger Download
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `SME_Report_${month}.txt`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+            showToast("Report Downloaded Successfully!");
+        }
+
+        function exportDataJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
+            const dl = document.createElement('a');
+            dl.setAttribute("href", dataStr);
+            dl.setAttribute("download", "Inventory_Backup_" + getTodayDate() + ".json");
+            document.body.appendChild(dl);
+            dl.click();
+            dl.remove();
+            showToast("Backup Data Downloaded!");
+        }
+
+        function triggerImport() {
+            document.getElementById('import-file').click();
+        }
+
+        // 3. Fixed Import logic to avoid ghost data
+        function importDataJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                try {
+                    const newData = JSON.parse(e.target.result);
+                    if(newData.products !== undefined && newData.sales !== undefined) { 
+                        state.products = newData.products || [];
+                        state.purchases = newData.purchases || [];
+                        state.sales = newData.sales || [];
+                        state.expenses = newData.expenses || [];
+                        state.pnlMonth = newData.pnlMonth || getCurrentMonth();
+                        state.activeTab = 'dashboard';
+                        
+                        saveData();
+                        renderApp();
+                        showToast("Data Restored Successfully!");
+                    } else { 
+                        showToast("Invalid Backup File Format."); 
+                    }
+                } catch(err) { 
+                    showToast("Error reading file."); 
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; // Reset input so same file can be imported again
+        }
+
+        function resetData() {
+            showConfirm("စာရင်းအားလုံးကို ဖျက်ပြီး မူလအစအတိုင်း ပြန်ထားရန် သေချာပါသလား?", () => {
+                state.products = [];
+                state.purchases = [];
+                state.sales = [];
+                state.expenses = [];
+                saveData();
+                renderApp();
+                showToast("ဒေတာအားလုံး ဖျက်ပြီးပါပြီ။");
+            });
+        }
+
+        // --- UI Helpers ---
+        function renderInput(id, label, type, value, placeholder='', min='') {
+            const icon = type === 'number' ? 'hash' : (type === 'date' ? 'calendar' : 'type');
+            return `
+            <div class="flex flex-col gap-2.5 group">
+                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider pl-1 group-hover:text-cyan-400 transition-colors">${label}</label>
+                <div class="relative transition-all duration-200">
+                    <input id="${id}" type="${type}" value="${value}" placeholder="${placeholder}" ${min !== '' ? `min="${min}"` : ''} required
+                        class="input-field w-full bg-slate-900/40 border border-white/10 rounded-xl px-5 py-3.5 text-sm text-white placeholder-slate-600 focus:outline-none transition-all font-num"
+                    />
+                    <div class="absolute right-4 top-3.5 text-slate-600 pointer-events-none group-hover:text-slate-400 transition-colors">
+                        <i data-lucide="${icon}" class="w-4 h-4"></i>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderSelect(id, label, optionsHtml) {
+            return `
+            <div class="flex flex-col gap-2.5 group">
+                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider pl-1 group-hover:text-cyan-400 transition-colors">${label}</label>
+                <div class="relative transition-all duration-200">
+                    <select id="${id}" required class="input-field w-full bg-slate-900/40 border border-white/10 rounded-xl px-5 py-3.5 text-sm text-white focus:outline-none transition-all appearance-none cursor-pointer">
+                        <option value="" disabled selected>ပစ္စည်းရွေးချယ်ပါ</option>
+                        ${optionsHtml}
+                    </select>
+                    <div class="absolute right-4 top-3.5 text-slate-600 pointer-events-none group-hover:text-slate-400 transition-colors">
+                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderStatCard(title, value, subtext, icon, color) {
+             const colorStyles = {
+                blue: "text-cyan-400 bg-cyan-500/10 border-cyan-500/20",
+                emerald: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
+                rose: "text-rose-400 bg-rose-500/10 border-rose-500/20",
+                purple: "text-violet-400 bg-violet-500/10 border-violet-500/20",
+            };
+            const c = colorStyles[color];
+            return `
+            <div class="glass-card p-6 rounded-3xl relative overflow-hidden group">
+                <div class="absolute -right-6 -top-6 p-10 rounded-full ${c} opacity-10 blur-2xl transition-all duration-700 group-hover:opacity-20 group-hover:scale-125"></div>
+                <div class="relative z-10">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="p-3.5 rounded-2xl ${c} transition-transform duration-300 group-hover:rotate-6">
+                            <i data-lucide="${icon}" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                    <h4 class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">${title}</h4>
+                    <h3 class="text-2xl md:text-3xl font-bold text-white font-num tracking-tight mb-1 ${value < 0 ? 'text-rose-400' : 'text-neon-blue'}">${formatMoney(value)}</h3>
+                    <p class="text-[11px] text-slate-500 font-medium">${subtext}</p>
+                </div>
+            </div>`;
+        }
+
+        // --- Core Render Logic ---
+        function renderNavigation() {
+            const tabs = [
+                { id: 'dashboard', label: 'အရှုံး/အမြတ်', icon: 'pie-chart' },
+                { id: 'products', label: 'ပစ္စည်းစာရင်း', icon: 'package' },
+                { id: 'purchases', label: 'အဝယ်', icon: 'shopping-bag' },
+                { id: 'sales', label: 'အရောင်း', icon: 'shopping-cart' },
+                { id: 'inventory', label: 'လက်ကျန်', icon: 'layers' },
+            ];
+
+            // Desktop Navigation mapping
+            document.getElementById('desktop-nav').innerHTML = tabs.map(tab => `
+                <button onclick="switchTab('${tab.id}')" 
+                    class="w-full flex items-center gap-4 px-2 py-3 rounded-2xl transition-all duration-300 group relative overflow-hidden ${state.activeTab === tab.id ? 'text-white bg-white/5 border border-white/5 shadow-lg' : 'text-slate-400 hover:text-white hover:bg-white/5'}">
+                    ${state.activeTab === tab.id ? '<div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-cyan-400 to-blue-500 rounded-l-full"></div>' : ''}
+                    
+                    <div class="w-12 flex justify-center shrink-0 relative z-10">
+                        <i data-lucide="${tab.icon}" class="w-5 h-5 transition-transform duration-300 ${state.activeTab === tab.id ? 'text-cyan-400 scale-110' : 'group-hover:scale-110'}"></i>
+                    </div>
+                    
+                    <span class="font-medium relative z-10 tracking-wide whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-300 translate-x-2 group-hover/sidebar:translate-x-0">${tab.label}</span>
+                </button>
+            `).join('');
+
+            // Mobile Navigation
+            document.getElementById('mobile-nav').innerHTML = tabs.map(tab => {
+                const isActive = state.activeTab === tab.id;
+                return `
+                    <button onclick="switchTab('${tab.id}')" class="flex-1 flex flex-col items-center justify-center h-full relative group">
+                        <div class="absolute -top-1 w-8 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent rounded-full opacity-0 transition-opacity ${isActive ? 'opacity-100' : ''}"></div>
+                        <div class="p-2 rounded-xl transition-all duration-300 ${isActive ? 'text-cyan-400 bg-cyan-500/10' : 'text-slate-500'}">
+                            <i data-lucide="${tab.icon}" class="w-5 h-5 ${isActive ? 'fill-cyan-500/20' : ''}"></i>
+                        </div>
+                        <span class="text-[9px] mt-1 font-medium ${isActive ? 'text-cyan-400' : 'text-slate-500'}">${tab.label}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function switchTab(tabId) {
+            state.activeTab = tabId;
+            saveData();
+            renderApp();
+        }
+
+        // --- 1. Products Tab ---
+        window.handleAddProduct = function(e) {
+            e.preventDefault();
+            const id = document.getElementById('p_id').value.trim();
+            // 4. Added empty ID check
+            if(!id) {
+                showToast('ပစ္စည်းကုဒ် ထည့်သွင်းပါ။');
+                return;
+            }
+            if(state.products.find(p => p.id === id)) {
+                showToast('ပစ္စည်းကုဒ် တူညီနေပါသည်။ အခြားကုဒ်ပြောင်းပါ။');
+                return;
+            }
+            state.products.push({
+                id: id,
+                name: document.getElementById('p_name').value.trim(),
+                cost: parseFloat(document.getElementById('p_cost').value),
+                price: parseFloat(document.getElementById('p_price').value),
+                minQty: parseInt(document.getElementById('p_minQty').value)
+            });
+            saveData();
+            renderApp();
+            showToast('ပစ္စည်းအသစ် ထည့်သွင်းပြီးပါပြီ။');
+        }
+
+        window.deleteProduct = function(id) {
+            showConfirm('ဤပစ္စည်းကို ဖျက်ရန် သေချာပါသလား?', () => {
+                state.products = state.products.filter(p => p.id !== id);
+                saveData();
+                renderApp();
+            });
+        }
+
+        function renderProducts() {
+            const paginated = getPaginatedData(state.products, 'products');
+
+            return `
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-white tracking-tight font-num">Master Product List</h2>
+                    <p class="text-xs text-slate-400 mt-1">ဆိုင်ရှိ ပစ္စည်းအမျိုးအစားများ စာရင်းသွင်းရန်</p>
+                </div>
+
+                <div class="glass-card rounded-3xl p-5 md:p-8 border border-cyan-500/20 bg-gradient-to-br from-cyan-900/10 to-transparent mb-8">
+                    <h3 class="text-cyan-400 font-bold flex items-center gap-3 text-lg mb-6">
+                        <div class="p-2 bg-cyan-500/20 rounded-lg"><i data-lucide="package-plus" class="w-5 h-5"></i></div> 
+                        ပစ္စည်းအသစ်ထည့်ရန်
+                    </h3>
+                    <form onsubmit="handleAddProduct(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+                        ${renderInput('p_id', 'ပစ္စည်းကုဒ် (ID)', 'text', '')}
+                        ${renderInput('p_name', 'အမည်', 'text', '')}
+                        ${renderInput('p_cost', 'ဝယ်စျေး', 'number', '', '', '0')}
+                        ${renderInput('p_price', 'ရောင်းစျေး', 'number', '', '', '0')}
+                        ${renderInput('p_minQty', 'အနည်းဆုံးထားရမည့် အရေအတွက်', 'number', '', '', '0')}
+                        <div class="lg:col-span-5 flex justify-end mt-2">
+                             <button type="submit" class="w-full lg:w-auto bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-8 py-3 rounded-xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform">
+                                <i data-lucide="save" class="w-4 h-4"></i> စာရင်းသွင်းမည်
+                             </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="glass-card rounded-2xl overflow-hidden p-0 border border-white/5 overflow-x-auto pb-safe">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead class="bg-slate-900/80 text-slate-400 uppercase text-[10px] font-bold tracking-widest border-b border-white/5">
+                            <tr>
+                                <th class="p-5">ပစ္စည်းကုဒ်</th>
+                                <th class="p-5">အမည်</th>
+                                <th class="p-5 text-right">ဝယ်စျေး</th>
+                                <th class="p-5 text-right">ရောင်းစျေး</th>
+                                <th class="p-5 text-center">အနည်းဆုံးအရေအတွက်</th>
+                                <th class="p-5 text-center">လုပ်ဆောင်ချက်</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/5 text-slate-300">
+                            ${paginated.map(p => `
+                            <tr class="hover:bg-white/[0.03] transition-colors group">
+                                <td class="p-5 font-bold text-cyan-400">${p.id}</td>
+                                <td class="p-5 text-white">${p.name}</td>
+                                <td class="p-5 text-right font-num">${formatMoney(p.cost)}</td>
+                                <td class="p-5 text-right font-num">${formatMoney(p.price)}</td>
+                                <td class="p-5 text-center font-num">${p.minQty}</td>
+                                <td class="p-5 text-center">
+                                    <button onclick="deleteProduct('${p.id}')" class="p-2 rounded-lg text-rose-400 hover:bg-rose-500/10 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                </td>
+                            </tr>`).join('')}
+                            ${state.products.length === 0 ? `<tr><td colspan="6" class="p-8 text-center text-slate-500 italic">ပစ္စည်းစာရင်း မရှိသေးပါ</td></tr>` : ''}
+                        </tbody>
+                    </table>
+                    ${renderPaginationUI(state.products.length, pages.products, 'products')}
+                </div>
+            `;
+        }
+
+        // --- 2. Purchases Tab ---
+        window.handleAddPurchase = function(e) {
+            e.preventDefault();
+            const pId = document.getElementById('pur_product').value;
+            const product = state.products.find(p => p.id === pId);
+            const qty = parseInt(document.getElementById('pur_qty').value);
+            
+            state.purchases.push({
+                recordId: generateId(),
+                date: document.getElementById('pur_date').value,
+                productId: product.id,
+                productName: product.name,
+                cost: product.cost,
+                qty: qty,
+                total: product.cost * qty
+            });
+            saveData();
+            renderApp();
+            showToast('အဝယ်စာရင်း မှတ်သားပြီးပါပြီ။');
+        }
+
+        window.deletePurchase = function(id) {
+            showConfirm('စာရင်းဖျက်မည် သေချာပါသလား?', () => {
+                state.purchases = state.purchases.filter(p => p.recordId !== id);
+                saveData();
+                renderApp();
+            });
+        }
+
+        function renderPurchases() {
+            const productOptions = state.products.map(p => `<option value="${p.id}">${p.id} - ${p.name}</option>`).join('');
+            const sorted = [...state.purchases].sort((a,b) => new Date(b.date) - new Date(a.date));
+            const paginated = getPaginatedData(sorted, 'purchases');
+
+            return `
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-white tracking-tight font-num">Daily Purchases</h2>
+                    <p class="text-xs text-slate-400 mt-1">နေ့စဉ် အဝယ်စာရင်းများ</p>
+                </div>
+
+                <div class="glass-card rounded-3xl p-5 md:p-8 border border-violet-500/20 bg-gradient-to-br from-violet-900/10 to-transparent mb-8">
+                    <h3 class="text-violet-400 font-bold flex items-center gap-3 text-lg mb-6">
+                        <div class="p-2 bg-violet-500/20 rounded-lg"><i data-lucide="shopping-bag" class="w-5 h-5"></i></div> 
+                        အဝယ်စာရင်းသွင်းရန်
+                    </h3>
+                    <form onsubmit="handleAddPurchase(event)" class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+                        ${renderInput('pur_date', 'ရက်စွဲ', 'date', getTodayDate())}
+                        <div class="sm:col-span-2">${renderSelect('pur_product', 'ပစ္စည်းအမည်', productOptions)}</div>
+                        ${renderInput('pur_qty', 'အရေအတွက်', 'number', '', '', '1')}
+                        <div class="lg:col-span-4 flex justify-end mt-2">
+                             <button type="submit" class="w-full lg:w-auto bg-gradient-to-r from-violet-600 to-purple-600 text-white px-8 py-3 rounded-xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform">
+                                <i data-lucide="plus-circle" class="w-4 h-4"></i> စာရင်းသွင်းမည်
+                             </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="glass-card rounded-2xl overflow-hidden p-0 border border-white/5 overflow-x-auto pb-safe">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead class="bg-slate-900/80 text-slate-400 uppercase text-[10px] font-bold tracking-widest border-b border-white/5">
+                            <tr>
+                                <th class="p-5">ရက်စွဲ</th>
+                                <th class="p-5">ပစ္စည်းကုဒ် (အမည်)</th>
+                                <th class="p-5 text-right">ဝယ်စျေး</th>
+                                <th class="p-5 text-right">အရေအတွက်</th>
+                                <th class="p-5 text-right">စုစုပေါင်း</th>
+                                <th class="p-5 text-center">ဖျက်ရန်</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/5 text-slate-300">
+                            ${paginated.map(p => `
+                            <tr class="hover:bg-white/[0.03] transition-colors group">
+                                <td class="p-5 font-num text-slate-400">${p.date}</td>
+                                <td class="p-5 text-white">${p.productId} <span class="text-xs text-slate-500">(${p.productName})</span></td>
+                                <td class="p-5 text-right font-num">${formatMoney(p.cost)}</td>
+                                <td class="p-5 text-right font-num text-violet-300">${p.qty}</td>
+                                <td class="p-5 text-right font-num font-bold text-white">${formatMoney(p.total)}</td>
+                                <td class="p-5 text-center">
+                                    <button onclick="deletePurchase('${p.recordId}')" class="p-2 rounded-lg text-rose-400 hover:bg-rose-500/10 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                </td>
+                            </tr>`).join('')}
+                            ${sorted.length === 0 ? `<tr><td colspan="6" class="p-8 text-center text-slate-500 italic">အဝယ်စာရင်း မရှိသေးပါ</td></tr>` : ''}
+                        </tbody>
+                    </table>
+                    ${renderPaginationUI(sorted.length, pages.purchases, 'purchases')}
+                </div>
+            `;
+        }
+
+        // --- 3. Sales Tab ---
+        window.handleAddSale = function(e) {
+            e.preventDefault();
+            const pId = document.getElementById('sal_product').value;
+            const product = state.products.find(p => p.id === pId);
+            const qty = parseInt(document.getElementById('sal_qty').value);
+            
+            state.sales.push({
+                recordId: generateId(),
+                date: document.getElementById('sal_date').value,
+                productId: product.id,
+                productName: product.name,
+                price: product.price,
+                costAtSaleTime: product.cost, // COGS tracking
+                qty: qty,
+                total: product.price * qty
+            });
+            saveData();
+            renderApp();
+            showToast('အရောင်းစာရင်း မှတ်သားပြီးပါပြီ။');
+        }
+
+        window.deleteSale = function(id) {
+            showConfirm('စာရင်းဖျက်မည် သေချာပါသလား?', () => {
+                state.sales = state.sales.filter(s => s.recordId !== id);
+                saveData();
+                renderApp();
+            });
+        }
+
+        function renderSales() {
+            const productOptions = state.products.map(p => `<option value="${p.id}">${p.id} - ${p.name}</option>`).join('');
+            const sorted = [...state.sales].sort((a,b) => new Date(b.date) - new Date(a.date));
+            const paginated = getPaginatedData(sorted, 'sales');
+
+            return `
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-white tracking-tight font-num">Daily Sales</h2>
+                    <p class="text-xs text-slate-400 mt-1">နေ့စဉ် အရောင်းစာရင်းများ</p>
+                </div>
+
+                <div class="glass-card rounded-3xl p-5 md:p-8 border border-emerald-500/20 bg-gradient-to-br from-emerald-900/10 to-transparent mb-8">
+                    <h3 class="text-emerald-400 font-bold flex items-center gap-3 text-lg mb-6">
+                        <div class="p-2 bg-emerald-500/20 rounded-lg"><i data-lucide="shopping-cart" class="w-5 h-5"></i></div> 
+                        အရောင်းစာရင်းသွင်းရန်
+                    </h3>
+                    <form onsubmit="handleAddSale(event)" class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+                        ${renderInput('sal_date', 'ရက်စွဲ', 'date', getTodayDate())}
+                        <div class="sm:col-span-2">${renderSelect('sal_product', 'ပစ္စည်းအမည်', productOptions)}</div>
+                        ${renderInput('sal_qty', 'အရေအတွက်', 'number', '', '', '1')}
+                        <div class="lg:col-span-4 flex justify-end mt-2">
+                             <button type="submit" class="w-full lg:w-auto bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-8 py-3 rounded-xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform">
+                                <i data-lucide="check-circle" class="w-4 h-4"></i> စာရင်းသွင်းမည်
+                             </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="glass-card rounded-2xl overflow-hidden p-0 border border-white/5 overflow-x-auto pb-safe">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead class="bg-slate-900/80 text-slate-400 uppercase text-[10px] font-bold tracking-widest border-b border-white/5">
+                            <tr>
+                                <th class="p-5">ရက်စွဲ</th>
+                                <th class="p-5">ပစ္စည်းကုဒ် (အမည်)</th>
+                                <th class="p-5 text-right">ရောင်းစျေး</th>
+                                <th class="p-5 text-right">အရေအတွက်</th>
+                                <th class="p-5 text-right">စုစုပေါင်း</th>
+                                <th class="p-5 text-center">ဖျက်ရန်</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/5 text-slate-300">
+                            ${paginated.map(s => `
+                            <tr class="hover:bg-white/[0.03] transition-colors group">
+                                <td class="p-5 font-num text-slate-400">${s.date}</td>
+                                <td class="p-5 text-white">${s.productId} <span class="text-xs text-slate-500">(${s.productName})</span></td>
+                                <td class="p-5 text-right font-num">${formatMoney(s.price)}</td>
+                                <td class="p-5 text-right font-num text-emerald-300">${s.qty}</td>
+                                <td class="p-5 text-right font-num font-bold text-white">${formatMoney(s.total)}</td>
+                                <td class="p-5 text-center">
+                                    <button onclick="deleteSale('${s.recordId}')" class="p-2 rounded-lg text-rose-400 hover:bg-rose-500/10 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                </td>
+                            </tr>`).join('')}
+                            ${sorted.length === 0 ? `<tr><td colspan="6" class="p-8 text-center text-slate-500 italic">အရောင်းစာရင်း မရှိသေးပါ</td></tr>` : ''}
+                        </tbody>
+                    </table>
+                    ${renderPaginationUI(sorted.length, pages.sales, 'sales')}
+                </div>
+            `;
+        }
+
+        // --- 4. Inventory Tab ---
+        function renderInventory() {
+            const paginated = getPaginatedData(state.products, 'inventory');
+
+            return `
+                <div class="mb-8 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-3xl font-bold text-white tracking-tight font-num">Inventory Summary</h2>
+                        <p class="text-xs text-slate-400 mt-1">လက်ရှိ ကုန်ပစ္စည်းလက်ကျန် အခြေအနေ</p>
+                    </div>
+                    <button onclick="renderApp()" class="p-3 bg-white/5 rounded-full hover:bg-white/10 transition-colors text-cyan-400">
+                        <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <div class="glass-card rounded-2xl overflow-hidden p-0 border border-white/5 overflow-x-auto pb-safe">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead class="bg-slate-900/80 text-slate-400 uppercase text-[10px] font-bold tracking-widest border-b border-white/5">
+                            <tr>
+                                <th class="p-5">ပစ္စည်းကုဒ် (အမည်)</th>
+                                <th class="p-5 text-right text-violet-400">စုစုပေါင်းအဝယ် (In)</th>
+                                <th class="p-5 text-right text-emerald-400">စုစုပေါင်းအရောင်း (Out)</th>
+                                <th class="p-5 text-right text-cyan-400">လက်ကျန် (Balance)</th>
+                                <th class="p-5 text-center">အခြေအနေ</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/5 text-slate-300">
+                            ${paginated.map(product => {
+                                const totalIn = state.purchases.filter(p => p.productId === product.id).reduce((s, r) => s + r.qty, 0);
+                                const totalOut = state.sales.filter(s => s.productId === product.id).reduce((s, r) => s + r.qty, 0);
+                                const balance = totalIn - totalOut;
+                                
+                                let statusHtml = '<span class="px-3 py-1 text-[10px] font-bold rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">လုံလောက်သည်</span>';
+                                if (balance <= 0) {
+                                    statusHtml = '<span class="px-3 py-1 text-[10px] font-bold rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30">ကုန်နေပါသည်</span>';
+                                } else if (balance <= product.minQty) {
+                                    statusHtml = '<span class="px-3 py-1 text-[10px] font-bold rounded-full bg-orange-500/20 text-orange-400 border border-orange-500/30">ထပ်ဝယ်ရန်လိုသည်</span>';
+                                }
+
+                                return `
+                                <tr class="hover:bg-white/[0.03] transition-colors group">
+                                    <td class="p-5 text-white font-bold">${product.id} <span class="text-xs font-normal text-slate-400 ml-2">${product.name}</span></td>
+                                    <td class="p-5 text-right font-num text-violet-300">${totalIn}</td>
+                                    <td class="p-5 text-right font-num text-emerald-300">${totalOut}</td>
+                                    <td class="p-5 text-right font-num font-bold text-lg ${balance < 0 ? 'text-rose-400' : 'text-cyan-400'}">${balance}</td>
+                                    <td class="p-5 text-center">${statusHtml}</td>
+                                </tr>`;
+                            }).join('')}
+                            ${state.products.length === 0 ? `<tr><td colspan="5" class="p-8 text-center text-slate-500 italic">စာရင်းမရှိသေးပါ</td></tr>` : ''}
+                        </tbody>
+                    </table>
+                    ${renderPaginationUI(state.products.length, pages.inventory, 'inventory')}
+                </div>
+            `;
+        }
+
+        // --- 5. Dashboard / P&L Tab ---
+        window.changePnlMonth = function(e) {
+            state.pnlMonth = e.target.value;
+            saveData();
+            renderApp();
+        }
+
+        window.handleAddExpense = function(e) {
+            e.preventDefault();
+            state.expenses.push({
+                id: generateId(),
+                date: document.getElementById('exp_date').value,
+                desc: document.getElementById('exp_desc').value,
+                amount: parseFloat(document.getElementById('exp_amount').value)
+            });
+            saveData();
+            renderApp();
+            showToast('အသုံးစရိတ် မှတ်သားပြီးပါပြီ။');
+        }
+
+        window.deleteExpense = function(id) {
+             showConfirm('ဖျက်ရန် သေချာပါသလား?', () => {
+                state.expenses = state.expenses.filter(e => e.id !== id);
+                saveData();
+                renderApp();
+            });
+        }
+
+        function renderDashboard() {
+            const isSameMonth = (dateStr) => dateStr.startsWith(state.pnlMonth);
+            
+            const monthlySales = state.sales.filter(s => isSameMonth(s.date));
+            const monthlyExpenses = state.expenses.filter(e => isSameMonth(e.date));
+
+            let totalSales = 0, totalCogs = 0;
+            monthlySales.forEach(sale => {
+                totalSales += sale.total;
+                // 2. Fixed NaN Error fallback
+                totalCogs += ((sale.costAtSaleTime || 0) * sale.qty); 
+            });
+
+            const grossProfit = totalSales - totalCogs;
+            const totalExp = monthlyExpenses.reduce((sum, exp) => sum + exp.amount, 0);
+            const netProfit = grossProfit - totalExp;
+
+            const paginatedExp = getPaginatedData(monthlyExpenses, 'expenses');
+
+            return `
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                    <div>
+                        <h2 class="text-3xl font-bold text-white tracking-tight font-num">Profit & Loss</h2>
+                        <p class="text-xs text-slate-400 mt-1">အရှုံး/အမြတ် နှင့် အသုံးစရိတ်များ</p>
+                    </div>
+                    <div class="relative w-full sm:w-auto">
+                        <div class="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                            <i data-lucide="calendar" class="w-4 h-4 text-cyan-400"></i>
+                        </div>
+                        <input type="month" value="${state.pnlMonth}" onchange="changePnlMonth(event)" class="bg-slate-900 border border-white/10 rounded-xl py-2.5 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-cyan-500 w-full font-num cursor-pointer">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+                    ${renderStatCard('အကြမ်းဖျင်းအမြတ် (Gross)', grossProfit, 'စုစုပေါင်းရောင်းရငွေ - အရင်း', 'trending-up', 'emerald')}
+                    ${renderStatCard('အထွေထွေအသုံးစရိတ် (Exp)', totalExp, 'ယခုလ အသုံးစရိတ်', 'receipt', 'rose')}
+                    ${renderStatCard('အသားတင်အမြတ် (Net)', netProfit, 'Gross - Expenses', 'pie-chart', 'blue')}
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8 pb-safe">
+                    <!-- P&L Breakdown -->
+                    <div class="glass-card rounded-3xl p-6 md:p-8">
+                        <h3 class="text-white font-bold text-lg mb-6 border-b border-white/10 pb-4">ဘဏ္ဍာရေး အနှစ်ချုပ်စာရင်း</h3>
+                        <div class="space-y-4 text-sm">
+                            <div class="flex justify-between items-center py-2">
+                                <span class="text-slate-400">စုစုပေါင်းရောင်းရငွေ (Total Sales)</span>
+                                <span class="font-bold text-emerald-400 font-num">${formatMoney(totalSales)} Ks</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <span class="text-slate-400">ဝယ်ရင်းစျေး (COGS)</span>
+                                <span class="font-bold text-rose-400 font-num">- ${formatMoney(totalCogs)} Ks</span>
+                            </div>
+                            <div class="flex justify-between items-center py-3 border-y border-white/5 bg-white/[0.02] px-3 rounded-lg">
+                                <span class="font-bold text-slate-300">အကြမ်းဖျင်းအမြတ် (Gross Profit)</span>
+                                <span class="font-bold text-cyan-400 font-num">${formatMoney(grossProfit)} Ks</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <span class="text-slate-400">အထွေထွေအသုံးစရိတ် (Total Expenses)</span>
+                                <span class="font-bold text-rose-400 font-num">- ${formatMoney(totalExp)} Ks</span>
+                            </div>
+                            <div class="flex justify-between items-center py-4 mt-2 bg-gradient-to-r from-blue-900/30 to-cyan-900/30 px-4 rounded-xl border border-cyan-500/20">
+                                <span class="font-bold text-white text-base">အသားတင် အမြတ်/အရှုံး</span>
+                                <span class="font-bold text-xl font-num ${netProfit < 0 ? 'text-rose-400' : 'text-neon-blue'}">${formatMoney(netProfit)} Ks</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Expenses Manager -->
+                    <div class="glass-card rounded-3xl p-6 md:p-8 border border-rose-500/20">
+                        <h3 class="text-rose-400 font-bold flex items-center gap-2 text-lg mb-6">
+                            <i data-lucide="plus-circle" class="w-5 h-5"></i> အသုံးစရိတ် ထည့်ရန်
+                        </h3>
+                        <form onsubmit="handleAddExpense(event)" class="space-y-4 mb-8">
+                            <div class="grid grid-cols-2 gap-4">
+                                ${renderInput('exp_date', 'ရက်စွဲ', 'date', getTodayDate())}
+                                ${renderInput('exp_amount', 'ပမာဏ (Ks)', 'number', '', '', '0')}
+                            </div>
+                            ${renderInput('exp_desc', 'အကြောင်းအရာ', 'text', '', 'ဥပမာ - လစာ၊ မီတာခ')}
+                            <button type="submit" class="w-full bg-rose-600/80 hover:bg-rose-500 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors">
+                                <i data-lucide="save" class="w-4 h-4"></i> သိမ်းမည်
+                            </button>
+                        </form>
+
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">ယခုလ စရိတ်များ</h4>
+                        <div class="space-y-3 custom-scrollbar pr-2">
+                            ${paginatedExp.map(ex => `
+                            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-800/50 border border-white/5 group">
+                                <div>
+                                    <h5 class="text-white text-sm font-medium">${ex.desc}</h5>
+                                    <p class="text-[10px] text-slate-500 font-num mt-0.5">${ex.date}</p>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-rose-400 font-bold font-num text-sm">${formatMoney(ex.amount)}</span>
+                                    <button onclick="deleteExpense('${ex.id}')" class="text-slate-600 hover:text-rose-400 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                </div>
+                            </div>
+                            `).join('')}
+                            ${monthlyExpenses.length === 0 ? '<p class="text-center text-slate-500 text-xs italic py-4">အသုံးစရိတ် မရှိသေးပါ</p>' : ''}
+                        </div>
+                        <div class="mt-4">
+                            ${renderPaginationUI(monthlyExpenses.length, pages.expenses, 'expenses')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- Init & Loop ---
+        function renderApp() {
+            renderNavigation();
+            
+            const content = document.getElementById('app-content');
+            if (state.activeTab === 'dashboard') content.innerHTML = renderDashboard();
+            else if (state.activeTab === 'products') content.innerHTML = renderProducts();
+            else if (state.activeTab === 'purchases') content.innerHTML = renderPurchases();
+            else if (state.activeTab === 'sales') content.innerHTML = renderSales();
+            else if (state.activeTab === 'inventory') content.innerHTML = renderInventory();
+            
+            lucide.createIcons();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderApp();
+            
+            // Preloader logic
+            const progress = document.getElementById('progress-bar');
+            const preloader = document.getElementById('preloader');
+            let width = 0;
+            const interval = setInterval(() => {
+                width += Math.random() * 8; 
+                if (width > 100) width = 100;
+                if (progress) progress.style.width = width + '%';
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        if(preloader) {
+                            preloader.classList.add('opacity-0', 'scale-105', 'pointer-events-none');
+                            setTimeout(() => preloader.remove(), 700);
+                        }
+                    }, 500);
+                }
+            }, 50); 
+        });
+
+    </script>
+</body>
+</html>
