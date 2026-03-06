@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2D/3D Ledger - Ultimate Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#020617',
+                            900: '#0f172a',
+                            800: '#1e293b',
+                        },
+                        primary: {
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 8s ease-in-out infinite',
+                        'float-delayed': 'float 8s ease-in-out infinite 4s',
+                        'slide-up': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) translateZ(0)' },
+                            '50%': { transform: 'translateY(-20px) translateZ(0)' },
+                        },
+                        slideUp: {
+                            'from': { opacity: 0, transform: 'translateY(15px) translateZ(0)' },
+                            'to': { opacity: 1, transform: 'translateY(0) translateZ(0)' },
+                        },
+                        fadeIn: {
+                            'from': { opacity: 0 },
+                            'to': { opacity: 1 },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+            color-scheme: dark; /* Forces native dropdowns and datepickers to dark mode */
+        }
+
+        /* Fix Browser Autofill White Background */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px #0f172a inset !important;
+            -webkit-text-fill-color: #f8fafc !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        /* Remove Spinners */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+
+        /* Hardware Accelerated Classes for better mobile performance */
+        .gpu-accelerated {
+            transform: translateZ(0);
+            will-change: transform, opacity;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-2px) translateZ(0);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .input-field { transition: border-color 0.2s ease, background-color 0.2s ease; }
+        .input-field:focus {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(56, 189, 248, 0.5);
+            outline: none;
+        }
+
+        select.input-field option, select option { background-color: #0f172a; color: #fff; }
+
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 8px; }
+        
+        .pb-safe { padding-bottom: calc(6rem + env(safe-area-inset-bottom)); }
+        
+        .text-neon-cyan { text-shadow: 0 0 8px rgba(6, 182, 212, 0.4); }
+        .text-neon-emerald { text-shadow: 0 0 8px rgba(16, 185, 129, 0.4); }
+        .text-neon-rose { text-shadow: 0 0 8px rgba(244, 63, 94, 0.4); }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
+
+    <!-- HIDDEN IMPORT INPUT -->
+    <input type="file" id="import-file" style="display:none" accept=".json" onchange="importDataJSON(event)" />
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-opacity duration-500 ease-out overflow-hidden gpu-accelerated">
+        <div class="relative flex flex-col items-center">
+            <div class="w-16 h-16 border-4 border-slate-800 border-t-cyan-500 rounded-full animate-spin mb-6 shadow-[0_0_15px_rgba(6,182,212,0.3)]"></div>
+            <div class="text-center">
+                <h2 class="text-2xl font-bold tracking-[0.2em] text-white font-num mb-1">LEDGER<span class="text-cyan-400">PRO</span></h2>
+                <p class="text-[10px] text-cyan-500/70 font-num tracking-[0.3em] uppercase" id="progress-text">Loading...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Background -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[100px] animate-float gpu-accelerated"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-emerald-600/10 rounded-full blur-[100px] animate-float-delayed gpu-accelerated"></div>
+    </div>
+
+    <div class="min-h-screen flex flex-col md:flex-row relative z-10">
+        
+        <!-- EXPANDING HOVER SIDEBAR WRAPPER (Desktop) -->
+        <div class="hidden md:block w-24 shrink-0 mx-4 relative z-50">
+            <div class="sticky top-4 h-[calc(100vh-2rem)]">
+                <aside class="group/sidebar absolute top-0 left-0 w-24 hover:w-72 h-full glass-panel border border-white/5 flex flex-col rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out overflow-visible bg-[#0f172a]/95 gpu-accelerated">
+                    
+                    <div class="p-6 flex items-center shrink-0">
+                        <div class="w-12 h-12 shrink-0 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center border border-white/10 relative overflow-hidden group">
+                            <i data-lucide="calculator" class="text-white w-6 h-6 relative z-10"></i>
+                        </div>
+                        <div class="max-w-0 opacity-0 group-hover/sidebar:max-w-[200px] group-hover/sidebar:opacity-100 overflow-hidden transition-all duration-300 whitespace-nowrap ml-0 group-hover/sidebar:ml-4 flex flex-col justify-center">
+                            <h1 class="text-xl font-bold text-white tracking-tight font-num">LEDGER<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">PRO</span></h1>
+                            <p class="text-[10px] text-slate-400 font-medium tracking-[0.2em] uppercase">Optimized UI</p>
+                        </div>
+                    </div>
+
+                    <nav class="flex-1 px-4 space-y-2 mt-2 w-full" id="desktop-nav"></nav>
+
+                    <!-- Settings Hover Menu -->
+                    <div class="mt-auto px-4 pb-6 relative group/settings">
+                        <div class="absolute bottom-[calc(100%-1.5rem)] left-4 w-60 pb-2 opacity-0 pointer-events-none group-hover/settings:pointer-events-auto group-hover/settings:opacity-100 transition-all duration-200 translate-y-2 scale-95 group-hover/settings:translate-y-0 group-hover/settings:scale-100 origin-bottom-left z-[100] gpu-accelerated">
+                            <div class="glass-panel rounded-2xl p-2 flex flex-col gap-1 border border-white/10 shadow-2xl bg-slate-900/95">
+                                <button onclick="exportDataJSON()" class="flex items-center gap-3 w-full text-left px-4 py-3 rounded-xl hover:bg-white/5 text-slate-300 text-xs font-bold transition-colors hover:text-white">
+                                    <i data-lucide="download" class="w-4 h-4 text-emerald-400"></i> <span class="whitespace-nowrap">Backup Data (JSON)</span>
+                                </button>
+                                <button onclick="triggerImport()" class="flex items-center gap-3 w-full text-left px-4 py-3 rounded-xl hover:bg-white/5 text-slate-300 text-xs font-bold transition-colors hover:text-white">
+                                    <i data-lucide="upload" class="w-4 h-4 text-violet-400"></i> <span class="whitespace-nowrap">Restore Data (JSON)</span>
+                                </button>
+                                <button onclick="openExportModal()" class="flex items-center gap-3 w-full text-left px-4 py-3 rounded-xl hover:bg-white/5 text-slate-300 text-xs font-bold transition-colors hover:text-white">
+                                    <i data-lucide="file-text" class="w-4 h-4 text-blue-400"></i> <span class="whitespace-nowrap">Export Report (.txt)</span>
+                                </button>
+                                <div class="h-px bg-white/10 my-1 mx-2"></div>
+                                <button onclick="resetData()" class="flex items-center gap-3 w-full text-left px-4 py-3 rounded-xl hover:bg-rose-500/10 text-rose-400 text-xs font-bold transition-colors">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i> <span class="whitespace-nowrap">Delete All Data</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="glass-card p-3 rounded-2xl border border-slate-500/20 bg-slate-800/40 relative overflow-hidden flex items-center group-hover/settings:bg-slate-800/80 transition-colors cursor-pointer z-50">
+                            <div class="w-10 h-10 shrink-0 rounded-xl bg-slate-700/50 flex items-center justify-center text-slate-300 transition-colors">
+                                <i data-lucide="settings" class="w-5 h-5 group-hover/settings:rotate-90 transition-transform duration-500"></i>
+                            </div>
+                            <div class="max-w-0 opacity-0 group-hover/sidebar:max-w-[200px] group-hover/sidebar:opacity-100 overflow-hidden transition-all duration-300 whitespace-nowrap ml-0 group-hover/sidebar:ml-3 flex flex-col justify-center text-left">
+                                <h4 class="text-xs font-bold text-slate-300">Settings</h4>
+                                <p class="text-[10px] text-slate-500 font-num">Data Management</p>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+
+        <!-- MOBILE HEADER -->
+        <div class="md:hidden fixed top-0 left-0 right-0 z-40 bg-[#020617]/90 backdrop-blur-lg border-b border-white/5 px-4 py-3 flex justify-between items-center shadow-md gpu-accelerated">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center">
+                    <i data-lucide="calculator" class="text-white w-4 h-4"></i>
+                </div>
+                <span class="font-bold text-base text-white font-num">LEDGER<span class="text-cyan-400">PRO</span></span>
+            </div>
+            <button onclick="toggleMobileSettings()" class="w-8 h-8 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center text-slate-400 active:scale-95 transition-transform">
+                <i data-lucide="settings" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 relative z-10 pt-20 md:pt-4 md:px-0 pb-28 md:pb-4 h-screen overflow-y-auto custom-scrollbar scroll-smooth">
+            <div id="app-content" class="max-w-7xl mx-auto px-4 md:px-8 space-y-6 pb-10">
+                <!-- Content gets injected here -->
+            </div>
+        </main>
+
+        <!-- MOBILE SETTINGS MODAL -->
+        <div id="mobile-settings-panel" class="fixed inset-0 z-[60] hidden bg-black/80 backdrop-blur-sm flex flex-col justify-end gpu-accelerated transition-opacity duration-200 opacity-0 pointer-events-none">
+            <div class="bg-[#0f172a] rounded-t-3xl border-t border-white/10 p-6 shadow-2xl transform transition-transform duration-300 translate-y-full" id="mobile-settings-content">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2"><i data-lucide="settings" class="w-5 h-5 text-slate-400"></i> Settings & Data</h3>
+                    <button onclick="toggleMobileSettings()" class="p-2 bg-white/5 rounded-full text-slate-400"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+                <div class="flex flex-col gap-3">
+                    <button onclick="exportDataJSON(); toggleMobileSettings();" class="flex items-center gap-4 bg-slate-900 border border-white/5 p-4 rounded-2xl text-left text-sm font-bold text-slate-200">
+                        <div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400"><i data-lucide="download" class="w-5 h-5"></i></div> Backup Data (JSON)
+                    </button>
+                    <button onclick="triggerImport(); toggleMobileSettings();" class="flex items-center gap-4 bg-slate-900 border border-white/5 p-4 rounded-2xl text-left text-sm font-bold text-slate-200">
+                        <div class="p-2 rounded-lg bg-violet-500/10 text-violet-400"><i data-lucide="upload" class="w-5 h-5"></i></div> Restore Data (JSON)
+                    </button>
+                    <button onclick="openExportModal(); toggleMobileSettings();" class="flex items-center gap-4 bg-slate-900 border border-white/5 p-4 rounded-2xl text-left text-sm font-bold text-slate-200">
+                        <div class="p-2 rounded-lg bg-blue-500/10 text-blue-400"><i data-lucide="file-text" class="w-5 h-5"></i></div> Export Report (.txt)
+                    </button>
+                    <button onclick="resetData(); toggleMobileSettings();" class="flex items-center gap-4 bg-rose-500/5 border border-rose-500/20 p-4 rounded-2xl text-left text-sm font-bold text-rose-400 mt-2">
+                        <div class="p-2 rounded-lg bg-rose-500/20 text-rose-400"><i data-lucide="trash-2" class="w-5 h-5"></i></div> Delete All Data
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXPORT MODAL -->
+        <div id="export-modal" class="fixed inset-0 z-[75] hidden items-center justify-center bg-black/70 backdrop-blur-sm p-4 opacity-0 pointer-events-none transition-opacity duration-200 gpu-accelerated">
+            <div class="glass-panel w-full max-w-sm rounded-3xl p-6 relative border border-white/10 shadow-2xl text-center transform scale-95 transition-transform duration-200" id="export-box">
+                <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-3">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2"><i data-lucide="file-text" class="w-5 h-5 text-blue-400"></i> Export Report</h3>
+                    <button onclick="closeExportModal()" class="text-slate-400 hover:text-white bg-white/5 p-1 rounded-full transition-colors"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+                <div class="text-left mb-6">
+                    <label class="text-[11px] font-bold text-slate-400 mb-2 block uppercase tracking-wider">မည်သူ့စာရင်းကို ထုတ်ယူမည်နည်း?</label>
+                    <div class="relative">
+                        <select id="export-target-select" class="w-full bg-slate-900/80 border border-white/10 rounded-xl pl-4 pr-10 py-3 text-sm text-white focus:border-cyan-500 focus:outline-none appearance-none">
+                            <!-- Populated via JS -->
+                        </select>
+                        <i data-lucide="chevron-down" class="absolute right-3 top-3.5 w-4 h-4 text-slate-400 pointer-events-none"></i>
+                    </div>
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="closeExportModal()" class="flex-1 px-4 py-3 rounded-xl text-slate-300 hover:bg-white/10 text-sm font-bold transition-colors">ပိတ်မည်</button>
+                    <button onclick="executeExport()" class="flex-1 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white py-3 rounded-xl font-bold text-sm shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="download" class="w-4 h-4"></i> ဆွဲမည်
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CUSTOM CONFIRM MODAL -->
+        <div id="confirm-modal" class="fixed inset-0 z-[70] hidden items-center justify-center bg-black/70 backdrop-blur-sm p-4 opacity-0 pointer-events-none transition-opacity duration-200 gpu-accelerated">
+            <div class="glass-panel w-full max-w-sm rounded-3xl p-6 relative border border-white/10 shadow-2xl text-center transform scale-95 transition-transform duration-200" id="confirm-box">
+                <div class="w-16 h-16 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mx-auto mb-4 border border-red-500/20">
+                    <i data-lucide="alert-triangle" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">သေချာပါသလား?</h3>
+                <p class="text-sm text-slate-400 mb-6 font-padauk" id="confirm-message">ဤလုပ်ဆောင်မှုကို ပြန်ပြင်၍မရပါ။</p>
+                <div class="flex justify-center gap-3">
+                    <button onclick="closeConfirmModal()" class="px-5 py-2.5 rounded-xl text-slate-300 hover:bg-white/10 text-sm font-bold transition-colors">မလုပ်တော့ပါ</button>
+                    <button id="confirm-yes-btn" onclick="executeConfirm()" class="bg-red-600 hover:bg-red-500 text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg active:scale-95 transition-transform">အတည်ပြုမည်</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOAST NOTIFICATION -->
+        <div id="toast-notification" class="fixed top-4 right-4 z-[80] transition-all duration-300 translate-x-[120%] gpu-accelerated">
+            <div class="glass-panel px-5 py-4 rounded-xl border border-emerald-500/20 shadow-xl flex items-center gap-4 bg-[#020617]/90">
+                <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
+                    <i data-lucide="check" class="w-4 h-4"></i>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-white">အောင်မြင်ပါသည်</h4>
+                    <p class="text-xs text-slate-400" id="toast-message">လုပ်ဆောင်မှု ပြီးစီးပါပြီ。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MOBILE BOTTOM NAV -->
+        <div class="md:hidden fixed bottom-4 left-4 right-4 h-[65px] glass-panel rounded-2xl border border-white/10 z-50 flex items-center justify-between px-2 shadow-lg gpu-accelerated" id="mobile-nav">
+            <!-- Nav Injected -->
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- State Management ---
+        let initialRecords = [];
+        try {
+            const stored = localStorage.getItem('lottery_records_ultimate');
+            if (stored) {
+                const parsed = JSON.parse(stored);
+                if (Array.isArray(parsed)) initialRecords = parsed;
+            }
+        } catch (error) { console.error("LS Error", error); }
+
+        const state = {
+            activeTab: 'dashboard',
+            records: initialRecords,
+            filterName: 'ALL',
+            searchQuery: '',
+            sortMode: 'newest', 
+            currentPage: 1,
+            itemsPerPage: 10
+        };
+
+        let pendingConfirmAction = null;
+        let searchTimeout = null; 
+
+        // --- Core Helpers ---
+        const formatMoney = (amount) => Number(amount).toLocaleString() + " Ks";
+        const getTodayDate = () => {
+            const d = new Date();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${d.getFullYear()}-${m}-${day}`; 
+        };
+        const formatDateDisplay = (dateStr) => {
+            if (!dateStr) return '';
+            const parts = dateStr.split('-');
+            if (parts.length === 3) return `${parts[2]}-${parts[1]}-${parts[0]}`;
+            return dateStr;
+        };
+
+        const calculateBalances = () => {
+            const balances = {};
+            let totalReceivable = 0, totalPayable = 0;    
+            state.records.forEach(r => {
+                if (!balances[r.name]) balances[r.name] = 0;
+                balances[r.name] += r.netBalance;
+            });
+            Object.values(balances).forEach(amt => {
+                if (amt > 0) totalReceivable += amt;
+                else totalPayable += Math.abs(amt);
+            });
+            return { balances, totalReceivable, totalPayable };
+        };
+
+        // --- Modals & UI Toggles ---
+        function toggleMobileSettings() {
+            const panel = document.getElementById('mobile-settings-panel');
+            const content = document.getElementById('mobile-settings-content');
+            if (panel.classList.contains('hidden')) {
+                panel.classList.remove('hidden');
+                void panel.offsetWidth;
+                panel.classList.remove('opacity-0', 'pointer-events-none');
+                content.classList.remove('translate-y-full');
+            } else {
+                content.classList.add('translate-y-full');
+                panel.classList.add('opacity-0', 'pointer-events-none');
+                setTimeout(() => panel.classList.add('hidden'), 300);
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast-notification');
+            document.getElementById('toast-message').textContent = message;
+            toast.classList.remove('translate-x-[120%]');
+            setTimeout(() => toast.classList.add('translate-x-[120%]'), 2500);
+        }
+
+        function showConfirm(message, actionCallback) {
+            const modal = document.getElementById('confirm-modal');
+            const box = document.getElementById('confirm-box');
+            document.getElementById('confirm-message').textContent = message;
+            pendingConfirmAction = actionCallback;
+            
+            modal.classList.remove('hidden');
+            void modal.offsetWidth;
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            box.classList.remove('scale-95');
+        }
+
+        function closeConfirmModal() {
+            const modal = document.getElementById('confirm-modal');
+            const box = document.getElementById('confirm-box');
+            box.classList.add('scale-95');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => modal.classList.add('hidden'), 200);
+            pendingConfirmAction = null;
+        }
+
+        function executeConfirm() {
+            if (pendingConfirmAction) pendingConfirmAction();
+            closeConfirmModal();
+        }
+
+        // --- Export Modal Logic ---
+        function openExportModal() {
+            const modal = document.getElementById('export-modal');
+            const box = document.getElementById('export-box');
+            const select = document.getElementById('export-target-select');
+
+            // Populate names dynamically
+            const uniqueNames = [...new Set(state.records.map(r => r.name))];
+            let optionsHTML = `<option value="ALL">အားလုံး (All Data)</option>`;
+            uniqueNames.forEach(n => {
+                optionsHTML += `<option value="${n}">${n} သီးသန့် (Only)</option>`;
+            });
+            select.innerHTML = optionsHTML;
+
+            modal.classList.remove('hidden');
+            void modal.offsetWidth;
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            box.classList.remove('scale-95');
+            lucide.createIcons({ root: modal });
+        }
+
+        function closeExportModal() {
+            const modal = document.getElementById('export-modal');
+            const box = document.getElementById('export-box');
+            box.classList.add('scale-95');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => modal.classList.add('hidden'), 200);
+        }
+
+        function executeExport() {
+            const targetName = document.getElementById('export-target-select').value;
+            exportReportTXT(targetName);
+        }
+
+        // --- Data Features ---
+        function saveData() { localStorage.setItem('lottery_records_ultimate', JSON.stringify(state.records)); }
+
+        function triggerImport() { document.getElementById('import-file').click(); }
+
+        function importDataJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (Array.isArray(data)) {
+                        state.records = data;
+                        saveData();
+                        state.currentPage = 1;
+                        renderApp();
+                        showToast("Data အောင်မြင်စွာ Restore လုပ်ပြီးပါပြီ။");
+                    } else showToast("ဖိုင်အမျိုးအစား မှားယွင်းနေပါသည်။");
+                } catch (err) { showToast("JSON ဖိုင်ဖတ်ရာတွင် အမှားအယွင်းရှိပါသည်။"); }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; 
+        }
+
+        function exportDataJSON() {
+            const jsonStr = JSON.stringify(state.records, null, 2);
+            const blob = new Blob([jsonStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Lottery_Backup_${getTodayDate()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast("Backup ဒေါင်းလုဒ်ဆွဲပြီးပါပြီ။");
+        }
+
+        function exportReportTXT(targetName = 'ALL') {
+            const recordsToExport = targetName === 'ALL' ? state.records : state.records.filter(r => r.name === targetName);
+
+            if (recordsToExport.length === 0) {
+                showToast("မှတ်တမ်းမရှိသေးပါ။");
+                closeExportModal();
+                return;
+            }
+
+            let report = `======================================\n`;
+            report += `       2D/3D LOTTERY LEDGER REPORT      \n`;
+            report += `======================================\n`;
+            report += `Date: ${new Date().toLocaleString()}\n`;
+            report += `Target: ${targetName === 'ALL' ? 'All Customers' : targetName + ' (Only)'}\n\n`;
+            
+            // Calculate balances just for the exported subset
+            let totalReceivable = 0, totalPayable = 0;
+            const balances = {};
+            recordsToExport.forEach(r => {
+                if (!balances[r.name]) balances[r.name] = 0;
+                balances[r.name] += r.netBalance;
+            });
+
+            Object.values(balances).forEach(amt => {
+                if (amt > 0) totalReceivable += amt;
+                else totalPayable += Math.abs(amt);
+            });
+
+            report += `[ အချုပ်စာရင်း ]\n--------------------------------------\n`;
+            report += `ရရန်ရှိငွေ : ${formatMoney(totalReceivable)}\n`;
+            report += `ပေးရန်ရှိငွေ : ${formatMoney(totalPayable)}\n`;
+            report += `အသားတင်  : ${formatMoney(totalReceivable - totalPayable)}\n\n`;
+            
+            if (targetName === 'ALL') {
+                report += `[ တစ်ဦးချင်းစီ လက်ကျန်ငွေ ]\n--------------------------------------\n`;
+                for (const [name, amt] of Object.entries(balances)) {
+                    report += `${name.padEnd(15, ' ')} : ${amt >= 0 ? '+' : ''}${formatMoney(amt)}\n`;
+                }
+                report += `\n`;
+            }
+            
+            report += `[ မှတ်တမ်းများ ]\n--------------------------------------\n`;
+            recordsToExport.forEach((r, idx) => {
+                 report += `${idx+1}. Date: ${r.date} | ${r.session} | Name: ${r.name}\n`;
+                 report += `   Bet: ${r.betAmount} | Win: ${r.totalWin} | Repay: ${r.repayment} | Exp: ${r.expense}\n`;
+                 report += `   Net: ${r.netBalance >= 0 ? '+' : ''}${r.netBalance} Ks\n\n`;
+            });
+            
+            const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            // Clean filename by replacing spaces with underscore if needed
+            const safeName = targetName.replace(/\s+/g, '_');
+            a.download = `Lottery_Report_${safeName}_${getTodayDate()}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast("Report ဒေါင်းလုဒ်ဆွဲပြီးပါပြီ။");
+            closeExportModal();
+        }
+
+        function resetData() {
+            showConfirm("စာရင်းအားလုံးကို အပြီးတိုင်ဖျက်ရန် သေချာပါသလား?", () => {
+                state.records = []; state.currentPage = 1;
+                saveData(); renderApp();
+                showToast("စာရင်းအားလုံး ဖျက်ပြီးပါပြီ။");
+            });
+        }
+
+        function autoAdjustMultiplier() {
+            const session = document.getElementById('record-session').value;
+            document.getElementById('record-multiplier').value = session === '3D' ? 500 : 80;
+        }
+
+        // --- Navigation ---
+        function switchTab(tabId) {
+            if(state.activeTab === tabId) return;
+            state.activeTab = tabId;
+            renderApp();
+        }
+
+        function renderNavigation() {
+            const tabs = [
+                { id: 'dashboard', label: 'ပင်မစာမျက်နှာ', icon: 'layout-dashboard' },
+                { id: 'add', isAction: true, icon: 'plus' },
+                { id: 'records', label: 'စာရင်းမှတ်တမ်းများ', icon: 'list-checks' }
+            ];
+
+            const desktopNav = document.getElementById('desktop-nav');
+            desktopNav.innerHTML = tabs.filter(t => !t.isAction).map(tab => `
+                <button onclick="switchTab('${tab.id}')" class="w-full flex items-center p-3 rounded-2xl transition-colors group/nav relative ${state.activeTab === tab.id ? 'bg-white/10 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white'}">
+                    ${state.activeTab === tab.id ? '<div class="absolute left-0 top-1/4 bottom-1/4 w-1 bg-cyan-400 rounded-r-full"></div>' : ''}
+                    <div class="w-10 h-10 shrink-0 flex items-center justify-center">
+                        <i data-lucide="${tab.icon}" class="w-5 h-5 ${state.activeTab === tab.id ? 'text-cyan-400' : ''}"></i>
+                    </div>
+                    <span class="font-medium text-sm whitespace-nowrap ml-2 max-w-0 opacity-0 group-hover/sidebar:max-w-[200px] group-hover/sidebar:opacity-100 overflow-hidden transition-all duration-300">${tab.label}</span>
+                </button>
+            `).join('');
+            lucide.createIcons({ root: desktopNav });
+
+            const mobileNav = document.getElementById('mobile-nav');
+            mobileNav.innerHTML = tabs.map(tab => {
+                if (tab.isAction) {
+                    return `<button onclick="switchTab('records')" class="w-14 h-14 bg-gradient-to-tr from-cyan-500 to-blue-600 rounded-full -mt-8 flex items-center justify-center shadow-[0_5px_15px_rgba(6,182,212,0.4)] border-4 border-[#0f172a] active:scale-95 transition-transform"><i data-lucide="plus" class="text-white w-6 h-6"></i></button>`;
+                }
+                const isActive = state.activeTab === tab.id;
+                return `<button onclick="switchTab('${tab.id}')" class="flex-1 flex flex-col items-center justify-center h-full relative">
+                            <div class="p-2 rounded-xl transition-colors ${isActive ? 'text-cyan-400 bg-cyan-500/10' : 'text-slate-500'}"><i data-lucide="${tab.icon}" class="w-5 h-5 ${isActive ? 'fill-cyan-500/20' : ''}"></i></div>
+                        </button>`;
+            }).join('');
+            lucide.createIcons({ root: mobileNav });
+        }
+
+        // --- Render Dashboard ---
+        function renderDashboard() {
+            const { balances, totalReceivable, totalPayable } = calculateBalances();
+            const uniqueNames = Object.keys(balances);
+            let balancesHTML = uniqueNames.length === 0 ? `<div class="col-span-full p-8 text-center text-slate-500 border border-white/5 rounded-2xl bg-slate-900/50">မှတ်တမ်းများ မရှိသေးပါ</div>` : '';
+            
+            uniqueNames.forEach(name => {
+                const isOwed = balances[name] >= 0; 
+                balancesHTML += `
+                    <div class="glass-card p-4 rounded-2xl border ${isOwed ? 'border-emerald-500/20 bg-emerald-500/5' : 'border-rose-500/20 bg-rose-500/5'}">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-white text-base">${name}</h3>
+                            <i data-lucide="${isOwed ? 'arrow-down-left' : 'arrow-up-right'}" class="w-4 h-4 ${isOwed ? 'text-emerald-400' : 'text-rose-400'}"></i>
+                        </div>
+                        <p class="text-[10px] ${isOwed ? 'text-emerald-400' : 'text-rose-400'} mb-1">${isOwed ? 'ရရန်ရှိ (Receivable)' : 'ပေးရန်ရှိ (Payable)'}</p>
+                        <p class="text-xl font-bold font-num ${isOwed ? 'text-emerald-300' : 'text-rose-300'}">${formatMoney(Math.abs(balances[name]))}</p>
+                    </div>
+                `;
+            });
+
+            return `
+                <div class="flex justify-between items-end mb-6 animate-slide-up">
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight font-num">Overview</h2>
+                        <p class="text-slate-400 text-xs mt-1">ဒိုင်စာရင်း အချုပ်</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 animate-slide-up" style="animation-delay: 0.1s">
+                    <div class="glass-card p-5 rounded-2xl border-l-4 border-l-emerald-500">
+                        <h4 class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">စုစုပေါင်း ရရန်ရှိငွေ</h4>
+                        <h3 class="text-2xl font-bold text-emerald-400 font-num">${formatMoney(totalReceivable)}</h3>
+                    </div>
+                    <div class="glass-card p-5 rounded-2xl border-l-4 border-l-rose-500">
+                        <h4 class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">စုစုပေါင်း ပေးရန်ရှိငွေ</h4>
+                        <h3 class="text-2xl font-bold text-rose-400 font-num">${formatMoney(totalPayable)}</h3>
+                    </div>
+                </div>
+
+                <div class="animate-slide-up" style="animation-delay: 0.2s">
+                    <h3 class="text-sm font-bold text-white mb-4 pl-1">တစ်ဦးချင်းစီ၏ လက်ကျန်ငွေများ</h3>
+                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">${balancesHTML}</div>
+                </div>
+            `;
+        }
+
+        // --- Records Logic ---
+        
+        function updateDynamicDropdowns() {
+            const uniqueNames = [...new Set(state.records.map(r => r.name))];
+            
+            const dataList = document.getElementById('nameList');
+            if(dataList) {
+                dataList.innerHTML = uniqueNames.map(n => `<option value="${n}"></option>`).join('');
+            }
+            
+            const filterSelect = document.getElementById('filterSelect');
+            if(filterSelect) {
+                const currentVal = filterSelect.value;
+                filterSelect.innerHTML = `<option value="ALL">အားလုံးပြပါ (All)</option>` + 
+                                       uniqueNames.map(n => `<option value="${n}">${n}</option>`).join('');
+                if(uniqueNames.includes(currentVal)) filterSelect.value = currentVal;
+                else state.filterName = 'ALL';
+            }
+        }
+
+        function handleAddRecord(e) {
+            e.preventDefault();
+            const name = document.getElementById('record-name').value.trim();
+            const date = document.getElementById('record-date').value;
+            const session = document.getElementById('record-session').value;
+            
+            const betAmount = parseFloat(document.getElementById('record-bet').value) || 0;
+            const winBase = parseFloat(document.getElementById('record-win').value) || 0;
+            const multiplier = parseFloat(document.getElementById('record-multiplier').value) || 80;
+            const repayment = parseFloat(document.getElementById('record-repay').value) || 0;
+            const expense = parseFloat(document.getElementById('record-expense').value) || 0;
+
+            const totalWin = winBase * multiplier;
+            const netBalance = (betAmount + expense) - (totalWin + repayment);
+
+            state.records.unshift({ id: Date.now(), name, date, session, betAmount, winBase, multiplier, totalWin, repayment, expense, netBalance });
+            state.currentPage = 1; 
+            saveData();
+            
+            ['record-bet', 'record-win', 'record-repay', 'record-expense'].forEach(id => document.getElementById(id).value = '');
+            
+            updateDynamicDropdowns();
+            renderTableAndPagination();
+            showToast("စာရင်းသွင်းပြီးပါပြီ။");
+        }
+
+        function deleteRecord(id) {
+            showConfirm("ဤမှတ်တမ်းကို ဖျက်ရန် သေချာပါသလား?", () => {
+                state.records = state.records.filter(r => r.id !== id);
+                saveData();
+                updateDynamicDropdowns();
+                renderTableAndPagination(); 
+                showToast("မှတ်တမ်း ဖျက်ပြီးပါပြီ။");
+            });
+        }
+
+        function handleSearchDebounced(val) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                state.searchQuery = val;
+                state.currentPage = 1;
+                renderTableAndPagination(); 
+            }, 300);
+        }
+
+        function updateFilter(val) {
+            state.filterName = val;
+            state.currentPage = 1;
+            renderTableAndPagination();
+        }
+
+        function updateSort(val) {
+            state.sortMode = val;
+            state.currentPage = 1;
+            renderTableAndPagination();
+        }
+
+        function changePage(direction) {
+            state.currentPage += direction;
+            renderTableAndPagination();
+        }
+
+        function renderRecordsShell() {
+            const uniqueNames = [...new Set(state.records.map(r => r.name))];
+            setTimeout(() => { renderTableAndPagination(); }, 0);
+
+            return `
+                <div class="animate-slide-up">
+                    <h2 class="text-2xl font-bold text-white tracking-tight font-num mb-4">Add Record</h2>
+                    
+                    <div class="glass-card rounded-3xl p-4 md:p-6 mb-6">
+                        <form onsubmit="handleAddRecord(event)">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div>
+                                    <label class="text-[10px] text-slate-400 pl-1 mb-1 block">အမည်</label>
+                                    <input id="record-name" type="text" list="nameList" required class="input-field w-full bg-slate-900/50 border border-white/10 rounded-xl p-2.5 text-sm text-white">
+                                    <datalist id="nameList">${uniqueNames.map(n => `<option value="${n}"></option>`).join('')}</datalist>
+                                </div>
+                                <div>
+                                    <label class="text-[10px] text-slate-400 pl-1 mb-1 block">ရက်စွဲ</label>
+                                    <input id="record-date" type="date" required value="${getTodayDate()}" class="input-field w-full bg-slate-900/50 border border-white/10 rounded-xl p-2.5 text-sm text-white">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] text-slate-400 pl-1 mb-1 block">အချိန်</label>
+                                    <select id="record-session" onchange="autoAdjustMultiplier()" class="input-field w-full bg-slate-900/50 border border-white/10 rounded-xl p-2.5 text-sm text-white">
+                                        <option value="မနက် (Morning)">မနက် (Morning 2D)</option>
+                                        <option value="ညနေ (Evening)">ညနေ (Evening 2D)</option>
+                                        <option value="3D">3D</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                                <div class="col-span-1 border border-blue-500/20 bg-blue-500/5 p-3 rounded-xl">
+                                    <label class="text-[10px] text-blue-400 block mb-1">ထိုးကြေး</label>
+                                    <input id="record-bet" type="number" class="w-full bg-transparent border-b border-blue-500/30 text-white focus:outline-none focus:border-blue-400 text-sm">
+                                </div>
+                                <div class="col-span-1 border border-rose-500/20 bg-rose-500/5 p-3 rounded-xl">
+                                    <label class="text-[10px] text-rose-400 block mb-1">ပေါက်ကြေး x အဆ</label>
+                                    <div class="flex gap-2">
+                                        <input id="record-win" type="number" placeholder="Win" class="w-2/3 bg-transparent border-b border-rose-500/30 text-white focus:outline-none text-sm">
+                                        <input id="record-multiplier" type="number" value="80" class="w-1/3 bg-transparent border-b border-rose-500/30 text-slate-400 text-sm text-center">
+                                    </div>
+                                </div>
+                                <div class="col-span-1 border border-emerald-500/20 bg-emerald-500/5 p-3 rounded-xl">
+                                    <label class="text-[10px] text-emerald-400 block mb-1">ပြန်ဆပ်ငွေ</label>
+                                    <input id="record-repay" type="number" class="w-full bg-transparent border-b border-emerald-500/30 text-white focus:outline-none text-sm">
+                                </div>
+                                <div class="col-span-1 border border-orange-500/20 bg-orange-500/5 p-3 rounded-xl">
+                                    <label class="text-[10px] text-orange-400 block mb-1">စရိတ်</label>
+                                    <input id="record-expense" type="number" class="w-full bg-transparent border-b border-orange-500/30 text-white focus:outline-none text-sm">
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white py-3 rounded-xl font-bold text-sm shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-2">
+                                <i data-lucide="save" class="w-4 h-4"></i> စာရင်းသိမ်းမည် (Save)
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- TOOLBAR -->
+                    <div class="flex flex-col md:flex-row gap-3 mb-4">
+                        <input type="text" oninput="handleSearchDebounced(this.value)" value="${state.searchQuery}" placeholder="Search..." class="flex-1 bg-slate-900/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:border-cyan-500 focus:outline-none">
+                        <select id="filterSelect" onchange="updateFilter(this.value)" class="bg-slate-900/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none md:w-40">
+                            <option value="ALL">အားလုံးပြပါ</option>
+                            ${uniqueNames.map(n => `<option value="${n}" ${state.filterName===n?'selected':''}>${n}</option>`).join('')}
+                        </select>
+                        <select onchange="updateSort(this.value)" class="bg-slate-900/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none md:w-40">
+                            <option value="newest" ${state.sortMode==='newest'?'selected':''}>အသစ်ဆုံး</option>
+                            <option value="oldest" ${state.sortMode==='oldest'?'selected':''}>အဟောင်းဆုံး</option>
+                            <option value="high_net" ${state.sortMode==='high_net'?'selected':''}>ရရန်အများဆုံး</option>
+                        </select>
+                    </div>
+
+                    <!-- DYNAMIC TABLE CONTAINER -->
+                    <div id="records-table-container"></div>
+                </div>
+            `;
+        }
+
+        function renderTableAndPagination() {
+            const container = document.getElementById('records-table-container');
+            if (!container) return;
+
+            let display = state.records.filter(r => {
+                const matchN = state.filterName === 'ALL' || r.name === state.filterName;
+                const search = state.searchQuery.toLowerCase();
+                const matchS = r.name.toLowerCase().includes(search) || r.session.toLowerCase().includes(search) || r.date.includes(search);
+                return matchN && matchS;
+            });
+
+            display.sort((a, b) => {
+                if (state.sortMode === 'newest') return b.id - a.id;
+                if (state.sortMode === 'oldest') return a.id - b.id;
+                if (state.sortMode === 'high_net') return b.netBalance - a.netBalance;
+                return 0;
+            });
+
+            const total = display.length;
+            const totalPages = Math.ceil(total / state.itemsPerPage) || 1;
+            if (state.currentPage > totalPages) state.currentPage = totalPages;
+            if (state.currentPage < 1) state.currentPage = 1;
+            
+            const paginated = display.slice((state.currentPage - 1) * state.itemsPerPage, state.currentPage * state.itemsPerPage);
+
+            if (paginated.length === 0) {
+                container.innerHTML = `<div class="p-8 text-center text-slate-500 glass-card rounded-2xl">မှတ်တမ်း မရှိပါ</div>`;
+                return;
+            }
+
+            let deskHTML = `<div class="hidden md:block glass-card rounded-2xl overflow-hidden mb-4"><table class="w-full text-left text-sm"><thead class="bg-slate-900/80 text-slate-400 text-[10px] uppercase border-b border-white/5"><tr><th class="p-3">Date</th><th class="p-3">Name</th><th class="p-3 text-right">Bet</th><th class="p-3 text-right">Win</th><th class="p-3 text-right">Ex/Re</th><th class="p-3 text-right">Net</th><th class="p-3"></th></tr></thead><tbody class="divide-y divide-white/5">`;
+            
+            let mobHTML = `<div class="md:hidden space-y-3 mb-4">`;
+
+            paginated.forEach(r => {
+                const isRecv = r.netBalance >= 0;
+                const cColor = isRecv ? 'text-emerald-400' : 'text-rose-400';
+                const sColor = isRecv ? 'border-l-emerald-500' : 'border-l-rose-500';
+                
+                let win = r.totalWin > 0 ? `<span class="text-rose-400">${r.totalWin}</span><br><span class="text-[9px] text-slate-500">(${r.winBase}x${r.multiplier})</span>` : '-';
+                let exRe = (r.repayment>0?`<span class="text-cyan-400 text-[10px]">ဆပ်:${r.repayment}</span><br>`:'') + (r.expense>0?`<span class="text-orange-400 text-[10px]">စ:${r.expense}</span>`:'') || '-';
+
+                deskHTML += `<tr class="hover:bg-white/5"><td class="p-3 font-num"><span class="block">${formatDateDisplay(r.date)}</span><span class="text-[9px] text-slate-400">${r.session}</span></td><td class="p-3 font-bold">${r.name}</td><td class="p-3 text-right font-num text-emerald-400">${r.betAmount||'-'}</td><td class="p-3 text-right font-num">${win}</td><td class="p-3 text-right">${exRe}</td><td class="p-3 text-right font-bold font-num ${cColor}">${r.netBalance}</td><td class="p-3 text-right"><button onclick="deleteRecord(${r.id})" class="text-slate-500 hover:text-rose-400 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td></tr>`;
+
+                mobHTML += `<div class="glass-card p-3 rounded-2xl border-l-4 ${sColor}"><div class="flex justify-between items-center border-b border-white/5 pb-2 mb-2"><div class="font-bold text-sm text-white">${r.name} <span class="text-[10px] text-slate-500 font-normal ml-2">${formatDateDisplay(r.date)}</span></div><button onclick="deleteRecord(${r.id})" class="text-slate-500 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div><div class="grid grid-cols-2 gap-2 text-xs mb-2"><div class="bg-slate-900/50 p-1.5 rounded"><span class="text-slate-500 text-[10px] block">ထိုးကြေး</span><span class="text-emerald-400">${r.betAmount||'-'}</span></div><div class="bg-slate-900/50 p-1.5 rounded"><span class="text-slate-500 text-[10px] block">ပေါက်ကြေး</span><span class="text-rose-400">${r.totalWin||'-'}</span></div></div><div class="flex justify-between items-end"><div class="text-[10px]">${exRe}</div><div class="text-right text-base font-bold ${cColor}">${r.netBalance} Ks</div></div></div>`;
+            });
+
+            deskHTML += `</tbody></table></div>`;
+            mobHTML += `</div>`;
+
+            const pageHTML = total > 0 ? `
+                <div class="flex justify-between items-center bg-slate-900/40 p-3 rounded-xl border border-white/5 text-xs">
+                    <span class="text-slate-400">Total: ${total}</span>
+                    <div class="flex items-center gap-2">
+                        <button onclick="changePage(-1)" ${state.currentPage===1?'disabled':''} class="p-1 rounded bg-white/5 disabled:opacity-30"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                        <span class="text-cyan-400">${state.currentPage} / ${totalPages}</span>
+                        <button onclick="changePage(1)" ${state.currentPage===totalPages?'disabled':''} class="p-1 rounded bg-white/5 disabled:opacity-30"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                    </div>
+                </div>` : '';
+
+            container.innerHTML = deskHTML + mobHTML + pageHTML;
+            lucide.createIcons({ root: container });
+        }
+
+        function renderApp() {
+            renderNavigation();
+            const content = document.getElementById('app-content');
+            
+            if (state.activeTab === 'dashboard') {
+                content.innerHTML = renderDashboard();
+                lucide.createIcons({ root: content });
+            } else if (state.activeTab === 'records') {
+                content.innerHTML = renderRecordsShell();
+                lucide.createIcons({ root: content });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            renderApp();
+            setTimeout(() => {
+                const p = document.getElementById('preloader');
+                if(p) { p.classList.add('opacity-0'); setTimeout(() => p.remove(), 500); }
+            }, 600);
+        });
+
+    </script>
+</body>
+</html>
