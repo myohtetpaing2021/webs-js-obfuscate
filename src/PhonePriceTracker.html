@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Phone Price Tracker - Premium Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#020617',
+                            900: '#0f172a',
+                            800: '#1e293b',
+                        },
+                        primary: {
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 10s ease-in-out infinite',
+                        'float-delayed': 'float 10s ease-in-out infinite 5s',
+                        'slide-up': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                        'wiggle': 'wiggle 2s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        },
+                        slideUp: {
+                            'from': { opacity: 0, transform: 'translateY(20px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        fadeIn: {
+                            'from': { opacity: 0 },
+                            'to': { opacity: 1 },
+                        },
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-3deg) scale(1)' },
+                            '50%': { transform: 'rotate(3deg) scale(1.05)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+            color-scheme: dark;
+        }
+
+        /* Tech Grid Background Pattern - Simplified for Performance */
+        .bg-grid-pattern {
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+        }
+
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px #0f172a inset !important;
+            -webkit-text-fill-color: #f8fafc !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+
+        /* Optimized Glassmorphism */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.85); /* Higher opacity, lower blur needed */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255,255,255,0.05);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.8) 100%);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 15px -2px rgba(0,0,0,0.3);
+            transition: transform 0.2s ease-out, border-color 0.2s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+
+        .input-field { 
+            transition: all 0.2s ease-out; 
+        }
+        
+        .input-field:focus {
+            background: rgba(30, 41, 59, 0.95);
+            border-color: rgba(56, 189, 248, 0.6);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.15);
+            outline: none;
+        }
+
+        /* Input Icon Wrapper Focus State */
+        .input-group:focus-within i.icon-primary {
+            color: #38bdf8;
+        }
+
+        select.input-field option, select option { background-color: #0f172a; color: #fff; }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.5); }
+        ::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.3); border-radius: 8px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(56, 189, 248, 0.6); }
+        
+        .text-neon-cyan { text-shadow: 0 0 10px rgba(6, 182, 212, 0.5); }
+        .text-neon-orange { text-shadow: 0 0 10px rgba(249, 115, 22, 0.5); }
+
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(to right, #38bdf8, #818cf8);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/40 selection:text-cyan-100">
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-[#020617] transition-opacity duration-500 ease-out overflow-hidden">
+        <div class="absolute inset-0 bg-grid-pattern opacity-30"></div>
+        <div class="relative flex flex-col items-center z-10">
+            <div class="w-16 h-16 relative mb-6">
+                <div class="absolute inset-0 border-4 border-slate-800 rounded-full"></div>
+                <div class="absolute inset-0 border-4 border-t-cyan-400 border-r-blue-500 border-b-transparent border-l-transparent rounded-full animate-spin"></div>
+                <i data-lucide="smartphone" class="absolute inset-0 m-auto w-5 h-5 text-cyan-400"></i>
+            </div>
+            <div class="text-center">
+                <h2 class="text-2xl font-bold tracking-[0.2em] text-white font-num mb-1">PHONE<span class="text-cyan-400">PRO</span></h2>
+                <p class="text-[10px] text-cyan-500/70 font-num tracking-[0.3em] uppercase">Loading System</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Background (Optimized) -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute inset-0 bg-grid-pattern opacity-10"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-[radial-gradient(circle,_rgba(37,99,235,0.15)_0%,_transparent_70%)] animate-float"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[300px] h-[300px] md:w-[400px] md:h-[400px] bg-[radial-gradient(circle,_rgba(6,182,212,0.12)_0%,_transparent_70%)] animate-float-delayed"></div>
+    </div>
+
+    <div class="min-h-screen flex flex-col md:flex-row relative z-10">
+        
+        <!-- EXPANDING HOVER SIDEBAR WRAPPER (Desktop) -->
+        <div class="hidden md:block w-24 shrink-0 mx-4 relative z-40">
+            <div class="sticky top-6 h-[calc(100vh-3rem)]">
+                <aside class="group/sidebar absolute top-0 left-0 w-24 hover:w-72 h-full glass-panel flex flex-col rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 ease-out overflow-visible border border-white/10 will-change-[width]">
+                    
+                    <div class="p-6 flex items-center shrink-0 border-b border-white/5">
+                        <div class="w-12 h-12 shrink-0 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center border border-white/20 relative overflow-hidden group shadow-md">
+                            <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-200"></div>
+                            <i data-lucide="smartphone" class="text-white w-6 h-6 relative z-10"></i>
+                        </div>
+                        <div class="max-w-0 opacity-0 group-hover/sidebar:max-w-[200px] group-hover/sidebar:opacity-100 overflow-hidden transition-all duration-300 whitespace-nowrap ml-0 group-hover/sidebar:ml-4 flex flex-col justify-center">
+                            <h1 class="text-xl font-bold text-white tracking-tight font-num">PHONE<span class="gradient-text">PRO</span></h1>
+                            <p class="text-[10px] text-cyan-400 font-medium tracking-[0.2em] uppercase">Premium Edition</p>
+                        </div>
+                    </div>
+
+                    <nav class="flex-1 px-4 space-y-3 mt-6 w-full" id="desktop-nav"></nav>
+
+                    <!-- Settings -->
+                    <div class="mt-auto px-4 pb-6 relative group/settings">
+                        <div class="absolute bottom-[calc(100%-1.5rem)] left-4 w-60 pb-2 opacity-0 pointer-events-none group-hover/settings:pointer-events-auto group-hover/settings:opacity-100 transition-all duration-200 translate-y-2 scale-95 group-hover/settings:translate-y-0 group-hover/settings:scale-100 origin-bottom-left z-50">
+                            <div class="glass-panel rounded-2xl p-2 flex flex-col gap-1 border border-white/10 shadow-2xl bg-slate-900/95">
+                                <button onclick="resetData()" class="flex items-center gap-3 w-full text-left px-4 py-3 rounded-xl hover:bg-rose-500/15 text-rose-400 text-xs font-bold transition-colors">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i> <span class="whitespace-nowrap">မှတ်တမ်းအားလုံး ဖျက်မည်</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="glass-card p-3 rounded-2xl border border-slate-500/20 bg-slate-800/40 relative overflow-hidden flex items-center hover:bg-slate-800/80 hover:border-cyan-500/30 transition-all duration-200 cursor-pointer z-40">
+                            <div class="w-10 h-10 shrink-0 rounded-xl bg-slate-700/50 flex items-center justify-center text-slate-300 transition-colors">
+                                <i data-lucide="settings" class="w-5 h-5 group-hover/settings:rotate-90 transition-transform duration-300"></i>
+                            </div>
+                            <div class="max-w-0 opacity-0 group-hover/sidebar:max-w-[200px] group-hover/sidebar:opacity-100 overflow-hidden transition-all duration-300 whitespace-nowrap ml-0 group-hover/sidebar:ml-3 flex flex-col justify-center text-left">
+                                <h4 class="text-xs font-bold text-white">System Settings</h4>
+                                <p class="text-[10px] text-slate-400 font-num tracking-wide">Data Management</p>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+
+        <!-- MOBILE HEADER -->
+        <div class="md:hidden fixed top-0 left-0 right-0 z-40 bg-[#020617]/80 backdrop-blur-lg border-b border-white/10 px-4 py-3 flex justify-between items-center shadow-lg">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-md">
+                    <i data-lucide="smartphone" class="text-white w-5 h-5"></i>
+                </div>
+                <span class="font-bold text-lg text-white font-num tracking-tight">PHONE<span class="gradient-text">PRO</span></span>
+            </div>
+            <button onclick="toggleMobileSettings()" class="w-9 h-9 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center text-slate-300 hover:text-cyan-400 hover:bg-slate-700 active:scale-95 transition-all">
+                <i data-lucide="settings" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 relative z-10 pt-24 md:pt-6 md:px-0 pb-28 md:pb-6 h-screen overflow-y-auto custom-scrollbar scroll-smooth">
+            <div id="app-content" class="max-w-6xl mx-auto px-4 md:px-8 space-y-6 pb-10">
+                <!-- Content gets injected here -->
+            </div>
+        </main>
+
+        <!-- MOBILE SETTINGS MODAL -->
+        <div id="mobile-settings-panel" class="fixed inset-0 z-50 hidden flex-col items-center justify-end bg-black/60 backdrop-blur-sm transition-opacity duration-200 opacity-0 pointer-events-none">
+            <div class="bg-[#0f172a] w-full rounded-t-[2rem] border-t border-white/10 p-6 shadow-2xl transform transition-transform duration-300 translate-y-full will-change-transform" id="mobile-settings-content">
+                <div class="w-12 h-1.5 bg-slate-700 rounded-full mx-auto mb-6"></div>
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2"><i data-lucide="settings-2" class="w-5 h-5 text-cyan-400"></i> System Options</h3>
+                    <button onclick="toggleMobileSettings()" class="p-2 bg-slate-800 rounded-full text-slate-400 active:scale-95"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+                <div class="flex flex-col gap-3">
+                    <button onclick="resetData(); toggleMobileSettings();" class="flex items-center gap-4 bg-rose-500/10 border border-rose-500/20 p-4 rounded-2xl text-left text-sm font-bold text-rose-400 hover:bg-rose-500/20 active:scale-95 transition-all">
+                        <div class="p-2.5 rounded-xl bg-rose-500/20 text-rose-400"><i data-lucide="trash-2" class="w-5 h-5"></i></div> မှတ်တမ်းအားလုံး ဖျက်မည်
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CUSTOM CONFIRM MODAL -->
+        <div id="confirm-modal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/70 backdrop-blur-sm p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+            <div class="glass-panel w-full max-w-sm rounded-[2rem] p-8 relative border border-white/10 shadow-2xl text-center transform scale-95 translate-y-4 transition-all duration-200 will-change-transform" id="confirm-box">
+                <div class="w-20 h-20 rounded-full bg-rose-500/10 text-rose-500 flex items-center justify-center mx-auto mb-6 border border-rose-500/20 relative">
+                    <div class="absolute inset-0 rounded-full bg-rose-500/10 animate-ping opacity-50"></div>
+                    <i data-lucide="alert-triangle" class="w-10 h-10 relative z-10"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">သေချာပါသလား?</h3>
+                <p class="text-sm text-slate-400 mb-8 font-padauk" id="confirm-message">ဤလုပ်ဆောင်မှုကို ပြန်ပြင်၍မရပါ။ အချက်အလက်များ အကုန်ပျက်သွားပါမည်။</p>
+                <div class="flex justify-center gap-4">
+                    <button onclick="closeConfirmModal()" class="flex-1 px-5 py-3 rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white text-sm font-bold transition-all active:scale-95">မလုပ်တော့ပါ</button>
+                    <button id="confirm-yes-btn" onclick="executeConfirm()" class="flex-1 bg-gradient-to-r from-rose-600 to-red-500 hover:from-rose-500 text-white py-3 rounded-xl font-bold text-sm shadow-lg active:scale-95 transition-all">အတည်ပြုမည်</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- DETAILS MODAL (Ultimate Floating Box - Optimized) -->
+        <div id="details-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-[#020617]/90 backdrop-blur-md p-0 md:p-6 opacity-0 pointer-events-none transition-opacity duration-300" onclick="closeDetailsModal(event)">
+            <div class="w-full h-full md:h-auto md:max-w-md relative transform scale-95 translate-y-8 transition-all duration-300 ease-out will-change-transform" id="details-box" onclick="event.stopPropagation()">
+                
+                <!-- Modal Content Container -->
+                <div class="relative w-full h-full md:h-auto bg-[#0f172a] md:rounded-[2.5rem] border border-white/10 shadow-2xl flex flex-col overflow-hidden">
+                    
+                    <!-- Lightweight Glow effect replacing heavy blur objects -->
+                    <div class="absolute top-0 left-0 w-full h-32 bg-[radial-gradient(ellipse_at_top,_rgba(6,182,212,0.15)_0%,_transparent_70%)] pointer-events-none"></div>
+                    
+                    <!-- Close Button -->
+                    <button onclick="closeDetailsModal(event)" class="absolute top-5 right-5 p-2.5 bg-white/5 border border-white/10 rounded-full text-slate-400 hover:text-white hover:bg-rose-500/80 hover:border-rose-500 transition-all active:scale-95 z-20">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+
+                    <!-- Scrollable Content Area -->
+                    <div class="p-6 md:p-8 flex flex-col flex-1 overflow-y-auto custom-scrollbar relative z-10">
+                        
+                        <!-- Header: Icon & Page Name -->
+                        <div class="flex flex-col items-center mt-4 mb-6">
+                            <div class="w-16 h-16 rounded-[1.25rem] bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center border border-white/20 relative mb-4 shadow-[0_5px_15px_rgba(6,182,212,0.3)]">
+                                <i data-lucide="facebook" class="text-white w-8 h-8 drop-shadow-md"></i>
+                            </div>
+                            
+                            <h3 class="text-2xl md:text-3xl font-black text-white mb-2 text-center tracking-tight" id="modal-page-name">Page Name</h3>
+                            
+                            <div class="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 bg-cyan-900/30 border border-cyan-500/20 rounded-full text-cyan-400 text-[11px] font-bold uppercase tracking-widest">
+                                <i data-lucide="calendar-clock" class="w-3.5 h-3.5"></i> <span id="modal-date">Date</span>
+                            </div>
+                        </div>
+
+                        <!-- Spec Cards -->
+                        <div class="space-y-3 mb-8">
+                            <!-- Model -->
+                            <div class="flex items-center justify-between p-4 bg-slate-800/60 rounded-2xl border border-white/5">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2 rounded-xl bg-slate-900 text-slate-400"><i data-lucide="smartphone" class="w-4 h-4"></i></div>
+                                    <span class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Model</span>
+                                </div>
+                                <span class="text-sm font-bold text-white text-right ml-4" id="modal-model">Model</span>
+                            </div>
+                            <!-- Version -->
+                            <div class="flex items-center justify-between p-4 bg-slate-800/60 rounded-2xl border border-white/5">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2 rounded-xl bg-slate-900 text-slate-400"><i data-lucide="globe-2" class="w-4 h-4"></i></div>
+                                    <span class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Version</span>
+                                </div>
+                                <span class="text-xs font-black text-blue-300 bg-blue-900/40 px-3 py-1.5 rounded-lg border border-blue-500/30 uppercase tracking-wider" id="modal-version">Version</span>
+                            </div>
+                            <!-- RAM -->
+                            <div class="flex items-center justify-between p-4 bg-slate-800/60 rounded-2xl border border-white/5">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2 rounded-xl bg-slate-900 text-slate-400"><i data-lucide="cpu" class="w-4 h-4"></i></div>
+                                    <span class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">RAM / Storage</span>
+                                </div>
+                                <span class="text-sm font-bold text-slate-200 font-num" id="modal-ram">RAM</span>
+                            </div>
+                        </div>
+
+                        <!-- Spacer for mobile to push price down -->
+                        <div class="mt-auto"></div>
+
+                        <!-- Price Section -->
+                        <div class="relative w-full pt-6 pb-2">
+                            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+                            
+                            <div class="text-center mt-2">
+                                <p class="text-[10px] text-cyan-400 uppercase tracking-[0.4em] font-bold mb-2">Total Price</p>
+                                <div class="flex items-end justify-center gap-2">
+                                    <span class="text-5xl md:text-[3.5rem] leading-none font-black text-white font-num tracking-tighter" id="modal-price">Price</span>
+                                    <span class="text-sm font-bold text-cyan-500 mb-1.5 uppercase tracking-widest">MMK</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOAST NOTIFICATION -->
+        <div id="toast-notification" class="fixed top-6 right-6 z-[80] transition-transform duration-300 translate-x-[150%] gpu-accelerated">
+            <div class="glass-panel px-5 py-4 rounded-2xl border border-emerald-500/30 shadow-lg flex items-center gap-4 bg-[#020617]/95">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 text-white flex items-center justify-center">
+                    <i data-lucide="check" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-white tracking-wide">အောင်မြင်ပါသည်</h4>
+                    <p class="text-[11px] text-emerald-400/80 mt-0.5" id="toast-message">လုပ်ဆောင်မှု ပြီးစီးပါပြီ</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MOBILE BOTTOM NAV -->
+        <div class="md:hidden fixed bottom-4 left-4 right-4 h-[65px] glass-panel rounded-[2rem] border border-white/10 z-40 flex items-center justify-between px-3 shadow-lg" id="mobile-nav">
+            <!-- Nav Injected -->
+        </div>
+
+        <!-- DATALISTS (Hidden) -->
+        <datalist id="pageList">
+            <option value="Htun Mobile"></option>
+            <option value="Mobile City"></option>
+            <option value="Yangon Mobile Store"></option>
+            <option value="Any Call"></option>
+        </datalist>
+        <datalist id="modelList"></datalist>
+        <datalist id="ramList">
+            <option value="(ram8/128)"></option>
+            <option value="(ram8/256)"></option>
+            <option value="(ram12/256)"></option>
+            <option value="(ram12/512)"></option>
+        </datalist>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- Formatting Functions ---
+        const formatMoney = (amount) => Number(amount).toLocaleString() + " Ks";
+        const getTodayDateString = () => {
+            const d = new Date();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${d.getFullYear()}-${m}-${day}`; 
+        };
+        const formatDateDisplay = (dateStr) => {
+            if (!dateStr) return '';
+            const parts = dateStr.split('-');
+            if (parts.length === 3) return `${parts[2]}-${parts[1]}-${parts[0]}`;
+            return dateStr;
+        };
+
+        // --- State Management ---
+        let phonePrices = [];
+        const state = {
+            activeTab: 'search',
+            searchModel: '',
+            searchVersion: '',
+            searchRam: '',
+            searchResults: null,
+            currentPage: 1,      
+            itemsPerPage: 10     
+        };
+
+        let pendingConfirmAction = null;
+
+        function loadData() {
+            try {
+                const stored = localStorage.getItem('phonePricesData');
+                if (stored) {
+                    phonePrices = JSON.parse(stored);
+                } else {
+                    phonePrices = [];
+                }
+            } catch (error) { console.error("LS Error", error); }
+        }
+
+        function saveData() { 
+            localStorage.setItem('phonePricesData', JSON.stringify(phonePrices)); 
+            updateDatalists();
+        }
+
+        // --- Modals & UI Toggles ---
+        function toggleMobileSettings() {
+            const panel = document.getElementById('mobile-settings-panel');
+            const content = document.getElementById('mobile-settings-content');
+            if (panel.classList.contains('hidden')) {
+                panel.classList.remove('hidden');
+                panel.classList.add('flex');
+                void panel.offsetWidth;
+                panel.classList.remove('opacity-0', 'pointer-events-none');
+                content.classList.remove('translate-y-full');
+            } else {
+                content.classList.add('translate-y-full');
+                panel.classList.add('opacity-0', 'pointer-events-none');
+                setTimeout(() => {
+                    panel.classList.add('hidden');
+                    panel.classList.remove('flex');
+                }, 200);
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast-notification');
+            document.getElementById('toast-message').textContent = message;
+            toast.classList.remove('translate-x-[150%]');
+            setTimeout(() => toast.classList.add('translate-x-[150%]'), 3000);
+        }
+
+        function showConfirm(message, actionCallback) {
+            const modal = document.getElementById('confirm-modal');
+            const box = document.getElementById('confirm-box');
+            document.getElementById('confirm-message').textContent = message;
+            pendingConfirmAction = actionCallback;
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            void modal.offsetWidth;
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            box.classList.remove('scale-95', 'translate-y-4');
+            box.classList.add('scale-100', 'translate-y-0');
+        }
+
+        function closeConfirmModal() {
+            const modal = document.getElementById('confirm-modal');
+            const box = document.getElementById('confirm-box');
+            box.classList.remove('scale-100', 'translate-y-0');
+            box.classList.add('scale-95', 'translate-y-4');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 200);
+            pendingConfirmAction = null;
+        }
+
+        // --- Details Modal (Full Screen / Centered Floating Box) Functions ---
+        function openDetailsModal(index) {
+            const record = state.searchResults[index];
+            if (!record) return;
+
+            document.getElementById('modal-page-name').textContent = record.page;
+            document.getElementById('modal-date').textContent = record.date === getTodayDateString() ? "Today" : formatDateDisplay(record.date);
+            document.getElementById('modal-model').textContent = record.model;
+            document.getElementById('modal-version').textContent = record.version;
+            document.getElementById('modal-ram').textContent = record.ram;
+            document.getElementById('modal-price').textContent = formatMoney(record.price).replace(' Ks', '');
+
+            const modal = document.getElementById('details-modal');
+            const box = document.getElementById('details-box');
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            requestAnimationFrame(() => {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                box.classList.remove('scale-95', 'translate-y-8');
+                box.classList.add('scale-100', 'translate-y-0');
+            });
+        }
+
+        function closeDetailsModal(event) {
+            if (event) event.stopPropagation();
+            
+            const modal = document.getElementById('details-modal');
+            const box = document.getElementById('details-box');
+            
+            box.classList.remove('scale-100', 'translate-y-0');
+            box.classList.add('scale-95', 'translate-y-8');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        }
+
+        function executeConfirm() {
+            if (pendingConfirmAction) pendingConfirmAction();
+            closeConfirmModal();
+        }
+
+        function resetData() {
+            showConfirm("မှတ်တမ်းများအားလုံးကို အပြီးတိုင်ဖျက်ရန် သေချာပါသလား?", () => {
+                phonePrices = [];
+                state.searchResults = null;
+                state.currentPage = 1;
+                saveData(); 
+                renderApp();
+                showToast("မှတ်တမ်းအားလုံး ဖျက်ပြီးပါပြီ။");
+            });
+        }
+
+        // --- Navigation & Pagination ---
+        function switchTab(tabId) {
+            if(state.activeTab === tabId) return;
+            state.activeTab = tabId;
+            renderApp();
+        }
+
+        function changePage(direction) {
+            state.currentPage += direction;
+            renderRecordsTab();
+            document.getElementById('records-table-header').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function renderNavigation() {
+            const tabs = [
+                { id: 'search', label: 'ဈေးနှုန်းရှာရန်', icon: 'search' },
+                { id: 'add', isAction: true, icon: 'plus' },
+                { id: 'records', label: 'မှတ်တမ်းများ', icon: 'database' }
+            ];
+
+            const desktopNav = document.getElementById('desktop-nav');
+            desktopNav.innerHTML = tabs.filter(t => !t.isAction).map(tab => `
+                <button onclick="switchTab('${tab.id}')" class="w-full flex items-center p-3 rounded-2xl transition-all duration-300 group/nav relative ${state.activeTab === tab.id ? 'bg-cyan-500/10 text-white shadow-inner' : 'text-slate-400 hover:bg-white/5 hover:text-white'}">
+                    ${state.activeTab === tab.id ? '<div class="absolute left-0 top-1/4 bottom-1/4 w-1 bg-cyan-400 rounded-r-full shadow-[0_0_10px_rgba(6,182,212,0.8)]"></div>' : ''}
+                    <div class="w-10 h-10 shrink-0 flex items-center justify-center">
+                        <i data-lucide="${tab.icon}" class="w-5 h-5 ${state.activeTab === tab.id ? 'text-cyan-400' : 'group-hover/nav:text-slate-300 transition-colors'}"></i>
+                    </div>
+                    <span class="font-medium text-sm whitespace-nowrap ml-2 max-w-0 opacity-0 group-hover/sidebar:max-w-[200px] group-hover/sidebar:opacity-100 overflow-hidden transition-all duration-300">${tab.label}</span>
+                </button>
+            `).join('');
+            lucide.createIcons({ root: desktopNav });
+
+            const mobileNav = document.getElementById('mobile-nav');
+            mobileNav.innerHTML = tabs.map(tab => {
+                if (tab.isAction) {
+                    return `<button onclick="switchTab('records')" class="w-14 h-14 bg-gradient-to-tr from-cyan-500 to-blue-600 rounded-full -mt-8 flex items-center justify-center shadow-lg border-4 border-[#020617] active:scale-95 transition-transform"><i data-lucide="plus" class="text-white w-6 h-6"></i></button>`;
+                }
+                const isActive = state.activeTab === tab.id;
+                return `<button onclick="switchTab('${tab.id}')" class="flex-1 flex flex-col items-center justify-center h-full relative group">
+                            <div class="p-2.5 rounded-xl transition-all duration-200 ${isActive ? 'text-cyan-400 bg-cyan-500/15' : 'text-slate-500 hover:text-slate-300'}"><i data-lucide="${tab.icon}" class="w-5 h-5"></i></div>
+                        </button>`;
+            }).join('');
+            lucide.createIcons({ root: mobileNav });
+        }
+
+        // --- Logic: Search Tab (Dashboard) ---
+        function handleModelChange() {
+            state.searchModel = document.getElementById('searchModel').value;
+            state.searchVersion = ''; 
+            state.searchRam = ''; 
+            renderSearchTab();
+        }
+
+        function handleVersionChange() {
+            state.searchVersion = document.getElementById('searchVersion').value;
+            state.searchRam = ''; 
+            renderSearchTab();
+        }
+
+        function handleRamChange() {
+            state.searchRam = document.getElementById('searchRam').value;
+        }
+
+        function executeSearch() {
+            state.searchModel = document.getElementById('searchModel').value;
+            state.searchVersion = document.getElementById('searchVersion').value;
+            state.searchRam = document.getElementById('searchRam').value;
+
+            if (!state.searchModel || !state.searchVersion || !state.searchRam) {
+                alert('ကျေးဇူးပြု၍ ဖုန်းမော်ဒယ်၊ ဗားရှင်း နှင့် RAM ကို ရွေးချယ်ပါ။');
+                return;
+            }
+
+            let filtered = phonePrices.filter(p => p.model === state.searchModel && p.version === state.searchVersion && p.ram === state.searchRam);
+            filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            const latestPricesMap = new Map();
+            filtered.forEach(record => {
+                if (!latestPricesMap.has(record.page)) {
+                    latestPricesMap.set(record.page, record);
+                }
+            });
+
+            state.searchResults = Array.from(latestPricesMap.values()).sort((a, b) => a.price - b.price);
+            renderSearchTab();
+        }
+
+        function renderSearchTab() {
+            const uniqueModels = [...new Set(phonePrices.map(p => p.model))].sort();
+            
+            let versionOptions = [];
+            if (state.searchModel) {
+                versionOptions = [...new Set(phonePrices.filter(p => p.model === state.searchModel).map(p => p.version))].sort();
+            }
+
+            let ramOptions = [];
+            if (state.searchModel && state.searchVersion) {
+                ramOptions = [...new Set(phonePrices.filter(p => p.model === state.searchModel && p.version === state.searchVersion).map(p => p.ram))].sort();
+            }
+
+            let html = `
+                <div class="animate-slide-up">
+                    <div class="flex justify-between items-end mb-6 md:mb-8">
+                        <div>
+                            <h2 class="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 tracking-tight font-num pb-1">Compare Prices</h2>
+                            <p class="text-cyan-400 text-xs mt-1 tracking-wider uppercase font-bold">အသက်သာဆုံး ဈေးနှုန်းရှာဖွေရန်</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-5 md:p-8 rounded-[2rem] mb-8 md:mb-10 border border-white/10 shadow-lg">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 items-end">
+                            <div class="input-group">
+                                <label class="text-[11px] text-slate-400 pl-1 mb-2 block uppercase tracking-widest font-bold">ဖုန်းမော်ဒယ်</label>
+                                <div class="relative group">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <i data-lucide="smartphone" class="w-5 h-5 text-slate-500 icon-primary transition-colors"></i>
+                                    </div>
+                                    <select id="searchModel" onchange="handleModelChange()" class="input-field w-full bg-slate-900/60 border border-white/10 rounded-2xl pl-12 pr-10 py-3.5 text-sm text-white focus:outline-none appearance-none shadow-inner cursor-pointer">
+                                        <option value="">-- မော်ဒယ်ရွေးပါ --</option>
+                                        ${uniqueModels.map(m => `<option value="${m}" ${state.searchModel === m ? 'selected' : ''}>${m}</option>`).join('')}
+                                    </select>
+                                    <i data-lucide="chevron-down" class="absolute right-4 top-3.5 w-5 h-5 text-slate-400 pointer-events-none"></i>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label class="text-[11px] text-slate-400 pl-1 mb-2 block uppercase tracking-widest font-bold">ဖုန်းဗားရှင်း</label>
+                                <div class="relative group">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <i data-lucide="globe" class="w-5 h-5 text-slate-500 icon-primary transition-colors"></i>
+                                    </div>
+                                    <select id="searchVersion" onchange="handleVersionChange()" class="input-field w-full bg-slate-900/60 border border-white/10 rounded-2xl pl-12 pr-10 py-3.5 text-sm text-white focus:outline-none appearance-none shadow-inner cursor-pointer" ${!state.searchModel ? 'disabled' : ''}>
+                                        <option value="">${state.searchModel ? '-- ဗားရှင်းရွေးပါ --' : '-- အရင်ဆုံး မော်ဒယ်ရွေးပါ --'}</option>
+                                        ${versionOptions.map(v => `<option value="${v}" ${state.searchVersion === v ? 'selected' : ''}>${v}</option>`).join('')}
+                                    </select>
+                                    <i data-lucide="chevron-down" class="absolute right-4 top-3.5 w-5 h-5 text-slate-400 pointer-events-none"></i>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label class="text-[11px] text-slate-400 pl-1 mb-2 block uppercase tracking-widest font-bold">RAM/Storage</label>
+                                <div class="relative group">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <i data-lucide="microchip" class="w-5 h-5 text-slate-500 icon-primary transition-colors"></i>
+                                    </div>
+                                    <select id="searchRam" onchange="handleRamChange()" class="input-field w-full bg-slate-900/60 border border-white/10 rounded-2xl pl-12 pr-10 py-3.5 text-sm text-white focus:outline-none appearance-none shadow-inner cursor-pointer" ${!state.searchVersion ? 'disabled' : ''}>
+                                        <option value="">${state.searchVersion ? '-- RAM ရွေးပါ --' : '-- အရင်ဆုံး ဗားရှင်းရွေးပါ --'}</option>
+                                        ${ramOptions.map(r => `<option value="${r}" ${state.searchRam === r ? 'selected' : ''}>${r}</option>`).join('')}
+                                    </select>
+                                    <i data-lucide="chevron-down" class="absolute right-4 top-3.5 w-5 h-5 text-slate-400 pointer-events-none"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <button onclick="executeSearch()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white py-3.5 rounded-2xl font-bold text-sm shadow-md active:scale-95 transition-all flex items-center justify-center gap-2">
+                                    <i data-lucide="search" class="w-5 h-5"></i> ဈေးနှုန်းရှာမည်
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+            `;
+
+            if (state.searchResults !== null) {
+                html += `
+                    <div class="flex items-center gap-3 mb-6 pl-2">
+                        <div class="w-2 h-6 bg-cyan-400 rounded-full shadow-[0_0_10px_rgba(6,182,212,0.6)]"></div>
+                        <h3 class="text-base font-bold text-white">
+                            <span class="text-cyan-400">${state.searchModel} <span class="text-[10px] text-cyan-200 bg-cyan-900/40 px-2 py-0.5 rounded-md border border-cyan-500/30 ml-1 mr-1 align-middle uppercase tracking-widest">${state.searchVersion}</span> ${state.searchRam}</span> အတွက် နောက်ဆုံးရလဒ်များ
+                        </h3>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 pb-8">
+                `;
+
+                if (state.searchResults.length === 0) {
+                    html += `
+                        <div class="col-span-full py-12 text-center text-slate-400 glass-card rounded-[2rem] flex flex-col items-center justify-center">
+                            <div class="w-16 h-16 mb-4 rounded-full bg-slate-800/50 flex items-center justify-center border border-white/5">
+                                <i data-lucide="search-x" class="w-8 h-8 text-slate-500"></i>
+                            </div>
+                            <h3 class="text-base font-bold text-white mb-1">အချက်အလက် မရှိသေးပါ</h3>
+                            <p class="text-xs">အခြားမော်ဒယ်တစ်ခုကို ရွေးချယ်ရှာဖွေကြည့်ပါ။</p>
+                        </div>`;
+                } else {
+                    const todayStr = getTodayDateString();
+                    state.searchResults.forEach((record, index) => {
+                        const isCheapest = index === 0;
+                        const dateBadge = record.date === todayStr 
+                            ? `<span class="bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 px-2.5 py-1 rounded-lg text-[10px] font-bold tracking-wider uppercase">Today</span>` 
+                            : `<span class="text-slate-400 text-[10px] bg-slate-800/50 px-2.5 py-1 rounded-lg border border-white/5">${formatDateDisplay(record.date)}</span>`;
+
+                        const borderClass = isCheapest 
+                            ? 'border-cyan-400/50 shadow-[0_0_15px_rgba(6,182,212,0.15)] bg-cyan-900/10' 
+                            : 'border-white/5 bg-slate-800/30';
+
+                        html += `
+                            <div class="relative h-full ${isCheapest ? 'mt-3' : ''}">
+                                ${isCheapest ? `
+                                    <div class="absolute -top-3.5 left-0 right-0 flex justify-center z-30 pointer-events-none">
+                                        <div class="animate-wiggle">
+                                            <div class="bg-gradient-to-r from-orange-500 to-rose-600 text-white text-[10px] font-black tracking-widest px-4 py-1 rounded-full shadow-[0_5px_15px_rgba(244,63,94,0.4)] flex items-center gap-1.5 border border-rose-400/50">
+                                                <i data-lucide="flame" class="w-3.5 h-3.5"></i> BEST PRICE
+                                            </div>
+                                        </div>
+                                    </div>` : ''}
+
+                                <div onclick="openDetailsModal(${index})" class="glass-card p-5 md:p-6 rounded-[2rem] border-2 ${borderClass} relative flex flex-col h-full cursor-pointer group transition-all duration-200 hover:-translate-y-1 active:scale-95">
+                                    <div class="absolute inset-0 bg-gradient-to-br from-cyan-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[2rem] pointer-events-none"></div>
+                                    
+                                    <div class="flex justify-between items-start mb-4 relative z-10">
+                                        <h4 class="font-bold text-lg md:text-xl text-white flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center border border-blue-500/20 group-hover:bg-blue-500 group-hover:text-white transition-colors duration-200"><i data-lucide="facebook" class="w-4 h-4"></i></div>
+                                            ${record.page}
+                                        </h4>
+                                        ${dateBadge}
+                                    </div>
+                                    <div class="text-xs text-slate-400 mb-5 bg-slate-900/50 p-3.5 rounded-xl border border-white/5 flex-grow relative z-10">
+                                        <div class="flex justify-between mb-2">
+                                            <span class="font-medium tracking-wide">Version</span>
+                                            <span class="text-cyan-300 font-bold bg-cyan-900/30 px-2 py-0.5 rounded border border-cyan-500/20">${record.version}</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="font-medium tracking-wide">RAM</span>
+                                            <span class="text-slate-200 font-bold font-num flex items-center gap-1"><i data-lucide="microchip" class="w-3.5 h-3.5 text-slate-500"></i>${record.ram}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-end pt-2 border-t border-white/10 relative z-10">
+                                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1 group-hover:text-cyan-400 transition-colors"><i data-lucide="external-link" class="w-3 h-3"></i> Details</span>
+                                        <div class="text-right">
+                                            <span class="text-2xl md:text-3xl font-black font-num tracking-tight ${isCheapest ? 'text-cyan-400' : 'text-white'} group-hover:text-cyan-400 transition-colors duration-200">
+                                                ${formatMoney(record.price).replace(' Ks', '')}
+                                            </span>
+                                            <span class="text-[10px] text-slate-400 font-bold ml-1">MMK</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                html += `</div>`;
+            }
+
+            html += `</div>`;
+            
+            const content = document.getElementById('app-content');
+            content.innerHTML = html;
+            lucide.createIcons({ root: content });
+        }
+
+        // --- Logic: Records Tab (Add & Table) ---
+        function handleAddRecord(e) {
+            e.preventDefault();
+            const date = document.getElementById('inputDate').value;
+            const page = document.getElementById('inputPage').value.trim();
+            const version = document.getElementById('inputVersion').value;
+            const model = document.getElementById('inputModel').value.trim();
+            const ram = document.getElementById('inputRam').value.trim();
+            const price = parseInt(document.getElementById('inputPrice').value);
+
+            phonePrices.push({ id: Date.now(), date, page, version, model, ram, price });
+            saveData();
+            
+            document.getElementById('inputPrice').value = '';
+            state.currentPage = 1; 
+            
+            renderRecordsTab();
+            showToast("အချက်အလက် သိမ်းဆည်းပြီးပါပြီ။");
+        }
+
+        function deleteRecord(id) {
+            showConfirm("ဤမှတ်တမ်းကို ဖျက်ရန် သေချာပါသလား?", () => {
+                phonePrices = phonePrices.filter(r => r.id !== id);
+                saveData();
+                renderRecordsTab(); 
+                showToast("မှတ်တမ်း ဖျက်ပြီးပါပြီ။");
+            });
+        }
+
+        function updateDatalists() {
+            const modelList = document.getElementById('modelList');
+            if(modelList){
+                const uniqueModels = [...new Set(phonePrices.map(p => p.model))].sort();
+                modelList.innerHTML = uniqueModels.map(m => `<option value="${m}"></option>`).join('');
+            }
+        }
+
+        function renderRecordsTab() {
+            const sortedPrices = [...phonePrices].sort((a, b) => new Date(b.date) - new Date(a.date));
+            const total = sortedPrices.length;
+            const totalPages = Math.ceil(total / state.itemsPerPage) || 1;
+
+            if (state.currentPage > totalPages) state.currentPage = totalPages;
+            if (state.currentPage < 1) state.currentPage = 1;
+
+            const paginatedPrices = sortedPrices.slice((state.currentPage - 1) * state.itemsPerPage, state.currentPage * state.itemsPerPage);
+
+            let html = `
+                <div class="animate-slide-up">
+                    <div class="flex justify-between items-end mb-6 md:mb-8">
+                        <div>
+                            <h2 class="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 tracking-tight font-num pb-1">Data Entry</h2>
+                            <p class="text-cyan-400 text-xs mt-1 tracking-wider uppercase font-bold">မှတ်တမ်းအသစ် ထည့်သွင်းရန်</p>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card rounded-[2rem] p-5 md:p-8 mb-10 border-t border-white/10 shadow-lg">
+                        <form onsubmit="handleAddRecord(event)" class="space-y-5">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
+                                <div class="input-group">
+                                    <label class="text-[11px] text-slate-400 pl-1 mb-2 block uppercase tracking-widest font-bold">ရက်စွဲ (Date)</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                            <i data-lucide="calendar" class="w-4 h-4 text-slate-500 icon-primary transition-colors"></i>
+                                        </div>
+                                        <input type="date" id="inputDate" required value="${getTodayDateString()}" class="input-field w-full bg-slate-900/60 border border-white/10 rounded-2xl pl-10 pr-4 py-3.5 text-sm text-white focus:border-cyan-500 shadow-inner">
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <label class="text-[11px] text-slate-400 pl-1 mb-2 block uppercase tracking-widest font-bold">Facebook Page</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                            <i data-lucide="layout-template" class="w-4 h-4 text-slate-500 icon-primary transition-colors"></i>
+                                        </div>
+                                        <input type="text" id="inputPage" list="pageList" placeholder="eg. Htun Mobile" required class="input-field w-full bg-slate-900/60 border border-white/10 rounded-2xl pl-10 pr-4 py-3.5 text-sm text-white focus:border-cyan-500 shadow-inner">
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <label class="text-[11px] text-slate-400 pl-1 mb-2 block uppercase tracking-widest font-bold">ဖုန်းဗားရှင်း</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                            <i data-lucide="globe" class="w-4 h-4 text-slate-500 icon-primary transition-colors"></i>
+                                        </div>
+                                        <select id="inputVersion" required class="input-field w-full bg-slate-900/60 border border-white/10 rounded-2xl pl-10 pr-10 py-3.5 text-sm text-white focus:border-cyan-500 appearance-none shadow-inner cursor-pointer">
+                                            <option value="Global">Global</option>
+                                            <option value="China">China</option>
+                                            <option value="Thai">Thai</option>
+                                            <option value="India">India</option>
+                                        </select>
+                                        <i data-lucide="chevron-down" class="absolute right-4 top-3.5 w-4 h-4 text-slate-400 pointer-events-none"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
+                                <div class="input-group">
+                                    <label class="text-[11px] text-slate-400 pl-1 mb-2 block uppercase tracking-widest font-bold">ဖုန်းမော်ဒယ်</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                            <i data-lucide="smartphone" class="w-4 h-4 text-slate-500 icon-primary transition-colors"></i>
+                                        </div>
+                                        <input type="text" id="inputModel" list="modelList" placeholder="eg. Redmi Note 15 Pro" required class="input-field w-full bg-slate-900/60 border border-white/10 rounded-2xl pl-10 pr-4 py-3.5 text-sm text-white focus:border-cyan-500 shadow-inner">
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <label class="text-[11px] text-slate-400 pl-1 mb-2 block uppercase tracking-widest font-bold">RAM/Storage</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                            <i data-lucide="microchip" class="w-4 h-4 text-slate-500 icon-primary transition-colors"></i>
+                                        </div>
+                                        <input type="text" id="inputRam" list="ramList" placeholder="eg. (ram8/256)" required class="input-field w-full bg-slate-900/60 border border-white/10 rounded-2xl pl-10 pr-4 py-3.5 text-sm text-white focus:border-cyan-500 shadow-inner">
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <label class="text-[11px] text-cyan-400 pl-1 mb-2 block uppercase tracking-widest font-bold text-neon-cyan">ဈေးနှုန်း (MMK)</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                            <i data-lucide="banknote" class="w-4 h-4 text-cyan-500 icon-primary transition-colors"></i>
+                                        </div>
+                                        <input type="number" id="inputPrice" placeholder="eg. 699000" required class="input-field w-full bg-cyan-900/10 border border-cyan-500/30 rounded-2xl pl-10 pr-4 py-3.5 text-sm text-white focus:border-cyan-400">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white py-3.5 rounded-2xl font-bold text-sm shadow-md active:scale-95 transition-all flex items-center justify-center gap-2 mt-2">
+                                <i data-lucide="save" class="w-4 h-4"></i> သိမ်းဆည်းမည်
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="flex items-center gap-3 mb-6 pl-2" id="records-table-header">
+                        <div class="w-2 h-6 bg-blue-500 rounded-full"></div>
+                        <h2 class="text-xl font-bold text-white tracking-tight font-num">All Records</h2>
+                    </div>
+            `;
+
+            if (total === 0) {
+                html += `
+                    <div class="py-12 text-center text-slate-400 glass-card rounded-[2rem] flex flex-col items-center justify-center">
+                        <div class="w-16 h-16 mb-4 rounded-full bg-slate-800/50 flex items-center justify-center border border-white/5">
+                            <i data-lucide="database" class="w-8 h-8 text-slate-500"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-1">မှတ်တမ်းမရှိသေးပါ</h3>
+                        <p class="text-xs">အထက်ပါ Form မှတစ်ဆင့် အချက်အလက်များ စတင်ထည့်သွင်းပါ။</p>
+                    </div>`;
+            } else {
+                // Desktop Table
+                let deskHTML = `<div class="hidden md:block glass-card rounded-[2rem] overflow-hidden mb-6 border border-white/10 shadow-sm"><table class="w-full text-left text-sm"><thead class="bg-slate-900 text-slate-400 text-[10px] uppercase tracking-widest border-b border-white/10"><tr class="font-bold"><th class="p-4">Date</th><th class="p-4">Page Name</th><th class="p-4">Model & Version</th><th class="p-4">RAM</th><th class="p-4 text-right">Price</th><th class="p-4 text-center">Action</th></tr></thead><tbody class="divide-y divide-white/5 bg-slate-900/30">`;
+                
+                // Mobile Cards
+                let mobHTML = `<div class="md:hidden space-y-3 mb-6">`;
+
+                paginatedPrices.forEach(record => {
+                    deskHTML += `
+                        <tr class="hover:bg-white/5 transition-colors group">
+                            <td class="p-4 text-slate-300 font-num text-xs">${formatDateDisplay(record.date)}</td>
+                            <td class="p-4 font-bold text-blue-400 text-xs">${record.page}</td>
+                            <td class="p-4 text-slate-200 text-xs">${record.model} <span class="text-[9px] text-cyan-300 bg-cyan-900/30 px-1.5 py-0.5 rounded border border-cyan-500/20 ml-1">${record.version}</span></td>
+                            <td class="p-4 text-slate-400 font-num text-xs">${record.ram}</td>
+                            <td class="p-4 text-right font-bold text-emerald-400 font-num text-xs">${formatMoney(record.price)}</td>
+                            <td class="p-4 text-center">
+                                <button onclick="deleteRecord(${record.id})" class="text-slate-500 hover:text-rose-400 p-1.5 rounded-lg hover:bg-rose-500/10 transition-colors active:scale-95"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+                            </td>
+                        </tr>
+                    `;
+
+                    mobHTML += `
+                        <div class="glass-card p-4 rounded-2xl border border-white/5 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-cyan-400 to-blue-600"></div>
+                            
+                            <div class="flex justify-between items-start border-b border-white/5 pb-2 mb-2">
+                                <div>
+                                    <div class="font-bold text-sm text-blue-400">${record.page}</div>
+                                    <div class="text-[9px] text-slate-500 font-normal font-num mt-0.5 flex items-center gap-1"><i data-lucide="calendar" class="w-2.5 h-2.5"></i> ${formatDateDisplay(record.date)}</div>
+                                </div>
+                                <button onclick="deleteRecord(${record.id})" class="text-slate-500 hover:text-rose-400 p-1.5 rounded-lg bg-slate-800/50 hover:bg-rose-500/20 transition-colors"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+                            </div>
+                            <div class="mb-3">
+                                <div class="text-white text-sm font-bold mb-1">${record.model}</div>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <span class="text-[9px] text-cyan-300 bg-cyan-900/30 px-2 py-0.5 rounded border border-cyan-500/20 flex items-center gap-1">${record.version}</span>
+                                    <span class="text-[9px] text-slate-300 bg-slate-800 px-2 py-0.5 rounded border border-white/10 flex items-center gap-1">${record.ram}</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-end pt-2 border-t border-white/5">
+                                <span class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Price</span>
+                                <span class="text-base font-black text-emerald-400 text-neon-emerald font-num">${formatMoney(record.price)}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                deskHTML += `</tbody></table></div>`;
+                mobHTML += `</div>`;
+                
+                // Pagination UI
+                let pageHTML = `
+                    <div class="flex justify-between items-center glass-card p-3 rounded-xl text-xs border border-white/5">
+                        <span class="text-slate-400 font-medium pl-2">Total: <span class="text-white font-num font-bold bg-white/10 px-1.5 py-0.5 rounded ml-1">${total}</span></span>
+                        <div class="flex items-center gap-2">
+                            <button onclick="changePage(-1)" ${state.currentPage === 1 ? 'disabled' : ''} class="p-2 rounded-lg bg-slate-800 border border-white/5 disabled:opacity-30 hover:bg-slate-700 transition-colors active:scale-95 text-white"><i data-lucide="chevron-left" class="w-3.5 h-3.5"></i></button>
+                            <span class="text-cyan-400 font-num font-bold px-2">${state.currentPage} <span class="text-slate-500 font-normal px-0.5">/</span> ${totalPages}</span>
+                            <button onclick="changePage(1)" ${state.currentPage === totalPages ? 'disabled' : ''} class="p-2 rounded-lg bg-slate-800 border border-white/5 disabled:opacity-30 hover:bg-slate-700 transition-colors active:scale-95 text-white"><i data-lucide="chevron-right" class="w-3.5 h-3.5"></i></button>
+                        </div>
+                    </div>
+                `;
+
+                html += deskHTML + mobHTML + pageHTML;
+            }
+
+            html += `</div>`;
+            
+            const content = document.getElementById('app-content');
+            content.innerHTML = html;
+            
+            // Re-initialize Lucide icons for the newly injected HTML
+            lucide.createIcons({ root: content });
+            updateDatalists();
+        }
+
+        function renderApp() {
+            renderNavigation();
+            if (state.activeTab === 'search') {
+                renderSearchTab();
+            } else if (state.activeTab === 'records') {
+                renderRecordsTab();
+            }
+        }
+
+        // --- Init ---
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            loadData();
+            renderApp();
+            
+            // Handle Preloader
+            setTimeout(() => {
+                const p = document.getElementById('preloader');
+                if(p) { p.classList.add('opacity-0'); setTimeout(() => p.remove(), 600); }
+            }, 1000);
+        });
+
+    </script>
+</body>
+</html>
