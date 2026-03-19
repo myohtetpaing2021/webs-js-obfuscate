@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>YGN Power - Schedule</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#020617',
+                            900: '#070b19',
+                            800: '#0f172a',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 8s ease-in-out infinite',
+                        'float-delayed': 'float 8s ease-in-out infinite 4s',
+                        'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 8s linear infinite',
+                        'scroll-grid': 'scrollGrid 20s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        slideUp: {
+                            'from': { opacity: 0, transform: 'translateY(30px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        scrollGrid: {
+                            '0%': { backgroundPosition: '0 0' },
+                            '100%': { backgroundPosition: '0 40px' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020617; /* Deepest blue/black */
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Animated Grid Background */
+        .bg-grid-animated {
+            background-image: 
+                linear-gradient(to right, rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+        }
+
+        /* Premium Glass Effect with highlighted top/left borders */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.3) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), 0 0 20px rgba(56, 189, 248, 0.1);
+            border-top-color: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Radar Sweep Effect */
+        .radar-sweep {
+            background: conic-gradient(from 0deg, transparent 70%, rgba(255,255,255,0.8) 100%);
+            border-radius: 50%;
+            animation: spin 3s linear infinite;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        
+        /* Neon text utility */
+        .text-neon-emerald { text-shadow: 0 0 20px rgba(16, 185, 129, 0.6), 0 0 40px rgba(16, 185, 129, 0.2); }
+        .text-neon-rose { text-shadow: 0 0 20px rgba(244, 63, 94, 0.6), 0 0 40px rgba(244, 63, 94, 0.2); }
+        .text-neon-cyan { text-shadow: 0 0 15px rgba(34, 211, 238, 0.5); }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-200 min-h-screen overflow-x-hidden">
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-all duration-1000 ease-out overflow-hidden">
+        <div class="absolute inset-0 bg-grid-animated animate-scroll-grid opacity-30"></div>
+        <div class="relative flex flex-col items-center">
+            <!-- Tech Spinner -->
+            <div class="relative w-32 h-32 flex items-center justify-center mb-8">
+                <div class="absolute inset-0 rounded-full border border-white/5 border-t-cyan-500 animate-[spin_1.5s_linear_infinite] shadow-[0_0_30px_rgba(6,182,212,0.3)]"></div>
+                <div class="absolute inset-2 rounded-full border border-white/5 border-b-blue-500 animate-[spin_2s_linear_infinite_reverse]"></div>
+                <div class="relative z-10 w-16 h-16 bg-[#0f172a] rounded-full flex items-center justify-center border border-cyan-500/30 shadow-[0_0_40px_rgba(6,182,212,0.5)]">
+                    <i data-lucide="zap" class="text-cyan-400 w-6 h-6 animate-pulse"></i>
+                </div>
+            </div>
+            
+            <div class="w-56 space-y-4 text-center">
+                <h2 class="text-2xl font-black tracking-[0.3em] text-white font-num mb-1 text-neon-cyan">YGN<span class="text-cyan-400 font-light">POWER</span></h2>
+                
+                <div class="h-1 w-full bg-slate-800 rounded-full overflow-hidden relative">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-400 to-blue-600 w-0 relative transition-all duration-75">
+                        <div class="absolute right-0 top-0 bottom-0 w-4 bg-white/80 blur-[3px]"></div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between text-[10px] font-num text-cyan-500/60 font-medium tracking-widest">
+                    <span class="animate-pulse">SYNCING DATA...</span>
+                    <span id="progress-text" class="text-cyan-400">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Background -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#020617]">
+        <!-- Animated Scrolling Grid -->
+        <div class="absolute inset-0 bg-grid-animated animate-scroll-grid"></div>
+        
+        <!-- Glowing Orbs -->
+        <div class="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-blue-600/10 rounded-full blur-[120px] animate-float"></div>
+        <div class="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-cyan-600/10 rounded-full blur-[120px] animate-float-delayed"></div>
+        <div class="absolute top-[40%] left-[30%] w-[40%] h-[40%] bg-violet-600/5 rounded-full blur-[100px] animate-pulse-slow"></div>
+    </div>
+
+    <!-- MAIN APP CONTENT -->
+    <div class="relative z-10 max-w-lg mx-auto flex flex-col min-h-screen p-4 md:p-6 pb-12 animate-slide-up" style="opacity: 0;" id="main-container">
+        
+        <!-- Header -->
+        <header class="flex items-center justify-between glass-panel rounded-3xl p-4 mb-6 relative overflow-hidden group">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent opacity-50"></div>
+            
+            <div class="flex items-center gap-4">
+                <div class="relative w-12 h-12 rounded-2xl flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900 border border-white/10 group-hover:border-cyan-500/30 transition-colors shadow-lg">
+                    <div class="absolute inset-0 bg-cyan-500/20 blur-xl rounded-full animate-pulse-slow"></div>
+                    <i data-lucide="zap" class="text-cyan-400 w-6 h-6 relative z-10"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black text-white tracking-widest font-num">YGN<span class="text-cyan-400 font-light">Power</span></h1>
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                        <span class="relative flex h-2 w-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span class="text-[10px] text-emerald-400/80 tracking-widest uppercase font-bold">Live Status</span>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right flex flex-col items-end justify-center">
+                <div class="bg-slate-900/80 border border-white/10 rounded-xl px-3 py-1.5 backdrop-blur-md shadow-inner">
+                    <div class="flex items-center gap-1.5 text-white font-num font-bold tracking-wider text-sm">
+                        <i data-lucide="clock" class="w-3.5 h-3.5 text-cyan-400"></i>
+                        <span id="currentTimeDisplay">00:00:00</span>
+                    </div>
+                </div>
+                <div id="currentDateDisplay" class="text-[10px] text-slate-400 font-sans mt-2 tracking-wide pr-1">ရက်စွဲ</div>
+            </div>
+        </header>
+
+        <!-- Group Selector -->
+        <div class="glass-panel p-1.5 rounded-2xl flex mb-8 shadow-inner relative z-20 overflow-hidden">
+            <!-- Active Indicator Background -->
+            <div id="groupActiveBg" class="absolute top-1.5 left-1.5 bottom-1.5 w-[calc(50%-6px)] bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl transition-transform duration-500 ease-out shadow-[0_0_20px_rgba(6,182,212,0.4)]"></div>
+            
+            <button id="btnGroupA" class="flex-1 py-3.5 rounded-xl font-bold text-sm md:text-base focus:outline-none relative z-10 text-white transition-colors duration-300">
+                <span class="flex items-center justify-center gap-2">
+                    <i data-lucide="users" class="w-4 h-4"></i> အုပ်စု (A)
+                </span>
+            </button>
+            <button id="btnGroupB" class="flex-1 py-3.5 rounded-xl font-bold text-sm md:text-base focus:outline-none relative z-10 text-slate-400 transition-colors duration-300 hover:text-white/70">
+                <span class="flex items-center justify-center gap-2">
+                    <i data-lucide="users" class="w-4 h-4"></i> အုပ်စု (B)
+                </span>
+            </button>
+        </div>
+
+        <!-- Main Status Card (The Hero Section) -->
+        <div id="statusCard" class="glass-card rounded-[2.5rem] p-8 text-center shadow-2xl mb-10 transition-all duration-700 relative overflow-hidden group">
+            
+            <!-- Dynamic Background Glow & Grid -->
+            <div id="statusGlowBg" class="absolute inset-0 opacity-20 transition-all duration-1000 ease-in-out"></div>
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-50"></div>
+            
+            <div class="relative z-10 flex flex-col items-center">
+                
+                <!-- Radar / Ring Element -->
+                <div class="relative w-32 h-32 mb-6 flex items-center justify-center">
+                    <!-- Outer Dashed Ring -->
+                    <div class="absolute inset-0 rounded-full border-2 border-dashed border-white/20 animate-spin-slow"></div>
+                    <!-- Middle Glow Ring -->
+                    <div id="statusRing" class="absolute inset-2 rounded-full border-[3px] transition-colors duration-700"></div>
+                    <!-- Inner Solid Circle -->
+                    <div id="statusIconBg" class="absolute inset-4 rounded-full flex items-center justify-center transition-colors duration-700 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
+                        <!-- Radar Sweep -->
+                        <div id="radarSweep" class="absolute inset-0 rounded-full radar-sweep mix-blend-overlay opacity-50"></div>
+                        <i id="statusIcon" data-lucide="zap" class="w-12 h-12 relative z-10 transition-colors duration-700 drop-shadow-lg"></i>
+                    </div>
+                </div>
+                
+                <!-- Status Text -->
+                <h2 id="statusText" class="text-4xl md:text-5xl font-black mb-1 font-sans tracking-tight transition-colors duration-700">
+                    --
+                </h2>
+                <p id="statusSubText" class="text-slate-400 text-sm font-medium mb-6 uppercase tracking-widest transition-colors">စစ်ဆေးနေပါသည်</p>
+                
+                <!-- Countdown Display -->
+                <div class="bg-slate-950/60 backdrop-blur-xl px-6 py-4 rounded-2xl border border-white/10 shadow-inner inline-flex flex-col items-center w-full max-w-xs relative overflow-hidden">
+                    <div id="countdownGlow" class="absolute inset-x-0 bottom-0 h-1 transition-colors duration-700"></div>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-2">Time Remaining</p>
+                    <div id="countdownText" class="text-2xl font-black font-num tracking-wider flex items-center gap-2">
+                        --:--:--
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timeline Section -->
+        <div class="glass-panel p-6 rounded-[2rem] relative overflow-hidden">
+            <div class="flex items-center justify-between mb-8">
+                <h3 class="text-sm font-black text-white uppercase tracking-widest flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20">
+                        <i data-lucide="list" class="w-4 h-4 text-cyan-400"></i>
+                    </div>
+                    ၂၄ နာရီ အချိန်ဇယား
+                </h3>
+                <span class="text-[10px] font-num text-slate-500 bg-slate-900/50 px-3 py-1.5 rounded-lg border border-white/5">Auto-updating</span>
+            </div>
+            
+            <!-- Modern Timeline List -->
+            <div id="timelineContainer" class="relative pl-4 md:pl-6 space-y-6 before:absolute before:inset-0 before:ml-[23px] md:before:ml-[31px] before:h-full before:w-[2px] before:bg-gradient-to-b before:from-cyan-500/50 before:via-slate-700/50 before:to-transparent">
+                <!-- Timeline slots injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Logic -->
+    <script>
+        // Preloader Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            
+            const progress = document.getElementById('progress-bar');
+            const text = document.getElementById('progress-text');
+            const preloader = document.getElementById('preloader');
+            const mainContainer = document.getElementById('main-container');
+            let width = 0;
+
+            const interval = setInterval(() => {
+                width += Math.random() * 10; 
+                if (width > 100) width = 100;
+                
+                if (progress) progress.style.width = width + '%';
+                if (text) text.innerText = Math.floor(width) + '%';
+
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        if(preloader) {
+                            preloader.classList.add('opacity-0', 'scale-110', 'pointer-events-none');
+                            setTimeout(() => {
+                                preloader.remove();
+                                mainContainer.style.opacity = '1';
+                                updateApp(); // Initial render after preloader
+                            }, 800);
+                        }
+                    }, 500);
+                }
+            }, 50);
+        });
+
+        // --- State ---
+        let currentGroup = 'A';
+        let lastRenderedHour = -1;
+
+        // --- DOM Elements ---
+        const btnGroupA = document.getElementById('btnGroupA');
+        const btnGroupB = document.getElementById('btnGroupB');
+        const groupActiveBg = document.getElementById('groupActiveBg');
+        
+        const statusCard = document.getElementById('statusCard');
+        const statusGlowBg = document.getElementById('statusGlowBg');
+        const statusRing = document.getElementById('statusRing');
+        const statusIconBg = document.getElementById('statusIconBg');
+        const radarSweep = document.getElementById('radarSweep');
+        const statusIcon = document.getElementById('statusIcon');
+        const statusText = document.getElementById('statusText');
+        const statusSubText = document.getElementById('statusSubText');
+        const countdownText = document.getElementById('countdownText');
+        const countdownGlow = document.getElementById('countdownGlow');
+        
+        const timelineContainer = document.getElementById('timelineContainer');
+        const currentTimeDisplay = document.getElementById('currentTimeDisplay');
+        const currentDateDisplay = document.getElementById('currentDateDisplay');
+
+        // --- Event Listeners ---
+        btnGroupA.addEventListener('click', () => setGroup('A'));
+        btnGroupB.addEventListener('click', () => setGroup('B'));
+
+        function setGroup(group) {
+            currentGroup = group;
+            
+            if (group === 'A') {
+                btnGroupA.classList.replace('text-slate-400', 'text-white');
+                btnGroupB.classList.replace('text-white', 'text-slate-400');
+                groupActiveBg.style.transform = 'translateX(0)';
+            } else {
+                btnGroupB.classList.replace('text-slate-400', 'text-white');
+                btnGroupA.classList.replace('text-white', 'text-slate-400');
+                // Calculate translation based on container width minus padding
+                groupActiveBg.style.transform = 'translateX(calc(100% + 12px))'; 
+            }
+            
+            lastRenderedHour = -1; // Force re-render timeline
+            updateApp();
+        }
+
+        // --- Core Logic ---
+        function getPattern(group, date) {
+            const day = date.getDate();
+            if (group === 'A') {
+                return (day % 2 !== 0) ? 'X' : 'Y';
+            } else {
+                return (day % 2 !== 0) ? 'Y' : 'X';
+            }
+        }
+
+        function isPowerOn(group, date) {
+            const hour = date.getHours();
+            const pattern = getPattern(group, date);
+
+            if (hour >= 9 && hour < 13) {
+                return pattern === 'X'; // X is ON, Y is OFF
+            } else if (hour >= 13 && hour < 17) {
+                return pattern === 'Y'; // Y is ON, X is OFF
+            } else if (hour >= 17 && hour < 21) {
+                return pattern === 'X'; // X is ON, Y is OFF
+            }
+            return true; // 01:00 to 09:00 and 21:00 to 01:00 are ALWAYS ON
+        }
+
+        function getNextChangeTime(group, fromDate) {
+            const currentStatus = isPowerOn(group, fromDate);
+            let testDate = new Date(fromDate.getTime());
+            testDate.setMinutes(0, 0, 0); 
+            
+            for (let i = 1; i <= 48; i++) {
+                testDate.setHours(testDate.getHours() + 1);
+                const status = isPowerOn(group, testDate);
+                if (status !== currentStatus) {
+                    return { time: testDate, status: status };
+                }
+            }
+            return null;
+        }
+
+        function getScheduleDay(date) {
+            let d = new Date(date.getTime());
+            if (d.getHours() < 5) d.setDate(d.getDate() - 1);
+            return d;
+        }
+
+        function getAbsoluteSlotTimes(scheduleDay, startHour, endHour) {
+            let start = new Date(scheduleDay.getTime());
+            start.setHours(startHour, 0, 0, 0);
+            let end = new Date(scheduleDay.getTime());
+            end.setHours(endHour, 0, 0, 0);
+
+            if (startHour === 21) end.setDate(end.getDate() + 1);
+            else if (startHour === 1) {
+                start.setDate(start.getDate() + 1);
+                end.setDate(end.getDate() + 1);
+            }
+            return { start, end };
+        }
+
+        // --- UI Updates ---
+        const slotsDef = [
+            { start: 5, end: 9, label: '05:00 AM - 09:00 AM' },
+            { start: 9, end: 13, label: '09:00 AM - 01:00 PM' },
+            { start: 13, end: 17, label: '01:00 PM - 05:00 PM' },
+            { start: 17, end: 21, label: '05:00 PM - 09:00 PM' },
+            { start: 21, end: 1, label: '09:00 PM - 01:00 AM' },
+            { start: 1, end: 5, label: '01:00 AM - 05:00 AM' }
+        ];
+
+        function renderTimeline(now) {
+            const scheduleDay = getScheduleDay(now);
+            let html = '';
+
+            slotsDef.forEach((slot, index) => {
+                const { start, end } = getAbsoluteSlotTimes(scheduleDay, slot.start, slot.end);
+                const powerOn = isPowerOn(currentGroup, start);
+                const isCurrent = (now >= start && now < end);
+                const delay = index * 100;
+
+                const statusColor = powerOn ? 'emerald' : 'rose';
+                const textColor = powerOn ? 'text-emerald-400' : 'text-rose-400';
+                const bgLight = powerOn ? 'bg-emerald-500/10' : 'bg-rose-500/10';
+                const borderLight = powerOn ? 'border-emerald-500/20' : 'border-rose-500/20';
+                const statusLabel = powerOn ? 'မီးလာမည်' : 'မီးပျက်မည်';
+                const iconName = powerOn ? 'power' : 'power-off';
+
+                // Node styling on the timeline
+                let nodeClasses = isCurrent 
+                    ? `absolute -left-[23px] md:-left-[31px] w-6 h-6 rounded-full border-4 border-[#020617] bg-${statusColor}-500 shadow-[0_0_15px_rgba(var(--tw-color-${statusColor}-500),0.8)] z-10 flex items-center justify-center` 
+                    : `absolute -left-[19px] md:-left-[27px] w-4 h-4 rounded-full border-[3px] border-[#020617] bg-slate-700 z-10`;
+
+                // Card styling
+                let cardClasses = `relative ml-6 md:ml-8 p-4 md:p-5 rounded-2xl border transition-all duration-300 
+                                  ${isCurrent ? `bg-gradient-to-r from-${statusColor}-900/20 to-transparent border-${statusColor}-500/30 shadow-[0_5px_20px_rgba(0,0,0,0.3)]` : `bg-white/[0.02] border-white/5 hover:bg-white/[0.04]`}`;
+
+                html += `
+                    <div class="relative group animate-fade-in" style="animation-delay: ${delay}ms">
+                        
+                        <!-- Timeline Node -->
+                        <div class="${nodeClasses}">
+                            ${isCurrent ? `<div class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>` : ''}
+                        </div>
+                        
+                        <!-- Content Card -->
+                        <div class="${cardClasses}">
+                            ${isCurrent ? `<div class="absolute -inset-px rounded-2xl bg-gradient-to-r from-${statusColor}-500/20 to-transparent opacity-50 pointer-events-none"></div>` : ''}
+                            
+                            <div class="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="text-xs md:text-sm font-black font-num tracking-wider ${isCurrent ? 'text-white' : 'text-slate-400 group-hover:text-slate-300'}">${slot.label}</span>
+                                        ${isCurrent ? `<span class="flex h-2 w-2 relative"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-${statusColor}-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-${statusColor}-500"></span></span>` : ''}
+                                    </div>
+                                    ${isCurrent ? `<p class="text-[10px] text-${statusColor}-400/80 font-bold uppercase tracking-widest">Active Shift</p>` : ''}
+                                </div>
+                                
+                                <div class="flex items-center gap-2 w-max px-3 py-1.5 rounded-lg ${bgLight} ${borderLight} border shadow-inner">
+                                    <i data-lucide="${iconName}" class="w-3.5 h-3.5 ${textColor}"></i>
+                                    <span class="text-[11px] font-bold ${textColor} tracking-wider">${statusLabel}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            timelineContainer.innerHTML = html;
+            lucide.createIcons();
+            lastRenderedHour = now.getHours();
+        }
+
+        function updateApp() {
+            const mainContainer = document.getElementById('main-container');
+            if (mainContainer.style.opacity === '0') return;
+
+            const now = new Date();
+            
+            // 1. Clock & Date
+            currentTimeDisplay.textContent = now.toLocaleTimeString('en-US', { hour12: false });
+            currentDateDisplay.textContent = now.toLocaleDateString('my-MM', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+            // 2. Main Status Update
+            const currentlyOn = isPowerOn(currentGroup, now);
+            
+            if (currentlyOn) {
+                statusCard.className = 'glass-card rounded-[2.5rem] p-8 text-center shadow-[0_0_50px_rgba(16,185,129,0.15)] mb-10 border-t border-l border-emerald-500/20 transition-all duration-700 relative overflow-hidden group hover:border-emerald-500/40 hover:shadow-[0_0_60px_rgba(16,185,129,0.25)]';
+                statusGlowBg.className = 'absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-transparent opacity-100 transition-all duration-1000';
+                statusRing.className = 'absolute inset-2 rounded-full border-[3px] border-emerald-500/30 transition-colors duration-700';
+                statusIconBg.className = 'absolute inset-4 rounded-full flex items-center justify-center bg-emerald-950/80 transition-colors duration-700 shadow-[inset_0_0_30px_rgba(16,185,129,0.2)]';
+                radarSweep.className = 'absolute inset-0 rounded-full radar-sweep mix-blend-overlay opacity-40 bg-[conic-gradient(from_0deg,transparent_70%,rgba(16,185,129,0.8)_100%)]';
+                
+                statusIcon.setAttribute('data-lucide', 'zap');
+                statusIcon.className = 'w-12 h-12 relative z-10 text-emerald-400 transition-colors duration-700 drop-shadow-[0_0_15px_rgba(16,185,129,0.8)]';
+                statusText.className = 'text-4xl md:text-5xl font-black mb-1 font-sans tracking-tight text-white text-neon-emerald transition-colors duration-700 mt-2';
+                statusText.textContent = 'မီးလာနေပါသည်';
+                statusSubText.textContent = 'Power is ON';
+                statusSubText.className = 'text-emerald-400/80 text-xs font-bold mb-6 uppercase tracking-widest transition-colors';
+                
+                countdownGlow.className = 'absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-rose-500 to-transparent transition-colors duration-700 opacity-50';
+            } else {
+                statusCard.className = 'glass-card rounded-[2.5rem] p-8 text-center shadow-[0_0_50px_rgba(244,63,94,0.15)] mb-10 border-t border-l border-rose-500/20 transition-all duration-700 relative overflow-hidden group hover:border-rose-500/40 hover:shadow-[0_0_60px_rgba(244,63,94,0.25)]';
+                statusGlowBg.className = 'absolute inset-0 bg-gradient-to-br from-rose-500/10 via-transparent to-transparent opacity-100 transition-all duration-1000';
+                statusRing.className = 'absolute inset-2 rounded-full border-[3px] border-rose-500/30 transition-colors duration-700';
+                statusIconBg.className = 'absolute inset-4 rounded-full flex items-center justify-center bg-rose-950/80 transition-colors duration-700 shadow-[inset_0_0_30px_rgba(244,63,94,0.2)]';
+                radarSweep.className = 'absolute inset-0 rounded-full radar-sweep mix-blend-overlay opacity-40 bg-[conic-gradient(from_0deg,transparent_70%,rgba(244,63,94,0.8)_100%)]';
+                
+                statusIcon.setAttribute('data-lucide', 'zap-off');
+                statusIcon.className = 'w-12 h-12 relative z-10 text-rose-400 transition-colors duration-700 drop-shadow-[0_0_15px_rgba(244,63,94,0.8)]';
+                statusText.className = 'text-4xl md:text-5xl font-black mb-1 font-sans tracking-tight text-white text-neon-rose transition-colors duration-700 mt-2';
+                statusText.textContent = 'မီးပျက်နေပါသည်';
+                statusSubText.textContent = 'Power is OFF';
+                statusSubText.className = 'text-rose-400/80 text-xs font-bold mb-6 uppercase tracking-widest transition-colors';
+                
+                countdownGlow.className = 'absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent transition-colors duration-700 opacity-50';
+            }
+
+            // 3. Countdown
+            const nextChange = getNextChangeTime(currentGroup, now);
+            if (nextChange) {
+                const diffMs = nextChange.time - now;
+                const totalMins = Math.floor(diffMs / 60000);
+                const hours = Math.floor(totalMins / 60);
+                const mins = totalMins % 60;
+                
+                // Format for digital look
+                const formatNum = (n) => n.toString().padStart(2, '0');
+                
+                const actionText = nextChange.status ? 'မီးလာမည်' : 'မီးပျက်မည်';
+                const actionColor = nextChange.status ? 'text-emerald-400' : 'text-rose-400';
+                
+                countdownText.innerHTML = `
+                    <span class="text-white">${formatNum(hours)}</span><span class="text-slate-600 animate-pulse">:</span><span class="text-white">${formatNum(mins)}</span>
+                    <span class="text-xs font-sans font-bold uppercase ${actionColor} ml-2 tracking-widest border border-${actionColor.split('-')[1]}-500/30 bg-${actionColor.split('-')[1]}-500/10 px-2 py-1 rounded">${actionText}</span>
+                `;
+            }
+
+            // 4. Timeline
+            if (now.getHours() !== lastRenderedHour) {
+                renderTimeline(now);
+            }
+            
+            lucide.createIcons();
+        }
+
+        setInterval(updateApp, 1000);
+    </script>
+</body>
+</html>
