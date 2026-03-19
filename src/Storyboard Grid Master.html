@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Storyboard Grid Master | Ultimate Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- JSZip & FileSaver for Download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#020617', 
+                            900: '#0f172a',
+                            800: '#1e293b',
+                        },
+                        primary: {
+                            400: '#38bdf8', 
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 8s ease-in-out infinite',
+                        'float-delayed': 'float 8s ease-in-out infinite 4s',
+                        'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                        'slide-in-right': 'slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        slideUp: {
+                            'from': { opacity: 0, transform: 'translateY(20px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        fadeIn: {
+                            'from': { opacity: 0 },
+                            'to': { opacity: 1 },
+                        },
+                        slideInRight: {
+                            'from': { opacity: 0, transform: 'translateX(100%)' },
+                            'to': { opacity: 1, transform: 'translateX(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        /* Premium Glass Effect */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.6) 100%);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 
+                        0 0 20px rgba(56, 189, 248, 0.1); 
+        }
+        
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Input Styling */
+        .input-field {
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3), 0 0 15px rgba(56, 189, 248, 0.2);
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        
+        /* Neon text utility */
+        .text-neon-cyan {
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+
+        /* Radio/Checkbox custom style */
+        .custom-radio:checked + div {
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
+            box-shadow: inset 0 0 0 1px #38bdf8;
+        }
+        .custom-radio:checked + div .radio-dot {
+            background-color: #38bdf8;
+            box-shadow: 0 0 8px #38bdf8;
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-200 flex flex-col items-center min-h-screen">
+
+    <!-- Ambient Background -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px] animate-float"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-cyan-600/10 rounded-full blur-[120px] animate-float-delayed"></div>
+        <div class="absolute top-[30%] left-[40%] w-[40%] h-[40%] bg-violet-600/5 rounded-full blur-[100px] animate-pulse-slow"></div>
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="w-full max-w-5xl relative z-10 px-4 py-12 md:py-20 flex flex-col items-center">
+        
+        <!-- Header -->
+        <header class="text-center mb-12 animate-slide-up">
+            <div class="inline-flex items-center justify-center p-3 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 rounded-2xl mb-4 border border-cyan-500/20 shadow-[0_0_30px_rgba(6,182,212,0.3)]">
+                <i data-lucide="clapperboard" class="w-8 h-8 text-cyan-400"></i>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4 font-num text-neon-cyan">Storyboard Grid Master</h1>
+            <p class="text-slate-400 max-w-xl mx-auto text-sm md:text-base">Transform your 9-grid storyboards into professional director-level AI video generation prompts with deep scene analysis.</p>
+        </header>
+
+        <!-- Step 1: Upload Section -->
+        <div id="step-upload" class="w-full max-w-2xl glass-panel rounded-3xl p-8 md:p-12 text-center transition-all duration-500 animate-slide-up" style="animation-delay: 0.1s;">
+            <div id="dropzone" class="border-2 border-dashed border-slate-600 hover:border-cyan-400 hover:bg-cyan-900/10 rounded-2xl p-12 transition-all duration-300 flex flex-col items-center justify-center cursor-pointer group">
+                <div class="w-20 h-20 bg-slate-800/50 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-cyan-500/20 transition-all duration-300 shadow-lg">
+                    <i data-lucide="image-plus" class="w-10 h-10 text-slate-400 group-hover:text-cyan-400 transition-colors"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Drag & Drop 9-grid image here</h3>
+                <p class="text-slate-500 text-sm mb-8">Supports JPG, PNG formats</p>
+                <input type="file" id="file-input" class="hidden" accept="image/jpeg, image/png">
+                <button onclick="document.getElementById('file-input').click()" class="bg-slate-800 hover:bg-slate-700 text-white px-8 py-3 rounded-xl font-bold text-sm transition-colors border border-white/10 shadow-lg group-hover:border-cyan-500/30">
+                    Select Local Image
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 2: Configuration Section -->
+        <div id="step-config" class="w-full glass-card rounded-3xl p-6 md:p-10 hidden flex-col transition-all duration-500 animate-slide-up">
+            <div class="flex items-center mb-8 border-b border-white/10 pb-5">
+                <div class="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center mr-4 border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+                    <i data-lucide="settings-2" class="w-5 h-5 text-cyan-400"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-white">Generation Settings</h2>
+                    <p class="text-xs text-slate-400 mt-1 uppercase tracking-wider">Configure Camera & AI Parameters</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <!-- Left Settings -->
+                <div class="space-y-6">
+                    <!-- Platform Selection -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 pl-1">Target AI Platform</label>
+                        <label class="relative flex items-center p-4 rounded-xl border border-white/10 bg-slate-900/40 cursor-pointer hover:bg-slate-800/60 hover:border-white/20 transition-all group overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/0 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            <input type="checkbox" id="is-sora" class="w-5 h-5 rounded border-slate-600 text-cyan-500 focus:ring-cyan-500 focus:ring-offset-slate-900 bg-slate-800 accent-cyan-500 relative z-10">
+                            <span class="ml-3 text-white font-medium relative z-10">Use Sora Platform</span>
+                            <i data-lucide="sparkles" class="w-4 h-4 ml-auto text-slate-500 group-hover:text-cyan-400 relative z-10"></i>
+                        </label>
+                        <p class="text-[10px] text-slate-500 mt-2 pl-1 flex items-center gap-1"><i data-lucide="info" class="w-3 h-3"></i> Forces 'Single Camera' mode & removes @image tags.</p>
+                    </div>
+
+                    <!-- Mode Selection -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 pl-1">Storyboard Mode</label>
+                        <div class="space-y-3">
+                            <label class="relative block cursor-pointer" id="label-mode-transition">
+                                <input type="radio" name="mode" value="transition" checked class="custom-radio peer sr-only">
+                                <div class="p-4 rounded-xl border border-white/10 bg-slate-900/40 transition-all flex items-start gap-3 hover:bg-slate-800/60">
+                                    <div class="w-5 h-5 rounded-full border border-slate-500 flex items-center justify-center mt-0.5 shrink-0">
+                                        <div class="radio-dot w-2.5 h-2.5 rounded-full bg-transparent transition-all scale-0"></div>
+                                    </div>
+                                    <div>
+                                        <span class="block text-white font-medium mb-1">Start/End Transition Mode</span>
+                                        <span class="block text-xs text-slate-400">Generates 8 transition prompts (requires @image anchors)</span>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="relative block cursor-pointer">
+                                <input type="radio" name="mode" value="single" class="custom-radio peer sr-only">
+                                <div class="p-4 rounded-xl border border-white/10 bg-slate-900/40 transition-all flex items-start gap-3 hover:bg-slate-800/60">
+                                    <div class="w-5 h-5 rounded-full border border-slate-500 flex items-center justify-center mt-0.5 shrink-0">
+                                        <div class="radio-dot w-2.5 h-2.5 rounded-full bg-transparent transition-all scale-0"></div>
+                                    </div>
+                                    <div>
+                                        <span class="block text-white font-medium mb-1">Single Camera Movement</span>
+                                        <span class="block text-xs text-slate-400">Treats 9 grids as a continuous video (9 distinct descriptions)</span>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Settings -->
+                <div class="space-y-6">
+                    <!-- Duration Selection -->
+                    <div class="group">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 pl-1 group-hover:text-cyan-400 transition-colors">Duration per Clip</label>
+                        <div class="relative">
+                            <select id="duration" class="input-field w-full bg-slate-900/40 border border-white/10 rounded-xl px-5 py-4 text-sm text-white focus:outline-none appearance-none cursor-pointer">
+                                <option value="6" class="bg-slate-800 text-white">6 Sec (Start, Turn, End)</option>
+                                <option value="10" class="bg-slate-800 text-white">10 Sec (Start, Turn, End)</option>
+                                <option value="15" class="bg-slate-800 text-white">15 Sec (Start, Develop, Turn, End)</option>
+                            </select>
+                            <div class="absolute right-4 top-4 text-slate-400 pointer-events-none">
+                                <i data-lucide="clock" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Story Structure -->
+                    <div class="group">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 pl-1 group-hover:text-cyan-400 transition-colors">Story Context (Optional)</label>
+                        <div class="relative">
+                            <textarea id="story" rows="3" placeholder="e.g., A girl looking for someone under neon city lights... (Leave blank for AI auto-deduction)" class="input-field w-full bg-slate-900/40 border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-slate-600 focus:outline-none resize-none"></textarea>
+                            <div class="absolute right-4 top-4 text-slate-600 pointer-events-none group-hover:text-slate-400 transition-colors">
+                                <i data-lucide="book-open" class="w-4 h-4"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t border-white/10">
+                <button onclick="resetApp()" class="w-full sm:w-auto px-6 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/10 transition-all font-medium text-sm flex items-center justify-center gap-2">
+                    <i data-lucide="refresh-cw" class="w-4 h-4"></i> Re-upload
+                </button>
+                <button onclick="startProcessing()" class="w-full sm:w-auto bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white shadow-[0_0_20px_rgba(6,182,212,0.4)] border border-cyan-400/20 px-8 py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 transition-all active:scale-95 group">
+                    Start Analysis & Slicing <i data-lucide="wand-2" class="w-4 h-4 group-hover:rotate-12 transition-transform"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 3: Processing (High-tech Spinner) -->
+        <div id="step-processing" class="w-full max-w-md glass-panel rounded-3xl p-12 text-center hidden flex-col items-center justify-center animate-slide-up border border-cyan-500/20 shadow-[0_0_50px_rgba(6,182,212,0.1)] relative overflow-hidden">
+            <!-- Background Grid Animation -->
+            <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#38bdf8 1px, transparent 1px); background-size: 30px 30px; transform: perspective(500px) rotateX(20deg);"></div>
+
+            <div class="relative w-40 h-40 flex items-center justify-center mb-8">
+                <!-- Outer Ring -->
+                <div class="absolute inset-0 rounded-full border-2 border-transparent border-t-cyan-500 border-l-cyan-500/30 animate-[spin_2s_linear_infinite] shadow-[0_0_30px_rgba(6,182,212,0.2)]"></div>
+                <!-- Inner Ring -->
+                <div class="absolute inset-3 rounded-full border-2 border-transparent border-b-violet-500 border-r-violet-500/30 animate-[spin_3s_linear_infinite_reverse]"></div>
+                <!-- Core -->
+                <div class="relative z-10 w-20 h-20 bg-gradient-to-br from-cyan-950 to-slate-900 rounded-full flex items-center justify-center border border-white/10 shadow-[0_0_50px_rgba(6,182,212,0.4)] animate-pulse">
+                    <div class="absolute inset-0 bg-cyan-500/20 rounded-full blur-xl animate-pulse"></div>
+                    <i data-lucide="scan-face" class="text-white w-8 h-8 relative z-10 drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]"></i>
+                </div>
+            </div>
+            
+            <h3 class="text-xl font-bold text-white tracking-widest font-num mb-2">ANALYZING</h3>
+            <p id="loading-text" class="text-xs text-cyan-400 font-num tracking-widest uppercase h-5 animate-pulse">Extracting main character features...</p>
+            
+            <!-- Progress Bar Container -->
+            <div class="mt-8 w-full max-w-[200px]">
+                <div class="h-1 w-full bg-slate-800/50 rounded-full overflow-hidden border border-white/5 relative">
+                    <div id="processing-bar" class="h-full bg-gradient-to-r from-cyan-500 to-blue-500 w-0 shadow-[0_0_20px_rgba(6,182,212,0.8)] relative transition-all duration-300"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: Results Display Section -->
+        <div id="step-result" class="w-full hidden flex-col pb-10 animate-slide-up">
+            
+            <!-- Top Action Bar -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-white/10">
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center font-num tracking-tight text-neon-cyan">
+                        <i data-lucide="check-circle" class="w-6 h-6 mr-3 text-cyan-400"></i> Analysis Complete
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1 uppercase tracking-wider" id="result-mode-desc">Click a card to copy the full prompt</p>
+                </div>
+                <button onclick="downloadZip()" class="w-full md:w-auto bg-slate-800 hover:bg-slate-700 text-white px-6 py-3 rounded-xl font-bold text-sm transition-colors border border-white/10 shadow-lg group flex items-center justify-center gap-2 hover:border-cyan-500/30">
+                    <i data-lucide="download-cloud" class="w-4 h-4 group-hover:scale-110 transition-transform text-cyan-400"></i> Download ZIP
+                </button>
+            </div>
+
+            <!-- 9-Grid Images Display -->
+            <div class="mb-12">
+                <div class="grid grid-cols-3 gap-2 md:gap-4 max-w-2xl mx-auto" id="grid-container">
+                    <!-- Dynamically generated via JS -->
+                </div>
+            </div>
+
+            <!-- Prompts Cards Section -->
+            <div>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-8 h-8 rounded-lg bg-violet-500/20 flex items-center justify-center border border-violet-500/30">
+                        <i data-lucide="clapperboard" class="w-4 h-4 text-violet-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white tracking-tight">Camera Movement Prompts</h3>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6" id="prompts-container">
+                    <!-- Dynamically generated via JS -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast-notification" class="fixed top-6 right-6 z-[70] hidden transition-all duration-500 translate-x-[120%]">
+        <div class="glass-panel px-5 py-4 rounded-xl border border-emerald-500/20 shadow-[0_20px_40px_rgba(0,0,0,0.8)] flex items-center gap-4 bg-[#020617]/95 backdrop-blur-xl">
+            <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/20 shrink-0">
+                <i data-lucide="check" class="w-4 h-4"></i>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold text-white">Success</h4>
+                <p class="text-xs text-slate-400" id="toast-message">Copied to clipboard!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Canvas for Image Processing -->
+    <canvas id="process-canvas" class="hidden"></canvas>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Global Variables
+        let originalImage = null;
+        let slicedFrames = []; // Base64 Array
+        let generatedPrompts = [];
+
+        // DOM Elements
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('file-input');
+        const isSoraCheckbox = document.getElementById('is-sora');
+        const modeRadios = document.getElementsByName('mode');
+        const labelModeTransition = document.getElementById('label-mode-transition');
+
+        // Event Listener: Sora Platform Logic
+        isSoraCheckbox.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                // Force Single Mode
+                modeRadios[1].checked = true;
+                labelModeTransition.classList.add('opacity-30', 'pointer-events-none', 'grayscale');
+            } else {
+                labelModeTransition.classList.remove('opacity-30', 'pointer-events-none', 'grayscale');
+            }
+        });
+
+        // Event Listeners: Drag & Drop & Upload
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('border-cyan-500', 'bg-cyan-900/10');
+            dropzone.classList.remove('border-slate-600');
+        });
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('border-cyan-500', 'bg-cyan-900/10');
+            dropzone.classList.add('border-slate-600');
+        });
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('border-cyan-500', 'bg-cyan-900/10');
+            dropzone.classList.add('border-slate-600');
+            if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                handleFile(e.dataTransfer.files[0]);
+            }
+        });
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        function handleFile(file) {
+            if (!file.type.match('image.*')) {
+                showToast('Please upload an image file (JPG, PNG)');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    originalImage = img;
+                    switchStep('step-upload', 'step-config');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Switch Screen States
+        function switchStep(fromId, toId) {
+            document.getElementById(fromId).classList.add('hidden');
+            document.getElementById(fromId).classList.remove('flex');
+            
+            const toElement = document.getElementById(toId);
+            toElement.classList.remove('hidden');
+            if(toId === 'step-config' || toId === 'step-processing' || toId === 'step-result') {
+                toElement.classList.add('flex');
+            }
+        }
+
+        function resetApp() {
+            originalImage = null;
+            slicedFrames = [];
+            fileInput.value = '';
+            switchStep('step-config', 'step-upload');
+            switchStep('step-result', 'step-upload');
+        }
+
+        // Start Processing
+        async function startProcessing() {
+            switchStep('step-config', 'step-processing');
+            
+            // Simulate Progress Text & Bar
+            const loadingTexts = [
+                "Performing 9-grid splitting...",
+                "Extracting features: black hair, round glasses...",
+                "Analyzing scene lighting & composition...",
+                "Planning master director camera tracks...",
+                "Generating prompt texts..."
+            ];
+            const textEl = document.getElementById('loading-text');
+            const pBar = document.getElementById('processing-bar');
+            
+            for(let i=0; i<loadingTexts.length; i++) {
+                textEl.innerText = loadingTexts[i];
+                pBar.style.width = `${(i+1) * 20}%`;
+                await new Promise(r => setTimeout(r, 700)); // Simulate delay
+            }
+
+            // Execute Actual Slicing
+            sliceImageToGrid();
+            // Generate Prompts Database
+            generatePromptData();
+            // Render Results Interface
+            renderResults();
+
+            switchStep('step-processing', 'step-result');
+        }
+
+        // Image Slicing Logic (Canvas)
+        function sliceImageToGrid() {
+            slicedFrames = [];
+            const canvas = document.getElementById('process-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Assuming standard 3x3 grid
+            const width = originalImage.width / 3;
+            const height = originalImage.height / 3;
+            canvas.width = width;
+            canvas.height = height;
+
+            for (let y = 0; y < 3; y++) {
+                for (let x = 0; x < 3; x++) {
+                    ctx.clearRect(0, 0, width, height);
+                    ctx.drawImage(
+                        originalImage, 
+                        x * width, y * height, width, height, // Source coordinates and size
+                        0, 0, width, height // Destination coordinates and size
+                    );
+                    slicedFrames.push(canvas.toDataURL('image/jpeg', 0.95));
+                }
+            }
+        }
+
+        // Core: Prompt Generation Logic (Specialized text for the black-haired girl with glasses)
+        function generatePromptData() {
+            const mode = document.querySelector('input[name="mode"]:checked').value;
+            const isSora = document.getElementById('is-sora').checked;
+            const duration = document.getElementById('duration').value;
+            
+            const structure = duration === '15' ? "Start, Develop, Turn, End" : "Start, Turn, End";
+
+            if (mode === 'transition') {
+                document.getElementById('result-mode-desc').innerText = "Transition Mode: Click cards to copy, feed to AI tools sequentially.";
+                generatedPrompts = [
+                    {
+                        title: "Part 1: Frame 1 → Frame 2",
+                        text: `Start: @image1 A black-haired girl wearing large round black glasses and an elegant bun, with deep red lipstick, looking directly at the camera against a gray background with a calm expression. Soft studio lighting evenly illuminates her face. Static medium shot. Sound effect: Peaceful ambient noise.\n${duration==='15'?'Develop: The girl maintains her gaze, revealing a hint of curiosity. The camera pushes in extremely slowly, maintaining a calm atmosphere.\n':''}Turn: The corners of the girl's eyes twitch slightly, the corners of her mouth slowly rise, and clear dimples appear on her cheeks, revealing a sweet smile. Slow Dolly In, the lighting color temperature becomes slightly warmer.\nEnd: @image2 The camera freezes on the girl's sweet frontal smile, deep dimples, bright eyes, serving as the starting frame for the next clip.`
+                    },
+                    {
+                        title: "Part 2: Frame 2 → Frame 3",
+                        text: `Start: @image1 The girl with large round black glasses is smiling frontally, revealing deep dimples. Static medium shot. Sound effect: Slight rustling of clothes.\n${duration==='15'?'Develop: The smile retracts slightly, and her gaze begins to drift to the right, preparing to change posture.\n':''}Turn: The girl completely puts away her smile and smoothly turns her head 90 degrees to the right, showing a clean profile and jawline. The camera follows her head movement, performing a slight Arc Shot to the right perspective.\nEnd: @image2 The camera freezes on the girl's perfect right profile, her expression returning to calm, looking towards the right side of the frame, serving as the starting frame for the next clip.`
+                    },
+                    {
+                        title: "Part 3: Frame 3 → Frame 4",
+                        text: `Start: @image1 Black-haired girl's right profile, wearing round glasses, calm expression, looking to the right. Static side angle shot. Sound effect: Gentle breeze.\n${duration==='15'?'Develop: The girl blinks gently, the shadow of her eyelashes falling on her cheeks, peaceful atmosphere.\n':''}Turn: The girl turns her head slightly back to a three-quarter profile, looking down with a thoughtful temperament. Dolly Out, transitioning from a pure profile to a three-quarter profile composition.\nEnd: @image2 The camera freezes on the girl's three-quarter profile with lowered eyes, serving as the starting frame for the next clip.`
+                    },
+                    {
+                        title: "Part 4: Frame 4 → Frame 5",
+                        text: `Start: @image1 Black-haired girl's three-quarter profile, looking down. Static medium shot. Sound effect: Calm breathing.\n${duration==='15'?'Develop: She takes a deep breath, her chest rising and falling slightly, seemingly having made a decision.\n':''}Turn: The girl slowly raises her eyelids, looking sharply and calmly straight at the front camera. Slow Push In, capturing the moment her eyes focus.\nEnd: @image2 The camera freezes on the girl's three-quarter profile, her eyes firmly looking forward, serving as the starting frame for the next clip.`
+                    },
+                    {
+                        title: "Part 5: Frame 5 → Frame 6",
+                        text: `Start: @image1 Black-haired girl's three-quarter profile, looking firmly forward. Medium shot. Sound effect: A low bass hit.\n${duration==='15'?'Develop: Her gaze remains firm, looking directly into the lens without flinching, visual tension gradually rising.\n':''}Turn: Crash Zoom suddenly straight past the girl's cheek, cutting into an extreme close-up of the right half of her face, focusing on the right eye magnified by the black round glasses and her straight nose bridge.\nEnd: @image2 The camera freezes on the extreme close-up of the girl's right eye and nose bridge, clear frame lines, deep eyes, serving as the starting frame for the next clip.`
+                    },
+                    {
+                        title: "Part 6: Frame 6 → Frame 7",
+                        text: `Start: @image1 Extreme close-up of the girl's right eye and nose bridge, black round frame edges clearly visible. Extreme Close-up shot. Sound effect: Heartbeat.\n${duration==='15'?'Develop: The close-up is maintained, with only the tiny reflections in her pupils flickering.\n':''}Turn: The camera quickly Pulls Back to a frontal medium close-up, the girl's head slightly lowered, looking up over the top edge of her black round glasses with a strong scrutinizing look.\nEnd: @image2 The camera freezes on the girl's unique expression of looking down and peering over the top edge of her glasses, serving as the starting frame for the next clip.`
+                    },
+                    {
+                        title: "Part 7: Frame 7 → Frame 8",
+                        text: `Start: @image1 The girl is facing front with her head down, looking at the lens over the edge of her glasses. Static shot. Sound effect: Deep breath.\n${duration==='15'?'Develop: She squints slightly, her eyes becoming sharper and more provocative.\n':''}Turn: The girl suddenly raises her head, chin held high, looking down disdainfully. The camera cooperates by changing to a Low Angle Shot, enhancing her aloof aura.\nEnd: @image2 The camera freezes on the girl holding her head high, showing off her neck line and disdainful expression, serving as the starting frame for the next clip.`
+                    },
+                    {
+                        title: "Part 8: Frame 8 → Frame 9",
+                        text: `Start: @image1 The girl holds her head high, chin up, looking down disdainfully. Low angle shot. Sound effect: Low ambient sound.\n${duration==='15'?'Develop: She maintains this proud posture, her lips slightly parted, ready to speak.\n':''}Turn: Tilt Down & Extreme Push In slowly moving down and pushing in extremely close, crossing the glasses and nose, finally focusing entirely on the girl's lips painted with deep red lipstick and her chin.\nEnd: @image2 The camera freezes on the extreme close-up of the girl's deep red lips and chin, fading out to end.`
+                    }
+                ];
+            } else {
+                document.getElementById('result-mode-desc').innerText = isSora ? "Single Camera Mode (Sora): Removed @image tags, outputs full descriptions." : "Single Camera Mode: Treats 9 grids as a continuous video.";
+                
+                const imgPrefix = isSora ? "" : "@image1 ";
+                generatedPrompts = [];
+                for(let i=1; i<=9; i++) {
+                    let actionDesc = "";
+                    if(i===1) actionDesc = "The girl stares directly at the lens against a gray background with a calm expression. Soft studio lighting evenly on her face. Camera slowly pushes in.";
+                    if(i===2) actionDesc = "The girl smiles frontally, revealing deep dimples, exuding a sweet vibe. Camera slightly orbits.";
+                    if(i===3) actionDesc = "The girl shows a perfect right profile, calm expression, looking to the right. Camera pans from a side angle.";
+                    if(i===4) actionDesc = "The girl presents a three-quarter profile, eyes downcast, with a hint of melancholy. Camera pulls back slightly to catch the lighting.";
+                    if(i===5) actionDesc = "The girl's three-quarter profile, firmly looking forward. Camera slowly pushes in, capturing the tension in her eyes.";
+                    if(i===6) actionDesc = "Extreme close-up of the girl's right eye and nose bridge, clear glasses frame lines, deep eyes. Macro lens texture.";
+                    if(i===7) actionDesc = "The girl lowers her head, looking up over the top edge of her black round glasses with a scrutinizing look. Medium close-up.";
+                    if(i===8) actionDesc = "The girl holds her head high, chin up, looking down disdainfully. Camera switches to a low angle shot, enhancing the aura.";
+                    if(i===9) actionDesc = "Extreme close-up of the girl's deep red lips and chin. Camera slowly tilts down and focuses, cinematic feel.";
+
+                    generatedPrompts.push({
+                        title: `Frame ${i} Camera Prompt`,
+                        text: `Start: ${imgPrefix}A black-haired girl wearing large round black glasses and deep red lipstick. ${actionDesc} Sound effect: Ambient noise floor.\n${duration==='15'?'Develop: Emotion extends, richer visual details, light reflects on the glasses lenses.\n':''}Turn: Smooth transition to pave the way for the next movement, revealing the character's subtle dynamics.\nEnd: The frame freezes on the girl's most tension-filled moment, serving as a perfect wrap for this segment.`
+                    });
+                }
+            }
+        }
+
+        // Render Results Screen
+        function renderResults() {
+            // Render 9-Grid Images in Glass styling
+            const gridContainer = document.getElementById('grid-container');
+            gridContainer.innerHTML = '';
+            
+            slicedFrames.forEach((frameBase64, index) => {
+                const div = document.createElement('div');
+                div.className = 'relative aspect-square rounded-xl overflow-hidden glass-card p-1 group cursor-pointer shadow-lg animate-fade-in border border-white/10';
+                div.style.animationDelay = `${index * 0.1}s`;
+                
+                const innerWrap = document.createElement('div');
+                innerWrap.className = 'w-full h-full rounded-lg overflow-hidden relative';
+
+                const img = document.createElement('img');
+                img.src = frameBase64;
+                img.className = 'w-full h-full object-cover transition-transform duration-700 group-hover:scale-110';
+                
+                const badge = document.createElement('div');
+                badge.className = 'absolute top-2 left-2 bg-[#020617]/80 border border-white/10 text-cyan-400 font-num font-bold text-[10px] px-2 py-1 rounded backdrop-blur-md shadow-lg';
+                badge.innerText = `F${index + 1}`;
+
+                innerWrap.appendChild(img);
+                innerWrap.appendChild(badge);
+                div.appendChild(innerWrap);
+                gridContainer.appendChild(div);
+            });
+
+            // Render Prompt Cards in SME glass style
+            const promptsContainer = document.getElementById('prompts-container');
+            promptsContainer.innerHTML = '';
+
+            generatedPrompts.forEach((prompt, index) => {
+                const card = document.createElement('div');
+                card.className = 'glass-card rounded-2xl p-5 flex flex-col h-full cursor-pointer animate-fade-in relative group hover:bg-white/[0.03] transition-colors border border-white/5';
+                card.style.animationDelay = `${0.5 + (index * 0.1)}s`;
+                card.onclick = () => copyText(prompt.text, card);
+
+                // Glow effect on hover
+                const glow = document.createElement('div');
+                glow.className = 'absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-cyan-500/5 to-transparent pointer-events-none';
+                
+                const header = document.createElement('div');
+                header.className = 'flex items-center justify-between mb-4 pb-3 border-b border-white/10 relative z-10';
+                header.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,0.8)]"></div>
+                        <h4 class="font-bold text-white text-sm">${prompt.title}</h4>
+                    </div>
+                    <div class="p-1.5 rounded-lg bg-white/5 text-slate-400 group-hover:text-cyan-400 group-hover:bg-cyan-500/10 transition-colors">
+                        <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                    </div>
+                `;
+
+                const content = document.createElement('div');
+                content.className = 'text-xs text-slate-400 whitespace-pre-line flex-grow leading-relaxed font-sans relative z-10';
+                
+                // Highlight tags with SME styling
+                let highlightedText = prompt.text.replace(/@image1/g, '<span class="text-[10px] px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 uppercase font-bold tracking-wider mx-1">@image1</span>');
+                highlightedText = highlightedText.replace(/@image2/g, '<span class="text-[10px] px-1.5 py-0.5 rounded bg-violet-500/10 text-violet-400 border border-violet-500/20 uppercase font-bold tracking-wider mx-1">@image2</span>');
+                
+                // Highlight action keywords
+                highlightedText = highlightedText.replace(/Start:|Develop:|Turn:|End:/g, match => `<span class="text-white font-bold">${match}</span>`);
+
+                content.innerHTML = highlightedText;
+
+                card.appendChild(glow);
+                card.appendChild(header);
+                card.appendChild(content);
+                promptsContainer.appendChild(card);
+            });
+
+            // Reinitialize Icons
+            lucide.createIcons();
+        }
+
+        // Copy Text Functionality
+        function copyText(text, cardElement) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Prompt copied to clipboard!');
+                
+                // Visual feedback for card
+                cardElement.classList.add('border-emerald-500/50', 'bg-emerald-500/5');
+                setTimeout(() => {
+                    cardElement.classList.remove('border-emerald-500/50', 'bg-emerald-500/5');
+                }, 1000);
+            }).catch(err => {
+                // Fallback
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast('Prompt copied to clipboard!');
+                } catch (err) {
+                    showToast('Copy failed, please copy manually');
+                }
+                document.body.removeChild(textArea);
+            });
+        }
+
+        // Show Toast (SME Style)
+        function showToast(message) {
+            const toast = document.getElementById('toast-notification');
+            const msgEl = document.getElementById('toast-message');
+            msgEl.textContent = message;
+            
+            toast.classList.remove('hidden', 'translate-x-[120%]');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-x-[120%]');
+                setTimeout(() => toast.classList.add('hidden'), 500);
+            }, 3000);
+        }
+
+        // Package and Download ZIP
+        async function downloadZip() {
+            showToast('Zipping files, please wait...');
+            const zip = new JSZip();
+            
+            // Add images
+            const imgFolder = zip.folder("images");
+            slicedFrames.forEach((dataUrl, i) => {
+                const base64Data = dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+                imgFolder.file(`frame_0${i+1}.jpg`, base64Data, {base64: true});
+            });
+
+            // Add prompt text file
+            const promptText = generatedPrompts.map(p => `[${p.title}]\n${p.text}\n\n----------------------------------------\n\n`).join('');
+            zip.file("prompts.txt", promptText);
+
+            // Add JSON
+            zip.file("data.json", JSON.stringify({ prompts: generatedPrompts }, null, 2));
+
+            // Download
+            zip.generateAsync({type: "blob"}).then(function(content) {
+                saveAs(content, "Storyboard_Assets.zip");
+                showToast('Download complete!');
+            });
+        }
+    </script>
+</body>
+</html>
