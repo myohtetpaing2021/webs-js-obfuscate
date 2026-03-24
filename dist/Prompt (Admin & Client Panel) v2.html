@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PromptHub - Ultimate Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+/* obfuscated */
+function _0x4a17(){var _0x30dd79=['292JFdfzp','#0284c7','200%\x20center','slideUp\x200.6s\x20cubic-bezier(0.16,\x201,\x200.3,\x201)\x20forwards','right\x20center','6590738lSfJkj','493085ykChqE','translateX(100%)','pulse\x204s\x20cubic-bezier(0.4,\x200,\x200.6,\x201)\x20infinite','Inter','translateY(-20px)','#1e293b','#38bdf8','none','45QRxbbk','spin\x208s\x20linear\x20infinite','translateY(0px)','translateY(30px)','5274aQTiso','177jEUrwR','426950xPtUQp','float\x208s\x20ease-in-out\x20infinite','1228710XfgrDL','float\x208s\x20ease-in-out\x20infinite\x204s','#0ea5e9','23697zvohoP','scan\x203s\x20cubic-bezier(0.4,\x200,\x200.2,\x201)\x20infinite','-10%','867368kshxJz','11rwtaQe','gradientX\x204s\x20ease\x20infinite','200%\x20200%','config','110%','-200%\x20center'];_0x4a17=function(){return _0x30dd79;};return _0x4a17();}var _0x743ac9=_0x27b1;function _0x27b1(_0x473eaf,_0x16e950){_0x473eaf=_0x473eaf-0x198;var _0x4a1785=_0x4a17();var _0x27b14b=_0x4a1785[_0x473eaf];return _0x27b14b;}(function(_0x2003c7,_0x5c8156){var _0x53db38=_0x27b1,_0x2933df=_0x2003c7();while(!![]){try{var _0x118017=-parseInt(_0x53db38(0x19e))/0x1*(-parseInt(_0x53db38(0x19d))/0x2)+parseInt(_0x53db38(0x1a4))/0x3*(parseInt(_0x53db38(0x1ae))/0x4)+parseInt(_0x53db38(0x1b4))/0x5+-parseInt(_0x53db38(0x1a1))/0x6+-parseInt(_0x53db38(0x1b3))/0x7+parseInt(_0x53db38(0x1a7))/0x8*(parseInt(_0x53db38(0x199))/0x9)+parseInt(_0x53db38(0x19f))/0xa*(parseInt(_0x53db38(0x1a8))/0xb);if(_0x118017===_0x5c8156)break;else _0x2933df['push'](_0x2933df['shift']());}catch(_0x231f10){_0x2933df['push'](_0x2933df['shift']());}}}(_0x4a17,0x8db7a),tailwind[_0x743ac9(0x1ab)]={'theme':{'extend':{'fontFamily':{'sans':['Padauk','sans-serif'],'num':[_0x743ac9(0x1b7),'sans-serif']},'colors':{'dark':{0x3b6:'#020617',0x384:'#0f172a',0x320:_0x743ac9(0x1b9)},'primary':{0x190:_0x743ac9(0x1ba),0x1f4:_0x743ac9(0x1a3),0x258:_0x743ac9(0x1af)}},'animation':{'float':_0x743ac9(0x1a0),'float-delayed':_0x743ac9(0x1a2),'slide-up':_0x743ac9(0x1b1),'pulse-slow':_0x743ac9(0x1b6),'fade-in':'fadeIn\x200.4s\x20ease-out\x20forwards','slide-in-right':'slideInRight\x200.3s\x20cubic-bezier(0.16,\x201,\x200.3,\x201)\x20forwards','spin-slow':_0x743ac9(0x19a),'gradient-x':_0x743ac9(0x1a9),'scan':_0x743ac9(0x1a5),'shimmer':'shimmer\x202s\x20infinite\x20linear'},'keyframes':{'float':{'0%,\x20100%':{'transform':_0x743ac9(0x19b)},'50%':{'transform':_0x743ac9(0x1b8)}},'slideUp':{'from':{'opacity':0x0,'transform':_0x743ac9(0x19c)},'to':{'opacity':0x1,'transform':_0x743ac9(0x198)}},'fadeIn':{'from':{'opacity':0x0},'to':{'opacity':0x1}},'slideInRight':{'from':{'opacity':0x0,'transform':_0x743ac9(0x1b5)},'to':{'opacity':0x1,'transform':'translateX(0)'}},'gradientX':{'0%,\x20100%':{'background-size':_0x743ac9(0x1aa),'background-position':'left\x20center'},'50%':{'background-size':'200%\x20200%','background-position':_0x743ac9(0x1b2)}},'scan':{'0%':{'top':_0x743ac9(0x1a6),'opacity':0x0},'10%':{'opacity':0x1},'90%':{'opacity':0x1},'100%':{'top':_0x743ac9(0x1ac),'opacity':0x0}},'shimmer':{'0%':{'backgroundPosition':_0x743ac9(0x1ad)},'100%':{'backgroundPosition':_0x743ac9(0x1b0)}}}}}});
+</script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Premium Glass Effect */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.6) 100%);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 
+                        0 0 20px rgba(56, 189, 248, 0.15); 
+        }
+
+        /* Input Styling */
+        .input-field {
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3), 0 0 15px rgba(56, 189, 248, 0.2);
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        .pb-safe { padding-bottom: calc(6rem + env(safe-area-inset-bottom)); }
+        
+        .text-neon-blue {
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+
+        /* File Upload custom style */
+        input[type="file"]::file-selector-button {
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Padauk', sans-serif;
+            margin-right: 1rem;
+        }
+        input[type="file"]::file-selector-button:hover {
+            background: rgba(56, 189, 248, 0.2);
+        }
+
+        /* Ultimate Login Specific Styles */
+        .login-bg {
+            background-color: #020617;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+        }
+        
+        .login-glass {
+            background: rgba(10, 15, 30, 0.7);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.02);
+        }
+
+        .glow-wrapper {
+            position: relative;
+        }
+        
+        .glow-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 1.6rem;
+            background: linear-gradient(45deg, #0ea5e9, #8b5cf6, #3b82f6, #0ea5e9);
+            background-size: 300% 300%;
+            animation: gradientX 4s linear infinite;
+            z-index: -1;
+            opacity: 0.6;
+            filter: blur(10px);
+            transition: opacity 0.3s ease, filter 0.3s ease;
+        }
+        
+        .glow-wrapper:hover::before {
+            opacity: 1;
+            filter: blur(15px);
+        }
+
+        .login-input {
+            background: rgba(2, 6, 23, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+        }
+        
+        .login-input:focus {
+            background: rgba(56, 189, 248, 0.05);
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5), 0 0 0 3px rgba(56, 189, 248, 0.15);
+        }
+        
+        /* Browser Autofill Fix for Dark Theme */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0px 1000px #080d1a inset !important;
+            -webkit-text-fill-color: #f8fafc !important;
+            caret-color: white;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        .grid-bg {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            mask-image: radial-gradient(circle at center, black 50%, transparent 90%);
+            -webkit-mask-image: radial-gradient(circle at center, black 50%, transparent 90%);
+        }
+        
+        /* Data Flow Lines */
+        .path-flow {
+            stroke-dasharray: 100;
+            animation: dashFlow 4s linear infinite;
+        }
+        @keyframes dashFlow {
+            from { stroke-dashoffset: 200; }
+            to { stroke-dashoffset: 0; }
+        }
+
+        /* Shimmer Button */
+        .btn-shimmer {
+            background: linear-gradient(90deg, #0284c7, #8b5cf6, #0284c7);
+            background-size: 200% auto;
+            transition: 0.5s;
+        }
+        .btn-shimmer:hover {
+            background-position: right center;
+            box-shadow: 0 0 25px rgba(139,92,246, 0.6);
+        }
+
+        .cyber-corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-color: rgba(56, 189, 248, 0.5);
+            pointer-events: none;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-all duration-1000 ease-out overflow-hidden">
+        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#38bdf8 1px, transparent 1px); background-size: 40px 40px; transform: perspective(500px) rotateX(20deg);"></div>
+        <div class="relative flex flex-col items-center">
+            <div class="relative w-40 h-40 flex items-center justify-center mb-10">
+                <div class="absolute inset-0 rounded-full border-2 border-transparent border-t-cyan-500 border-l-cyan-500/30 animate-[spin_2s_linear_infinite] shadow-[0_0_30px_rgba(6,182,212,0.2)]"></div>
+                <div class="absolute inset-3 rounded-full border-2 border-transparent border-b-violet-500 border-r-violet-500/30 animate-[spin_3s_linear_infinite_reverse]"></div>
+                <div class="relative z-10 w-20 h-20 bg-gradient-to-br from-cyan-950 to-slate-900 rounded-full flex items-center justify-center border border-white/10 shadow-[0_0_50px_rgba(6,182,212,0.4)] animate-pulse">
+                    <div class="absolute inset-0 bg-cyan-500/20 rounded-full blur-xl animate-pulse"></div>
+                    <i data-lucide="image" class="text-white w-8 h-8 relative z-10 drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]"></i>
+                </div>
+            </div>
+            <div class="w-64 space-y-4">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-[0.2em] text-white font-num mb-1">PROMPT<span class="text-cyan-400">HUB</span></h2>
+                    <p class="text-[10px] text-cyan-500/70 font-num tracking-[0.4em] uppercase">Loading Gallery</p>
+                </div>
+                <div class="h-1 w-full bg-slate-800/50 rounded-full overflow-hidden border border-white/5 relative">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 w-0 shadow-[0_0_20px_rgba(6,182,212,0.8)] relative">
+                        <div class="absolute right-0 top-0 bottom-0 w-2 bg-white/50 blur-[2px]"></div>
+                    </div>
+                </div>
+                <div class="flex justify-between text-[10px] font-num text-slate-400 font-medium tracking-wider">
+                    <span class="animate-pulse">LOADING ASSETS...</span>
+                    <span id="progress-text" class="text-cyan-400 font-bold">0%</span>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-8 text-[9px] text-slate-600 font-num tracking-widest uppercase">
+            v3.0 Ultimate Edition
+        </div>
+    </div>
+
+    <!-- Ambient Background for Main App -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" id="ambient-bg">
+        <div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px] animate-float"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-violet-600/10 rounded-full blur-[120px] animate-float-delayed"></div>
+        <div class="absolute top-[30%] left-[40%] w-[40%] h-[40%] bg-cyan-600/5 rounded-full blur-[100px] animate-pulse-slow"></div>
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+    </div>
+
+    <!-- LOGIN SECTION (ULTIMATE DESIGN) -->
+    <div id="login-section" class="fixed inset-0 z-[60] hidden flex-col items-center justify-center login-bg overflow-hidden px-4">
+        <div class="absolute inset-0 grid-bg pointer-events-none"></div>
+        <div class="absolute top-[40%] left-[40%] -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-600/10 rounded-full blur-[100px] animate-pulse-slow pointer-events-none"></div>
+        <div class="absolute top-[60%] left-[60%] -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-violet-600/10 rounded-full blur-[100px] animate-pulse-slow pointer-events-none" style="animation-delay: 2s;"></div>
+
+        <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-50 hidden md:block" style="z-index: 0;">
+            <path d="M 0 200 L 250 200 L 350 300 L 350 1000" stroke="url(#cyan-grad)" stroke-width="2" fill="none" class="path-flow" />
+            <path d="M 100% 150 L calc(100% - 200px) 150 L calc(100% - 300px) 250 L calc(100% - 300px) 1000" stroke="url(#violet-grad)" stroke-width="2" fill="none" class="path-flow" style="animation-direction: reverse; animation-duration: 6s;" />
+            <defs>
+                <linearGradient id="cyan-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="rgba(6,182,212,0)" />
+                    <stop offset="50%" stop-color="rgba(6,182,212,0.8)" />
+                    <stop offset="100%" stop-color="rgba(6,182,212,0)" />
+                </linearGradient>
+                <linearGradient id="violet-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="rgba(139,92,246,0)" />
+                    <stop offset="50%" stop-color="rgba(139,92,246,0.8)" />
+                    <stop offset="100%" stop-color="rgba(139,92,246,0)" />
+                </linearGradient>
+            </defs>
+        </svg>
+
+        <div class="glow-wrapper w-full max-w-[400px] animate-slide-up group/card relative z-10">
+            <div class="login-glass p-5 sm:p-7 md:p-8 rounded-2xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.9)] relative overflow-hidden">
+                
+                <button onclick="hideLoginSection()" class="absolute top-4 left-4 p-2 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors z-30">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                </button>
+
+                <div class="cyber-corner top-0 left-0 border-t-2 border-l-2 rounded-tl-2xl"></div>
+                <div class="cyber-corner top-0 right-0 border-t-2 border-r-2 rounded-tr-2xl"></div>
+                <div class="cyber-corner bottom-0 left-0 border-b-2 border-l-2 rounded-bl-2xl"></div>
+                <div class="cyber-corner bottom-0 right-0 border-b-2 border-r-2 rounded-br-2xl"></div>
+
+                <div class="absolute left-0 w-full h-[2px] bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,1)] animate-scan z-20 pointer-events-none opacity-30"></div>
+                
+                <div class="absolute top-[-50px] right-[-50px] w-[150px] h-[150px] bg-cyan-500/10 rounded-full blur-[50px] transition-all duration-700 group-hover/card:bg-violet-500/20"></div>
+                
+                <div class="flex justify-center mb-5 relative">
+                    <div class="absolute inset-0 bg-cyan-500/20 blur-xl rounded-full scale-125 animate-pulse"></div>
+                    <div class="w-12 h-12 rounded-full bg-dark-900/90 border border-cyan-500/30 flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.4)] relative z-10 backdrop-blur-md">
+                        <svg class="w-6 h-6 text-cyan-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path>
+                        </svg>
+                        <div class="absolute inset-0 rounded-full border-2 border-transparent border-t-cyan-400 animate-spin-slow opacity-50"></div>
+                    </div>
+                </div>
+                
+                <div id="login-form-container" class="animate-fade-in block relative z-10">
+                    <div class="text-center mb-5">
+                        <h2 class="text-xl sm:text-2xl font-bold text-white font-num tracking-widest mb-1 uppercase drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">System Access</h2>
+                        <div class="flex items-center justify-center gap-2 mb-2">
+                            <div class="h-[1px] w-8 bg-cyan-500/50"></div>
+                            <p class="text-[9px] sm:text-[10px] text-cyan-400 uppercase tracking-[0.2em] font-bold">Secure Node</p>
+                            <div class="h-[1px] w-8 bg-cyan-500/50"></div>
+                        </div>
+                        <p class="text-[10px] sm:text-[11px] text-slate-400 font-medium mt-1">
+                            New to PromptHub? 
+                            <a href="#" onclick="toggleAuthMode('signup')" class="text-cyan-400 hover:text-cyan-300 transition-all ml-1 relative group font-bold">
+                                Initialize Identity
+                                <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-cyan-400 group-hover:w-full transition-all duration-300"></span>
+                            </a>
+                        </p>
+                    </div>
+
+                    <form onsubmit="handleLogin(event, 'login')">
+                        <div class="space-y-3">
+                            <div class="relative group">
+                                <input type="text" id="login-email" required class="peer login-input w-full rounded-xl pl-11 pr-4 pt-4 pb-1.5 text-sm text-white placeholder-transparent focus:outline-none font-num" placeholder="Email Address" />
+                                <label for="login-email" class="absolute left-11 top-1 text-[9px] text-slate-500 uppercase tracking-wider font-bold transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-xs peer-placeholder-shown:normal-case peer-focus:top-1 peer-focus:text-[9px] peer-focus:uppercase peer-focus:text-cyan-400 pointer-events-none">Email/Username</label>
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                    <i data-lucide="user-circle" class="w-4 h-4 text-slate-500 peer-focus:text-cyan-400 transition-colors duration-300"></i>
+                                </div>
+                            </div>
+                            <div class="relative group">
+                                <input type="password" id="login-password" required class="peer login-input w-full rounded-xl pl-11 pr-10 pt-4 pb-1.5 text-sm text-white placeholder-transparent focus:outline-none font-num" placeholder="Password" />
+                                <label for="login-password" class="absolute left-11 top-1 text-[9px] text-slate-500 uppercase tracking-wider font-bold transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-xs peer-placeholder-shown:normal-case peer-focus:top-1 peer-focus:text-[9px] peer-focus:uppercase peer-focus:text-cyan-400 pointer-events-none">Password</label>
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                    <i data-lucide="key" class="w-4 h-4 text-slate-500 peer-focus:text-cyan-400 transition-colors duration-300"></i>
+                                </div>
+                                <div class="absolute inset-y-0 right-0 pr-4 flex items-center cursor-pointer">
+                                    <i data-lucide="eye" class="w-4 h-4 text-slate-600 hover:text-cyan-400 transition-colors"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end mt-2 mb-4">
+                            <a href="#" onclick="handleComingSoon(event)" class="text-[9px] sm:text-[10px] text-slate-500 hover:text-cyan-400 transition-colors uppercase tracking-wider font-bold">Forgot Passkey?</a>
+                        </div>
+
+                        <button type="submit" class="btn-shimmer w-full text-white rounded-xl py-3.5 font-bold text-xs sm:text-[13px] tracking-widest uppercase transition-all duration-300 shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:-translate-y-0.5 active:scale-[0.98] flex items-center justify-center gap-2 group/btn border border-cyan-400/50">
+                            Authenticate
+                            <i data-lucide="chevron-right" class="w-4 h-4 group-hover/btn:translate-x-1 transition-transform"></i>
+                        </button>
+                    </form>
+                    
+                    <div class="mt-5 p-2.5 rounded-xl bg-[#020617]/50 border border-cyan-500/20 text-center flex items-start gap-3 relative overflow-hidden group shadow-inner">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-cyan-500 group-hover:bg-violet-500 transition-colors"></div>
+                        <i data-lucide="terminal" class="w-4 h-4 text-cyan-400 mt-0.5 shrink-0"></i>
+                        <p class="text-[10px] sm:text-[11px] text-slate-400 text-left leading-relaxed font-num">
+                            <span class="text-cyan-400/80 text-[8px] sm:text-[9px] uppercase tracking-widest block mb-0.5">Testing Credentials</span>
+                            Admin: <span class="text-white font-bold tracking-wider">admin</span> / <span class="text-slate-300">admin123</span><br>
+                            Client: <span class="text-white font-bold tracking-wider">client</span> / <span class="text-slate-300">client123</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <div id="signup-form-container" class="animate-fade-in hidden relative z-10">
+                    <div class="text-center mb-5">
+                        <h2 class="text-xl sm:text-2xl font-bold text-white font-num tracking-widest mb-1 uppercase drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]">Create Identity</h2>
+                        <div class="flex items-center justify-center gap-2 mb-2">
+                            <div class="h-[1px] w-8 bg-violet-500/50"></div>
+                            <p class="text-[9px] sm:text-[10px] text-violet-400 uppercase tracking-[0.2em] font-bold">New Node</p>
+                            <div class="h-[1px] w-8 bg-violet-500/50"></div>
+                        </div>
+                        <p class="text-[10px] sm:text-[11px] text-slate-400 font-medium mt-1">
+                            Already registered? 
+                            <a href="#" onclick="toggleAuthMode('login')" class="text-violet-400 hover:text-violet-300 transition-all ml-1 relative group font-bold">
+                                Return to Auth
+                                <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-violet-400 group-hover:w-full transition-all duration-300"></span>
+                            </a>
+                        </p>
+                    </div>
+
+                    <form onsubmit="handleSignup(event)">
+                        <div class="space-y-3 sm:space-y-4">
+                            <div class="relative group">
+                                <input type="text" id="signup-name" required class="peer login-input w-full rounded-xl pl-11 pr-4 pt-4 pb-1.5 text-sm text-white placeholder-transparent focus:outline-none focus:border-violet-500/50 focus:shadow-[inset_0_2px_10px_rgba(0,0,0,0.5),0_0_0_3px_rgba(139,92,246,0.15)] font-num" placeholder="Full Name" />
+                                <label for="signup-name" class="absolute left-11 top-1 text-[9px] text-slate-500 uppercase tracking-wider font-bold transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-xs peer-placeholder-shown:normal-case peer-focus:top-1 peer-focus:text-[9px] peer-focus:uppercase peer-focus:text-violet-400 pointer-events-none">Full Name</label>
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                    <i data-lucide="user" class="w-4 h-4 text-slate-500 peer-focus:text-violet-400 transition-colors duration-300"></i>
+                                </div>
+                            </div>
+                            <div class="relative group">
+                                <input type="email" id="signup-email" required class="peer login-input w-full rounded-xl pl-11 pr-4 pt-4 pb-1.5 text-sm text-white placeholder-transparent focus:outline-none focus:border-violet-500/50 focus:shadow-[inset_0_2px_10px_rgba(0,0,0,0.5),0_0_0_3px_rgba(139,92,246,0.15)] font-num" placeholder="Email Address" />
+                                <label for="signup-email" class="absolute left-11 top-1 text-[9px] text-slate-500 uppercase tracking-wider font-bold transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-xs peer-placeholder-shown:normal-case peer-focus:top-1 peer-focus:text-[9px] peer-focus:uppercase peer-focus:text-violet-400 pointer-events-none">Email Address</label>
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                    <i data-lucide="mail" class="w-4 h-4 text-slate-500 peer-focus:text-violet-400 transition-colors duration-300"></i>
+                                </div>
+                            </div>
+                            <div class="relative group">
+                                <input type="password" id="signup-password" required class="peer login-input w-full rounded-xl pl-11 pr-10 pt-4 pb-1.5 text-sm text-white placeholder-transparent focus:outline-none focus:border-violet-500/50 focus:shadow-[inset_0_2px_10px_rgba(0,0,0,0.5),0_0_0_3px_rgba(139,92,246,0.15)] font-num" placeholder="Password" />
+                                <label for="signup-password" class="absolute left-11 top-1 text-[9px] text-slate-500 uppercase tracking-wider font-bold transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-xs peer-placeholder-shown:normal-case peer-focus:top-1 peer-focus:text-[9px] peer-focus:uppercase peer-focus:text-violet-400 pointer-events-none">Password</label>
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                    <i data-lucide="key" class="w-4 h-4 text-slate-500 peer-focus:text-violet-400 transition-colors duration-300"></i>
+                                </div>
+                                <div class="absolute inset-y-0 right-0 pr-4 flex items-center cursor-pointer">
+                                    <i data-lucide="eye" class="w-4 h-4 text-slate-600 hover:text-violet-400 transition-colors"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-shimmer w-full text-white rounded-xl py-3.5 mt-6 font-bold text-xs sm:text-[13px] tracking-widest uppercase transition-all duration-300 shadow-[0_0_20px_rgba(139,92,246,0.4)] hover:-translate-y-0.5 active:scale-[0.98] flex items-center justify-center gap-2 group/btn border border-violet-400/50" style="background-image: linear-gradient(90deg, #8b5cf6, #d946ef, #8b5cf6);">
+                            Register Profile
+                            <i data-lucide="user-plus" class="w-4 h-4 group-hover/btn:scale-110 transition-transform"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3 text-[9px] text-slate-500 font-num tracking-widest uppercase bg-[#020617]/50 px-4 py-2 rounded-full border border-white/5 backdrop-blur-md z-10 shadow-lg whitespace-nowrap">
+            <div class="flex items-center gap-1.5">
+                <div class="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse shadow-[0_0_5px_cyan]"></div>
+                <span>Secured</span>
+            </div>
+            <div class="w-[1px] h-3 bg-white/10"></div>
+            <span>v3.0 Core</span>
+        </div>
+    </div>
+
+    <!-- MAIN APP WRAPPER -->
+    <div id="main-app" class="min-h-[100dvh] flex-col md:flex-row relative z-10 hidden">
+        
+        <!-- SIDEBAR (Desktop - FLOATING PILL HOVER MENU) -->
+        <aside class="hidden md:flex w-[88px] hover:w-[240px] group/sidebar glass-panel border border-white/10 flex-col m-6 rounded-[2.5rem] h-fit sticky top-6 shadow-2xl z-50 transition-all duration-300 overflow-hidden shrink-0 py-4">
+            
+            <!-- Logo Section -->
+            <div class="px-4 pb-4 border-b border-white/5">
+                <div class="flex items-center cursor-pointer" onclick="switchTab('gallery')">
+                    <div class="w-14 h-14 shrink-0 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-[1.25rem] flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.4)] border border-white/10 relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+                        <i data-lucide="sparkles" class="text-white w-6 h-6 relative z-10"></i>
+                    </div>
+                    <div class="max-w-0 opacity-0 group-hover/sidebar:max-w-[200px] group-hover/sidebar:opacity-100 group-hover/sidebar:ml-4 overflow-hidden whitespace-nowrap transition-all duration-300">
+                        <h1 class="text-2xl font-bold text-white tracking-tight font-num">Prompt<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-500">Hub</span></h1>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Section -->
+            <nav class="flex-1 px-3 py-4 space-y-2" id="desktop-nav">
+                <!-- Desktop Nav Items Injected by JS -->
+            </nav>
+
+            <!-- Auth Section -->
+            <div id="sidebar-auth-section" class="px-3 pt-4 border-t border-white/5">
+                <!-- Sidebar Auth UI Injected by JS -->
+            </div>
+        </aside>
+
+        <!-- MOBILE HEADER -->
+        <div class="md:hidden fixed top-0 left-0 right-0 z-40 bg-[#020617]/80 backdrop-blur-xl border-b border-white/5 px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="switchTab('gallery')">
+                <div class="w-9 h-9 bg-gradient-to-br from-cyan-500 to-violet-600 rounded-lg flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                    <i data-lucide="sparkles" class="text-white w-5 h-5"></i>
+                </div>
+                <span class="font-bold text-lg text-white font-num">Prompt<span class="text-violet-400">Hub</span></span>
+            </div>
+            <div id="mobile-auth-section" class="flex items-center gap-3">
+                <!-- Mobile Auth UI Injected by JS -->
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 relative z-10 pt-20 md:pt-4 md:px-0 pb-[90px] md:pb-4 h-[100dvh] overflow-y-auto custom-scrollbar scroll-smooth">
+            <div class="max-w-7xl mx-auto px-4 md:px-8 space-y-8 pb-10">
+                
+                <!-- Gallery & Favorites Section -->
+                <div id="gallery-section" class="block animate-slide-up">
+                    <div class="text-center md:text-left mb-10 flex flex-col md:flex-row justify-between items-center gap-4">
+                        <div>
+                            <h1 id="gallery-title" class="text-3xl md:text-4xl font-bold text-white mb-2 font-num tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">အကောင်းဆုံး AI Prompts များ</h1>
+                            <p id="gallery-desc" class="text-slate-400 text-sm flex items-center justify-center md:justify-start gap-2">
+                                <i data-lucide="image" class="w-4 h-4 text-cyan-400"></i> လှပသော ဓာတ်ပုံများကို ကြည့်ရှုပြီး Prompt များကို ရယူလိုက်ပါ။
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Empty State for Favorites & Gallery -->
+                    <div id="empty-state" class="hidden text-center py-20 animate-fade-in">
+                        <!-- Content Injected via JS -->
+                    </div>
+
+                    <!-- Masonry Grid Container for Posts -->
+                    <div id="posts-grid" class="columns-1 sm:columns-2 lg:columns-3 gap-6">
+                        <!-- Posts will be generated here by JavaScript -->
+                    </div>
+
+                    <!-- Pagination Controls -->
+                    <div id="pagination-controls" class="flex justify-center items-center mt-12 gap-2">
+                        <!-- Pagination buttons will be generated here -->
+                    </div>
+                </div>
+
+                <!-- Upload Section -->
+                <div id="upload-section" class="hidden animate-slide-up">
+                    <div class="max-w-2xl mx-auto glass-card p-6 md:p-10 rounded-3xl border border-violet-500/20 bg-gradient-to-br from-violet-900/10 to-transparent relative overflow-hidden shadow-2xl">
+                        <div class="absolute top-0 right-0 w-96 h-96 bg-violet-500/10 rounded-full blur-[100px] pointer-events-none -mr-32 -mt-32 animate-pulse-slow"></div>
+                        
+                        <div class="flex items-center mb-8 relative z-10 gap-4 border-b border-white/10 pb-6">
+                            <div class="p-3 bg-violet-500/20 rounded-xl shadow-[0_0_15px_rgba(139,92,246,0.3)] border border-violet-500/30">
+                                <i data-lucide="upload-cloud" class="w-6 h-6 text-violet-400"></i>
+                            </div> 
+                            <div>
+                                <h2 class="text-2xl font-bold text-white tracking-tight">အသစ်တင်ရန်</h2>
+                                <p class="text-xs text-slate-400 mt-1">ဓာတ်ပုံနှင့် Prompt အသစ်မျှဝေပါ</p>
+                            </div>
+                        </div>
+
+                        <form id="upload-form" onsubmit="handleUpload(event)" class="relative z-10">
+                            <div class="mb-6 flex flex-col gap-2.5 group">
+                                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider pl-1 group-hover:text-violet-400 transition-colors">ဓာတ်ပုံရွေးချယ်ပါ</label>
+                                <div class="relative transition-all duration-200 bg-slate-900/40 border border-white/10 rounded-xl p-4 hover:border-violet-500/30">
+                                    <input type="file" id="image-input" accept="image/*" required class="w-full text-sm text-slate-400 focus:outline-none">
+                                    <div id="preview-container" class="mt-4 hidden relative rounded-xl overflow-hidden border border-white/10">
+                                        <img id="image-preview" class="w-full h-auto object-contain block" src="" alt="Preview">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-8 flex flex-col gap-2.5 group">
+                                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider pl-1 group-hover:text-violet-400 transition-colors">Prompt စာသား</label>
+                                <div class="relative transition-all duration-200">
+                                    <textarea id="prompt-input" rows="5" required class="input-field w-full bg-slate-900/40 border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-slate-600 focus:outline-none transition-all resize-none" placeholder="ဥပမာ - A beautiful sunset over a cybernetic city, 4k, hyper-realistic..."></textarea>
+                                    <div class="absolute right-4 top-4 text-slate-600 pointer-events-none group-hover:text-slate-400 transition-colors">
+                                        <i data-lucide="align-left" class="w-4 h-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-end gap-3 pt-4 border-t border-white/10">
+                                <button type="button" onclick="switchTab('gallery')" class="px-6 py-3 rounded-xl text-slate-300 hover:bg-white/5 border border-transparent hover:border-white/10 transition-all font-medium text-sm flex items-center gap-2">
+                                    <i data-lucide="x" class="w-4 h-4"></i> ပယ်ဖျက်မည်
+                                </button>
+                                <button type="submit" class="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white shadow-[0_0_20px_rgba(139,92,246,0.4)] border border-violet-400/20 px-8 py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all active:scale-95 group">
+                                    <i data-lucide="share-2" class="w-4 h-4 group-hover:scale-110 transition-transform"></i> မျှဝေမည်
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- MOBILE BOTTOM NAV -->
+        <div class="md:hidden fixed bottom-6 left-4 right-4 h-[70px] glass-panel rounded-2xl border border-white/10 z-50 flex items-center justify-between px-2 shadow-[0_10px_30px_rgba(0,0,0,0.5)]" id="mobile-nav">
+            <!-- Mobile nav items injected by JS -->
+        </div>
+    </div>
+
+    <!-- CUSTOM CONFIRM MODAL -->
+    <div id="confirm-modal" class="fixed inset-0 z-[70] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
+        <div class="glass-panel w-full max-w-sm rounded-3xl p-6 relative border border-white/10 shadow-2xl text-center">
+            <div class="w-16 h-16 rounded-full bg-rose-500/10 text-rose-500 flex items-center justify-center mx-auto mb-4 border border-rose-500/20 shadow-[0_0_20px_rgba(244,63,94,0.2)]">
+                <i data-lucide="alert-triangle" class="w-8 h-8"></i>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2 font-num">Are you sure?</h3>
+            <p class="text-xs text-slate-400 mb-6 leading-relaxed" id="confirm-message">ဤဓာတ်ပုံကို ဖျက်ရန် သေချာပါသလား?</p>
+            <div class="flex justify-center gap-3">
+                <button onclick="closeConfirmModal()" class="px-5 py-2.5 rounded-xl text-slate-300 hover:bg-white/10 text-sm font-bold border border-transparent hover:border-white/10 transition-colors">ပယ်ဖျက်မည်</button>
+                <button onclick="executeConfirm()" class="bg-rose-600 hover:bg-rose-500 text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-rose-600/30">ဖျက်မည်</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast-notification" class="fixed top-4 right-4 z-[70] hidden transition-all duration-500 translate-x-full">
+        <!-- Toast content injected by JS -->
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+/* obfuscated */
+const _0x1a81b4=_0x1e44;function _0x3646(){const _0x3fae84=['vetWt','CkzWd','icyoQ','\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20နောက်သို့\x20<i\x20data-lucide=\x22chevron-right\x22\x20class=\x22w-4\x20h-4\x20inline-block\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','BoXQx','UPDQC','uxWlY','animate-fade-in','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22switchTab(\x27upload\x27)\x22\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20class=\x22w-14\x20h-14\x20bg-gradient-to-tr\x20from-cyan-500\x20to-violet-600\x20rounded-full\x20-mt-10\x20flex\x20items-center\x20justify-center\x20shadow-[0_0_20px_rgba(139,92,246,0.5)]\x20border-4\x20border-[#020617]\x20cursor-pointer\x20active:scale-95\x20transition-transform\x20hover:shadow-[0_0_30px_rgba(139,92,246,0.6)]\x20group\x20shrink-0\x20mx-2\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22','YrsgT','</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','upload-cloud','kFoBx','xbEzF','textContent','QQphy','signup-name','mobile-auth-section','createIcons','isLiked','dUreE','SIPvW','zxHrF','yhjpD','nqImm','fill-cyan-500/20','oTmih','cnaeC','IGScZ','xpCEq','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','zixKW','flex','PkRHJ','PPgSR','bg-gradient-to-r\x20from-cyan-600\x20to-blue-600\x20text-white\x20border-cyan-500/50\x20shadow-[0_0_15px_rgba(6,182,212,0.4)]','unshift','XMTZU','slice','jlFzS','laWeQ','clLSd','VolNm','AhMfC','cGltb','ZXfVQ','AgquD','\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','TRkFn','oOpNG','width','VrAss','36XmODqP','5172540PsfjDz','Omrta','oxaqc','icon','ggvnX','LayZC','admin123','AzgVP','fLpCV','JOkHV','join','pkuKB','1|2|3|5|0|4','UHXGx','eAioK','success','ktMLc','&lt;','336176zXfNQu','Login\x20အောင်မြင်ပါသည်!\x20🎉','VoYJn','YXptz','lBeIe','now','အကောင်းဆုံး\x20AI\x20Prompts\x20များ','error','Copy\x20failed','main-app','YaNaS','DOMContentLoaded','\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22','FDhPc','group-hover:scale-110','eJocr','map','ZpRJN','SBcag','preventDefault','&gt;','qGmpZ','oPuCL','OHDii','execCommand','\x22\x20class=\x22text-white\x20w-6\x20h-6\x20group-hover:-translate-y-1\x20transition-transform\x20duration-300\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','WatIs','NzdVB','translate-x-full','Vbjdh','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22changePage(','posts-grid','xCxbb','favorites','HSgLd','desktop-nav','replace','text-rose-500\x20fill-current','zMIcv','OmPaL','progress-text','rMUBd','innerText','RdQJr','895811HdMhmp','6575FPqflS','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20justify-between\x20items-center\x20mt-auto\x20pt-4\x20border-t\x20border-white/5\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22toggleLike(','beEUH','wumDX','MgdjG','nCyJj','qgzdE','xKeRV','LIVHp','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22switchTab(\x27','Prompt\x20ကို\x20Copy\x20ကူးပြီးပါပြီ!\x20📋','VLOSV','VeUJz',')\x22\x20class=\x22absolute\x20top-3\x20right-3\x20p-2.5\x20rounded-xl\x20bg-[#020617]/50\x20text-rose-400\x20hover:bg-rose-500/80\x20hover:text-white\x20backdrop-blur-md\x20opacity-0\x20group-hover:opacity-100\x20transition-all\x20duration-300\x20z-30\x20border\x20border-rose-500/30\x20shadow-[0_0_15px_rgba(244,63,94,0.3)]\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22trash-2\x22\x20class=\x22w-4\x20h-4\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>','mJIju','fixed','xFgiE','lCkWg','login','Gjdmu','login-form-container','ozlJx','HbZXr','isAction','toLowerCase','hApjE','copy','YlxYp','iAort','empty-state','BAbQd','Ddwju','image-input','NjPqA','VscJT','EAgSX','findIndex','LwlzE','opacity-0','oknRd','upload-section','innerHTML','UDbAw','confirm-modal','sMQhH',')\x22\x20class=\x22w-9\x20h-9\x20border\x20rounded-xl\x20text-xs\x20font-bold\x20font-num\x20flex\x20items-center\x20justify-center\x20transition-all\x20','ဤဓာတ်ပုံနှင့်\x20Prompt\x20ကို\x20ဖျက်ရန်\x20သေချာပါသလား?','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22handleLogout()\x22\x20class=\x22w-9\x20h-9\x20rounded-full\x20bg-slate-800/80\x20border\x20border-white/10\x20flex\x20items-center\x20justify-center\x20text-rose-400\x20relative\x20backdrop-blur-md\x20hover:bg-white/10\x20transition-colors\x20shadow-lg\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22log-out\x22\x20class=\x22w-4\x20h-4\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22w-9\x20h-9\x20rounded-full\x20bg-slate-800/80\x20border\x20border-white/10\x20flex\x20items-center\x20justify-center\x20text-slate-400\x20relative\x20backdrop-blur-md\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22w-2.5\x20h-2.5\x20bg-cyan-500\x20rounded-full\x20absolute\x20top-0\x20right-0\x20border-2\x20border-[#020617]\x20shadow-[0_0_10px_rgba(6,182,212,0.5)]\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22bell\x22\x20class=\x22w-4\x20h-4\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','preview-container','signup-email','JPgEU','dPQzX','body','Peqgc','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22p-4\x20flex\x20flex-col\x20justify-between\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20justify-between\x20items-start\x20mb-4\x20gap-3\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-slate-400\x20text-xs\x20line-clamp-2\x20flex-grow\x20leading-relaxed\x22\x20title=\x22','gallery','oKVnP','OtVgP','random','src','bWDRJ','အကောင့်ဖွင့်ခြင်း\x20အောင်မြင်ပါသည်!\x20ကျေးဇူးပြု၍\x20Login\x20ဝင်ပါ။\x20🎉','acwaj','LHuDe','ပြခန်း','NZIFb','BjBLk','\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-xs\x20font-bold\x20text-slate-500\x20group-hover/like:text-slate-300\x20font-num\x22>','OkksC','Like\x20ပေးရန်\x20အကောင့်ဝင်ပါ။','addEventListener','sDQfg','QBNrO','နှစ်သက်သော','XYzEP','pointer-events-none','NCmmt','wrUfR','ceil','ajCkl','LfHmX','xTKJA','18YmMRjR','MXZUW','ewDEY','DJLFd','scrollIntoView','YHBTl','text-slate-500\x20group-hover:text-slate-300','မှတ်တမ်းများကို\x20ကြည့်ရန်\x20အကောင့်ဝင်ပါ။','အကောင့်မှ\x20ထွက်ပြီးပါပြီ။','HLYrJ','DcrSI','WagIv','eMlfc','PzBDE','vRNjg','preloader','progress-bar','Qdbnh','auGvm','pHVjl','WIxlM','\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22w-10\x20flex\x20justify-center\x20shrink-0\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22','EgOmm','toast-notification','signup-password','jpZJD','ENaHf','login-section','nYxtm','vtOoi','signup-form-container','files','upload','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22glass-panel\x20px-5\x20py-4\x20rounded-xl\x20border\x20border-cyan-500/20\x20shadow-2xl\x20flex\x20items-center\x20gap-4\x20bg-[#020617]/90\x20backdrop-blur-xl\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22w-8\x20h-8\x20rounded-full\x20bg-cyan-500/20\x20text-cyan-400\x20flex\x20items-center\x20justify-center\x20border\x20border-cyan-500/20\x20shrink-0\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22check-circle\x22\x20class=\x22w-4\x20h-4\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h4\x20class=\x22text-sm\x20font-bold\x20text-white\x22>အောင်မြင်ပါသည်</h4>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-xs\x20text-slate-400\x20mt-0.5\x22>','hidden','EBBvB','trim','tgLcN','jiDxy','\x27)\x22\x20class=\x22flex-1\x20flex\x20flex-col\x20items-center\x20justify-center\x20h-full\x20relative\x20group\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22absolute\x20-top-1\x20w-8\x20h-1\x20bg-gradient-to-r\x20from-transparent\x20via-cyan-400\x20to-transparent\x20rounded-full\x20opacity-0\x20transition-opacity\x20','split','YscJz','add','မှတ်တမ်းကို\x20အောင်မြင်စွာ\x20ဖျက်သိမ်းပြီးပါပြီ။','112952SjICeg','sidebar-auth-section','wtMPl',')\x22\x20class=\x22flex\x20items-center\x20gap-2\x20focus:outline-none\x20group/like\x20px-2\x20py-1.5\x20rounded-lg\x20hover:bg-white/5\x20transition-colors\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22heart\x22\x20class=\x22w-5\x20h-5\x20transition-colors\x20duration-200\x20','pagination-controls','heart','<i\x20data-lucide=\x22heart\x22\x20class=\x22w-4\x20h-4\x20text-rose-400\x22></i>\x20သင်\x20အသည်းပေးထားသော\x20ဓာတ်ပုံများ','HiuVN','PVxcj','xNaIM','SPMLM','MBBTB','Copy\x20ကူးရန်\x20မအောင်မြင်ပါ။','QhKQi','likes','scale-105','dWKDk','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22showLoginSection()\x22\x20class=\x22px-4\x20py-2\x20text-xs\x20font-bold\x20rounded-lg\x20bg-gradient-to-r\x20from-cyan-600\x20to-violet-600\x20text-white\x20shadow-[0_0_15px_rgba(6,182,212,0.4)]\x20active:scale-95\x20transition-transform\x20flex\x20items-center\x20gap-1.5\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22log-in\x22\x20class=\x22w-3\x20h-3\x22></i>\x20Login\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','text-cyan-400\x20scale-110','target','ftAHD','bzjWw','xSuzO','client','MtIZm','push','textarea','PIpqx','ZPitm','CNqtK','ETXqo','GOFRQ','lbChX','cfUOY','block','scrollTo','\x22\x20class=\x22w-6\x20h-6\x20','အသည်း','Admin\x20သာလျှင်\x20တင်ခွင့်ရှိပါသည်။','classList','အီးမေးလ်\x20သို့မဟုတ်\x20စကားဝှက်\x20မှားယွင်းနေပါသည်။','sUNul','bg-white/5\x20text-slate-400\x20border-white/10\x20hover:bg-white/10\x20hover:text-white','SkYnO','prompt','9221696LoHucd','XocDg','wbwAg','zrZhA','floor','qbmaN','opacity-100','wcKfI','filter','ngjtW','\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','UxYJm','ajTvo','VhGHC','bhTJz','4|2|3|5|1|0','TAxxz','\x22\x20alt=\x22AI\x20generated\x20art\x22\x20class=\x22w-full\x20h-auto\x20block\x20transition-transform\x20duration-700\x20group-hover:scale-105\x22\x20loading=\x22lazy\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<!--\x20Dark\x20Gradient\x20Overlay\x20-->\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22absolute\x20inset-0\x20bg-gradient-to-t\x20from-[#020617]/90\x20via-[#020617]/40\x20to-transparent\x20opacity-0\x20group-hover:opacity-100\x20transition-opacity\x20duration-300\x20flex\x20flex-col\x20justify-end\x20p-5\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-white\x20text-sm\x20line-clamp-4\x20drop-shadow-md\x20font-medium\x20leading-relaxed\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','gallery-section','lNSWB','value','style','<i\x20data-lucide=\x22image\x22\x20class=\x22w-4\x20h-4\x20text-cyan-400\x22></i>\x20လှပသော\x20ဓာတ်ပုံများကို\x20ကြည့်ရှုပြီး\x20Prompt\x20များကို\x20ရယူလိုက်ပါ။','signup','gTYNf','ngsUo','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22switchTab(\x27',')\x22\x20class=\x22px-4\x20py-2\x20border\x20border-white/10\x20rounded-xl\x20text-xs\x20font-bold\x20text-slate-400\x20bg-white/5\x20transition-all\x20glass-panel\x20','select','PweBw','text-white\x20bg-white/10\x20shadow-lg','YHyMZ','oAxSQ','fWrzn','BfbZb','remove','QFMQs','hLZut','MntnV','KXgzt','xdcKS','QTQlV','IPpWv','Zlqoe','find','LDjua','admin','ပင်မ\x20ပြခန်း','JmlIN','kPrMF','609678qIyBAV','createElement','eObsR','aYEHx','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22w-20\x20h-20\x20bg-rose-500/10\x20text-rose-400\x20rounded-full\x20flex\x20items-center\x20justify-center\x20mx-auto\x20mb-4\x20border\x20border-rose-500/20\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22heart\x22\x20class=\x22w-10\x20h-10\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h3\x20class=\x22text-xl\x20font-bold\x20text-white\x20mb-2\x22>အသည်းပေးထားသော\x20ဓာတ်ပုံများ\x20မရှိသေးပါ</h3>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-slate-400\x20text-sm\x22>ပြခန်းထဲမှ\x20သင်နှစ်သက်သော\x20ဓာတ်ပုံများကို\x20အသည်းပေးပြီး\x20မှတ်သားထားနိုင်ပါသည်။</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22switchTab(\x27gallery\x27)\x22\x20class=\x22mt-6\x20px-6\x20py-2.5\x20bg-white/5\x20hover:bg-white/10\x20border\x20border-white/10\x20rounded-xl\x20text-white\x20text-sm\x20font-medium\x20transition-colors\x22>ပြခန်းသို့\x20ပြန်သွားမည်</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','ZfqEi','cDsbc','BAeKj','XXptt','confirm-message','ajyPO','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22showLoginSection()\x22\x20class=\x22w-full\x20flex\x20items-center\x20p-3\x20rounded-2xl\x20text-cyan-400\x20bg-cyan-500/10\x20hover:bg-cyan-500/20\x20transition-colors\x20group/login\x20relative\x20overflow-hidden\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22w-10\x20flex\x20justify-center\x20shrink-0\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22log-in\x22\x20class=\x22w-6\x20h-6\x20group-hover/login:scale-110\x20transition-transform\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22font-medium\x20text-sm\x20text-left\x20max-w-0\x20opacity-0\x20group-hover/sidebar:max-w-[150px]\x20group-hover/sidebar:opacity-100\x20group-hover/sidebar:ml-2\x20overflow-hidden\x20whitespace-nowrap\x20transition-all\x20duration-300\x22>အကောင့်ဝင်ရန်</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','HbslL','text-slate-400\x20group-hover:text-rose-400','getElementById','bgyIB','xOrSG','forEach','wmRxq','FhaAG','client123','QhyYP','ADZjZ','PtDTf','kFbaY','nElRK','isEgY','&quot;','1012yrHint','PzvEc','createObjectURL','\x27)\x22\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20class=\x22w-full\x20flex\x20items-center\x20p-3\x20rounded-2xl\x20transition-all\x20duration-300\x20group\x20relative\x20overflow-hidden\x20','qyOzf','\x22\x20class=\x22w-6\x20h-6\x20relative\x20z-10\x20transition-transform\x20duration-300\x20','ohJkO','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22changePage(','XlDcr','opacity-50\x20cursor-not-allowed\x20pointer-events-none','gcCKW','length','wJAVc','IMtgQ','56unqtCW','အသစ်တင်ရန်','text-cyan-400\x20bg-cyan-500/10','thpSM','hejtb','login-email','smooth','hIqJc','spSdq','\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22chevron-left\x22\x20class=\x22w-4\x20h-4\x20inline-block\x22></i>\x20ယခင်\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','<button\x20onclick=\x22deletePost(','Asstt','sBCEa','LoVCB','CaQzG','image-preview','wooYO','NfQbI','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22w-20\x20h-20\x20bg-cyan-500/10\x20text-cyan-400\x20rounded-full\x20flex\x20items-center\x20justify-center\x20mx-auto\x20mb-4\x20border\x20border-cyan-500/20\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22image\x22\x20class=\x22w-10\x20h-10\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h3\x20class=\x22text-xl\x20font-bold\x20text-white\x20mb-2\x22>ပြခန်းထဲတွင်\x20ဓာတ်ပုံများ\x20မရှိသေးပါ</h3>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-slate-400\x20text-sm\x22>Admin\x20အနေဖြင့်\x20ဓာတ်ပုံနှင့်\x20Prompt\x20များ\x20စတင်မျှဝေနိုင်ပါသည်။</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22p-2\x20rounded-xl\x20transition-all\x20duration-300\x20','fcvrK','ZMFzi','KZxaq','JtkNn','layout-grid','IvMSk','zzQHo','EEEon','login-password'];_0x3646=function(){return _0x3fae84;};return _0x3646();}(function(_0x184c6c,_0x362b0b){const _0x5f483d=_0x1e44,_0x1bdae5=_0x184c6c();while(!![]){try{const _0x260c10=-parseInt(_0x5f483d(0x1d1))/0x1+-parseInt(_0x5f483d(0x27c))/0x2*(-parseInt(_0x5f483d(0x1be))/0x3)+-parseInt(_0x5f483d(0x15f))/0x4*(parseInt(_0x5f483d(0x1fe))/0x5)+parseInt(_0x5f483d(0x250))/0x6*(-parseInt(_0x5f483d(0x1fd))/0x7)+-parseInt(_0x5f483d(0x16d))/0x8*(-parseInt(_0x5f483d(0x143))/0x9)+-parseInt(_0x5f483d(0x1bf))/0xa+parseInt(_0x5f483d(0x111))/0xb;if(_0x260c10===_0x362b0b)break;else _0x1bdae5['push'](_0x1bdae5['shift']());}catch(_0x3839ed){_0x1bdae5['push'](_0x1bdae5['shift']());}}}(_0x3646,0x66966));const ITEMS_PER_PAGE=0x9;let currentPage=0x1,activeTab='gallery',currentUser=null,pendingConfirmAction=null,posts=[];function showLoginSection(){const _0x5d5593=_0x1e44,_0xf0a350={'DJLFd':_0x5d5593(0x1da),'YXptz':'hidden','EAgSX':_0x5d5593(0x26b),'PkRHJ':_0x5d5593(0x1aa)};document[_0x5d5593(0x151)](_0xf0a350[_0x5d5593(0x253)])[_0x5d5593(0x10b)][_0x5d5593(0x27a)](_0xf0a350[_0x5d5593(0x1d4)]),document['getElementById'](_0xf0a350[_0x5d5593(0x253)])[_0x5d5593(0x10b)][_0x5d5593(0x134)]('flex');const _0x320d02=document[_0x5d5593(0x151)](_0xf0a350[_0x5d5593(0x221)]);_0x320d02[_0x5d5593(0x10b)]['remove'](_0xf0a350[_0x5d5593(0x1d4)]),_0x320d02['classList'][_0x5d5593(0x27a)](_0xf0a350[_0x5d5593(0x1ab)]),window['scrollTo'](0x0,0x0);}function hideLoginSection(){const _0x1e7a36=_0x1e44,_0x23d78c={'OHDii':_0x1e7a36(0x26b),'iuDgK':_0x1e7a36(0x1aa),'AzgVP':function(_0x19f9cb,_0x38787a){return _0x19f9cb!==_0x38787a;},'aMsuz':'gallery','HLYrJ':function(_0x393f90,_0x148c7){return _0x393f90(_0x148c7);}};document[_0x1e7a36(0x151)](_0x23d78c[_0x1e7a36(0x1e8)])[_0x1e7a36(0x10b)][_0x1e7a36(0x27a)](_0x1e7a36(0x272)),document['getElementById'](_0x23d78c[_0x1e7a36(0x1e8)])[_0x1e7a36(0x10b)][_0x1e7a36(0x134)](_0x23d78c['iuDgK']);const _0x1bbf60=document[_0x1e7a36(0x151)](_0x1e7a36(0x1da));_0x1bbf60['classList'][_0x1e7a36(0x134)](_0x1e7a36(0x272)),_0x1bbf60[_0x1e7a36(0x10b)][_0x1e7a36(0x27a)](_0x1e7a36(0x1aa)),window[_0x1e7a36(0x107)](0x0,0x0),!currentUser&&_0x23d78c[_0x1e7a36(0x1c6)](activeTab,_0x23d78c['aMsuz'])&&_0x23d78c[_0x1e7a36(0x259)](switchTab,_0x23d78c['aMsuz']);}function toggleAuthMode(_0x44a686){const _0x4c2398=_0x1e44,_0x48273f={'lNSWB':_0x4c2398(0x212),'UDbAw':_0x4c2398(0x26e),'ADZjZ':function(_0x24cc0d,_0x17269b){return _0x24cc0d===_0x17269b;},'SkYnO':'block','zMIcv':_0x4c2398(0x272)},_0x2c5020=document[_0x4c2398(0x151)](_0x48273f[_0x4c2398(0x124)]),_0x1fd005=document[_0x4c2398(0x151)](_0x48273f[_0x4c2398(0x228)]);_0x48273f[_0x4c2398(0x159)](_0x44a686,_0x4c2398(0x128))?(_0x2c5020[_0x4c2398(0x10b)][_0x4c2398(0x27a)]('hidden'),_0x2c5020[_0x4c2398(0x10b)][_0x4c2398(0x134)](_0x48273f[_0x4c2398(0x10f)]),_0x1fd005[_0x4c2398(0x10b)][_0x4c2398(0x134)]('hidden'),_0x1fd005[_0x4c2398(0x10b)][_0x4c2398(0x27a)](_0x4c2398(0x106))):(_0x1fd005['classList'][_0x4c2398(0x27a)](_0x48273f[_0x4c2398(0x1f7)]),_0x1fd005[_0x4c2398(0x10b)]['remove']('block'),_0x2c5020[_0x4c2398(0x10b)][_0x4c2398(0x134)](_0x48273f[_0x4c2398(0x1f7)]),_0x2c5020[_0x4c2398(0x10b)][_0x4c2398(0x27a)](_0x4c2398(0x106))),lucide[_0x4c2398(0x19c)]();}function handleComingSoon(_0x59c57a){const _0x38bfb7=_0x1e44,_0x48b223={'ENaHf':function(_0x4e305d,_0x374509,_0x2ada8d){return _0x4e305d(_0x374509,_0x2ada8d);},'OeQLl':'ဤလုပ်ဆောင်ချက်ကို\x20မကြာမီ\x20ရရှိနိုင်ပါမည်။','zFPSb':_0x38bfb7(0x1ce)};if(_0x59c57a)_0x59c57a['preventDefault']();_0x48b223[_0x38bfb7(0x26a)](showToast,_0x48b223['OeQLl'],_0x48b223['zFPSb']);}function handleSignup(_0x4478de){const _0x518fda=_0x1e44,_0x6edffd={'hbKXw':_0x518fda(0x19a),'LHuDe':function(_0x3f342c,_0x43426e){return _0x3f342c(_0x43426e);},'sMQhH':_0x518fda(0x210)};_0x4478de[_0x518fda(0x1e4)](),document['getElementById'](_0x6edffd['hbKXw'])[_0x518fda(0x125)]='',document[_0x518fda(0x151)]('signup-email')[_0x518fda(0x125)]='',document[_0x518fda(0x151)]('signup-password')[_0x518fda(0x125)]='',_0x6edffd[_0x518fda(0x23d)](toggleAuthMode,_0x6edffd[_0x518fda(0x22a)]),_0x6edffd[_0x518fda(0x23d)](showToast,_0x518fda(0x23b));}function handleLogin(_0x56da25,_0x33772d){const _0x227446=_0x1e44,_0x3f91b8={'oKVnP':_0x227446(0x293),'CaQzG':_0x227446(0x127),'WIxlM':'Copy\x20failed','xFgiE':function(_0x211d1b,_0x10309d,_0x4a1b77){return _0x211d1b(_0x10309d,_0x4a1b77);},'PYiyr':_0x227446(0x288),'oAxSQ':function(_0x55c6c9,_0x70a0cb){return _0x55c6c9===_0x70a0cb;},'PweBw':_0x227446(0x24d),'qGmpZ':_0x227446(0x1cf),'TAxxz':_0x227446(0x189),'hIqJc':function(_0x547587,_0x31655c){return _0x547587===_0x31655c;},'Peqgc':_0x227446(0x13f),'lBeIe':function(_0x1f88eb,_0x592df8){return _0x1f88eb===_0x592df8;},'gTYNf':function(_0x2be74f,_0x43bc92){return _0x2be74f===_0x43bc92;},'AgquD':function(_0x2c44c2,_0x1f79fd){return _0x2c44c2===_0x1f79fd;},'oxaqc':_0x227446(0x157),'HSgLd':_0x227446(0x165),'bXKzu':function(_0x2b9f45,_0x16c771,_0x1082c9){return _0x2b9f45(_0x16c771,_0x1082c9);},'SPMLM':_0x227446(0x10c),'VhGHC':function(_0x5d81a2){return _0x5d81a2();},'KZxaq':function(_0x15b05f,_0x4db30e){return _0x15b05f(_0x4db30e);}};if(_0x56da25)_0x56da25[_0x227446(0x1e4)]();if(_0x3f91b8['oAxSQ'](_0x33772d,_0x3f91b8[_0x227446(0x236)]))_0x3f91b8[_0x227446(0x131)](_0x227446(0x24d),_0x3f91b8[_0x227446(0x12e)])?currentUser=_0x227446(0x293):_0x48b325=_0x3f91b8[_0x227446(0x236)];else{if(_0x3f91b8[_0x227446(0x131)](_0x227446(0x15c),_0x3f91b8[_0x227446(0x1e6)]))_0x496072[_0x227446(0x227)]='အကောင်းဆုံး\x20AI\x20Prompts\x20များ',_0x52f987['innerHTML']=_0x3f91b8[_0x227446(0x17b)];else{const _0x14216f=document['getElementById'](_0x227446(0x172))[_0x227446(0x125)][_0x227446(0x274)]()[_0x227446(0x216)](),_0x4b276c=document[_0x227446(0x151)](_0x3f91b8[_0x227446(0x121)])[_0x227446(0x125)];if(_0x3f91b8['hIqJc'](_0x14216f,_0x3f91b8[_0x227446(0x233)])&&_0x3f91b8[_0x227446(0x1d5)](_0x4b276c,_0x227446(0x1c5)))currentUser=_0x227446(0x13f);else{if(_0x3f91b8[_0x227446(0x129)](_0x14216f,_0x227446(0x293))&&_0x3f91b8[_0x227446(0x1b8)](_0x4b276c,_0x3f91b8[_0x227446(0x1c1)]))_0x3f91b8[_0x227446(0x174)](_0x3f91b8[_0x227446(0x1f3)],_0x3f91b8['HSgLd'])?currentUser=_0x3f91b8[_0x227446(0x236)]:(_0x490ffe[_0x227446(0x1d8)](_0x3f91b8[_0x227446(0x264)],_0x479231),_0x3f91b8[_0x227446(0x20e)](_0x548197,_0x3f91b8['PYiyr'],_0x227446(0x1d8)));else{_0x3f91b8['bXKzu'](showToast,_0x3f91b8[_0x227446(0x286)],_0x227446(0x1d8));return;}}}}_0x3f91b8[_0x227446(0x11e)](hideLoginSection),_0x3f91b8[_0x227446(0x183)](switchTab,_0x227446(0x235)),showToast(_0x227446(0x1d2));}function _0x1e44(_0x19458f,_0x47f2b9){_0x19458f=_0x19458f-0xfc;const _0x364633=_0x3646();let _0x1e4485=_0x364633[_0x19458f];return _0x1e4485;}function handleLogout(){const _0x100575=_0x1e44,_0x16b624={'ngsUo':_0x100575(0x189),'acwaj':function(_0x111fd0,_0x785e44){return _0x111fd0(_0x785e44);},'SBcag':_0x100575(0x235),'GOFRQ':function(_0x24b7ed,_0x5678c6,_0x4036c5){return _0x24b7ed(_0x5678c6,_0x4036c5);},'xbEzF':_0x100575(0x258),'mJIju':_0x100575(0x1ce)};currentUser=null;const _0x18abee=document['getElementById'](_0x100575(0x172));if(_0x18abee)_0x18abee[_0x100575(0x125)]='';const _0x1307eb=document[_0x100575(0x151)](_0x16b624[_0x100575(0x12a)]);if(_0x1307eb)_0x1307eb[_0x100575(0x125)]='';_0x16b624[_0x100575(0x23c)](switchTab,_0x16b624[_0x100575(0x1e3)]),_0x16b624[_0x100575(0x103)](showToast,_0x16b624[_0x100575(0x197)],_0x16b624[_0x100575(0x20c)]);}function showConfirm(_0x246814,_0x12d95c){const _0xce42eb=_0x1e44,_0x87e59c={'PPgSR':_0xce42eb(0x14c),'QQphy':_0xce42eb(0x272)},_0x3da6d2=document[_0xce42eb(0x151)](_0xce42eb(0x229)),_0x4b9484=document[_0xce42eb(0x151)](_0x87e59c[_0xce42eb(0x1ac)]);_0x4b9484[_0xce42eb(0x198)]=_0x246814,pendingConfirmAction=_0x12d95c,_0x3da6d2[_0xce42eb(0x10b)][_0xce42eb(0x134)](_0x87e59c[_0xce42eb(0x199)]),_0x3da6d2[_0xce42eb(0x10b)][_0xce42eb(0x27a)]('flex'),lucide[_0xce42eb(0x19c)]();}function closeConfirmModal(){const _0x17b136=_0x1e44,_0x2531e5={'oTmih':_0x17b136(0x229),'vtOoi':_0x17b136(0x272),'YHBTl':_0x17b136(0x1aa)},_0x97ee99=document['getElementById'](_0x2531e5[_0x17b136(0x1a4)]);_0x97ee99[_0x17b136(0x10b)][_0x17b136(0x27a)](_0x2531e5[_0x17b136(0x26d)]),_0x97ee99[_0x17b136(0x10b)]['remove'](_0x2531e5[_0x17b136(0x255)]),pendingConfirmAction=null;}function executeConfirm(){const _0x2dc99f=_0x1e44,_0x21612a={'oknRd':_0x2dc99f(0x20f),'EEEon':function(_0x1eaec5){return _0x1eaec5();},'zzQHo':function(_0x16f17b){return _0x16f17b();}};pendingConfirmAction&&(_0x21612a[_0x2dc99f(0x225)]===_0x2dc99f(0x20f)?_0x21612a[_0x2dc99f(0x188)](pendingConfirmAction):_0x1a6c78=_0x34a275),_0x21612a[_0x2dc99f(0x187)](closeConfirmModal);}function deletePost(_0x53eaf6){const _0x48e2e4=_0x1e44,_0x460a69={'zixKW':_0x48e2e4(0x1ed),'WyRZt':function(_0x222ad8,_0x5542be){return _0x222ad8!==_0x5542be;},'Omrta':_0x48e2e4(0x101),'MXZUW':function(_0x1bb4b1){return _0x1bb4b1();},'ilxXp':function(_0x5b37ff,_0x5e09c6,_0x5f2735){return _0x5b37ff(_0x5e09c6,_0x5f2735);},'xdcKS':_0x48e2e4(0x27b),'wbwAg':'success','VscJT':function(_0x5f202d,_0x561af2,_0x414842){return _0x5f202d(_0x561af2,_0x414842);},'eObsR':_0x48e2e4(0x22c)};_0x460a69[_0x48e2e4(0x220)](showConfirm,_0x460a69[_0x48e2e4(0x145)],()=>{const _0x4d47df=_0x48e2e4;_0x460a69['WyRZt'](_0x460a69[_0x4d47df(0x1c0)],_0x4d47df(0x101))?(_0x1fe009[_0x4d47df(0x10b)][_0x4d47df(0x27a)](_0x460a69[_0x4d47df(0x1a9)]),_0x5e7ed1(()=>_0xd80a29['classList'][_0x4d47df(0x27a)](_0x4d47df(0x272)),0x1f4)):(posts=posts[_0x4d47df(0x119)](_0x52b655=>_0x52b655['id']!==_0x53eaf6),_0x460a69[_0x4d47df(0x251)](renderGallery),_0x460a69['ilxXp'](showToast,_0x460a69[_0x4d47df(0x139)],_0x460a69[_0x4d47df(0x113)]));});}function switchTab(_0x3238fb){const _0x4bd914=_0x1e44,_0x4c2fe9={'ngjtW':function(_0x39f491,_0x2d235f,_0x1c6891){return _0x39f491(_0x2d235f,_0x1c6891);},'sDQfg':_0x4bd914(0x10a),'Qdbnh':_0x4bd914(0x1d8),'TKrCB':function(_0x53e0c2,_0x3c2dfa){return _0x53e0c2===_0x3c2dfa;},'dPQzX':_0x4bd914(0x270),'thYPl':function(_0x35cf27,_0xe19feb){return _0x35cf27!==_0xe19feb;},'VLOSV':_0x4bd914(0x290),'ERgfO':function(_0x38dcf6,_0x295821,_0x58451a){return _0x38dcf6(_0x295821,_0x58451a);},'spSdq':_0x4bd914(0x257),'LfHmX':function(_0x2d69ac){return _0x2d69ac();},'nqImm':_0x4bd914(0x226),'JmlIN':'gallery-title','nYxtm':'gallery-desc','FDhPc':function(_0x523440,_0x13fa52){return _0x523440===_0x13fa52;},'uFgVr':_0x4bd914(0x235),'LoVCB':function(_0x23a41f,_0x53ac89){return _0x23a41f===_0x53ac89;},'NjPqA':'ArbFT','wCSfh':function(_0x3a9296,_0xba9863){return _0x3a9296===_0xba9863;},'cGltb':_0x4bd914(0x1f2),'iAort':'နှစ်သက်သော\x20Prompts\x20များ','eJocr':_0x4bd914(0x1d7),'laWeQ':_0x4bd914(0x272)};if(_0x4c2fe9['TKrCB'](_0x3238fb,_0x4c2fe9[_0x4bd914(0x231)])&&_0x4c2fe9['thYPl'](currentUser,'admin')){if(_0x4c2fe9[_0x4bd914(0x209)]!==_0x4bd914(0x290)){_0x4c2fe9[_0x4bd914(0x11a)](_0x113194,_0x4c2fe9[_0x4bd914(0x245)],_0x4c2fe9[_0x4bd914(0x261)]);return;}else{showToast(_0x4c2fe9[_0x4bd914(0x245)],_0x4c2fe9[_0x4bd914(0x261)]);return;}}if(_0x4c2fe9['TKrCB'](_0x3238fb,'favorites')&&!currentUser){_0x4c2fe9['ERgfO'](showToast,_0x4c2fe9[_0x4bd914(0x175)],_0x4c2fe9[_0x4bd914(0x261)]),_0x4c2fe9[_0x4bd914(0x24e)](showLoginSection);return;}activeTab=_0x3238fb,currentPage=0x1;const _0x9d1fa2=document[_0x4bd914(0x151)](_0x4bd914(0x123)),_0x14b2a4=document[_0x4bd914(0x151)](_0x4c2fe9[_0x4bd914(0x1a2)]),_0x187fb1=document[_0x4bd914(0x151)](_0x4c2fe9[_0x4bd914(0x141)]),_0x346cb2=document[_0x4bd914(0x151)](_0x4c2fe9[_0x4bd914(0x26c)]);_0x4c2fe9[_0x4bd914(0x1de)](activeTab,_0x4c2fe9['uFgVr'])||_0x4c2fe9[_0x4bd914(0x17a)](activeTab,_0x4bd914(0x1f2))?_0x4c2fe9['NjPqA']===_0x4c2fe9[_0x4bd914(0x21f)]?(_0x9d1fa2['classList'][_0x4bd914(0x134)](_0x4bd914(0x272)),_0x14b2a4[_0x4bd914(0x10b)][_0x4bd914(0x27a)](_0x4bd914(0x272)),_0x4c2fe9['wCSfh'](activeTab,_0x4c2fe9[_0x4bd914(0x1b6)])?(_0x187fb1[_0x4bd914(0x227)]=_0x4c2fe9[_0x4bd914(0x21a)],_0x346cb2['innerHTML']=_0x4bd914(0x282)):(_0x187fb1[_0x4bd914(0x227)]=_0x4c2fe9[_0x4bd914(0x1e0)],_0x346cb2['innerHTML']=_0x4bd914(0x127)),_0x4c2fe9['LfHmX'](renderGallery)):(_0x3e3988[_0x1bcd58][_0x4bd914(0x28a)]+=0x1,_0x30d235[_0x361bfb]['isLiked']=!![]):(_0x9d1fa2['classList'][_0x4bd914(0x27a)](_0x4c2fe9['laWeQ']),_0x14b2a4[_0x4bd914(0x10b)]['remove'](_0x4c2fe9[_0x4bd914(0x1b2)])),renderAuthUI(),renderNavigation(),lucide[_0x4bd914(0x19c)]();}function renderAuthUI(){const _0x294b02=_0x1e44,_0x1638b9={'clLSd':_0x294b02(0x272),'ZvNhK':_0x294b02(0x27d),'nCyJj':_0x294b02(0x19b),'ryZvJ':function(_0x1f44cd,_0x308629){return _0x1f44cd===_0x308629;},'HbZXr':'Ttqtc'},_0x20859e=document[_0x294b02(0x151)](_0x1638b9['ZvNhK']),_0x37664b=document[_0x294b02(0x151)](_0x1638b9[_0x294b02(0x203)]);currentUser?_0x1638b9['ryZvJ']('VaqdK',_0x1638b9[_0x294b02(0x214)])?(_0x5dae3c[_0x294b02(0x10b)][_0x294b02(0x134)](_0x294b02(0x272)),_0x154bca[_0x294b02(0x10b)]['add'](_0x1638b9[_0x294b02(0x1b3)])):(_0x20859e['innerHTML']='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22handleLogout()\x22\x20class=\x22w-full\x20flex\x20items-center\x20p-3\x20rounded-2xl\x20text-slate-400\x20hover:text-white\x20hover:bg-rose-500/10\x20transition-colors\x20group/logout\x20relative\x20overflow-hidden\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22w-10\x20flex\x20justify-center\x20shrink-0\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22log-out\x22\x20class=\x22w-6\x20h-6\x20group-hover/logout:text-rose-400\x20transition-colors\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22font-medium\x20text-sm\x20text-left\x20max-w-0\x20opacity-0\x20group-hover/sidebar:max-w-[150px]\x20group-hover/sidebar:opacity-100\x20group-hover/sidebar:ml-2\x20overflow-hidden\x20whitespace-nowrap\x20transition-all\x20duration-300\x20group-hover/logout:text-rose-400\x22>ထွက်မည်</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20',_0x37664b[_0x294b02(0x227)]=_0x294b02(0x22d)):(_0x20859e[_0x294b02(0x227)]=_0x294b02(0x14e),_0x37664b[_0x294b02(0x227)]=_0x294b02(0x28d));}function renderNavigation(){const _0x805842=_0x1e44,_0x5bd79c={'YrsgT':'hidden','ewDEY':function(_0x11e9a0,_0x25b098){return _0x11e9a0===_0x25b098;},'YlxYp':'yLDwB','PVxcj':_0x805842(0x149),'ajyPO':_0x805842(0x117),'CJmLy':_0x805842(0x256),'HbslL':'gallery','XYzEP':_0x805842(0x23e),'Ddwju':_0x805842(0x140),'BOTXK':_0x805842(0x185),'QMpHc':function(_0x384d32,_0x1f6d9f){return _0x384d32===_0x1f6d9f;},'vRNjg':_0x805842(0x13f),'UHXGx':_0x805842(0x16e),'IGScZ':_0x805842(0x195),'IPpWv':_0x805842(0x109),'QBNrO':_0x805842(0x247),'UPEkp':_0x805842(0x281),'eMlfc':_0x805842(0x1f4)};let _0x21b29a=[{'id':_0x5bd79c[_0x805842(0x14f)],'label':_0x5bd79c[_0x805842(0x248)],'labelDesk':_0x5bd79c[_0x805842(0x21d)],'icon':_0x5bd79c['BOTXK']}];_0x5bd79c['QMpHc'](currentUser,_0x5bd79c[_0x805842(0x25e)])&&_0x21b29a[_0x805842(0xfd)]({'id':_0x805842(0x270),'label':_0x5bd79c[_0x805842(0x1cc)],'labelDesk':_0x5bd79c[_0x805842(0x1cc)],'icon':_0x5bd79c[_0x805842(0x1a6)],'isAction':!![]});currentUser&&_0x21b29a['push']({'id':_0x805842(0x1f2),'label':_0x5bd79c[_0x805842(0x13b)],'labelDesk':_0x5bd79c[_0x805842(0x246)],'icon':_0x5bd79c['UPEkp']});const _0x2a9031=document[_0x805842(0x151)](_0x5bd79c[_0x805842(0x25c)]);_0x2a9031[_0x805842(0x227)]=_0x21b29a[_0x805842(0x1e1)](_0x55d584=>_0x805842(0x12b)+_0x55d584['id']+_0x805842(0x162)+(activeTab===_0x55d584['id']?_0x805842(0x12f):'text-slate-400\x20hover:text-white\x20hover:bg-white/5')+_0x805842(0x265)+_0x55d584['icon']+_0x805842(0x164)+(activeTab===_0x55d584['id']?_0x805842(0x28e):_0x805842(0x1df))+'\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22font-medium\x20text-sm\x20relative\x20z-10\x20tracking-wide\x20text-left\x20max-w-0\x20opacity-0\x20group-hover/sidebar:max-w-[150px]\x20group-hover/sidebar:opacity-100\x20group-hover/sidebar:ml-2\x20overflow-hidden\x20whitespace-nowrap\x20transition-all\x20duration-300\x22>'+_0x55d584['labelDesk']+'</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20')['join']('');const _0x20b207=document['getElementById']('mobile-nav');_0x20b207[_0x805842(0x227)]=_0x21b29a[_0x805842(0x1e1)](_0x5f5627=>{const _0xd39477=_0x805842,_0x49dced={'NZIFb':_0x5bd79c[_0xd39477(0x193)]};if(_0x5bd79c[_0xd39477(0x252)](_0x5bd79c[_0xd39477(0x219)],_0x5bd79c[_0xd39477(0x284)]))_0x37e7cc[_0xd39477(0x10b)][_0xd39477(0x27a)](_0x49dced[_0xd39477(0x23f)]),_0x2307c1['classList']['remove'](_0x49dced[_0xd39477(0x23f)]);else{if(_0x5f5627[_0xd39477(0x215)])return _0xd39477(0x192)+_0x5f5627['icon']+_0xd39477(0x1ea);const _0x145538=_0x5bd79c['ewDEY'](activeTab,_0x5f5627['id']);return _0xd39477(0x207)+_0x5f5627['id']+'\x27)\x22\x20class=\x22flex-1\x20flex\x20flex-col\x20items-center\x20justify-center\x20h-full\x20relative\x20group\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22absolute\x20-top-1\x20w-8\x20h-1\x20bg-gradient-to-r\x20from-transparent\x20via-cyan-400\x20to-transparent\x20rounded-full\x20opacity-0\x20transition-opacity\x20'+(_0x145538?_0x5bd79c[_0xd39477(0x14d)]:'')+_0xd39477(0x180)+(_0x145538?_0xd39477(0x16f):_0x5bd79c['CJmLy'])+_0xd39477(0x1dd)+_0x5f5627['icon']+_0xd39477(0x108)+(_0x145538?_0xd39477(0x1a3):'')+'\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20';}})[_0x805842(0x1c9)]('');}function renderGallery(){const _0x1ec813=_0x1e44,_0x583a5f={'TQgVc':_0x1ec813(0x1da),'jpZJD':_0x1ec813(0x272),'GhWbs':_0x1ec813(0x1aa),'BAbQd':_0x1ec813(0x191),'NNSQP':function(_0x1177be,_0x58d75d){return _0x1177be(_0x58d75d);},'ptwns':_0x1ec813(0x235),'beEUH':_0x1ec813(0x224),'kPrMF':_0x1ec813(0x28b),'MBBTB':_0x1ec813(0x249),'TTyol':function(_0x29d2b3,_0x45c670,_0x45a9bf){return _0x29d2b3(_0x45c670,_0x45a9bf);},'ZfqEi':function(_0x367153){return _0x367153();},'wrUfR':_0x1ec813(0x15e),'pkuKB':_0x1ec813(0x1e5),'bzjWw':function(_0x3c1cf7,_0x531b00){return _0x3c1cf7===_0x531b00;},'QhKQi':_0x1ec813(0x1f0),'OkksC':_0x1ec813(0x21b),'MxBxd':function(_0x5eb936,_0x226e20){return _0x5eb936===_0x226e20;},'hejtb':_0x1ec813(0x1f2),'EBBvB':function(_0x32686e,_0x47eb0b){return _0x32686e===_0x47eb0b;},'wcKfI':_0x1ec813(0x15d),'ozlJx':function(_0xdb8b1a,_0x538160){return _0xdb8b1a===_0x538160;},'Vbjdh':_0x1ec813(0x158),'Zlqoe':function(_0x7abe50,_0x5c2124){return _0x7abe50*_0x5c2124;},'QTQlV':function(_0x53de51,_0xfe1bcc){return _0x53de51-_0xfe1bcc;},'gcCKW':function(_0x3450fa,_0x5e6b55){return _0x3450fa+_0x5e6b55;}},_0x189ac0=document['getElementById'](_0x583a5f[_0x1ec813(0x289)]),_0x59729a=document[_0x1ec813(0x151)](_0x583a5f[_0x1ec813(0x242)]),_0x52bf91=document[_0x1ec813(0x151)](_0x1ec813(0x280));_0x189ac0[_0x1ec813(0x227)]='';const _0xd79c93=_0x583a5f['MxBxd'](activeTab,_0x583a5f[_0x1ec813(0x171)])?posts['filter'](_0x418270=>_0x418270['isLiked']):posts;if(_0x583a5f[_0x1ec813(0x273)](_0xd79c93[_0x1ec813(0x16a)],0x0)){if(_0x583a5f[_0x1ec813(0x291)](_0x583a5f[_0x1ec813(0x118)],_0x583a5f['wcKfI'])){_0x189ac0[_0x1ec813(0x10b)][_0x1ec813(0x27a)](_0x1ec813(0x272)),_0x59729a[_0x1ec813(0x10b)][_0x1ec813(0x134)]('hidden'),_0x52bf91[_0x1ec813(0x227)]='';_0x583a5f[_0x1ec813(0x213)](activeTab,_0x583a5f['hejtb'])?_0x59729a[_0x1ec813(0x227)]=_0x1ec813(0x147):_0x59729a[_0x1ec813(0x227)]=_0x1ec813(0x17f);lucide[_0x1ec813(0x19c)]();return;}else _0x109920[_0x1ec813(0x10b)][_0x1ec813(0x27a)](_0x583a5f[_0x1ec813(0x200)],_0x583a5f[_0x1ec813(0x142)],_0x583a5f[_0x1ec813(0x287)]),_0x583a5f['TTyol'](_0x3c649b,()=>{const _0x3729f4=_0x1ec813;_0x4539dd[_0x3729f4(0x134)]();const _0x4fffa5=_0x32f8dd[_0x3729f4(0x151)](_0x583a5f['TQgVc']);_0x4fffa5['classList']['remove'](_0x583a5f[_0x3729f4(0x269)]),_0x4fffa5[_0x3729f4(0x10b)][_0x3729f4(0x27a)](_0x583a5f['GhWbs']),_0x4fffa5[_0x3729f4(0x10b)][_0x3729f4(0x27a)](_0x583a5f[_0x3729f4(0x21c)]),_0x583a5f['NNSQP'](_0x1f0b67,_0x583a5f['ptwns']);},0x2bc);}else _0x583a5f[_0x1ec813(0x1ee)]===_0x583a5f[_0x1ec813(0x1ee)]?(_0x189ac0[_0x1ec813(0x10b)][_0x1ec813(0x134)](_0x1ec813(0x272)),_0x59729a['classList'][_0x1ec813(0x27a)](_0x583a5f[_0x1ec813(0x269)])):_0x583a5f[_0x1ec813(0x148)](_0x45a4a3);const _0x18c19c=_0x583a5f[_0x1ec813(0x13c)](_0x583a5f[_0x1ec813(0x13a)](currentPage,0x1),ITEMS_PER_PAGE),_0x284e81=_0x583a5f[_0x1ec813(0x169)](_0x18c19c,ITEMS_PER_PAGE),_0x2bd9af=_0xd79c93[_0x1ec813(0x1b0)](_0x18c19c,_0x284e81);_0x2bd9af[_0x1ec813(0x154)](_0x2d87a2=>{const _0x4aeec5=_0x1ec813,_0x423f9e=_0x2d87a2['isLiked']&&currentUser?_0x4aeec5(0x1f6):_0x4aeec5(0x150),_0x495660=_0x2d87a2[_0x4aeec5(0x28a)]>0x0?_0x2d87a2[_0x4aeec5(0x28a)]:'',_0x178bdf=_0x2d87a2['prompt'][_0x4aeec5(0x1f5)](/"/g,_0x583a5f[_0x4aeec5(0x24b)])['replace'](/</g,_0x4aeec5(0x1d0))[_0x4aeec5(0x1f5)](/>/g,_0x583a5f[_0x4aeec5(0x1ca)]),_0x5e7fdf=_0x583a5f[_0x4aeec5(0x291)](currentUser,_0x4aeec5(0x13f))?_0x4aeec5(0x177)+_0x2d87a2['id']+_0x4aeec5(0x20b):'',_0x502fad='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22glass-card\x20p-2\x20rounded-3xl\x20overflow-hidden\x20shadow-lg\x20border\x20border-white/10\x20break-inside-avoid\x20mb-6\x20inline-block\x20w-full\x20group\x20transition-all\x20duration-400\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22relative\x20overflow-hidden\x20rounded-2xl\x20group-hover:shadow-[0_0_20px_rgba(6,182,212,0.15)]\x20transition-shadow\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+_0x5e7fdf+'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<img\x20src=\x22'+_0x2d87a2['image']+_0x4aeec5(0x122)+_0x178bdf+_0x4aeec5(0x234)+_0x178bdf+'\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+_0x178bdf+_0x4aeec5(0x1ff)+_0x2d87a2['id']+_0x4aeec5(0x27f)+_0x423f9e+_0x4aeec5(0x241)+_0x495660+'</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22copyPrompt('+_0x2d87a2['id']+')\x22\x20class=\x22flex\x20items-center\x20gap-1.5\x20px-4\x20py-2\x20bg-cyan-500/10\x20hover:bg-cyan-500/20\x20text-cyan-400\x20text-xs\x20font-bold\x20rounded-xl\x20transition-colors\x20border\x20border-cyan-500/20\x20shadow-[0_0_10px_rgba(6,182,212,0.1)]\x20active:scale-95\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22copy\x22\x20class=\x22w-3.5\x20h-3.5\x22></i>\x20Copy\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20';_0x189ac0[_0x4aeec5(0x227)]+=_0x502fad;}),renderPagination(_0xd79c93[_0x1ec813(0x16a)]),lucide[_0x1ec813(0x19c)]();}function renderPagination(_0x216774){const _0x95bae3=_0x1e44,_0x3a3e25={'wooYO':function(_0x4087f3,_0x4fdd3b){return _0x4087f3/_0x4fdd3b;},'cfUOY':'pagination-controls','UPDQC':function(_0xfa5a9f,_0xe6e9fe){return _0xfa5a9f<=_0xe6e9fe;},'MCHrR':'hover:bg-white/10\x20hover:text-white\x20cursor-pointer','qgzdE':function(_0x31e253,_0x30f8dd){return _0x31e253-_0x30f8dd;},'sSJIN':function(_0xbf7258,_0x252c2d){return _0xbf7258!==_0x252c2d;},'TRkFn':_0x95bae3(0x201),'fWrzn':function(_0x4c7c43,_0x4af142){return _0x4c7c43===_0x4af142;},'kFbaY':'bg-gradient-to-r\x20from-cyan-600\x20to-blue-600\x20text-white\x20border-cyan-500/50\x20shadow-[0_0_15px_rgba(6,182,212,0.4)]','kFoBx':'bg-white/5\x20text-slate-400\x20border-white/10\x20hover:bg-white/10\x20hover:text-white','AhMfC':function(_0x222b68,_0x22ac49){return _0x222b68===_0x22ac49;},'kTdAJ':_0x95bae3(0x168),'misaL':function(_0x26ded9,_0x11f2e4){return _0x26ded9+_0x11f2e4;},'WatIs':function(_0x1ab50f,_0xf181a8,_0x4580d6){return _0x1ab50f(_0xf181a8,_0x4580d6);}},_0x3ae5a1=Math[_0x95bae3(0x24c)](_0x3a3e25[_0x95bae3(0x17d)](_0x216774,ITEMS_PER_PAGE)),_0x342953=document[_0x95bae3(0x151)](_0x3a3e25[_0x95bae3(0x105)]);_0x342953[_0x95bae3(0x227)]='';if(_0x3a3e25['UPDQC'](_0x3ae5a1,0x1))return;const _0x1393c4=currentPage===0x1?_0x95bae3(0x168):_0x3a3e25['MCHrR'];_0x342953['innerHTML']+=_0x95bae3(0x166)+_0x3a3e25[_0x95bae3(0x204)](currentPage,0x1)+_0x95bae3(0x12c)+_0x1393c4+_0x95bae3(0x176);for(let _0x1a13ee=0x1;_0x3a3e25[_0x95bae3(0x18f)](_0x1a13ee,_0x3ae5a1);_0x1a13ee++){if(_0x3a3e25['sSJIN'](_0x95bae3(0x201),_0x3a3e25[_0x95bae3(0x1ba)])){const _0x3a64d0=_0x3fe86c[_0x95bae3(0x13d)](_0x5b8905=>_0x5b8905['id']===_0x109c12);_0x3a64d0&&_0x47a101(_0x3a64d0['prompt']);}else{const _0x525da5=_0x3a3e25[_0x95bae3(0x132)](_0x1a13ee,currentPage)?_0x3a3e25[_0x95bae3(0x15b)]:_0x3a3e25[_0x95bae3(0x196)];_0x342953['innerHTML']+=_0x95bae3(0x1ef)+_0x1a13ee+_0x95bae3(0x22b)+_0x525da5+'\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+_0x1a13ee+_0x95bae3(0x1a8);}}const _0x3227db=_0x3a3e25[_0x95bae3(0x1b5)](currentPage,_0x3ae5a1)?_0x3a3e25['kTdAJ']:_0x3a3e25['MCHrR'];_0x342953[_0x95bae3(0x227)]+=_0x95bae3(0x166)+_0x3a3e25['misaL'](currentPage,0x1)+')\x22\x20class=\x22px-4\x20py-2\x20border\x20border-white/10\x20rounded-xl\x20text-xs\x20font-bold\x20text-slate-400\x20bg-white/5\x20transition-all\x20glass-panel\x20'+_0x3227db+_0x95bae3(0x18d),_0x3a3e25[_0x95bae3(0x1eb)](setTimeout,()=>{const _0x1ec2d9=_0x95bae3;lucide[_0x1ec2d9(0x19c)]();},0xa);}function changePage(_0x429a94){const _0x1809b1=_0x1e44,_0x13065={'fcvrK':_0x1809b1(0x272),'oOJGj':_0x1809b1(0x1aa),'qyOzf':_0x1809b1(0x191),'Fzooo':'scale-105','IvMSk':function(_0x5b8d87,_0x4f894a){return _0x5b8d87(_0x4f894a);},'XMTZU':function(_0x539f2d,_0x8a0f65){return _0x539f2d===_0x8a0f65;},'dunvy':_0x1809b1(0x1f2),'rMUBd':function(_0x20581c,_0x1cd222){return _0x20581c/_0x1cd222;},'NfQbI':function(_0x5486d3,_0x13d1c4){return _0x5486d3>=_0x13d1c4;},'WagIv':function(_0x3a4f0d,_0x2607f6){return _0x3a4f0d<=_0x2607f6;},'JnJSP':_0x1809b1(0x16c),'DcrSI':function(_0x13254e){return _0x13254e();},'LwlzE':_0x1809b1(0x123),'wJAVc':_0x1809b1(0x173)},_0x4b68ee=_0x13065['XMTZU'](activeTab,_0x13065['dunvy'])?posts[_0x1809b1(0x119)](_0x443778=>_0x443778['isLiked']):posts,_0xf9b1c1=Math[_0x1809b1(0x24c)](_0x13065[_0x1809b1(0x1fa)](_0x4b68ee['length'],ITEMS_PER_PAGE));if(_0x13065[_0x1809b1(0x17e)](_0x429a94,0x1)&&_0x13065[_0x1809b1(0x25b)](_0x429a94,_0xf9b1c1)){if(_0x13065[_0x1809b1(0x1af)](_0x13065['JnJSP'],_0x1809b1(0x182))){const _0x12595d={'LDjua':_0x13065[_0x1809b1(0x181)],'BAeKj':_0x13065['oOJGj'],'JtkNn':_0x13065[_0x1809b1(0x163)],'xCxbb':_0x13065['Fzooo'],'PzvEc':_0x1809b1(0x249)};_0x13065[_0x1809b1(0x186)](_0x170635,_0x3dfad5),_0x303984(()=>{const _0x186a03=_0x1809b1;_0x3e39c1&&(_0x5a2530[_0x186a03(0x10b)][_0x186a03(0x27a)](_0x186a03(0x224),_0x12595d[_0x186a03(0x1f1)],_0x12595d[_0x186a03(0x160)]),_0x437a3e(()=>{const _0x4e2315=_0x186a03;_0x53e25f['remove']();const _0x42ef29=_0x26dddd[_0x4e2315(0x151)](_0x4e2315(0x1da));_0x42ef29[_0x4e2315(0x10b)][_0x4e2315(0x134)](_0x12595d[_0x4e2315(0x13e)]),_0x42ef29[_0x4e2315(0x10b)][_0x4e2315(0x27a)](_0x12595d[_0x4e2315(0x14a)]),_0x42ef29[_0x4e2315(0x10b)][_0x4e2315(0x27a)](_0x12595d[_0x4e2315(0x184)]),_0x5b1c5a('gallery');},0x2bc));},0x1f4);}else currentPage=_0x429a94,_0x13065[_0x1809b1(0x25a)](renderGallery),document[_0x1809b1(0x151)](_0x13065[_0x1809b1(0x223)])[_0x1809b1(0x254)]({'behavior':_0x13065[_0x1809b1(0x16b)]});}}function toggleLike(_0x481af3){const _0x2fef05=_0x1e44,_0x96b838={'UxYJm':_0x2fef05(0x17c),'VeUJz':'hidden','PIpqx':_0x2fef05(0x1f2),'VolNm':'နှစ်သက်သော\x20Prompts\x20များ','BfbZb':'အကောင်းဆုံး\x20AI\x20Prompts\x20များ','LayZC':function(_0x34ce21){return _0x34ce21();},'OmPaL':function(_0x7552ee,_0x5796dd,_0x3fd4c0){return _0x7552ee(_0x5796dd,_0x3fd4c0);},'XXptt':_0x2fef05(0x243),'mUNbw':function(_0x265b0d){return _0x265b0d();},'zrZhA':function(_0x301bdb,_0x4702b1){return _0x301bdb!==_0x4702b1;},'uxWlY':function(_0xbf3ea,_0x5d6e22){return _0xbf3ea!==_0x5d6e22;},'xTKJA':_0x2fef05(0x130),'fLpCV':function(_0x5b3d74,_0x540fb3){return _0x5b3d74/_0x540fb3;},'RdQJr':function(_0x4503d1,_0x2ef4c5){return _0x4503d1>_0x2ef4c5;},'IzeJh':function(_0x271932,_0x650c40){return _0x271932===_0x650c40;},'SVGqU':_0x2fef05(0x211),'LHmUB':function(_0x36b364){return _0x36b364();}};if(!currentUser){_0x96b838[_0x2fef05(0x1f8)](showToast,_0x96b838[_0x2fef05(0x14b)],_0x2fef05(0x1d8)),_0x96b838['mUNbw'](showLoginSection);return;}const _0x3f9aff=posts[_0x2fef05(0x222)](_0x40880f=>_0x40880f['id']===_0x481af3);if(_0x96b838[_0x2fef05(0x114)](_0x3f9aff,-0x1)){posts[_0x3f9aff][_0x2fef05(0x19d)]?(posts[_0x3f9aff][_0x2fef05(0x28a)]-=0x1,posts[_0x3f9aff][_0x2fef05(0x19d)]=![]):(posts[_0x3f9aff][_0x2fef05(0x28a)]+=0x1,posts[_0x3f9aff][_0x2fef05(0x19d)]=!![]);if(activeTab===_0x96b838['PIpqx']&&!posts[_0x3f9aff][_0x2fef05(0x19d)]){if(_0x96b838[_0x2fef05(0x190)](_0x96b838[_0x2fef05(0x24f)],_0x96b838[_0x2fef05(0x24f)])){const _0x2a13ba=_0x36cc29[_0x2fef05(0x28f)][_0x2fef05(0x26f)][0x0],_0x246aa2=_0xe9aac['getElementById'](_0x96b838[_0x2fef05(0x11c)]),_0x2f9110=_0x1b17d2['getElementById'](_0x2fef05(0x22e));if(_0x2a13ba){const _0x5abcd4=_0x299bad['createObjectURL'](_0x2a13ba);_0x246aa2[_0x2fef05(0x239)]=_0x5abcd4,_0x2f9110[_0x2fef05(0x10b)][_0x2fef05(0x134)](_0x96b838[_0x2fef05(0x20a)]);}else _0x2f9110[_0x2fef05(0x10b)][_0x2fef05(0x27a)](_0x96b838['VeUJz']);}else{const _0x5d39a1=posts[_0x2fef05(0x119)](_0x52ffb2=>_0x52ffb2['isLiked']),_0x541b41=Math[_0x2fef05(0x24c)](_0x96b838[_0x2fef05(0x1c7)](_0x5d39a1[_0x2fef05(0x16a)],ITEMS_PER_PAGE));_0x96b838[_0x2fef05(0x1fc)](currentPage,_0x541b41)&&_0x541b41>0x0&&(_0x96b838['IzeJh'](_0x96b838['SVGqU'],_0x96b838['SVGqU'])?currentPage=_0x541b41:(_0xea9a8a[_0x2fef05(0x10b)][_0x2fef05(0x134)](_0x2fef05(0x272)),_0x503a8e[_0x2fef05(0x10b)][_0x2fef05(0x27a)](_0x96b838[_0x2fef05(0x20a)]),_0x409cef===_0x96b838[_0x2fef05(0xff)]?(_0x599ce0['innerHTML']=_0x96b838[_0x2fef05(0x1b4)],_0x36f8a6[_0x2fef05(0x227)]=_0x2fef05(0x282)):(_0x29774f['innerHTML']=_0x96b838[_0x2fef05(0x133)],_0x585ada[_0x2fef05(0x227)]=_0x2fef05(0x127)),_0x96b838[_0x2fef05(0x1c4)](_0x30ec39)));}}_0x96b838['LHmUB'](renderGallery);}}function copyPrompt(_0xcec117){const _0x36f091=_0x1e44,_0x311e64={'WayUQ':function(_0x92ab25,_0x517c78){return _0x92ab25(_0x517c78);}},_0x170478=posts[_0x36f091(0x13d)](_0x247de9=>_0x247de9['id']===_0xcec117);_0x170478&&_0x311e64['WayUQ'](copyToClipboard,_0x170478[_0x36f091(0x110)]);}function copyToClipboard(_0x4448c2){const _0x3d4bb3=_0x1e44,_0x4cba4d={'vetWt':function(_0x21329b,_0x176979){return _0x21329b===_0x176979;},'oOpNG':_0x3d4bb3(0x1ad),'xSuzO':_0x3d4bb3(0x10e),'xpCEq':_0x3d4bb3(0xfe),'VjDwc':_0x3d4bb3(0x20d),'dWKDk':function(_0x221476,_0x7932f1){return _0x221476(_0x7932f1);},'YaNaS':_0x3d4bb3(0x208),'sUNul':_0x3d4bb3(0x1d9),'XocDg':function(_0x36e6e5,_0x41f9dd,_0x5c61d1){return _0x36e6e5(_0x41f9dd,_0x5c61d1);},'MfeOw':_0x3d4bb3(0x1d8),'zxHrF':_0x3d4bb3(0x102)},_0x42cca2=document[_0x3d4bb3(0x144)](_0x4cba4d[_0x3d4bb3(0x1a7)]);_0x42cca2['value']=_0x4448c2,_0x42cca2[_0x3d4bb3(0x126)]['position']=_0x4cba4d['VjDwc'],_0x42cca2[_0x3d4bb3(0x126)]['opacity']='0',document[_0x3d4bb3(0x232)]['appendChild'](_0x42cca2),_0x42cca2[_0x3d4bb3(0x12d)]();try{document[_0x3d4bb3(0x1e9)](_0x3d4bb3(0x218)),_0x4cba4d[_0x3d4bb3(0x28c)](showToast,_0x4cba4d[_0x3d4bb3(0x1db)]);}catch(_0x4279c3){console['error'](_0x4cba4d[_0x3d4bb3(0x10d)],_0x4279c3),_0x4cba4d[_0x3d4bb3(0x112)](showToast,_0x3d4bb3(0x288),_0x4cba4d['MfeOw']);}finally{if(_0x4cba4d[_0x3d4bb3(0x18a)](_0x4cba4d['zxHrF'],_0x4cba4d[_0x3d4bb3(0x1a0)]))document[_0x3d4bb3(0x232)]['removeChild'](_0x42cca2);else{const _0x1642bb=_0x4cba4d['vetWt'](_0x4c42c6,_0x2efafc)?_0x4cba4d[_0x3d4bb3(0x1bb)]:_0x4cba4d[_0x3d4bb3(0x292)];_0x39fe2d[_0x3d4bb3(0x227)]+=_0x3d4bb3(0x1ef)+_0x52a421+_0x3d4bb3(0x22b)+_0x1642bb+_0x3d4bb3(0x11b)+_0x3628ef+'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20';}}}let toastTimeout;function showToast(_0x4b2a82,_0x2201a7=_0x1a81b4(0x1ce)){const _0x457759=_0x1a81b4,_0x5c6357={'ajTvo':function(_0x448547,_0x415fa1){return _0x448547===_0x415fa1;},'thpSM':'opacity-100','NCmmt':_0x457759(0x16f),'xOrSG':_0x457759(0x256),'bWDRJ':'fill-cyan-500/20','hApjE':_0x457759(0x272),'dUreE':function(_0x97dfba,_0x522a51){return _0x97dfba!==_0x522a51;},'auGvm':'kNIUB','GWbLi':_0x457759(0x206),'VoYJn':_0x457759(0x1ed),'oPuCL':_0x457759(0x267),'aYEHx':_0x457759(0x1d8),'yhjpD':function(_0xd50478,_0x4f4477){return _0xd50478!==_0x4f4477;},'YscJz':_0x457759(0x152),'NzdVB':function(_0x59a630,_0x47a040){return _0x59a630(_0x47a040);},'GPqIU':function(_0x2e81ee,_0x1d1089,_0x2ef43d){return _0x2e81ee(_0x1d1089,_0x2ef43d);}},_0x71bc8=document[_0x457759(0x151)](_0x5c6357[_0x457759(0x1e7)]);if(_0x5c6357[_0x457759(0x11d)](_0x2201a7,_0x5c6357[_0x457759(0x146)])){if(_0x5c6357[_0x457759(0x1a1)](_0x5c6357['YscJz'],_0x5c6357[_0x457759(0x279)])){if(_0x3cc02d[_0x457759(0x215)])return'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22switchTab(\x27upload\x27)\x22\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20class=\x22w-14\x20h-14\x20bg-gradient-to-tr\x20from-cyan-500\x20to-violet-600\x20rounded-full\x20-mt-10\x20flex\x20items-center\x20justify-center\x20shadow-[0_0_20px_rgba(139,92,246,0.5)]\x20border-4\x20border-[#020617]\x20cursor-pointer\x20active:scale-95\x20transition-transform\x20hover:shadow-[0_0_30px_rgba(139,92,246,0.6)]\x20group\x20shrink-0\x20mx-2\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22'+_0x3cc107[_0x457759(0x1c2)]+_0x457759(0x1ea);const _0x254ad1=_0x5c6357[_0x457759(0x11d)](_0x514939,_0x272e74['id']);return _0x457759(0x207)+_0xd02e48['id']+_0x457759(0x277)+(_0x254ad1?_0x5c6357[_0x457759(0x170)]:'')+_0x457759(0x180)+(_0x254ad1?_0x5c6357[_0x457759(0x24a)]:_0x5c6357[_0x457759(0x153)])+_0x457759(0x1dd)+_0x474451['icon']+'\x22\x20class=\x22w-6\x20h-6\x20'+(_0x254ad1?_0x5c6357[_0x457759(0x23a)]:'')+_0x457759(0x1b9);}else _0x71bc8[_0x457759(0x227)]='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22glass-panel\x20px-5\x20py-4\x20rounded-xl\x20border\x20border-rose-500/20\x20shadow-2xl\x20flex\x20items-center\x20gap-4\x20bg-[#020617]/90\x20backdrop-blur-xl\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22w-8\x20h-8\x20rounded-full\x20bg-rose-500/20\x20text-rose-400\x20flex\x20items-center\x20justify-center\x20border\x20border-rose-500/20\x20shrink-0\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22alert-circle\x22\x20class=\x22w-4\x20h-4\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h4\x20class=\x22text-sm\x20font-bold\x20text-white\x22>သတိပေးချက်</h4>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-xs\x20text-slate-400\x20mt-0.5\x22>'+_0x4b2a82+_0x457759(0x194);}else _0x71bc8[_0x457759(0x227)]=_0x457759(0x271)+_0x4b2a82+_0x457759(0x194);lucide[_0x457759(0x19c)](),_0x71bc8[_0x457759(0x10b)][_0x457759(0x134)](_0x5c6357[_0x457759(0x217)],_0x5c6357['VoYJn']),_0x5c6357[_0x457759(0x1ec)](clearTimeout,toastTimeout),toastTimeout=_0x5c6357['GPqIU'](setTimeout,()=>{const _0x3cd784=_0x457759,_0x586f5d={'VmChf':_0x5c6357[_0x3cd784(0x217)],'XlDcr':'flex'};if(_0x5c6357[_0x3cd784(0x19e)](_0x5c6357[_0x3cd784(0x262)],_0x5c6357['GWbLi']))_0x71bc8[_0x3cd784(0x10b)]['add'](_0x5c6357[_0x3cd784(0x1d3)]),setTimeout(()=>_0x71bc8[_0x3cd784(0x10b)][_0x3cd784(0x27a)]('hidden'),0x1f4);else{const _0x55bf96=_0x4ef781[_0x3cd784(0x151)](_0x3cd784(0x229));_0x55bf96[_0x3cd784(0x10b)]['add'](_0x586f5d['VmChf']),_0x55bf96['classList'][_0x3cd784(0x134)](_0x586f5d[_0x3cd784(0x167)]),_0x2f74ef=null;}},0xbb8);}document['getElementById'](_0x1a81b4(0x21e))[_0x1a81b4(0x244)]('change',function(_0x4dac4b){const _0x286a75=_0x1a81b4,_0x21e8d7={'CkzWd':_0x286a75(0x120),'VrAss':'hidden','xKeRV':_0x286a75(0x1f2),'sBCEa':function(_0x58e58b,_0x2ee281){return _0x58e58b(_0x2ee281);},'ggvnX':function(_0x44f6d7,_0x11d983,_0x1e8563){return _0x44f6d7(_0x11d983,_0x1e8563);},'EKFiL':_0x286a75(0x258),'bhTJz':_0x286a75(0x1ce),'ZpRJN':'image-preview','QFMQs':_0x286a75(0x22e),'wtMPl':function(_0x111b20,_0x3f7f21){return _0x111b20===_0x3f7f21;},'tgLcN':_0x286a75(0x155),'xNaIM':function(_0x34ba51,_0x3497ae){return _0x34ba51!==_0x3497ae;},'FhaAG':_0x286a75(0x15a)},_0xbeaada=_0x4dac4b[_0x286a75(0x28f)][_0x286a75(0x26f)][0x0],_0x1759d9=document[_0x286a75(0x151)](_0x21e8d7[_0x286a75(0x1e2)]),_0x4744d7=document['getElementById'](_0x21e8d7[_0x286a75(0x135)]);if(_0xbeaada){if(_0x21e8d7[_0x286a75(0x27e)](_0x21e8d7[_0x286a75(0x275)],_0x21e8d7['tgLcN'])){const _0x146fab=URL[_0x286a75(0x161)](_0xbeaada);_0x1759d9[_0x286a75(0x239)]=_0x146fab,_0x4744d7['classList'][_0x286a75(0x134)](_0x21e8d7[_0x286a75(0x1bd)]);}else{const _0x3b5da2=_0x21e8d7[_0x286a75(0x18b)][_0x286a75(0x278)]('|');let _0xcf13f0=0x0;while(!![]){switch(_0x3b5da2[_0xcf13f0++]){case'0':return;case'1':_0x42081d[_0x286a75(0x19c)]();continue;case'2':_0x1a05db['classList']['remove'](_0x286a75(0x272));continue;case'3':_0x5e200b[_0x286a75(0x227)]='';continue;case'4':_0x192479[_0x286a75(0x10b)][_0x286a75(0x27a)](_0x21e8d7['VrAss']);continue;case'5':_0xa139de===_0x21e8d7[_0x286a75(0x205)]?_0x11074e[_0x286a75(0x227)]=_0x286a75(0x147):_0x19dfd5[_0x286a75(0x227)]=_0x286a75(0x17f);continue;}break;}}}else{if(_0x21e8d7[_0x286a75(0x285)](_0x21e8d7[_0x286a75(0x156)],_0x21e8d7[_0x286a75(0x156)])){_0x3ce2ce=null;const _0x31592e=_0x2279ed[_0x286a75(0x151)]('login-email');if(_0x31592e)_0x31592e[_0x286a75(0x125)]='';const _0xcf77ad=_0x3a5276[_0x286a75(0x151)](_0x286a75(0x189));if(_0xcf77ad)_0xcf77ad[_0x286a75(0x125)]='';_0x21e8d7[_0x286a75(0x179)](_0x55858c,_0x286a75(0x235)),_0x21e8d7[_0x286a75(0x1c3)](_0x414645,_0x21e8d7['EKFiL'],_0x21e8d7[_0x286a75(0x11f)]);}else _0x4744d7[_0x286a75(0x10b)][_0x286a75(0x27a)](_0x21e8d7[_0x286a75(0x1bd)]);}});function handleUpload(_0x34637e){const _0x10cde1=_0x1a81b4,_0x447f15={'dymqs':_0x10cde1(0x21e),'JPgEU':'prompt-input','Cmftt':function(_0x53a1fb,_0x428afe){return _0x53a1fb!==_0x428afe;},'pHVjl':function(_0x4f84b7,_0x2d462f){return _0x4f84b7(_0x2d462f);},'MntnV':'ပုံသစ်တင်ခြင်း\x20အောင်မြင်ပါသည်!\x20🎉','BoXQx':_0x10cde1(0x235)};_0x34637e['preventDefault']();const _0x6c7a40=document[_0x10cde1(0x151)](_0x447f15['dymqs']),_0x1b1a0d=document['getElementById'](_0x447f15[_0x10cde1(0x230)]),_0x8b137a=_0x6c7a40[_0x10cde1(0x26f)][0x0];if(_0x8b137a&&_0x447f15['Cmftt'](_0x1b1a0d[_0x10cde1(0x125)][_0x10cde1(0x274)](),'')){const _0xa8158c=URL[_0x10cde1(0x161)](_0x8b137a),_0x5097c0={'id':Date[_0x10cde1(0x1d6)](),'image':_0xa8158c,'prompt':_0x1b1a0d[_0x10cde1(0x125)][_0x10cde1(0x274)](),'likes':0x0,'isLiked':![]};posts[_0x10cde1(0x1ae)](_0x5097c0),_0x6c7a40[_0x10cde1(0x125)]='',_0x1b1a0d[_0x10cde1(0x125)]='',document[_0x10cde1(0x151)](_0x10cde1(0x22e))[_0x10cde1(0x10b)][_0x10cde1(0x27a)](_0x10cde1(0x272)),currentPage=0x1,_0x447f15[_0x10cde1(0x263)](showToast,_0x447f15[_0x10cde1(0x137)]),_0x447f15[_0x10cde1(0x263)](switchTab,_0x447f15[_0x10cde1(0x18e)]);}}document[_0x1a81b4(0x244)](_0x1a81b4(0x1dc),()=>{const _0x24c3d3=_0x1a81b4,_0x169d1f={'MgdjG':_0x24c3d3(0x1cb),'Asstt':function(_0x4bb25f,_0x8c5ae1){return _0x4bb25f(_0x8c5ae1);},'IvtkA':_0x24c3d3(0x210),'HiuVN':'အကောင့်ဖွင့်ခြင်း\x20အောင်မြင်ပါသည်!\x20ကျေးဇူးပြု၍\x20Login\x20ဝင်ပါ။\x20🎉','eAioK':function(_0x3ba4ec,_0x480442){return _0x3ba4ec!==_0x480442;},'LluLj':_0x24c3d3(0x138),'yqdKV':_0x24c3d3(0x100),'lbChX':'pointer-events-none','qjtnu':function(_0x590b39,_0x526a38,_0xd4e1a5){return _0x590b39(_0x526a38,_0xd4e1a5);},'JOkHV':_0x24c3d3(0x1da),'cnaeC':_0x24c3d3(0x272),'jfLXl':_0x24c3d3(0x191),'aJVlE':function(_0x100fdd,_0x688fc8){return _0x100fdd(_0x688fc8);},'qbmaN':_0x24c3d3(0x235),'jiDxy':function(_0x1d2e68,_0x63b8ba){return _0x1d2e68*_0x63b8ba;},'icyoQ':function(_0x457df8,_0x230f9a){return _0x457df8>_0x230f9a;},'aVzbK':function(_0x295c30,_0x1497ab){return _0x295c30+_0x1497ab;},'SIPvW':function(_0x99f338,_0x1acc40){return _0x99f338>=_0x1acc40;},'OtVgP':_0x24c3d3(0x25f)};lucide[_0x24c3d3(0x19c)]();const _0x5ce894=document['getElementById'](_0x24c3d3(0x260)),_0x5994e5=document[_0x24c3d3(0x151)](_0x24c3d3(0x1f9)),_0x3dae3f=document[_0x24c3d3(0x151)](_0x169d1f[_0x24c3d3(0x237)]);let _0x518380=0x0;const _0x4b69e6=setInterval(()=>{const _0x14a90f=_0x24c3d3,_0xb987f9={'BjBLk':_0x169d1f[_0x14a90f(0x1c8)],'PzBDE':_0x169d1f[_0x14a90f(0x1a5)],'QJnpI':_0x169d1f['jfLXl'],'MtIZm':function(_0x459316,_0x18e80a){return _0x169d1f['aJVlE'](_0x459316,_0x18e80a);},'HfsAs':_0x169d1f[_0x14a90f(0x116)]};_0x518380+=_0x169d1f[_0x14a90f(0x276)](Math[_0x14a90f(0x238)](),0x5);if(_0x169d1f[_0x14a90f(0x18c)](_0x518380,0x64))_0x518380=0x64;if(_0x5ce894)_0x5ce894['style'][_0x14a90f(0x1bc)]=_0x169d1f['aVzbK'](_0x518380,'%');if(_0x5994e5)_0x5994e5[_0x14a90f(0x1fb)]=Math[_0x14a90f(0x115)](_0x518380)+'%';_0x169d1f[_0x14a90f(0x19f)](_0x518380,0x64)&&(clearInterval(_0x4b69e6),_0x169d1f['qjtnu'](setTimeout,()=>{const _0xf801eb=_0x14a90f,_0x28e6a3={'ZXfVQ':_0x169d1f[_0xf801eb(0x202)],'EgOmm':function(_0x2897d8,_0x1ff404){const _0xb1020f=_0xf801eb;return _0x169d1f[_0xb1020f(0x178)](_0x2897d8,_0x1ff404);},'jPvjo':_0x169d1f['IvtkA'],'jlFzS':_0xf801eb(0x19a),'liUqy':_0x169d1f[_0xf801eb(0x283)],'hLZut':_0xf801eb(0x268)};if(_0x3dae3f){if(_0x169d1f[_0xf801eb(0x1cd)](_0x169d1f['LluLj'],_0x169d1f['yqdKV']))_0x3dae3f[_0xf801eb(0x10b)][_0xf801eb(0x27a)](_0xf801eb(0x224),_0xf801eb(0x28b),_0x169d1f[_0xf801eb(0x104)]),_0x169d1f['qjtnu'](setTimeout,()=>{const _0x231b8a=_0xf801eb;_0x3dae3f[_0x231b8a(0x134)]();const _0xe2f03e=document['getElementById'](_0xb987f9[_0x231b8a(0x240)]);_0xe2f03e['classList']['remove'](_0xb987f9[_0x231b8a(0x25d)]),_0xe2f03e[_0x231b8a(0x10b)][_0x231b8a(0x27a)](_0x231b8a(0x1aa)),_0xe2f03e[_0x231b8a(0x10b)][_0x231b8a(0x27a)](_0xb987f9['QJnpI']),_0xb987f9[_0x231b8a(0xfc)](switchTab,_0xb987f9['HfsAs']);},0x2bc);else{const _0x4faf6e=_0x28e6a3[_0xf801eb(0x1b7)]['split']('|');let _0x2178f5=0x0;while(!![]){switch(_0x4faf6e[_0x2178f5++]){case'0':_0x28e6a3[_0xf801eb(0x266)](_0x14c3ee,_0x28e6a3['jPvjo']);continue;case'1':_0x4c914b[_0xf801eb(0x1e4)]();continue;case'2':_0x2a227e[_0xf801eb(0x151)](_0x28e6a3[_0xf801eb(0x1b1)])['value']='';continue;case'3':_0x4ea137[_0xf801eb(0x151)](_0xf801eb(0x22f))[_0xf801eb(0x125)]='';continue;case'4':_0x28e6a3['EgOmm'](_0x32b5a8,_0x28e6a3['liUqy']);continue;case'5':_0x176115[_0xf801eb(0x151)](_0x28e6a3[_0xf801eb(0x136)])[_0xf801eb(0x125)]='';continue;}break;}}}},0x1f4));},0x32);});
+</script>
+</body>
+</html>
