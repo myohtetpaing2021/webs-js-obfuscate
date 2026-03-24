@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PromptHub - Ultimate Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#020617', 
+                            900: '#0f172a',
+                            800: '#1e293b',
+                        },
+                        primary: {
+                            400: '#38bdf8', 
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 8s ease-in-out infinite',
+                        'float-delayed': 'float 8s ease-in-out infinite 4s',
+                        'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 0.4s ease-out forwards',
+                        'slide-in-right': 'slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'spin-slow': 'spin 8s linear infinite',
+                        'gradient-x': 'gradientX 4s ease infinite',
+                        'scan': 'scan 3s cubic-bezier(0.4, 0, 0.2, 1) infinite',
+                        'shimmer': 'shimmer 2s infinite linear',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        slideUp: {
+                            'from': { opacity: 0, transform: 'translateY(30px)' },
+                            'to': { opacity: 1, transform: 'none' },
+                        },
+                        fadeIn: {
+                            'from': { opacity: 0 },
+                            'to': { opacity: 1 }, 
+                        },
+                        slideInRight: {
+                            'from': { opacity: 0, transform: 'translateX(100%)' },
+                            'to': { opacity: 1, transform: 'translateX(0)' },
+                        },
+                        gradientX: {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            }
+                        },
+                        scan: {
+                            '0%': { top: '-10%', opacity: 0 },
+                            '10%': { opacity: 1 },
+                            '90%': { opacity: 1 },
+                            '100%': { top: '110%', opacity: 0 }
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% center' },
+                            '100%': { backgroundPosition: '200% center' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Premium Glass Effect */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.6) 100%);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 
+                        0 0 20px rgba(56, 189, 248, 0.15); 
+        }
+
+        /* Input Styling */
+        .input-field {
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3), 0 0 15px rgba(56, 189, 248, 0.2);
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        .pb-safe { padding-bottom: calc(6rem + env(safe-area-inset-bottom)); }
+        
+        .text-neon-blue {
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+
+        /* File Upload custom style */
+        input[type="file"]::file-selector-button {
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Padauk', sans-serif;
+            margin-right: 1rem;
+        }
+        input[type="file"]::file-selector-button:hover {
+            background: rgba(56, 189, 248, 0.2);
+        }
+
+        /* Ultimate Login Specific Styles */
+        .login-bg {
+            background-color: #020617;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+        }
+        
+        .login-glass {
+            background: rgba(10, 15, 30, 0.7);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.02);
+        }
+
+        .glow-wrapper {
+            position: relative;
+        }
+        
+        .glow-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 1.6rem;
+            background: linear-gradient(45deg, #0ea5e9, #8b5cf6, #3b82f6, #0ea5e9);
+            background-size: 300% 300%;
+            animation: gradientX 4s linear infinite;
+            z-index: -1;
+            opacity: 0.6;
+            filter: blur(10px);
+            transition: opacity 0.3s ease, filter 0.3s ease;
+        }
+        
+        .glow-wrapper:hover::before {
+            opacity: 1;
+            filter: blur(15px);
+        }
+
+        .login-input {
+            background: rgba(2, 6, 23, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+        }
+        
+        .login-input:focus {
+            background: rgba(56, 189, 248, 0.05);
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5), 0 0 0 3px rgba(56, 189, 248, 0.15);
+        }
+        
+        /* Browser Autofill Fix for Dark Theme */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0px 1000px #080d1a inset !important;
+            -webkit-text-fill-color: #f8fafc !important;
+            caret-color: white;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        .grid-bg {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            mask-image: radial-gradient(circle at center, black 50%, transparent 90%);
+            -webkit-mask-image: radial-gradient(circle at center, black 50%, transparent 90%);
+        }
+        
+        /* Data Flow Lines */
+        .path-flow {
+            stroke-dasharray: 100;
+            animation: dashFlow 4s linear infinite;
+        }
+        @keyframes dashFlow {
+            from { stroke-dashoffset: 200; }
+            to { stroke-dashoffset: 0; }
+        }
+
+        /* Shimmer Button */
+        .btn-shimmer {
+            background: linear-gradient(90deg, #0284c7, #8b5cf6, #0284c7);
+            background-size: 200% auto;
+            transition: 0.5s;
+        }
+        .btn-shimmer:hover {
+            background-position: right center;
+            box-shadow: 0 0 25px rgba(139,92,246, 0.6);
+        }
+
+        .cyber-corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-color: rgba(56, 189, 248, 0.5);
+            pointer-events: none;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-all duration-1000 ease-out overflow-hidden">
+        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#38bdf8 1px, transparent 1px); background-size: 40px 40px; transform: perspective(500px) rotateX(20deg);"></div>
+        <div class="relative flex flex-col items-center">
+            <div class="relative w-40 h-40 flex items-center justify-center mb-10">
+                <div class="absolute inset-0 rounded-full border-2 border-transparent border-t-cyan-500 border-l-cyan-500/30 animate-[spin_2s_linear_infinite] shadow-[0_0_30px_rgba(6,182,212,0.2)]"></div>
+                <div class="absolute inset-3 rounded-full border-2 border-transparent border-b-violet-500 border-r-violet-500/30 animate-[spin_3s_linear_infinite_reverse]"></div>
+                <div class="relative z-10 w-20 h-20 bg-gradient-to-br from-cyan-950 to-slate-900 rounded-full flex items-center justify-center border border-white/10 shadow-[0_0_50px_rgba(6,182,212,0.4)] animate-pulse">
+                    <div class="absolute inset-0 bg-cyan-500/20 rounded-full blur-xl animate-pulse"></div>
+                    <i data-lucide="image" class="text-white w-8 h-8 relative z-10 drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]"></i>
+                </div>
+            </div>
+            <div class="w-64 space-y-4">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-[0.2em] text-white font-num mb-1">PROMPT<span class="text-cyan-400">HUB</span></h2>
+                    <p class="text-[10px] text-cyan-500/70 font-num tracking-[0.4em] uppercase">Loading Gallery</p>
+                </div>
+                <div class="h-1 w-full bg-slate-800/50 rounded-full overflow-hidden border border-white/5 relative">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 w-0 shadow-[0_0_20px_rgba(6,182,212,0.8)] relative">
+                        <div class="absolute right-0 top-0 bottom-0 w-2 bg-white/50 blur-[2px]"></div>
+                    </div>
+                </div>
+                <div class="flex justify-between text-[10px] font-num text-slate-400 font-medium tracking-wider">
+                    <span class="animate-pulse">LOADING ASSETS...</span>
+                    <span id="progress-text" class="text-cyan-400 font-bold">0%</span>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-8 text-[9px] text-slate-600 font-num tracking-widest uppercase">
+            v3.0 Ultimate Edition
+        </div>
+    </div>
+
+    <!-- Ambient Background for Main App -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" id="ambient-bg">
+        <div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px] animate-float"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-violet-600/10 rounded-full blur-[120px] animate-float-delayed"></div>
+        <div class="absolute top-[30%] left-[40%] w-[40%] h-[40%] bg-cyan-600/5 rounded-full blur-[100px] animate-pulse-slow"></div>
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+    </div>
+
+    <!-- LOGIN SECTION (ULTIMATE DESIGN) -->
+    <div id="login-section" class="fixed inset-0 z-[60] hidden flex-col items-center justify-center login-bg overflow-hidden px-4">
+        <div class="absolute inset-0 grid-bg pointer-events-none"></div>
+        <div class="absolute top-[40%] left-[40%] -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-600/10 rounded-full blur-[100px] animate-pulse-slow pointer-events-none"></div>
+        <div class="absolute top-[60%] left-[60%] -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-violet-600/10 rounded-full blur-[100px] animate-pulse-slow pointer-events-none" style="animation-delay: 2s;"></div>
+
+        <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-50 hidden md:block" style="z-index: 0;">
+            <path d="M 0 200 L 250 200 L 350 300 L 350 1000" stroke="url(#cyan-grad)" stroke-width="2" fill="none" class="path-flow" />
+            <path d="M 100% 150 L calc(100% - 200px) 150 L calc(100% - 300px) 250 L calc(100% - 300px) 1000" stroke="url(#violet-grad)" stroke-width="2" fill="none" class="path-flow" style="animation-direction: reverse; animation-duration: 6s;" />
+            <defs>
+                <linearGradient id="cyan-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="rgba(6,182,212,0)" />
+                    <stop offset="50%" stop-color="rgba(6,182,212,0.8)" />
+                    <stop offset="100%" stop-color="rgba(6,182,212,0)" />
+                </linearGradient>
+                <linearGradient id="violet-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="rgba(139,92,246,0)" />
+                    <stop offset="50%" stop-color="rgba(139,92,246,0.8)" />
+                    <stop offset="100%" stop-color="rgba(139,92,246,0)" />
+                </linearGradient>
+            </defs>
+        </svg>
+
+        <div class="glow-wrapper w-full max-w-[400px] animate-slide-up group/card relative z-10">
+            <div class="login-glass p-5 sm:p-7 md:p-8 rounded-2xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.9)] relative overflow-hidden">
+                
+                <button onclick="hideLoginSection()" class="absolute top-4 left-4 p-2 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors z-30">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                </button>
+
+                <div class="cyber-corner top-0 left-0 border-t-2 border-l-2 rounded-tl-2xl"></div>
+                <div class="cyber-corner top-0 right-0 border-t-2 border-r-2 rounded-tr-2xl"></div>
+                <div class="cyber-corner bottom-0 left-0 border-b-2 border-l-2 rounded-bl-2xl"></div>
+                <div class="cyber-corner bottom-0 right-0 border-b-2 border-r-2 rounded-br-2xl"></div>
+
+                <div class="absolute left-0 w-full h-[2px] bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,1)] animate-scan z-20 pointer-events-none opacity-30"></div>
+                
+                <div class="absolute top-[-50px] right-[-50px] w-[150px] h-[150px] bg-cyan-500/10 rounded-full blur-[50px] transition-all duration-700 group-hover/card:bg-violet-500/20"></div>
+                
+                <div class="flex justify-center mb-5 relative">
+                    <div class="absolute inset-0 bg-cyan-500/20 blur-xl rounded-full scale-125 animate-pulse"></div>
+                    <div class="w-12 h-12 rounded-full bg-dark-900/90 border border-cyan-500/30 flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.4)] relative z-10 backdrop-blur-md">
+                        <svg class="w-6 h-6 text-cyan-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path>
+                        </svg>
+                        <div class="absolute inset-0 rounded-full border-2 border-transparent border-t-cyan-400 animate-spin-slow opacity-50"></div>
+                    </div>
+                </div>
+                
+                <div id="login-form-container" class="animate-fade-in block relative z-10">
+                    <div class="text-center mb-5">
+                        <h2 class="text-xl sm:text-2xl font-bold text-white font-num tracking-widest mb-1 uppercase drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">System Access</h2>
+                        <div class="flex items-center justify-center gap-2 mb-2">
+                            <div class="h-[1px] w-8 bg-cyan-500/50"></div>
+                            <p class="text-[9px] sm:text-[10px] text-cyan-400 uppercase tracking-[0.2em] font-bold">Secure Node</p>
+                            <div class="h-[1px] w-8 bg-cyan-500/50"></div>
+                        </div>
+                        <p class="text-[10px] sm:text-[11px] text-slate-400 font-medium mt-1">
+                            New to PromptHub? 
+                            <a href="#" onclick="toggleAuthMode('signup')" class="text-cyan-400 hover:text-cyan-300 transition-all ml-1 relative group font-bold">
+                                Initialize Identity
+                                <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-cyan-400 group-hover:w-full transition-all duration-300"></span>
+                            </a>
+                        </p>
+                    </div>
+
+                    <form onsubmit="handleLogin(event, 'login')">
+                        <div class="space-y-3">
+                            <div class="relative group">
+                                <input type="text" id="login-email" required class="peer login-input w-full rounded-xl pl-11 pr-4 pt-4 pb-1.5 text-sm text-white placeholder-transparent focus:outline-none font-num" placeholder="Email Address" />
+                                <label for="login-email" class="absolute left-11 top-1 text-[9px] text-slate-500 uppercase tracking-wider font-bold transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-xs peer-placeholder-shown:normal-case peer-focus:top-1 peer-focus:text-[9px] peer-focus:uppercase peer-focus:text-cyan-400 pointer-events-none">Email/Username</label>
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                    <i data-lucide="user-circle" class="w-4 h-4 text-slate-500 peer-focus:text-cyan-400 transition-colors duration-300"></i>
+                                </div>
+                            </div>
+                            <div class="relative group">
+                                <input type="password" id="login-password" required class="peer login-input w-full rounded-xl pl-11 pr-10 pt-4 pb-1.5 text-sm text-white placeholder-transparent focus:outline-none font-num" placeholder="Password" />
+                                <label for="login-password" class="absolute left-11 top-1 text-[9px] text-slate-500 uppercase tracking-wider font-bold transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-xs peer-placeholder-shown:normal-case peer-focus:top-1 peer-focus:text-[9px] peer-focus:uppercase peer-focus:text-cyan-400 pointer-events-none">Password</label>
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                    <i data-lucide="key" class="w-4 h-4 text-slate-500 peer-focus:text-cyan-400 transition-colors duration-300"></i>
+                                </div>
+                                <div class="absolute inset-y-0 right-0 pr-4 flex items-center cursor-pointer">
+                                    <i data-lucide="eye" class="w-4 h-4 text-slate-600 hover:text-cyan-400 transition-colors"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end mt-2 mb-4">
+                            <a href="#" onclick="handleComingSoon(event)" class="text-[9px] sm:text-[10px] text-slate-500 hover:text-cyan-400 transition-colors uppercase tracking-wider font-bold">Forgot Passkey?</a>
+                        </div>
+
+                        <button type="submit" class="btn-shimmer w-full text-white rounded-xl py-3.5 font-bold text-xs sm:text-[13px] tracking-widest uppercase transition-all duration-300 shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:-translate-y-0.5 active:scale-[0.98] flex items-center justify-center gap-2 group/btn border border-cyan-400/50">
+                            Authenticate
+                            <i data-lucide="chevron-right" class="w-4 h-4 group-hover/btn:translate-x-1 transition-transform"></i>
+                        </button>
+                    </form>
+                    
+                    <div class="mt-5 p-2.5 rounded-xl bg-[#020617]/50 border border-cyan-500/20 text-center flex items-start gap-3 relative overflow-hidden group shadow-inner">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-cyan-500 group-hover:bg-violet-500 transition-colors"></div>
+                        <i data-lucide="terminal" class="w-4 h-4 text-cyan-400 mt-0.5 shrink-0"></i>
+                        <p class="text-[10px] sm:text-[11px] text-slate-400 text-left leading-relaxed font-num">
+                            <span class="text-cyan-400/80 text-[8px] sm:text-[9px] uppercase tracking-widest block mb-0.5">Testing Credentials</span>
+                            Admin: <span class="text-white font-bold tracking-wider">admin</span> / <span class="text-slate-300">admin123</span><br>
+                            Client: <span class="text-white font-bold tracking-wider">client</span> / <span class="text-slate-300">client123</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <div id="signup-form-container" class="animate-fade-in hidden relative z-10">
+                    <div class="text-center mb-5">
+                        <h2 class="text-xl sm:text-2xl font-bold text-white font-num tracking-widest mb-1 uppercase drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]">Create Identity</h2>
+                        <div class="flex items-center justify-center gap-2 mb-2">
+                            <div class="h-[1px] w-8 bg-violet-500/50"></div>
+                            <p class="text-[9px] sm:text-[10px] text-violet-400 uppercase tracking-[0.2em] font-bold">New Node</p>
+                            <div class="h-[1px] w-8 bg-violet-500/50"></div>
+                        </div>
+                        <p class="text-[10px] sm:text-[11px] text-slate-400 font-medium mt-1">
+                            Already registered? 
+                            <a href="#" onclick="toggleAuthMode('login')" class="text-violet-400 hover:text-violet-300 transition-all ml-1 relative group font-bold">
+                                Return to Auth
+                                <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-violet-400 group-hover:w-full transition-all duration-300"></span>
+                            </a>
+                        </p>
+                    </div>
+
+                    <form onsubmit="handleSignup(event)">
+                        <div class="space-y-3 sm:space-y-4">
+                            <div class="relative group">
+                                <input type="text" id="signup-name" required class="peer login-input w-full rounded-xl pl-11 pr-4 pt-4 pb-1.5 text-sm text-white placeholder-transparent focus:outline-none focus:border-violet-500/50 focus:shadow-[inset_0_2px_10px_rgba(0,0,0,0.5),0_0_0_3px_rgba(139,92,246,0.15)] font-num" placeholder="Full Name" />
+                                <label for="signup-name" class="absolute left-11 top-1 text-[9px] text-slate-500 uppercase tracking-wider font-bold transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-xs peer-placeholder-shown:normal-case peer-focus:top-1 peer-focus:text-[9px] peer-focus:uppercase peer-focus:text-violet-400 pointer-events-none">Full Name</label>
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                    <i data-lucide="user" class="w-4 h-4 text-slate-500 peer-focus:text-violet-400 transition-colors duration-300"></i>
+                                </div>
+                            </div>
+                            <div class="relative group">
+                                <input type="email" id="signup-email" required class="peer login-input w-full rounded-xl pl-11 pr-4 pt-4 pb-1.5 text-sm text-white placeholder-transparent focus:outline-none focus:border-violet-500/50 focus:shadow-[inset_0_2px_10px_rgba(0,0,0,0.5),0_0_0_3px_rgba(139,92,246,0.15)] font-num" placeholder="Email Address" />
+                                <label for="signup-email" class="absolute left-11 top-1 text-[9px] text-slate-500 uppercase tracking-wider font-bold transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-xs peer-placeholder-shown:normal-case peer-focus:top-1 peer-focus:text-[9px] peer-focus:uppercase peer-focus:text-violet-400 pointer-events-none">Email Address</label>
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                    <i data-lucide="mail" class="w-4 h-4 text-slate-500 peer-focus:text-violet-400 transition-colors duration-300"></i>
+                                </div>
+                            </div>
+                            <div class="relative group">
+                                <input type="password" id="signup-password" required class="peer login-input w-full rounded-xl pl-11 pr-10 pt-4 pb-1.5 text-sm text-white placeholder-transparent focus:outline-none focus:border-violet-500/50 focus:shadow-[inset_0_2px_10px_rgba(0,0,0,0.5),0_0_0_3px_rgba(139,92,246,0.15)] font-num" placeholder="Password" />
+                                <label for="signup-password" class="absolute left-11 top-1 text-[9px] text-slate-500 uppercase tracking-wider font-bold transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-xs peer-placeholder-shown:normal-case peer-focus:top-1 peer-focus:text-[9px] peer-focus:uppercase peer-focus:text-violet-400 pointer-events-none">Password</label>
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                    <i data-lucide="key" class="w-4 h-4 text-slate-500 peer-focus:text-violet-400 transition-colors duration-300"></i>
+                                </div>
+                                <div class="absolute inset-y-0 right-0 pr-4 flex items-center cursor-pointer">
+                                    <i data-lucide="eye" class="w-4 h-4 text-slate-600 hover:text-violet-400 transition-colors"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-shimmer w-full text-white rounded-xl py-3.5 mt-6 font-bold text-xs sm:text-[13px] tracking-widest uppercase transition-all duration-300 shadow-[0_0_20px_rgba(139,92,246,0.4)] hover:-translate-y-0.5 active:scale-[0.98] flex items-center justify-center gap-2 group/btn border border-violet-400/50" style="background-image: linear-gradient(90deg, #8b5cf6, #d946ef, #8b5cf6);">
+                            Register Profile
+                            <i data-lucide="user-plus" class="w-4 h-4 group-hover/btn:scale-110 transition-transform"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3 text-[9px] text-slate-500 font-num tracking-widest uppercase bg-[#020617]/50 px-4 py-2 rounded-full border border-white/5 backdrop-blur-md z-10 shadow-lg whitespace-nowrap">
+            <div class="flex items-center gap-1.5">
+                <div class="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse shadow-[0_0_5px_cyan]"></div>
+                <span>Secured</span>
+            </div>
+            <div class="w-[1px] h-3 bg-white/10"></div>
+            <span>v3.0 Core</span>
+        </div>
+    </div>
+
+    <!-- MAIN APP WRAPPER -->
+    <div id="main-app" class="min-h-[100dvh] flex-col md:flex-row relative z-10 hidden">
+        
+        <!-- SIDEBAR (Desktop - FLOATING PILL HOVER MENU) -->
+        <aside class="hidden md:flex w-[88px] hover:w-[240px] group/sidebar glass-panel border border-white/10 flex-col m-6 rounded-[2.5rem] h-fit sticky top-6 shadow-2xl z-50 transition-all duration-300 overflow-hidden shrink-0 py-4">
+            
+            <!-- Logo Section -->
+            <div class="px-4 pb-4 border-b border-white/5">
+                <div class="flex items-center cursor-pointer" onclick="switchTab('gallery')">
+                    <div class="w-14 h-14 shrink-0 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-[1.25rem] flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.4)] border border-white/10 relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+                        <i data-lucide="sparkles" class="text-white w-6 h-6 relative z-10"></i>
+                    </div>
+                    <div class="max-w-0 opacity-0 group-hover/sidebar:max-w-[200px] group-hover/sidebar:opacity-100 group-hover/sidebar:ml-4 overflow-hidden whitespace-nowrap transition-all duration-300">
+                        <h1 class="text-2xl font-bold text-white tracking-tight font-num">Prompt<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-500">Hub</span></h1>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Section -->
+            <nav class="flex-1 px-3 py-4 space-y-2" id="desktop-nav">
+                <!-- Desktop Nav Items Injected by JS -->
+            </nav>
+
+            <!-- Auth Section -->
+            <div id="sidebar-auth-section" class="px-3 pt-4 border-t border-white/5">
+                <!-- Sidebar Auth UI Injected by JS -->
+            </div>
+        </aside>
+
+        <!-- MOBILE HEADER -->
+        <div class="md:hidden fixed top-0 left-0 right-0 z-40 bg-[#020617]/80 backdrop-blur-xl border-b border-white/5 px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="switchTab('gallery')">
+                <div class="w-9 h-9 bg-gradient-to-br from-cyan-500 to-violet-600 rounded-lg flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                    <i data-lucide="sparkles" class="text-white w-5 h-5"></i>
+                </div>
+                <span class="font-bold text-lg text-white font-num">Prompt<span class="text-violet-400">Hub</span></span>
+            </div>
+            <div id="mobile-auth-section" class="flex items-center gap-3">
+                <!-- Mobile Auth UI Injected by JS -->
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 relative z-10 pt-20 md:pt-4 md:px-0 pb-[90px] md:pb-4 h-[100dvh] overflow-y-auto custom-scrollbar scroll-smooth">
+            <div class="max-w-7xl mx-auto px-4 md:px-8 space-y-8 pb-10">
+                
+                <!-- Gallery & Favorites Section -->
+                <div id="gallery-section" class="block animate-slide-up">
+                    <div class="text-center md:text-left mb-10 flex flex-col md:flex-row justify-between items-center gap-4">
+                        <div>
+                            <h1 id="gallery-title" class="text-3xl md:text-4xl font-bold text-white mb-2 font-num tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">အကောင်းဆုံး AI Prompts များ</h1>
+                            <p id="gallery-desc" class="text-slate-400 text-sm flex items-center justify-center md:justify-start gap-2">
+                                <i data-lucide="image" class="w-4 h-4 text-cyan-400"></i> လှပသော ဓာတ်ပုံများကို ကြည့်ရှုပြီး Prompt များကို ရယူလိုက်ပါ။
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Empty State for Favorites & Gallery -->
+                    <div id="empty-state" class="hidden text-center py-20 animate-fade-in">
+                        <!-- Content Injected via JS -->
+                    </div>
+
+                    <!-- Masonry Grid Container for Posts -->
+                    <div id="posts-grid" class="columns-1 sm:columns-2 lg:columns-3 gap-6">
+                        <!-- Posts will be generated here by JavaScript -->
+                    </div>
+
+                    <!-- Pagination Controls -->
+                    <div id="pagination-controls" class="flex justify-center items-center mt-12 gap-2">
+                        <!-- Pagination buttons will be generated here -->
+                    </div>
+                </div>
+
+                <!-- Upload Section -->
+                <div id="upload-section" class="hidden animate-slide-up">
+                    <div class="max-w-2xl mx-auto glass-card p-6 md:p-10 rounded-3xl border border-violet-500/20 bg-gradient-to-br from-violet-900/10 to-transparent relative overflow-hidden shadow-2xl">
+                        <div class="absolute top-0 right-0 w-96 h-96 bg-violet-500/10 rounded-full blur-[100px] pointer-events-none -mr-32 -mt-32 animate-pulse-slow"></div>
+                        
+                        <div class="flex items-center mb-8 relative z-10 gap-4 border-b border-white/10 pb-6">
+                            <div class="p-3 bg-violet-500/20 rounded-xl shadow-[0_0_15px_rgba(139,92,246,0.3)] border border-violet-500/30">
+                                <i data-lucide="upload-cloud" class="w-6 h-6 text-violet-400"></i>
+                            </div> 
+                            <div>
+                                <h2 class="text-2xl font-bold text-white tracking-tight">အသစ်တင်ရန်</h2>
+                                <p class="text-xs text-slate-400 mt-1">ဓာတ်ပုံနှင့် Prompt အသစ်မျှဝေပါ</p>
+                            </div>
+                        </div>
+
+                        <form id="upload-form" onsubmit="handleUpload(event)" class="relative z-10">
+                            <div class="mb-6 flex flex-col gap-2.5 group">
+                                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider pl-1 group-hover:text-violet-400 transition-colors">ဓာတ်ပုံရွေးချယ်ပါ</label>
+                                <div class="relative transition-all duration-200 bg-slate-900/40 border border-white/10 rounded-xl p-4 hover:border-violet-500/30">
+                                    <input type="file" id="image-input" accept="image/*" required class="w-full text-sm text-slate-400 focus:outline-none">
+                                    <div id="preview-container" class="mt-4 hidden relative rounded-xl overflow-hidden border border-white/10">
+                                        <img id="image-preview" class="w-full h-auto object-contain block" src="" alt="Preview">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-8 flex flex-col gap-2.5 group">
+                                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider pl-1 group-hover:text-violet-400 transition-colors">Prompt စာသား</label>
+                                <div class="relative transition-all duration-200">
+                                    <textarea id="prompt-input" rows="5" required class="input-field w-full bg-slate-900/40 border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-slate-600 focus:outline-none transition-all resize-none" placeholder="ဥပမာ - A beautiful sunset over a cybernetic city, 4k, hyper-realistic..."></textarea>
+                                    <div class="absolute right-4 top-4 text-slate-600 pointer-events-none group-hover:text-slate-400 transition-colors">
+                                        <i data-lucide="align-left" class="w-4 h-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-end gap-3 pt-4 border-t border-white/10">
+                                <button type="button" onclick="switchTab('gallery')" class="px-6 py-3 rounded-xl text-slate-300 hover:bg-white/5 border border-transparent hover:border-white/10 transition-all font-medium text-sm flex items-center gap-2">
+                                    <i data-lucide="x" class="w-4 h-4"></i> ပယ်ဖျက်မည်
+                                </button>
+                                <button type="submit" class="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white shadow-[0_0_20px_rgba(139,92,246,0.4)] border border-violet-400/20 px-8 py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all active:scale-95 group">
+                                    <i data-lucide="share-2" class="w-4 h-4 group-hover:scale-110 transition-transform"></i> မျှဝေမည်
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- MOBILE BOTTOM NAV -->
+        <div class="md:hidden fixed bottom-6 left-4 right-4 h-[70px] glass-panel rounded-2xl border border-white/10 z-50 flex items-center justify-between px-2 shadow-[0_10px_30px_rgba(0,0,0,0.5)]" id="mobile-nav">
+            <!-- Mobile nav items injected by JS -->
+        </div>
+    </div>
+
+    <!-- CUSTOM CONFIRM MODAL -->
+    <div id="confirm-modal" class="fixed inset-0 z-[70] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
+        <div class="glass-panel w-full max-w-sm rounded-3xl p-6 relative border border-white/10 shadow-2xl text-center">
+            <div class="w-16 h-16 rounded-full bg-rose-500/10 text-rose-500 flex items-center justify-center mx-auto mb-4 border border-rose-500/20 shadow-[0_0_20px_rgba(244,63,94,0.2)]">
+                <i data-lucide="alert-triangle" class="w-8 h-8"></i>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2 font-num">Are you sure?</h3>
+            <p class="text-xs text-slate-400 mb-6 leading-relaxed" id="confirm-message">ဤဓာတ်ပုံကို ဖျက်ရန် သေချာပါသလား?</p>
+            <div class="flex justify-center gap-3">
+                <button onclick="closeConfirmModal()" class="px-5 py-2.5 rounded-xl text-slate-300 hover:bg-white/10 text-sm font-bold border border-transparent hover:border-white/10 transition-colors">ပယ်ဖျက်မည်</button>
+                <button onclick="executeConfirm()" class="bg-rose-600 hover:bg-rose-500 text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-rose-600/30">ဖျက်မည်</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast-notification" class="fixed top-4 right-4 z-[70] hidden transition-all duration-500 translate-x-full">
+        <!-- Toast content injected by JS -->
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- State Management ---
+        const ITEMS_PER_PAGE = 9;
+        let currentPage = 1;
+        let activeTab = 'gallery';
+        let currentUser = null; // null (Guest) | 'admin' | 'client'
+        let pendingConfirmAction = null; // For delete confirmation
+
+        // Mock Data ဖယ်ရှားထားပြီး Empty State အနေဖြင့် စတင်မည်
+        let posts = [];
+
+        // --- Core Functions ---
+
+        // UI Toggling Functions
+        function showLoginSection() {
+            document.getElementById('main-app').classList.add('hidden');
+            document.getElementById('main-app').classList.remove('flex');
+            const loginSection = document.getElementById('login-section');
+            loginSection.classList.remove('hidden');
+            loginSection.classList.add('flex');
+            window.scrollTo(0, 0);
+        }
+
+        function hideLoginSection() {
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('login-section').classList.remove('flex');
+            const mainApp = document.getElementById('main-app');
+            mainApp.classList.remove('hidden');
+            mainApp.classList.add('flex');
+            window.scrollTo(0, 0);
+            
+            // Default active tab view if returning without login
+            if (!currentUser && activeTab !== 'gallery') {
+                switchTab('gallery');
+            }
+        }
+
+        function toggleAuthMode(mode) {
+            const loginForm = document.getElementById('login-form-container');
+            const signupForm = document.getElementById('signup-form-container');
+            
+            if (mode === 'signup') {
+                loginForm.classList.add('hidden');
+                loginForm.classList.remove('block');
+                signupForm.classList.remove('hidden');
+                signupForm.classList.add('block');
+            } else {
+                signupForm.classList.add('hidden');
+                signupForm.classList.remove('block');
+                loginForm.classList.remove('hidden');
+                loginForm.classList.add('block');
+            }
+            lucide.createIcons();
+        }
+
+        function handleComingSoon(e) {
+            if (e) e.preventDefault();
+            showToast("ဤလုပ်ဆောင်ချက်ကို မကြာမီ ရရှိနိုင်ပါမည်။", "success");
+        }
+
+        // Auth Logic
+        function handleSignup(e) {
+            e.preventDefault();
+            
+            // Clear inputs
+            document.getElementById('signup-name').value = '';
+            document.getElementById('signup-email').value = '';
+            document.getElementById('signup-password').value = '';
+
+            toggleAuthMode('login');
+            showToast("အကောင့်ဖွင့်ခြင်း အောင်မြင်ပါသည်! ကျေးဇူးပြု၍ Login ဝင်ပါ။ 🎉");
+        }
+
+        function handleLogin(e, type) {
+            if (e) e.preventDefault();
+            
+            if (type === 'client') {
+                currentUser = 'client';
+            } else {
+                const email = document.getElementById('login-email').value.trim().toLowerCase();
+                const pass = document.getElementById('login-password').value;
+
+                if (email === 'admin' && pass === 'admin123') {
+                    currentUser = 'admin';
+                } else if (email === 'client' && pass === 'client123') {
+                    currentUser = 'client';
+                } else {
+                    showToast("အီးမေးလ် သို့မဟုတ် စကားဝှက် မှားယွင်းနေပါသည်။", "error");
+                    return; 
+                }
+            }
+
+            hideLoginSection();
+            switchTab('gallery');
+            showToast("Login အောင်မြင်ပါသည်! 🎉");
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            
+            const emailInput = document.getElementById('login-email');
+            if (emailInput) emailInput.value = '';
+            const passInput = document.getElementById('login-password');
+            if (passInput) passInput.value = '';
+            
+            // Re-render UI to Guest Mode
+            switchTab('gallery');
+            showToast("အကောင့်မှ ထွက်ပြီးပါပြီ။", "success");
+        }
+
+        // Delete Confirm Modal Functions
+        function showConfirm(message, actionCallback) {
+            const modal = document.getElementById('confirm-modal');
+            const msgEl = document.getElementById('confirm-message');
+            msgEl.textContent = message;
+            pendingConfirmAction = actionCallback;
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeConfirmModal() {
+            const modal = document.getElementById('confirm-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            pendingConfirmAction = null;
+        }
+
+        function executeConfirm() {
+            if (pendingConfirmAction) {
+                pendingConfirmAction();
+            }
+            closeConfirmModal();
+        }
+
+        function deletePost(id) {
+            showConfirm("ဤဓာတ်ပုံနှင့် Prompt ကို ဖျက်ရန် သေချာပါသလား?", () => {
+                posts = posts.filter(p => p.id !== id);
+                renderGallery();
+                showToast("မှတ်တမ်းကို အောင်မြင်စွာ ဖျက်သိမ်းပြီးပါပြီ။", "success");
+            });
+        }
+
+        function switchTab(tabId) {
+            if (tabId === 'upload' && currentUser !== 'admin') {
+                showToast("Admin သာလျှင် တင်ခွင့်ရှိပါသည်။", "error");
+                return;
+            }
+            if (tabId === 'favorites' && !currentUser) {
+                showToast("မှတ်တမ်းများကို ကြည့်ရန် အကောင့်ဝင်ပါ။", "error");
+                showLoginSection();
+                return;
+            }
+
+            activeTab = tabId;
+            currentPage = 1; 
+            
+            const gallerySec = document.getElementById('gallery-section');
+            const uploadSec = document.getElementById('upload-section');
+            const title = document.getElementById('gallery-title');
+            const desc = document.getElementById('gallery-desc');
+            
+            if (activeTab === 'gallery' || activeTab === 'favorites') {
+                gallerySec.classList.remove('hidden');
+                uploadSec.classList.add('hidden');
+                
+                if (activeTab === 'favorites') {
+                    title.innerHTML = 'နှစ်သက်သော Prompts များ';
+                    desc.innerHTML = '<i data-lucide="heart" class="w-4 h-4 text-rose-400"></i> သင် အသည်းပေးထားသော ဓာတ်ပုံများ';
+                } else {
+                    title.innerHTML = 'အကောင်းဆုံး AI Prompts များ';
+                    desc.innerHTML = '<i data-lucide="image" class="w-4 h-4 text-cyan-400"></i> လှပသော ဓာတ်ပုံများကို ကြည့်ရှုပြီး Prompt များကို ရယူလိုက်ပါ။';
+                }
+                
+                renderGallery();
+            } else {
+                gallerySec.classList.add('hidden');
+                uploadSec.classList.remove('hidden');
+            }
+            
+            renderAuthUI();
+            renderNavigation();
+            lucide.createIcons();
+        }
+
+        // Render Authentication Info & Logout/Login Buttons
+        function renderAuthUI() {
+            const sidebarAuth = document.getElementById('sidebar-auth-section');
+            const mobileAuth = document.getElementById('mobile-auth-section');
+            
+            if (currentUser) {
+                // Logged In State
+                sidebarAuth.innerHTML = `
+                    <button onclick="handleLogout()" class="w-full flex items-center p-3 rounded-2xl text-slate-400 hover:text-white hover:bg-rose-500/10 transition-colors group/logout relative overflow-hidden">
+                        <div class="w-10 flex justify-center shrink-0">
+                            <i data-lucide="log-out" class="w-6 h-6 group-hover/logout:text-rose-400 transition-colors"></i>
+                        </div>
+                        <span class="font-medium text-sm text-left max-w-0 opacity-0 group-hover/sidebar:max-w-[150px] group-hover/sidebar:opacity-100 group-hover/sidebar:ml-2 overflow-hidden whitespace-nowrap transition-all duration-300 group-hover/logout:text-rose-400">ထွက်မည်</span>
+                    </button>
+                `;
+                mobileAuth.innerHTML = `
+                    <button onclick="handleLogout()" class="w-9 h-9 rounded-full bg-slate-800/80 border border-white/10 flex items-center justify-center text-rose-400 relative backdrop-blur-md hover:bg-white/10 transition-colors shadow-lg">
+                        <i data-lucide="log-out" class="w-4 h-4"></i>
+                    </button>
+                    <div class="w-9 h-9 rounded-full bg-slate-800/80 border border-white/10 flex items-center justify-center text-slate-400 relative backdrop-blur-md">
+                        <div class="w-2.5 h-2.5 bg-cyan-500 rounded-full absolute top-0 right-0 border-2 border-[#020617] shadow-[0_0_10px_rgba(6,182,212,0.5)]"></div>
+                        <i data-lucide="bell" class="w-4 h-4"></i>
+                    </div>
+                `;
+            } else {
+                // Guest State
+                sidebarAuth.innerHTML = `
+                    <button onclick="showLoginSection()" class="w-full flex items-center p-3 rounded-2xl text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 transition-colors group/login relative overflow-hidden">
+                        <div class="w-10 flex justify-center shrink-0">
+                            <i data-lucide="log-in" class="w-6 h-6 group-hover/login:scale-110 transition-transform"></i>
+                        </div>
+                        <span class="font-medium text-sm text-left max-w-0 opacity-0 group-hover/sidebar:max-w-[150px] group-hover/sidebar:opacity-100 group-hover/sidebar:ml-2 overflow-hidden whitespace-nowrap transition-all duration-300">အကောင့်ဝင်ရန်</span>
+                    </button>
+                `;
+                mobileAuth.innerHTML = `
+                    <button onclick="showLoginSection()" class="px-4 py-2 text-xs font-bold rounded-lg bg-gradient-to-r from-cyan-600 to-violet-600 text-white shadow-[0_0_15px_rgba(6,182,212,0.4)] active:scale-95 transition-transform flex items-center gap-1.5">
+                        <i data-lucide="log-in" class="w-3 h-3"></i> Login
+                    </button>
+                `;
+            }
+        }
+
+        function renderNavigation() {
+            let tabs = [
+                { id: 'gallery', label: 'ပြခန်း', labelDesk: 'ပင်မ ပြခန်း', icon: 'layout-grid' }
+            ];
+
+            if (currentUser === 'admin') {
+                tabs.push({ id: 'upload', label: 'အသစ်တင်ရန်', labelDesk: 'အသစ်တင်ရန်', icon: 'upload-cloud', isAction: true });
+            }
+
+            if (currentUser) {
+                tabs.push({ id: 'favorites', label: 'အသည်း', labelDesk: 'နှစ်သက်သော', icon: 'heart' });
+            }
+
+            // Desktop Nav
+            const desktopNav = document.getElementById('desktop-nav');
+            desktopNav.innerHTML = tabs.map(tab => `
+                <button onclick="switchTab('${tab.id}')" 
+                    class="w-full flex items-center p-3 rounded-2xl transition-all duration-300 group relative overflow-hidden ${activeTab === tab.id ? 'text-white bg-white/10 shadow-lg' : 'text-slate-400 hover:text-white hover:bg-white/5'}">
+                    <div class="w-10 flex justify-center shrink-0">
+                        <i data-lucide="${tab.icon}" class="w-6 h-6 relative z-10 transition-transform duration-300 ${activeTab === tab.id ? 'text-cyan-400 scale-110' : 'group-hover:scale-110'}"></i>
+                    </div>
+                    <span class="font-medium text-sm relative z-10 tracking-wide text-left max-w-0 opacity-0 group-hover/sidebar:max-w-[150px] group-hover/sidebar:opacity-100 group-hover/sidebar:ml-2 overflow-hidden whitespace-nowrap transition-all duration-300">${tab.labelDesk}</span>
+                </button>
+            `).join('');
+
+            // Mobile Nav
+            const mobileNav = document.getElementById('mobile-nav');
+            mobileNav.innerHTML = tabs.map(tab => {
+                if (tab.isAction) {
+                    return `
+                        <button onclick="switchTab('upload')" 
+                            class="w-14 h-14 bg-gradient-to-tr from-cyan-500 to-violet-600 rounded-full -mt-10 flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.5)] border-4 border-[#020617] cursor-pointer active:scale-95 transition-transform hover:shadow-[0_0_30px_rgba(139,92,246,0.6)] group shrink-0 mx-2">
+                            <i data-lucide="${tab.icon}" class="text-white w-6 h-6 group-hover:-translate-y-1 transition-transform duration-300"></i>
+                        </button>
+                    `;
+                }
+                const isActive = activeTab === tab.id;
+                return `
+                    <button onclick="switchTab('${tab.id}')" class="flex-1 flex flex-col items-center justify-center h-full relative group">
+                        <div class="absolute -top-1 w-8 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent rounded-full opacity-0 transition-opacity ${isActive ? 'opacity-100' : ''}"></div>
+                        <div class="p-2 rounded-xl transition-all duration-300 ${isActive ? 'text-cyan-400 bg-cyan-500/10' : 'text-slate-500 group-hover:text-slate-300'}">
+                            <i data-lucide="${tab.icon}" class="w-6 h-6 ${isActive ? 'fill-cyan-500/20' : ''}"></i>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        // Render Gallery based on Pagination and Active Tab
+        function renderGallery() {
+            const grid = document.getElementById('posts-grid');
+            const emptyState = document.getElementById('empty-state');
+            const paginationControls = document.getElementById('pagination-controls');
+            
+            grid.innerHTML = ''; 
+
+            // Filter posts based on active tab
+            const sourcePosts = activeTab === 'favorites' ? posts.filter(p => p.isLiked) : posts;
+
+            // Empty State Handling
+            if (sourcePosts.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                paginationControls.innerHTML = '';
+                
+                if (activeTab === 'favorites') {
+                    emptyState.innerHTML = `
+                        <div class="w-20 h-20 bg-rose-500/10 text-rose-400 rounded-full flex items-center justify-center mx-auto mb-4 border border-rose-500/20">
+                            <i data-lucide="heart" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">အသည်းပေးထားသော ဓာတ်ပုံများ မရှိသေးပါ</h3>
+                        <p class="text-slate-400 text-sm">ပြခန်းထဲမှ သင်နှစ်သက်သော ဓာတ်ပုံများကို အသည်းပေးပြီး မှတ်သားထားနိုင်ပါသည်။</p>
+                        <button onclick="switchTab('gallery')" class="mt-6 px-6 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white text-sm font-medium transition-colors">ပြခန်းသို့ ပြန်သွားမည်</button>
+                    `;
+                } else {
+                    emptyState.innerHTML = `
+                        <div class="w-20 h-20 bg-cyan-500/10 text-cyan-400 rounded-full flex items-center justify-center mx-auto mb-4 border border-cyan-500/20">
+                            <i data-lucide="image" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">ပြခန်းထဲတွင် ဓာတ်ပုံများ မရှိသေးပါ</h3>
+                        <p class="text-slate-400 text-sm">Admin အနေဖြင့် ဓာတ်ပုံနှင့် Prompt များ စတင်မျှဝေနိုင်ပါသည်။</p>
+                    `;
+                }
+                lucide.createIcons();
+                return;
+            } else {
+                grid.classList.remove('hidden');
+                emptyState.classList.add('hidden');
+            }
+
+            const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+            const endIndex = startIndex + ITEMS_PER_PAGE;
+            const paginatedPosts = sourcePosts.slice(startIndex, endIndex);
+
+            paginatedPosts.forEach(post => {
+                const heartClass = post.isLiked && currentUser ? 'text-rose-500 fill-current' : 'text-slate-400 group-hover:text-rose-400';
+                const likeCountText = post.likes > 0 ? post.likes : '';
+                
+                // Safe Title escaping
+                const safeTitle = post.prompt.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                
+                // Admin Delete Button HTML
+                const deleteBtnHTML = currentUser === 'admin' 
+                    ? `<button onclick="deletePost(${post.id})" class="absolute top-3 right-3 p-2.5 rounded-xl bg-[#020617]/50 text-rose-400 hover:bg-rose-500/80 hover:text-white backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 z-30 border border-rose-500/30 shadow-[0_0_15px_rgba(244,63,94,0.3)]">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                       </button>`
+                    : '';
+
+                const cardHTML = `
+                    <div class="glass-card p-2 rounded-3xl overflow-hidden shadow-lg border border-white/10 break-inside-avoid mb-6 inline-block w-full group transition-all duration-400">
+                        <div class="relative overflow-hidden rounded-2xl group-hover:shadow-[0_0_20px_rgba(6,182,212,0.15)] transition-shadow">
+                            ${deleteBtnHTML}
+                            <img src="${post.image}" alt="AI generated art" class="w-full h-auto block transition-transform duration-700 group-hover:scale-105" loading="lazy">
+                            
+                            <!-- Dark Gradient Overlay -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#020617]/90 via-[#020617]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
+                                <p class="text-white text-sm line-clamp-4 drop-shadow-md font-medium leading-relaxed">
+                                    ${safeTitle}
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 flex flex-col justify-between">
+                            <div class="flex justify-between items-start mb-4 gap-3">
+                                <p class="text-slate-400 text-xs line-clamp-2 flex-grow leading-relaxed" title="${safeTitle}">
+                                    ${safeTitle}
+                                </p>
+                            </div>
+                            
+                            <div class="flex justify-between items-center mt-auto pt-4 border-t border-white/5">
+                                <button onclick="toggleLike(${post.id})" class="flex items-center gap-2 focus:outline-none group/like px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors">
+                                    <i data-lucide="heart" class="w-5 h-5 transition-colors duration-200 ${heartClass}"></i>
+                                    <span class="text-xs font-bold text-slate-500 group-hover/like:text-slate-300 font-num">${likeCountText}</span>
+                                </button>
+                                
+                                <button onclick="copyPrompt(${post.id})" class="flex items-center gap-1.5 px-4 py-2 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 text-xs font-bold rounded-xl transition-colors border border-cyan-500/20 shadow-[0_0_10px_rgba(6,182,212,0.1)] active:scale-95">
+                                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += cardHTML;
+            });
+
+            renderPagination(sourcePosts.length);
+            lucide.createIcons(); // Reactivate icons for new cards
+        }
+
+        // Render Pagination Controls
+        function renderPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+            const paginationContainer = document.getElementById('pagination-controls');
+            paginationContainer.innerHTML = '';
+
+            if (totalPages <= 1) return;
+
+            const prevDisabled = currentPage === 1 ? 'opacity-50 cursor-not-allowed pointer-events-none' : 'hover:bg-white/10 hover:text-white cursor-pointer';
+            paginationContainer.innerHTML += `
+                <button onclick="changePage(${currentPage - 1})" class="px-4 py-2 border border-white/10 rounded-xl text-xs font-bold text-slate-400 bg-white/5 transition-all glass-panel ${prevDisabled}">
+                    <i data-lucide="chevron-left" class="w-4 h-4 inline-block"></i> ယခင်
+                </button>
+            `;
+
+            for (let i = 1; i <= totalPages; i++) {
+                const activeClass = i === currentPage 
+                    ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.4)]' 
+                    : 'bg-white/5 text-slate-400 border-white/10 hover:bg-white/10 hover:text-white';
+                
+                paginationContainer.innerHTML += `
+                    <button onclick="changePage(${i})" class="w-9 h-9 border rounded-xl text-xs font-bold font-num flex items-center justify-center transition-all ${activeClass}">
+                        ${i}
+                    </button>
+                `;
+            }
+
+            const nextDisabled = currentPage === totalPages ? 'opacity-50 cursor-not-allowed pointer-events-none' : 'hover:bg-white/10 hover:text-white cursor-pointer';
+            paginationContainer.innerHTML += `
+                <button onclick="changePage(${currentPage + 1})" class="px-4 py-2 border border-white/10 rounded-xl text-xs font-bold text-slate-400 bg-white/5 transition-all glass-panel ${nextDisabled}">
+                    နောက်သို့ <i data-lucide="chevron-right" class="w-4 h-4 inline-block"></i>
+                </button>
+            `;
+            
+            // Re-render icons for pagination
+            setTimeout(() => { lucide.createIcons(); }, 10);
+        }
+
+        function changePage(page) {
+            const sourcePosts = activeTab === 'favorites' ? posts.filter(p => p.isLiked) : posts;
+            const totalPages = Math.ceil(sourcePosts.length / ITEMS_PER_PAGE);
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                renderGallery();
+                document.getElementById('gallery-section').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function toggleLike(id) {
+            // Require Login for Like Feature
+            if (!currentUser) {
+                showToast("Like ပေးရန် အကောင့်ဝင်ပါ။", "error");
+                showLoginSection();
+                return;
+            }
+
+            const postIndex = posts.findIndex(p => p.id === id);
+            if (postIndex !== -1) {
+                if (posts[postIndex].isLiked) {
+                    posts[postIndex].likes -= 1;
+                    posts[postIndex].isLiked = false;
+                } else {
+                    posts[postIndex].likes += 1;
+                    posts[postIndex].isLiked = true;
+                }
+                
+                // If we are currently on the favorites tab, and it becomes empty on this page, maybe adjust pagination
+                if (activeTab === 'favorites' && !posts[postIndex].isLiked) {
+                    const sourcePosts = posts.filter(p => p.isLiked);
+                    const maxPage = Math.ceil(sourcePosts.length / ITEMS_PER_PAGE);
+                    if (currentPage > maxPage && maxPage > 0) {
+                        currentPage = maxPage;
+                    }
+                }
+                
+                renderGallery(); 
+            }
+        }
+
+        function copyPrompt(id) {
+            const post = posts.find(p => p.id === id);
+            if (post) {
+                copyToClipboard(post.prompt);
+            }
+        }
+
+        function copyToClipboard(text) {
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            textarea.style.position = "fixed";  
+            textarea.style.opacity = "0";
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                document.execCommand("copy");
+                showToast("Prompt ကို Copy ကူးပြီးပါပြီ! 📋");
+            } catch (err) {
+                console.error("Copy failed", err);
+                showToast("Copy ကူးရန် မအောင်မြင်ပါ။", "error");
+            } finally {
+                document.body.removeChild(textarea);
+            }
+        }
+
+        let toastTimeout;
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast-notification');
+            
+            if (type === 'error') {
+                toast.innerHTML = `
+                    <div class="glass-panel px-5 py-4 rounded-xl border border-rose-500/20 shadow-2xl flex items-center gap-4 bg-[#020617]/90 backdrop-blur-xl">
+                        <div class="w-8 h-8 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center border border-rose-500/20 shrink-0">
+                            <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white">သတိပေးချက်</h4>
+                            <p class="text-xs text-slate-400 mt-0.5">${message}</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                toast.innerHTML = `
+                    <div class="glass-panel px-5 py-4 rounded-xl border border-cyan-500/20 shadow-2xl flex items-center gap-4 bg-[#020617]/90 backdrop-blur-xl">
+                        <div class="w-8 h-8 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center border border-cyan-500/20 shrink-0">
+                            <i data-lucide="check-circle" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white">အောင်မြင်ပါသည်</h4>
+                            <p class="text-xs text-slate-400 mt-0.5">${message}</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            lucide.createIcons();
+            toast.classList.remove('hidden', 'translate-x-full');
+            
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('translate-x-full');
+                setTimeout(() => toast.classList.add('hidden'), 500);
+            }, 3000);
+        }
+
+        // --- Upload System ---
+        
+        document.getElementById('image-input').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('image-preview');
+            const container = document.getElementById('preview-container');
+            if (file) {
+                const objectUrl = URL.createObjectURL(file);
+                preview.src = objectUrl;
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
+            }
+        });
+
+        function handleUpload(event) {
+            event.preventDefault(); 
+            
+            const fileInput = document.getElementById('image-input');
+            const promptInput = document.getElementById('prompt-input');
+            const file = fileInput.files[0];
+
+            if (file && promptInput.value.trim() !== '') {
+                const imageUrl = URL.createObjectURL(file);
+                
+                const newPost = {
+                    id: Date.now(),
+                    image: imageUrl,
+                    prompt: promptInput.value.trim(),
+                    likes: 0,
+                    isLiked: false
+                };
+                
+                posts.unshift(newPost);
+                
+                fileInput.value = '';
+                promptInput.value = '';
+                document.getElementById('preview-container').classList.add('hidden');
+                
+                currentPage = 1; 
+                showToast("ပုံသစ်တင်ခြင်း အောင်မြင်ပါသည်! 🎉");
+                switchTab('gallery');
+            }
+        }
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            // Only render icons initially
+            lucide.createIcons();
+            
+            // Preloader logic
+            const progress = document.getElementById('progress-bar');
+            const text = document.getElementById('progress-text');
+            const preloader = document.getElementById('preloader');
+            let width = 0;
+
+            const interval = setInterval(() => {
+                width += Math.random() * 5; 
+                if (width > 100) width = 100;
+                
+                if (progress) progress.style.width = width + '%';
+                if (text) text.innerText = Math.floor(width) + '%';
+
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        if(preloader) {
+                            preloader.classList.add('opacity-0', 'scale-105', 'pointer-events-none');
+                            setTimeout(() => {
+                                preloader.remove();
+                                // SHOW MAIN APP DIRECTLY (GUEST MODE)
+                                const mainApp = document.getElementById('main-app');
+                                mainApp.classList.remove('hidden');
+                                mainApp.classList.add('flex');
+                                mainApp.classList.add('animate-fade-in');
+                                
+                                // Initialize Guest UI
+                                switchTab('gallery');
+                            }, 700);
+                        }
+                    }, 500); 
+                }
+            }, 50); 
+        });
+
+    </script>
+</body>
+</html>
