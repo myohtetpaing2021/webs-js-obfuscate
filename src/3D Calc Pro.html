@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thai Lottery Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .panel-header h2 {
+            font-size: 1.3em;
+            margin: 0;
+        }
+
+        .panel-content {
+            padding: 20px;
+            flex: 1;
+            overflow-y: auto;
+            max-height: calc(100vh - 100px);
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+        }
+
+        .btn-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            gap: 6px;
+        }
+
+        button {
+            padding: 10px 8px;
+            border: none;
+            border-radius: 6px;
+            background: #667eea;
+            color: white;
+            cursor: pointer;
+            font-size: 0.8em;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button.orange { background: #f39c12; }
+        button.orange:hover { background: #e67e22; }
+
+        button.green { background: #27ae60; }
+        button.green:hover { background: #229954; }
+
+        button.red { background: #e74c3c; }
+        button.red:hover { background: #c0392b; }
+
+        .input-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .calc-btn {
+            grid-column: 1 / -1;
+            background: #f39c12;
+            padding: 12px;
+            font-weight: bold;
+        }
+
+        .result-box {
+            background: linear-gradient(135deg, #e8eaf6 0%, #f3e5f5 100%);
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .result-header {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .result-count {
+            background: #667eea;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+
+        .result-numbers {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            flex: 1;
+            align-content: flex-start;
+        }
+
+        .num-tag {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 2px solid #667eea;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            min-width: 45px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.2);
+        }
+
+        .empty-state {
+            color: #999;
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 0.9em;
+        }
+
+        .copy-btn {
+            width: 100%;
+            background: #27ae60;
+            padding: 10px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .copy-btn.active {
+            display: block;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .btn-grid {
+                grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            }
+
+            button {
+                font-size: 0.75em;
+                padding: 8px 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Control Panel -->
+    <div class="panel">
+        <div class="panel-header">
+            <h2>Thai Lottery</h2>
+        </div>
+        <div class="panel-content">
+            <!-- 2D Patterns -->
+            <div class="section">
+                <div class="section-title">📊 2D အကွက်</div>
+                <div class="btn-grid">
+                    <button onclick="showPattern('power')">ပါဝါ</button>
+                    <button onclick="showPattern('nakhat')">နက္ခတ်</button>
+                    <button onclick="showPattern('brother')">ညီအစ်ကို</button>
+                    <button onclick="showPattern('double')">အပူး</button>
+                    <button onclick="showPattern('evenDouble')">စုံပူး</button>
+                    <button onclick="showPattern('oddDouble')">မပူး</button>
+                    <button onclick="showPattern('padaythar')">ပဒေသာ</button>
+                </div>
+            </div>
+
+            <!-- Brakes -->
+            <div class="section">
+                <div class="section-title">🔢 ဘရိတ်</div>
+                <div class="btn-grid">
+                    <button class="orange" onclick="showBrake(1)">1B</button>
+                    <button class="orange" onclick="showBrake(2)">2B</button>
+                    <button class="orange" onclick="showBrake(3)">3B</button>
+                    <button class="orange" onclick="showBrake(4)">4B</button>
+                    <button class="orange" onclick="showBrake(5)">5B</button>
+                    <button class="orange" onclick="showBrake(6)">6B</button>
+                    <button class="orange" onclick="showBrake(7)">7B</button>
+                    <button class="orange" onclick="showBrake(8)">8B</button>
+                    <button class="orange" onclick="showBrake(9)">9B</button>
+                    <button class="orange" onclick="showBrake(0)">0B</button>
+                </div>
+            </div>
+
+            <!-- Head/Tail/Round -->
+            <div class="section">
+                <div class="section-title">🎯 ထိပ်/ပိတ်/ပတ်</div>
+                <div class="input-row">
+                    <input type="number" id="digit" placeholder="0-9" min="0" max="9">
+                </div>
+                <div class="btn-grid">
+                    <button class="green" onclick="showHead()">ထိပ်</button>
+                    <button class="green" onclick="showTail()">ပိတ်</button>
+                    <button class="green" onclick="showRound()">ပတ်</button>
+                </div>
+            </div>
+
+            <!-- Khway -->
+            <div class="section">
+                <div class="section-title">🔀 အပူးပါခွေ</div>
+                <div class="btn-grid">
+                    <button class="red" onclick="showKhway('012')">012</button>
+                    <button class="red" onclick="showKhway('0123')">0123</button>
+                    <button class="red" onclick="showKhway('01234')">01234</button>
+                </div>
+            </div>
+
+            <!-- 3D Calculator -->
+            <div class="section">
+                <div class="section-title">🎲 3D တွက်စက်</div>
+                <div class="calc-grid">
+                    <input type="text" id="r1" placeholder="Draw 1" maxlength="3">
+                    <input type="text" id="r2" placeholder="Draw 2" maxlength="3">
+                    <input type="text" id="r3" placeholder="Draw 3" maxlength="3">
+                    <input type="text" id="r4" placeholder="Draw 4" maxlength="3">
+                    <button class="calc-btn" onclick="calc3D()">3D တွက်</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Panel -->
+    <div class="panel">
+        <div class="panel-header">
+            <h2>ရလဒ်များ</h2>
+        </div>
+        <div class="result-box">
+            <div class="result-header">
+                <span id="title">ကြေးမုံရဲ့ အကွက်များ</span>
+                <span class="result-count" id="count"></span>
+            </div>
+            <div class="result-numbers" id="results"></div>
+            <button class="copy-btn" id="copyBtn" onclick="copyToClipboard()">ကူးယူမည် (Copy)</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const patterns = {
+        power: ["05", "16", "27", "38", "49"],
+        nakhat: ["18", "24", "35", "70", "96"],
+        brother: ["01", "12", "23", "34", "45", "56", "67", "78", "89", "90"],
+        double: ["00", "11", "22", "33", "44", "55", "66", "77", "88", "99"],
+        evenDouble: ["00", "22", "44", "66", "88"],
+        oddDouble: ["11", "33", "55", "77", "99"],
+        padaythar: ["13", "14", "15", "17", "25", "26", "29", "36", "39", "47", "48", "57", "58", "59", "68", "79"]
+    };
+
+    const nakhatMap = {"0":"7", "7":"0", "1":"8", "8":"1", "2":"4", "4":"2", "3":"5", "5":"3", "6":"9", "9":"6"};
+
+    function reverse(num) {
+        if (num[0] === num[1]) return [num];
+        return [num, num[1] + num[0]];
+    }
+
+    function display(title, numbers) {
+        const unique = [...new Set(numbers)].sort();
+        document.getElementById('title').textContent = title;
+        document.getElementById('count').textContent = unique.length + " ကွက်";
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.innerHTML = '';
+        
+        if (unique.length === 0) {
+            resultsDiv.innerHTML = '<div class="empty-state">ရလဒ်မရှိ</div>';
+            document.getElementById('copyBtn').classList.remove('active');
+        } else {
+            unique.forEach(num => {
+                const tag = document.createElement('div');
+                tag.className = 'num-tag';
+                tag.textContent = num;
+                resultsDiv.appendChild(tag);
+            });
+            document.getElementById('copyBtn').classList.add('active');
+            document.getElementById('copyBtn').dataset.text = unique.join(', ');
+        }
+    }
+
+    function showPattern(key) {
+        let results = [];
+        patterns[key].forEach(num => {
+            if (['double', 'evenDouble', 'oddDouble'].includes(key)) {
+                results.push(num);
+            } else {
+                results.push(...reverse(num));
+            }
+        });
+        display(key.toUpperCase(), results);
+    }
+
+    function showBrake(b) {
+        let results = [];
+        for (let i = 0; i <= 99; i++) {
+            let s = i.toString().padStart(2, '0');
+            let sum = (parseInt(s[0]) + parseInt(s[1])) % 10;
+            if (sum === b) results.push(s);
+        }
+        display(b + " BRAKE", results);
+    }
+
+    function showHead() {
+        const d = document.getElementById('digit').value;
+        if (d === "" || isNaN(d) || d < 0 || d > 9) {
+            alert("0-9 အတွင်း ဂဏန်းရိုက်ပါ");
+            return;
+        }
+        let results = [];
+        for (let i = 0; i <= 9; i++) {
+            results.push(d + i);
+        }
+        display("ထိပ်", results);
+    }
+
+    function showTail() {
+        const d = document.getElementById('digit').value;
+        if (d === "" || isNaN(d) || d < 0 || d > 9) {
+            alert("0-9 အတွင်း ဂဏန်းရိုက်ပါ");
+            return;
+        }
+        let results = [];
+        for (let i = 0; i <= 9; i++) {
+            results.push(i + d);
+        }
+        display("ပိတ်", results);
+    }
+
+    function showRound() {
+        const d = document.getElementById('digit').value;
+        if (d === "" || isNaN(d) || d < 0 || d > 9) {
+            alert("0-9 အတွင်း ဂဏန်းရိုက်ပါ");
+            return;
+        }
+        let results = [];
+        for (let i = 0; i <= 9; i++) {
+            results.push(d + i);
+            if (d !== i.toString()) results.push(i + d);
+        }
+        display("ပတ်", results);
+    }
+
+    function showKhway(type) {
+        let digits = type.split('');
+        let results = [];
+        for (let i = 0; i < digits.length; i++) {
+            for (let j = 0; j < digits.length; j++) {
+                results.push(digits[i] + digits[j]);
+            }
+        }
+        display(type + " KHWAY", results);
+    }
+
+    function calc3D() {
+        const r1 = document.getElementById('r1').value.trim();
+        const r2 = document.getElementById('r2').value.trim();
+        const r3 = document.getElementById('r3').value.trim();
+        const r4 = document.getElementById('r4').value.trim();
+
+        if (r1.length !== 3 || r2.length !== 3 || r3.length !== 3 || r4.length !== 3) {
+            alert("ဂဏန်း ၃ လုံးစီ အပြည့်အစုံ ရိုက်ထည့်ပါ");
+            return;
+        }
+
+        try {
+            let hSum = (parseInt(r3[0]) + parseInt(r3[1]) + parseInt(r4[2])) % 10;
+            let head = nakhatMap[hSum.toString()] || hSum;
+
+            let m1 = (parseInt(r1[1]) + parseInt(r3[1])) % 10;
+            let m2 = (parseInt(r2[1]) + parseInt(r4[1])) % 10;
+            let targetM = (m2 + 1) % 10;
+            let middle = (targetM - parseInt(r3[1]) + 10) % 10;
+
+            let tSum = (parseInt(r3[2]) + parseInt(r4[2])) % 10;
+            let tail = (tSum - middle + 10) % 10;
+
+            display("3D PREDICTION", ["" + head + middle + tail]);
+        } catch (e) {
+            alert("တွက်ချက်မှုအခါ အမှားရှိပါတယ်");
+        }
+    }
+
+    function copyToClipboard() {
+        const btn = document.getElementById('copyBtn');
+        const text = btn.dataset.text;
+        navigator.clipboard.writeText(text).then(() => {
+            const original = btn.textContent;
+            btn.textContent = "✓ ကူးယူပြီး";
+            setTimeout(() => {
+                btn.textContent = original;
+            }, 1500);
+        });
+    }
+</script>
+
+</body>
+</html>
