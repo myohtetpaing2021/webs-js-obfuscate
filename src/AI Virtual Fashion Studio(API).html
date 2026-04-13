@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI အတုအယောင် ဖက်ရှင်စတူဒီယို</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+    
+    /* Loading Spinner Animation */
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .animate-spin { animation: spin 1s linear infinite; }
+    
+    /* Fade In Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .animate-in { animation: fadeIn 0.3s ease-out forwards; }
+  </style>
+</head>
+<body class="min-h-screen bg-[#050505] text-white font-sans selection:bg-green-500 selection:text-black">
+
+  <!-- 1:1 Comparison Modal -->
+  <div id="compareModal" class="hidden fixed inset-0 z-[100] bg-black/98 backdrop-blur-2xl flex-col p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-xl font-bold flex items-center gap-3">
+        <svg class="w-6 h-6 text-green-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"/><path d="m15 9 6-6"/></svg>
+        <span>ပစ်ဇယ် နှိုင်းယှဉ်စစ်ဆေးခြင်း <span class="text-white/20 ml-2 text-sm font-normal italic">Pixel-to-Pixel Verification</span></span>
+      </h3>
+      <button id="closeModalBtn" class="w-12 h-12 bg-white/5 hover:bg-white/10 rounded-full flex items-center justify-center transition-all border border-white/10">
+        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+    <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 items-center overflow-hidden animate-in">
+      <div class="w-full h-full flex flex-col items-center bg-[#0a0a0a] rounded-3xl border border-white/5 p-4">
+        <div class="text-[10px] uppercase tracking-widest text-white/30 mb-3 flex items-center gap-2">
+          <div class="w-1.5 h-1.5 bg-white/20 rounded-full"></div> မူရင်းပုံ (Source)
+        </div>
+        <div class="flex-1 w-full overflow-hidden flex items-center justify-center">
+          <img id="compareSourceImg" src="" alt="Source" class="max-w-full max-h-full object-contain" />
+        </div>
+      </div>
+      <div class="w-full h-full flex flex-col items-center bg-[#0a0a0a] rounded-3xl border border-white/5 p-4">
+        <div class="text-[10px] uppercase tracking-widest text-green-500/60 mb-3 flex items-center gap-2">
+          <div class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div> ဖန်တီးထားသောပုံ (Output)
+        </div>
+        <div class="flex-1 w-full overflow-hidden flex items-center justify-center relative">
+          <img id="compareOutputImg" src="" alt="Output" class="max-w-full max-h-full object-contain" />
+          <div id="compareOutputLabel" class="absolute bottom-4 right-4 bg-green-500 text-black text-[10px] font-black px-4 py-1.5 rounded-full uppercase italic shadow-2xl">
+            Label
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="border-b border-white/5 py-4 px-8 flex justify-between items-center backdrop-blur-xl sticky top-0 z-50 bg-black/40">
+    <div class="flex items-center gap-4">
+      <div class="w-10 h-10 bg-gradient-to-br from-white to-gray-600 text-black rounded-lg flex items-center justify-center font-black italic shadow-xl shadow-white/5">
+        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      </div>
+      <div>
+        <h1 class="text-xl font-bold tracking-tighter uppercase italic leading-none">AI အတုအယောင် ဖက်ရှင်စတူဒီယို</h1>
+        <p class="text-[8px] text-white/30 uppercase tracking-[0.3em] mt-1">Native Pixel-Mapping Engine</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-6">
+      <div class="hidden md:flex flex-col items-end">
+        <span class="text-[9px] text-white/40 uppercase tracking-widest">စနစ် အခြေအနေ</span>
+        <span class="text-[10px] font-bold text-green-500 flex items-center gap-1">
+          <div class="w-1 h-1 bg-green-500 rounded-full animate-pulse"></div> V3.7 PRO READY
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-[1600px] mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
+    
+    <!-- Left: Control Flow -->
+    <div class="lg:col-span-4 space-y-6">
+      
+      <!-- 1. Upload -->
+      <section class="bg-white/5 p-6 rounded-[2rem] border border-white/5">
+        <h2 class="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-white/40 flex items-center gap-2">
+          <div class="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[8px] text-white">၁</div>
+          အဝတ်အစားပုံ ထည့်သွင်းရန်
+        </h2>
+        <div id="uploadZone" class="group aspect-video border-2 border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:bg-white/5 hover:border-white/20 transition-all relative overflow-hidden">
+          
+          <div id="uploadPlaceholder" class="text-center group-hover:translate-y-[-4px] transition-transform duration-300">
+            <svg class="w-10 h-10 mx-auto mb-3 text-white/10" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+            <p class="text-xs text-white/30 font-medium">မူရင်းအဝတ်အစားပုံကို တင်ရန် နှိပ်ပါ</p>
+          </div>
+          
+          <img id="uploadPreview" src="" alt="Preview" class="hidden h-full w-full object-contain p-2" />
+          <input id="fileInput" type="file" class="hidden" accept="image/*" />
+        </div>
+      </section>
+
+      <!-- 2. Photography Styles -->
+      <section class="bg-white/5 p-6 rounded-[2rem] border border-white/5">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-white/40 flex items-center gap-2">
+            <div class="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[8px] text-white">၂</div>
+            စတိုင်လ်နှင့် ပုံစံ ရွေးချယ်ရန်
+          </h2>
+          <span class="text-[10px] text-white/20 font-mono">12 STYLES</span>
+        </div>
+        <div id="stylesContainer" class="grid grid-cols-2 gap-2 max-h-[320px] overflow-y-auto pr-2 custom-scrollbar">
+          <!-- Styles will be injected here by JS -->
+        </div>
+      </section>
+
+      <!-- 3. Model Setup -->
+      <section class="bg-white/5 p-6 rounded-[2rem] border border-white/5">
+        <h2 class="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-white/40 flex items-center gap-2">
+          <div class="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[8px] text-white">၃</div>
+          မော်ဒယ်နှင့် အပြင်အဆင် သတ်မှတ်ရန်
+        </h2>
+        <div class="grid grid-cols-2 gap-2 mb-4 bg-black/50 p-1 rounded-xl">
+          <button id="btnAiModel" class="py-2 text-[10px] font-bold rounded-lg transition-all bg-white text-black">AI အလိုအလျောက်</button>
+          <button id="btnManualModel" class="py-2 text-[10px] font-bold rounded-lg transition-all text-white/40">မိမိစိတ်ကြိုက်</button>
+        </div>
+        
+        <div id="manualConfigPanel" class="hidden space-y-3 animate-in">
+          <div class="grid grid-cols-2 gap-3">
+            <select id="configGender" class="bg-black border border-white/5 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-white/20">
+              <option value="Female">အမျိုးသမီး (Female)</option>
+              <option value="Male">အမျိုးသား (Male)</option>
+              <option value="Unisex">ကျား/မ မရွေး (Unisex)</option>
+            </select>
+            <input id="configAge" type="number" value="25" class="bg-black border border-white/5 rounded-xl px-3 py-2 text-xs text-white outline-none" placeholder="အသက် (Age)" />
+          </div>
+          <input id="configCountry" type="text" value="France" class="w-full bg-black border border-white/5 rounded-xl px-3 py-2 text-xs text-white outline-none" placeholder="နိုင်ငံ (ဥပမာ - ဂျပန်၊ ပြင်သစ်)" />
+          <div class="relative">
+            <input id="configAccessories" type="text" value="Necklace, Handbag, Heels" class="w-full bg-black border border-white/5 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-green-500/30 transition-all pr-10" placeholder="အသုံးအဆောင် (ဥပမာ - ပုလဲဆွဲကြိုး၊ အိတ်)" />
+            <svg class="absolute right-3 top-2.5 w-3.5 h-3.5 text-white/20" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>
+          </div>
+        </div>
+      </section>
+
+      <button id="generateBtn" disabled class="w-full py-5 rounded-2xl font-black text-xs uppercase tracking-[0.3em] transition-all relative overflow-hidden group bg-white/5 text-white/10">
+        <span id="generateBtnText" class="flex items-center justify-center gap-2">
+          ပုံဖန်တီးမှုကို စတင်ရန် 
+          <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </span>
+        <span id="generateBtnLoading" class="hidden flex items-center justify-center gap-3">
+          <svg class="w-4 h-4 animate-spin" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> 
+          MAPPING PIXELS...
+        </span>
+      </button>
+    </div>
+
+    <!-- Right: Gallery -->
+    <div class="lg:col-span-8">
+      <section class="bg-white/5 p-8 rounded-[3rem] border border-white/5 min-h-[700px] flex flex-col relative shadow-2xl">
+        <div class="flex justify-between items-center mb-8">
+          <div>
+            <h2 class="text-xl font-black uppercase italic tracking-tighter flex items-center gap-3">
+              <svg class="w-6 h-6 text-green-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg> 
+              ဖန်တီးထားသော ပုံများ ပြခန်း
+            </h2>
+            <p class="text-[10px] text-white/30 mt-1 uppercase tracking-widest">12 Styles Available &bull; 100% Consistency</p>
+          </div>
+          <button id="downloadBtn" class="hidden flex items-center gap-2 bg-white text-black px-6 py-2.5 rounded-full text-[10px] font-black transition-all hover:scale-105 active:scale-95 shadow-xl">
+            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg> 
+            ကြည်လင်သောပုံများ ဒေါင်းလုဒ်ဆွဲရန်
+          </button>
+        </div>
+
+        <div id="statusMsgContainer" class="hidden mb-8 bg-green-500/10 border border-green-500/20 text-green-500 px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest text-center animate-pulse">
+        </div>
+        
+        <div class="flex-1" id="galleryContent">
+          <!-- Default Empty State -->
+          <div id="emptyState" class="h-full flex flex-col items-center justify-center text-white/5 py-20">
+            <svg class="w-32 h-32 mb-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            <p class="text-xl font-black uppercase tracking-[0.4em]">Awaiting Simulation</p>
+            <p class="text-xs uppercase tracking-widest mt-4">စမ်းသပ်ရန် ပရော်ဖက်ရှင်နယ် ဓာတ်ပုံစတိုင် (၁၂) မျိုး အဆင်သင့်ရှိပါသည်</p>
+          </div>
+
+          <!-- Loading Placeholders -->
+          <div id="loadingState" class="hidden grid grid-cols-2 md:grid-cols-4 gap-6">
+            <!-- Injected by JS -->
+          </div>
+
+          <!-- Generated Images -->
+          <div id="imagesGrid" class="hidden grid grid-cols-2 md:grid-cols-4 gap-6 animate-in">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+
+        <!-- Feature Tags -->
+        <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 border-t border-white/5 pt-8 opacity-40">
+          <div class="flex items-center gap-3">
+            <div class="w-1 h-1 bg-green-500 rounded-full"></div>
+            <div class="text-[9px] uppercase tracking-tighter font-medium">Native Pixel Mapping</div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-1 h-1 bg-green-500 rounded-full"></div>
+            <div class="text-[9px] uppercase tracking-tighter font-medium">12 Cinematic Styles</div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-1 h-1 bg-green-500 rounded-full"></div>
+            <div class="text-[9px] uppercase tracking-tighter font-medium">Ghost Mannequin Shots</div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-1 h-1 bg-green-500 rounded-full"></div>
+            <div class="text-[9px] uppercase tracking-tighter font-medium">High-Fidelity Restoration</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-20 text-center border-t border-white/5 mx-8 md:mx-12 lg:mx-20">
+    <div class="max-w-4xl mx-auto space-y-6">
+      <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+        <div class="flex items-center gap-2">
+          <span class="text-[10px] text-white/20 uppercase tracking-[0.2em]">Created by:</span>
+          <span class="text-xs font-bold text-white/60 tracking-wider">AI Etude</span>
+        </div>
+        <div class="w-1 h-1 bg-white/10 rounded-full hidden md:block"></div>
+        <div class="flex items-center gap-2">
+          <span class="text-[10px] text-white/20 uppercase tracking-[0.2em]">Version:</span>
+          <span class="text-xs font-bold text-white/60 tracking-wider">Version 3.7 PRO</span>
+        </div>
+        <div class="w-1 h-1 bg-white/10 rounded-full hidden md:block"></div>
+        <div class="flex items-center gap-2">
+          <svg class="w-3 h-3 text-white/20" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          <span class="text-xs font-medium text-white/40 tracking-wide">လွတ်လပ်စွာ မျှဝေနိုင်ပါသည်။ စီးပွားဖြစ် အသုံးမပြုရ။</span>
+        </div>
+      </div>
+      
+      <div class="pt-4">
+        <div class="text-[10px] text-white/10 uppercase tracking-[1em] mb-4">AI Fashion Visual Laboratory</div>
+        <div class="text-[9px] font-mono text-white/20 uppercase tracking-widest">
+          Updated: Apr.12, 2026
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- App Logic -->
+  <script>
+    // API Setup
+    const apiKey = ""; 
+
+    const FASHION_STYLES = [
+      { id: 'editorial', title: 'Editorial Fashion', description: 'High-contrast dramatic lighting, magazine-grade composition', category: 'Studio' },
+      { id: 'lookbook', title: 'Clean Lookbook', description: 'Even neutral lighting, focus on clothing', category: 'Studio' },
+      { id: 'street', title: 'Street Style', description: 'Natural outdoor lighting, urban environment background', category: 'Street' },
+      { id: 'minimalist', title: 'Studio Minimalist', description: 'Soft diffused lighting, clean background, minimal distractions', category: 'Studio' },
+      { id: 'campaign', title: 'Ad Campaign', description: 'Cinematic lighting, narrative poses, emotional atmosphere', category: 'Street' },
+      { id: 'cyberpunk', title: 'Cyberpunk', description: 'Neon lighting, rain-slicked streets, sci-fi visuals', category: 'Street' },
+      { id: 'old_money', title: 'Old Money', description: 'High-end estate, soft warm tones, classic elegance', category: 'Street' },
+      { id: 'bohemian', title: 'Bohemian', description: 'Natural sunlight, earth tones, open wilderness', category: 'Street' },
+      { id: 'vintage', title: 'Vintage Film', description: 'Film grain, 90s aesthetics, nostalgic colors', category: 'Studio' },
+      { id: 'high_key', title: 'Dynamic Sports', description: 'Bright lighting, motion blur, energetic', category: 'Studio' },
+      { id: 'resort', title: 'Resort Luxury', description: 'Sunny beach, poolside, bright relaxed luxury', category: 'Street' },
+      { id: 'noir', title: 'Film Noir', description: 'Strong black and white contrast, mystery, hard lighting', category: 'Studio' }
+    ];
+
+    const POSES = [
+      "Full Frontal",
+      "Side 45",
+      "Walking",
+      "Sitting",
+      "Back View",
+      "Editorial Pose"
+    ];
+
+    // State Variables
+    let state = {
+      clothingImage: null,
+      base64Image: "",
+      isAiModel: true,
+      selectedStyle: FASHION_STYLES[0],
+      isGenerating: false,
+      generatedImages: []
+    };
+
+    // DOM Elements
+    const elements = {
+      uploadZone: document.getElementById('uploadZone'),
+      fileInput: document.getElementById('fileInput'),
+      uploadPlaceholder: document.getElementById('uploadPlaceholder'),
+      uploadPreview: document.getElementById('uploadPreview'),
+      
+      stylesContainer: document.getElementById('stylesContainer'),
+      
+      btnAiModel: document.getElementById('btnAiModel'),
+      btnManualModel: document.getElementById('btnManualModel'),
+      manualConfigPanel: document.getElementById('manualConfigPanel'),
+      configGender: document.getElementById('configGender'),
+      configAge: document.getElementById('configAge'),
+      configCountry: document.getElementById('configCountry'),
+      configAccessories: document.getElementById('configAccessories'),
+      
+      generateBtn: document.getElementById('generateBtn'),
+      generateBtnText: document.getElementById('generateBtnText'),
+      generateBtnLoading: document.getElementById('generateBtnLoading'),
+      
+      emptyState: document.getElementById('emptyState'),
+      loadingState: document.getElementById('loadingState'),
+      imagesGrid: document.getElementById('imagesGrid'),
+      downloadBtn: document.getElementById('downloadBtn'),
+      statusMsgContainer: document.getElementById('statusMsgContainer'),
+      
+      compareModal: document.getElementById('compareModal'),
+      closeModalBtn: document.getElementById('closeModalBtn'),
+      compareSourceImg: document.getElementById('compareSourceImg'),
+      compareOutputImg: document.getElementById('compareOutputImg'),
+      compareOutputLabel: document.getElementById('compareOutputLabel')
+    };
+
+    // Initialize UI
+    function init() {
+      renderStyles();
+      setupEventListeners();
+      updateGenerateButton();
+    }
+
+    // Render Styles List
+    function renderStyles() {
+      elements.stylesContainer.innerHTML = '';
+      FASHION_STYLES.forEach(style => {
+        const isSelected = state.selectedStyle.id === style.id;
+        const btnClass = isSelected 
+          ? 'border-white bg-white/10' 
+          : 'border-white/5 bg-black/40 hover:border-white/20';
+        const labelClass = isSelected ? 'text-green-500' : 'text-white/30';
+        
+        const btn = document.createElement('button');
+        btn.className = `p-3 rounded-xl border text-left transition-all ${btnClass}`;
+        btn.innerHTML = `
+          <div class="text-[8px] uppercase tracking-tighter mb-1 font-bold ${labelClass}">${style.category}</div>
+          <div class="text-xs font-bold truncate">${style.title}</div>
+        `;
+        btn.onclick = () => {
+          state.selectedStyle = style;
+          renderStyles();
+        };
+        elements.stylesContainer.appendChild(btn);
+      });
+    }
+
+    // Update UI Elements state
+    function updateGenerateButton() {
+      if (state.isGenerating || !state.base64Image) {
+        elements.generateBtn.disabled = true;
+        elements.generateBtn.className = "w-full py-5 rounded-2xl font-black text-xs uppercase tracking-[0.3em] transition-all relative overflow-hidden group bg-white/5 text-white/10";
+      } else {
+        elements.generateBtn.disabled = false;
+        elements.generateBtn.className = "w-full py-5 rounded-2xl font-black text-xs uppercase tracking-[0.3em] transition-all relative overflow-hidden group bg-white text-black hover:bg-green-500 hover:text-black shadow-2xl cursor-pointer";
+      }
+
+      if (state.isGenerating) {
+        elements.generateBtnText.classList.add('hidden');
+        elements.generateBtnLoading.classList.remove('hidden');
+        elements.generateBtnLoading.classList.add('flex');
+      } else {
+        elements.generateBtnText.classList.remove('hidden');
+        elements.generateBtnText.classList.add('flex');
+        elements.generateBtnLoading.classList.add('hidden');
+        elements.generateBtnLoading.classList.remove('flex');
+      }
+    }
+
+    function setStatus(msg) {
+      if (!msg) {
+        elements.statusMsgContainer.classList.add('hidden');
+        return;
+      }
+      elements.statusMsgContainer.textContent = msg;
+      elements.statusMsgContainer.classList.remove('hidden');
+    }
+
+    // Event Listeners Setup
+    function setupEventListeners() {
+      // Upload
+      elements.uploadZone.onclick = () => elements.fileInput.click();
+      
+      elements.fileInput.onchange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            state.clothingImage = event.target.result;
+            state.base64Image = event.target.result.split(',')[1];
+            
+            elements.uploadPlaceholder.classList.add('hidden');
+            elements.uploadPreview.src = state.clothingImage;
+            elements.uploadPreview.classList.remove('hidden');
+            
+            updateGenerateButton();
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+
+      // Model Config Toggles
+      elements.btnAiModel.onclick = () => {
+        state.isAiModel = true;
+        elements.btnAiModel.className = "py-2 text-[10px] font-bold rounded-lg transition-all bg-white text-black";
+        elements.btnManualModel.className = "py-2 text-[10px] font-bold rounded-lg transition-all text-white/40";
+        elements.manualConfigPanel.classList.add('hidden');
+      };
+
+      elements.btnManualModel.onclick = () => {
+        state.isAiModel = false;
+        elements.btnManualModel.className = "py-2 text-[10px] font-bold rounded-lg transition-all bg-white text-black";
+        elements.btnAiModel.className = "py-2 text-[10px] font-bold rounded-lg transition-all text-white/40";
+        elements.manualConfigPanel.classList.remove('hidden');
+      };
+
+      // Generate
+      elements.generateBtn.onclick = handleGenerate;
+
+      // Download
+      elements.downloadBtn.onclick = downloadBundle;
+
+      // Modal Close
+      elements.closeModalBtn.onclick = () => {
+        elements.compareModal.classList.add('hidden');
+        elements.compareModal.classList.remove('flex');
+      };
+    }
+
+    // API Call Function
+    async function callImageToImageApi(prompt, inputBase64, retries = 5) {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${apiKey}`;
+      
+      const payload = {
+        contents: [
+          {
+            role: "user",
+            parts: [
+              { text: prompt },
+              { inlineData: { mimeType: "image/png", data: inputBase64 } }
+            ]
+          }
+        ],
+        generationConfig: {
+          responseModalities: ["IMAGE"]
+        }
+      };
+
+      for (let i = 0; i < retries; i++) {
+        try {
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const data = await response.json();
+          const base64 = data.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
+          if (base64) return base64;
+          
+          if (response.status !== 429 && response.status < 500) break;
+        } catch (e) {
+          if (i === retries - 1) throw e;
+        }
+        await new Promise(r => setTimeout(r, Math.pow(2, i) * 1000));
+      }
+      return null;
+    }
+
+    // Generate Process
+    async function handleGenerate() {
+      if (!state.base64Image) {
+        alert("ကျေးဇူးပြု၍ အဝတ်အစားပုံ အရင်တင်ပေးပါ။");
+        return;
+      }
+
+      state.isGenerating = true;
+      state.generatedImages = [];
+      updateGenerateButton();
+      
+      elements.emptyState.classList.add('hidden');
+      elements.imagesGrid.classList.add('hidden');
+      elements.downloadBtn.classList.add('hidden');
+      
+      // Setup loading placeholders
+      elements.loadingState.innerHTML = '';
+      for(let i=0; i<8; i++){
+        elements.loadingState.innerHTML += `
+          <div class="aspect-[3/4] rounded-3xl bg-white/5 animate-pulse border border-white/5 flex flex-col items-center justify-center">
+            <svg class="w-8 h-8 opacity-10 animate-spin mb-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+            <div class="h-2 w-20 bg-white/5 rounded-full"></div>
+          </div>
+        `;
+      }
+      elements.loadingState.classList.remove('hidden');
+      
+      setStatus("ပစ်ဇယ်များကို တွက်ချက်ပြီး ပုံဖော်နေပါသည်...");
+
+      try {
+        const accessoriesPrompt = (!state.isAiModel && elements.configAccessories.value) ? `with ${elements.configAccessories.value}` : "";
+        const modelInfo = state.isAiModel 
+          ? "A professional top-tier fashion model" 
+          : `A ${elements.configAge.value}yo ${elements.configCountry.value} ${elements.configGender.value} model ${accessoriesPrompt}`;
+        
+        const tasks = [
+          ...POSES.map((pose, idx) => ({
+            type: 'model',
+            prompt: `Create a professional high-fashion photo of ${modelInfo} wearing the EXACT SAME garment as shown in the input image. Maintain 100% literal consistency of every stitch, color, and pattern of the clothing. Do not change the garment. Only change the person and the background to ${state.selectedStyle.title} style. Pose: ${pose}. 8K HDR quality.`,
+            id: idx
+          })),
+          {
+            type: 'green_screen',
+            prompt: `Create a 100% accurate ghost mannequin shot of the garment from the input image. FRONT VIEW. The clothing should be worn by an invisible body to show its 3D volume, shape, and hollow interior. Background: solid chroma key green screen. Professional studio product photography.`,
+            id: 6
+          },
+          {
+            type: 'green_screen',
+            prompt: `Create a 100% accurate ghost mannequin shot of the garment from the input image. SIDE VIEW (profile angle). The clothing should be worn by an invisible body to show its 3D volume, profile shape, and depth. Background: solid chroma key green screen. Professional studio product photography.`,
+            id: 7
+          }
+        ];
+
+        const results = await Promise.allSettled(
+          tasks.map(task => callImageToImageApi(task.prompt, state.base64Image))
+        );
+
+        const successfulImages = [];
+        results.forEach((res, index) => {
+          if (res.status === 'fulfilled' && res.value) {
+            successfulImages.push({
+              url: `data:image/png;base64,${res.value}`,
+              type: tasks[index].type,
+              label: index < 6 ? `Fashion Pose ${index + 1}` : (index === 6 ? "Front Green Screen" : "Side Green Screen")
+            });
+          }
+        });
+
+        state.generatedImages = successfulImages;
+        
+        elements.loadingState.classList.add('hidden');
+        
+        if (successfulImages.length > 0) {
+          renderGeneratedImages();
+          elements.imagesGrid.classList.remove('hidden');
+          elements.downloadBtn.classList.remove('hidden');
+          elements.downloadBtn.classList.add('flex');
+          setStatus("Pixel-level ဖန်တီးမှု ပြီးဆုံးပါပြီ!");
+        } else {
+          elements.emptyState.classList.remove('hidden');
+          setStatus("ပုံဖန်တီးမှု မအောင်မြင်ပါ။ ကျေးဇူးပြု၍ မူရင်းပုံကို ပြောင်းလဲပြီး ထပ်မံကြိုးစားကြည့်ပါ။");
+        }
+        
+      } catch (error) {
+        console.error(error);
+        elements.loadingState.classList.add('hidden');
+        elements.emptyState.classList.remove('hidden');
+        setStatus("ဆာဗာ အလုပ်များနေပါသည်။ ခဏစောင့်ပြီး ပြန်လည်ကြိုးစားပါ။");
+      } finally {
+        state.isGenerating = false;
+        updateGenerateButton();
+      }
+    }
+
+    // Render Gallery
+    function renderGeneratedImages() {
+      elements.imagesGrid.innerHTML = '';
+      state.generatedImages.forEach((img, index) => {
+        const div = document.createElement('div');
+        div.className = "aspect-[3/4] bg-black rounded-3xl overflow-hidden border border-white/5 group relative cursor-pointer shadow-2xl";
+        
+        let badgeHtml = '';
+        if(img.type === 'green_screen') {
+          badgeHtml = `
+            <div class="absolute top-4 left-4 bg-green-500 text-black text-[9px] font-black px-3 py-1 rounded-full italic shadow-lg">
+              CHROMA KEY
+            </div>
+          `;
+        }
+
+        div.innerHTML = `
+          <img src="${img.url}" class="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110 group-hover:opacity-40" alt="Output" />
+          
+          <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 bg-black/40">
+             <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black mb-3 shadow-2xl">
+               <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" x2="14" y1="3" y2="10"/><line x1="3" x2="10" y1="21" y2="14"/></svg>
+             </div>
+             <div class="text-[10px] font-black uppercase tracking-widest">အသေးစိတ် စစ်ဆေးရန် နှိပ်ပါ</div>
+          </div>
+
+          <div class="absolute bottom-4 left-4 right-4">
+            <div class="flex justify-between items-end">
+              <span class="text-[8px] font-black uppercase tracking-widest text-white/40 drop-shadow-lg">${img.label}</span>
+              <span class="text-[10px] font-bold text-white drop-shadow-lg">8K</span>
+            </div>
+          </div>
+          ${badgeHtml}
+        `;
+        
+        // Open Modal on click
+        div.onclick = () => {
+          elements.compareSourceImg.src = state.clothingImage;
+          elements.compareOutputImg.src = img.url;
+          elements.compareOutputLabel.textContent = img.label;
+          elements.compareModal.classList.remove('hidden');
+          elements.compareModal.classList.add('flex');
+        };
+
+        elements.imagesGrid.appendChild(div);
+      });
+    }
+
+    // Download Logic
+    function downloadBundle() {
+      if (state.generatedImages.length === 0) return;
+      
+      state.generatedImages.forEach((img, index) => {
+        setTimeout(() => {
+          const link = document.createElement("a");
+          link.href = img.url;
+          link.download = `AI_Fashion_Studio_${index + 1}.png`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }, index * 300);
+      });
+    }
+
+    // Run Initialization
+    init();
+
+  </script>
+</body>
+</html>
