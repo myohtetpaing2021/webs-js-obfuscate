@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AI Fashion Studio - Ultimate Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#020617', 
+                            900: '#0f172a',
+                            800: '#1e293b',
+                        },
+                        primary: {
+                            400: '#38bdf8', 
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 8s ease-in-out infinite',
+                        'float-delayed': 'float 8s ease-in-out infinite 4s',
+                        'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        slideUp: {
+                            'from': { opacity: 0, transform: 'translateY(20px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        fadeIn: {
+                            'from': { opacity: 0 },
+                            'to': { opacity: 1 },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Premium Glass Effect */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.6) 100%);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 
+                        0 0 20px rgba(56, 189, 248, 0.1); 
+        }
+        
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Input Styling */
+        .input-field {
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3), 0 0 15px rgba(56, 189, 248, 0.2);
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        .text-neon-blue {
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+        .text-neon-emerald {
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-200 min-h-screen relative">
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-all duration-1000 ease-out overflow-hidden">
+        <div class="absolute inset-0 opacity-20" 
+             style="background-image: radial-gradient(#38bdf8 1px, transparent 1px); background-size: 40px 40px; transform: perspective(500px) rotateX(20deg);">
+        </div>
+
+        <div class="relative flex flex-col items-center">
+            <div class="relative w-40 h-40 flex items-center justify-center mb-10">
+                <div class="absolute inset-0 rounded-full border-2 border-transparent border-t-cyan-500 border-l-cyan-500/30 animate-[spin_2s_linear_infinite] shadow-[0_0_30px_rgba(6,182,212,0.2)]"></div>
+                <div class="absolute inset-3 rounded-full border-2 border-transparent border-b-violet-500 border-r-violet-500/30 animate-[spin_3s_linear_infinite_reverse]"></div>
+                <div class="relative z-10 w-20 h-20 bg-gradient-to-br from-cyan-950 to-slate-900 rounded-full flex items-center justify-center border border-white/10 shadow-[0_0_50px_rgba(6,182,212,0.4)] animate-pulse">
+                    <div class="absolute inset-0 bg-cyan-500/20 rounded-full blur-xl animate-pulse"></div>
+                    <i data-lucide="scissors" class="text-white w-8 h-8 relative z-10 drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]"></i>
+                </div>
+            </div>
+            
+            <div class="w-64 space-y-4">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-[0.2em] text-white font-num mb-1">AI<span class="text-cyan-400">STUDIO</span></h2>
+                    <p class="text-[10px] text-cyan-500/70 font-num tracking-[0.4em] uppercase">Engine Initializing</p>
+                </div>
+                
+                <div class="h-1 w-full bg-slate-800/50 rounded-full overflow-hidden border border-white/5 relative">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 w-0 shadow-[0_0_20px_rgba(6,182,212,0.8)] relative">
+                        <div class="absolute right-0 top-0 bottom-0 w-2 bg-white/50 blur-[2px]"></div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between text-[10px] font-num text-slate-400 font-medium tracking-wider">
+                    <span class="animate-pulse">MAPPING PIXELS...</span>
+                    <span id="progress-text" class="text-cyan-400 font-bold">0%</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-8 text-[9px] text-slate-600 font-num tracking-widest uppercase">
+            v3.7 Ultimate Edition
+        </div>
+    </div>
+
+    <!-- Ambient Background -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px] animate-float"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-emerald-600/10 rounded-full blur-[120px] animate-float-delayed"></div>
+        <div class="absolute top-[30%] left-[40%] w-[40%] h-[40%] bg-violet-600/5 rounded-full blur-[100px] animate-pulse-slow"></div>
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+    </div>
+
+    <!-- 1:1 Comparison Modal -->
+    <div id="compareModal" class="hidden fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex-col p-4 md:p-10 animate-fade-in">
+        <div class="glass-panel w-full h-full rounded-3xl flex flex-col p-6 border border-white/10 shadow-2xl relative overflow-hidden">
+            <div class="flex justify-between items-center mb-6 relative z-10">
+                <h3 class="text-xl font-bold flex items-center gap-3 text-white">
+                    <div class="p-2 bg-cyan-500/20 rounded-lg border border-cyan-500/30 text-cyan-400"><i data-lucide="split-square-horizontal" class="w-5 h-5"></i></div>
+                    ပစ်ဇယ် နှိုင်းယှဉ်စစ်ဆေးခြင်း <span class="text-cyan-400/50 ml-2 text-sm font-normal italic hidden sm:inline">Pixel-to-Pixel Verification</span>
+                </h3>
+                <button id="closeModalBtn" class="w-10 h-10 rounded-full bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition-colors flex items-center justify-center border border-white/10">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 items-center overflow-hidden animate-in relative z-10">
+                <!-- Source -->
+                <div class="w-full h-full flex flex-col items-center bg-slate-900/60 rounded-3xl border border-white/5 p-4 relative group">
+                    <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 flex items-center gap-2 font-bold font-num">
+                        <div class="w-2 h-2 bg-slate-500 rounded-full"></div> မူရင်းပုံ (Source)
+                    </div>
+                    <div class="flex-1 w-full overflow-hidden flex items-center justify-center">
+                        <img id="compareSourceImg" src="" alt="Source" class="max-w-full max-h-full object-contain rounded-xl" />
+                    </div>
+                </div>
+                <!-- Output -->
+                <div class="w-full h-full flex flex-col items-center bg-slate-900/60 rounded-3xl border border-cyan-500/20 p-4 relative group">
+                    <div class="text-[10px] uppercase tracking-widest text-cyan-400 mb-3 flex items-center gap-2 font-bold font-num">
+                        <div class="w-2 h-2 bg-cyan-500 rounded-full shadow-[0_0_10px_rgba(6,182,212,0.8)] animate-pulse"></div> ဖန်တီးထားသောပုံ (Output)
+                    </div>
+                    <div class="flex-1 w-full overflow-hidden flex items-center justify-center relative">
+                        <img id="compareOutputImg" src="" alt="Output" class="max-w-full max-h-full object-contain rounded-xl" />
+                        <div id="compareOutputLabel" class="absolute bottom-4 right-4 bg-cyan-500/20 border border-cyan-500/50 text-cyan-300 text-[10px] font-bold px-4 py-2 rounded-full uppercase italic shadow-[0_0_15px_rgba(6,182,212,0.3)] backdrop-blur-md">
+                            Label
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="glass-panel border-b border-white/5 py-4 px-4 md:px-8 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-4">
+            <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.4)] border border-white/10">
+                <i data-lucide="scissors" class="text-white w-5 h-5"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold tracking-tight text-white font-num">AI <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Fashion Studio</span></h1>
+                <p class="text-[9px] text-cyan-400/60 font-num uppercase tracking-[0.2em] mt-0.5">Native Pixel-Mapping Engine</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="hidden md:flex flex-col items-end">
+                <span class="text-[9px] text-slate-400 uppercase tracking-widest">System Status</span>
+                <span class="text-[10px] font-bold text-emerald-400 flex items-center gap-1.5 font-num">
+                    <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse"></div> V3.7 PRO READY
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10 pt-8 pb-20">
+        
+        <!-- Left: Control Flow -->
+        <div class="lg:col-span-4 space-y-6">
+            
+            <!-- 1. Upload -->
+            <section class="glass-card p-6 rounded-3xl border border-white/5">
+                <h2 class="text-xs font-bold uppercase tracking-[0.2em] mb-5 text-slate-300 flex items-center gap-3">
+                    <div class="w-6 h-6 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-[10px] text-cyan-400 font-num">1</div>
+                    အဝတ်အစားပုံ ထည့်သွင်းရန်
+                </h2>
+                <div id="uploadZone" class="group aspect-video border-2 border-dashed border-slate-700 hover:border-cyan-500/50 rounded-2xl flex flex-col items-center justify-center cursor-pointer bg-slate-900/40 hover:bg-slate-900/60 transition-all relative overflow-hidden">
+                    
+                    <div id="uploadPlaceholder" class="text-center group-hover:scale-105 transition-transform duration-300">
+                        <div class="w-12 h-12 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center mx-auto mb-3 group-hover:border-cyan-500/30 group-hover:text-cyan-400 transition-colors">
+                            <i data-lucide="upload-cloud" class="w-6 h-6 text-slate-400 group-hover:text-cyan-400 transition-colors"></i>
+                        </div>
+                        <p class="text-xs text-slate-400 font-medium">မူရင်းအဝတ်အစားပုံကို တင်ရန် နှိပ်ပါ</p>
+                    </div>
+                    
+                    <img id="uploadPreview" src="" alt="Preview" class="hidden h-full w-full object-contain p-2 relative z-10" />
+                    <input id="fileInput" type="file" class="hidden" accept="image/*" />
+                </div>
+            </section>
+
+            <!-- 2. Photography Styles -->
+            <section class="glass-card p-6 rounded-3xl border border-white/5">
+                <div class="flex justify-between items-center mb-5">
+                    <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-slate-300 flex items-center gap-3">
+                        <div class="w-6 h-6 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-[10px] text-blue-400 font-num">2</div>
+                        စတိုင်လ်နှင့် ပုံစံ ရွေးချယ်ရန်
+                    </h2>
+                    <span class="text-[9px] px-2 py-1 bg-slate-800 rounded text-slate-400 border border-slate-700 font-num">12 STYLES</span>
+                </div>
+                <div id="stylesContainer" class="grid grid-cols-2 gap-3 max-h-[320px] overflow-y-auto pr-2 custom-scrollbar">
+                    <!-- Styles will be injected here by JS -->
+                </div>
+            </section>
+
+            <!-- 3. Model Setup -->
+            <section class="glass-card p-6 rounded-3xl border border-white/5">
+                <h2 class="text-xs font-bold uppercase tracking-[0.2em] mb-5 text-slate-300 flex items-center gap-3">
+                    <div class="w-6 h-6 rounded-full bg-violet-500/20 border border-violet-500/30 flex items-center justify-center text-[10px] text-violet-400 font-num">3</div>
+                    မော်ဒယ်နှင့် အပြင်အဆင်
+                </h2>
+                <div class="grid grid-cols-2 gap-2 mb-5 bg-slate-900/80 p-1.5 rounded-xl border border-white/5">
+                    <button id="btnAiModel" class="py-2.5 text-[11px] font-bold rounded-lg transition-all bg-violet-500/20 text-violet-300 border border-violet-500/30 shadow-[0_0_10px_rgba(139,92,246,0.2)]">AI အလိုအလျောက်</button>
+                    <button id="btnManualModel" class="py-2.5 text-[11px] font-bold rounded-lg transition-all text-slate-400 hover:text-slate-300">မိမိစိတ်ကြိုက်</button>
+                </div>
+                
+                <div id="manualConfigPanel" class="hidden space-y-4 animate-in">
+                    <div class="grid grid-cols-2 gap-3">
+                        <select id="configGender" class="input-field w-full bg-slate-900/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none cursor-pointer">
+                            <option value="Female">အမျိုးသမီး</option>
+                            <option value="Male">အမျိုးသား</option>
+                            <option value="Unisex">ကျား/မ မရွေး</option>
+                        </select>
+                        <input id="configAge" type="number" value="25" class="input-field w-full bg-slate-900/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none font-num" placeholder="အသက် (Age)" />
+                    </div>
+                    <div class="relative">
+                        <i data-lucide="map-pin" class="absolute left-4 top-3.5 w-4 h-4 text-slate-500"></i>
+                        <input id="configCountry" type="text" value="France" class="input-field w-full bg-slate-900/40 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm text-white outline-none" placeholder="နိုင်ငံ (ဥပမာ - ဂျပန်၊ ပြင်သစ်)" />
+                    </div>
+                    <div class="relative">
+                        <i data-lucide="sparkles" class="absolute left-4 top-3.5 w-4 h-4 text-violet-400"></i>
+                        <input id="configAccessories" type="text" value="Necklace, Handbag, Heels" class="input-field w-full bg-slate-900/40 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm text-white outline-none" placeholder="အသုံးအဆောင် (ဥပမာ - ပုလဲဆွဲကြိုး၊ အိတ်)" />
+                    </div>
+                </div>
+            </section>
+
+            <button id="generateBtn" disabled class="w-full py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all relative overflow-hidden group bg-slate-800/50 text-slate-500 border border-white/5 cursor-not-allowed shadow-none">
+                <span id="generateBtnText" class="flex items-center justify-center gap-2 relative z-10">
+                    ပုံဖန်တီးမှုကို စတင်ရန် 
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                </span>
+                <span id="generateBtnLoading" class="hidden flex items-center justify-center gap-3 relative z-10">
+                    <i data-lucide="loader-2" class="w-4 h-4 animate-spin text-cyan-400"></i> 
+                    <span class="text-white">MAPPING PIXELS...</span>
+                </span>
+                <!-- Glowing background injected by JS when active -->
+            </button>
+        </div>
+
+        <!-- Right: Gallery -->
+        <div class="lg:col-span-8">
+            <section class="glass-card p-6 md:p-8 rounded-[3rem] border border-cyan-500/20 bg-gradient-to-br from-cyan-900/10 to-transparent min-h-[700px] flex flex-col relative shadow-2xl overflow-hidden">
+                <div class="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-[100px] pointer-events-none -mr-32 -mt-32 animate-pulse-slow"></div>
+                
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4 relative z-10">
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-black uppercase tracking-tight flex items-center gap-3 text-white">
+                            <div class="p-2.5 bg-cyan-500/20 rounded-xl shadow-[0_0_15px_rgba(6,182,212,0.3)] text-cyan-400 border border-cyan-500/30">
+                                <i data-lucide="palette" class="w-6 h-6"></i>
+                            </div>
+                            ဖန်တီးထားသော ပုံများ ပြခန်း
+                        </h2>
+                        <p class="text-[10px] text-cyan-400/60 mt-2 uppercase tracking-[0.2em] font-num flex items-center gap-2">
+                            <i data-lucide="check-circle-2" class="w-3 h-3 text-emerald-400"></i> 12 Styles Available &bull; 100% Consistency
+                        </p>
+                    </div>
+                    <button id="downloadBtn" class="hidden flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white px-6 py-3 rounded-xl text-xs font-bold transition-all shadow-[0_0_20px_rgba(6,182,212,0.4)] border border-cyan-400/20 group">
+                        <i data-lucide="download" class="w-4 h-4 group-hover:-translate-y-1 transition-transform"></i> 
+                        Download Bundle
+                    </button>
+                </div>
+
+                <div id="statusMsgContainer" class="hidden mb-8 bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 px-6 py-4 rounded-2xl text-[11px] font-bold tracking-widest text-center animate-pulse shadow-[0_0_15px_rgba(6,182,212,0.15)] relative z-10 font-num">
+                </div>
+                
+                <div class="flex-1 relative z-10" id="galleryContent">
+                    <!-- Default Empty State -->
+                    <div id="emptyState" class="h-full flex flex-col items-center justify-center py-20 text-center">
+                        <div class="w-32 h-32 mb-8 relative flex items-center justify-center">
+                            <div class="absolute inset-0 border-2 border-dashed border-slate-700 rounded-full animate-[spin_10s_linear_infinite]"></div>
+                            <div class="absolute inset-4 border-2 border-dashed border-slate-600 rounded-full animate-[spin_7s_linear_infinite_reverse]"></div>
+                            <i data-lucide="layers" class="w-12 h-12 text-slate-500 relative z-10 animate-pulse"></i>
+                        </div>
+                        <p class="text-xl font-black uppercase tracking-[0.4em] text-slate-300 text-neon-blue">Awaiting Simulation</p>
+                        <p class="text-xs uppercase tracking-widest mt-4 text-slate-500 font-num">12 professional photography styles ready for testing</p>
+                    </div>
+
+                    <!-- Loading Placeholders -->
+                    <div id="loadingState" class="hidden grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                        <!-- Injected by JS -->
+                    </div>
+
+                    <!-- Generated Images -->
+                    <div id="imagesGrid" class="hidden grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 animate-in">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+
+                <!-- Feature Tags -->
+                <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 border-t border-white/5 pt-8 relative z-10">
+                    <div class="flex items-center gap-3 group">
+                        <div class="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 group-hover:bg-cyan-500/20 transition-colors"><i data-lucide="cpu" class="w-4 h-4"></i></div>
+                        <div class="text-[9px] text-slate-400 uppercase tracking-tighter font-bold">Native Pixel Mapping</div>
+                    </div>
+                    <div class="flex items-center gap-3 group">
+                        <div class="w-8 h-8 rounded-lg bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400 group-hover:bg-violet-500/20 transition-colors"><i data-lucide="camera" class="w-4 h-4"></i></div>
+                        <div class="text-[9px] text-slate-400 uppercase tracking-tighter font-bold">12 Cinematic Styles</div>
+                    </div>
+                    <div class="flex items-center gap-3 group">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500/20 transition-colors"><i data-lucide="user" class="w-4 h-4"></i></div>
+                        <div class="text-[9px] text-slate-400 uppercase tracking-tighter font-bold">Ghost Mannequin Shots</div>
+                    </div>
+                    <div class="flex items-center gap-3 group">
+                        <div class="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-500/20 transition-colors"><i data-lucide="check-square" class="w-4 h-4"></i></div>
+                        <div class="text-[9px] text-slate-400 uppercase tracking-tighter font-bold">High-Fidelity Restoration</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-white/5 relative z-10 mt-10">
+        <div class="max-w-4xl mx-auto space-y-6 text-center px-4">
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+                <div class="flex items-center gap-3 bg-slate-900/50 px-4 py-2 rounded-full border border-white/5">
+                    <span class="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-num">Created by:</span>
+                    <span class="text-xs font-bold text-white tracking-wider">AI Etude</span>
+                </div>
+                <div class="flex items-center gap-3 bg-slate-900/50 px-4 py-2 rounded-full border border-white/5">
+                    <span class="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-num">Version:</span>
+                    <span class="text-xs font-bold text-cyan-400 tracking-wider font-num">v3.7 Ultimate</span>
+                </div>
+                <div class="flex items-center gap-2 text-slate-400">
+                    <i data-lucide="info" class="w-4 h-4"></i>
+                    <span class="text-xs font-medium tracking-wide">လွတ်လပ်စွာ မျှဝေနိုင်ပါသည်။ စီးပွားဖြစ် အသုံးမပြုရ။</span>
+                </div>
+            </div>
+            
+            <div class="pt-6">
+                <div class="text-[10px] text-slate-600 uppercase tracking-[1em] mb-2 font-bold font-num">AI Fashion Visual Laboratory</div>
+                <div class="text-[9px] text-slate-500 uppercase tracking-widest font-num">
+                    Updated: Apr.12, 2026
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- App Logic -->
+    <script>
+        // API Setup
+        const apiKey = ""; 
+
+        const FASHION_STYLES = [
+            { id: 'editorial', title: 'Editorial Fashion', description: 'High-contrast dramatic lighting, magazine-grade composition', category: 'Studio' },
+            { id: 'lookbook', title: 'Clean Lookbook', description: 'Even neutral lighting, focus on clothing', category: 'Studio' },
+            { id: 'street', title: 'Street Style', description: 'Natural outdoor lighting, urban environment background', category: 'Street' },
+            { id: 'minimalist', title: 'Studio Minimalist', description: 'Soft diffused lighting, clean background, minimal distractions', category: 'Studio' },
+            { id: 'campaign', title: 'Ad Campaign', description: 'Cinematic lighting, narrative poses, emotional atmosphere', category: 'Street' },
+            { id: 'cyberpunk', title: 'Cyberpunk', description: 'Neon lighting, rain-slicked streets, sci-fi visuals', category: 'Street' },
+            { id: 'old_money', title: 'Old Money', description: 'High-end estate, soft warm tones, classic elegance', category: 'Street' },
+            { id: 'bohemian', title: 'Bohemian', description: 'Natural sunlight, earth tones, open wilderness', category: 'Street' },
+            { id: 'vintage', title: 'Vintage Film', description: 'Film grain, 90s aesthetics, nostalgic colors', category: 'Studio' },
+            { id: 'high_key', title: 'Dynamic Sports', description: 'Bright lighting, motion blur, energetic', category: 'Studio' },
+            { id: 'resort', title: 'Resort Luxury', description: 'Sunny beach, poolside, bright relaxed luxury', category: 'Street' },
+            { id: 'noir', title: 'Film Noir', description: 'Strong black and white contrast, mystery, hard lighting', category: 'Studio' }
+        ];
+
+        const POSES = [
+            "Full Frontal",
+            "Side 45",
+            "Walking",
+            "Sitting",
+            "Back View",
+            "Editorial Pose"
+        ];
+
+        // State Variables
+        let state = {
+            clothingImage: null,
+            base64Image: "",
+            isAiModel: true,
+            selectedStyle: FASHION_STYLES[0],
+            isGenerating: false,
+            generatedImages: []
+        };
+
+        // DOM Elements
+        const elements = {
+            uploadZone: document.getElementById('uploadZone'),
+            fileInput: document.getElementById('fileInput'),
+            uploadPlaceholder: document.getElementById('uploadPlaceholder'),
+            uploadPreview: document.getElementById('uploadPreview'),
+            
+            stylesContainer: document.getElementById('stylesContainer'),
+            
+            btnAiModel: document.getElementById('btnAiModel'),
+            btnManualModel: document.getElementById('btnManualModel'),
+            manualConfigPanel: document.getElementById('manualConfigPanel'),
+            configGender: document.getElementById('configGender'),
+            configAge: document.getElementById('configAge'),
+            configCountry: document.getElementById('configCountry'),
+            configAccessories: document.getElementById('configAccessories'),
+            
+            generateBtn: document.getElementById('generateBtn'),
+            generateBtnText: document.getElementById('generateBtnText'),
+            generateBtnLoading: document.getElementById('generateBtnLoading'),
+            
+            emptyState: document.getElementById('emptyState'),
+            loadingState: document.getElementById('loadingState'),
+            imagesGrid: document.getElementById('imagesGrid'),
+            downloadBtn: document.getElementById('downloadBtn'),
+            statusMsgContainer: document.getElementById('statusMsgContainer'),
+            
+            compareModal: document.getElementById('compareModal'),
+            closeModalBtn: document.getElementById('closeModalBtn'),
+            compareSourceImg: document.getElementById('compareSourceImg'),
+            compareOutputImg: document.getElementById('compareOutputImg'),
+            compareOutputLabel: document.getElementById('compareOutputLabel')
+        };
+
+        // Initialize UI
+        function init() {
+            renderStyles();
+            setupEventListeners();
+            updateGenerateButton();
+            lucide.createIcons();
+        }
+
+        // Render Styles List
+        function renderStyles() {
+            elements.stylesContainer.innerHTML = '';
+            FASHION_STYLES.forEach(style => {
+                const isSelected = state.selectedStyle.id === style.id;
+                const btnClass = isSelected 
+                    ? 'border-blue-500/50 bg-blue-500/10 shadow-[0_0_15px_rgba(59,130,246,0.15)]' 
+                    : 'border-white/5 bg-slate-900/40 hover:bg-slate-800 hover:border-white/10';
+                const labelClass = isSelected ? 'text-blue-400' : 'text-slate-500';
+                const textClass = isSelected ? 'text-white' : 'text-slate-300';
+                
+                const btn = document.createElement('button');
+                btn.className = `p-4 rounded-2xl border text-left transition-all duration-300 relative overflow-hidden group ${btnClass}`;
+                btn.innerHTML = `
+                    ${isSelected ? '<div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent pointer-events-none"></div>' : ''}
+                    <div class="relative z-10">
+                        <div class="text-[9px] uppercase tracking-widest mb-1.5 font-bold font-num ${labelClass}">${style.category}</div>
+                        <div class="text-xs font-bold truncate ${textClass}">${style.title}</div>
+                    </div>
+                    ${isSelected ? '<i data-lucide="check-circle-2" class="absolute right-3 top-3 w-4 h-4 text-blue-400"></i>' : ''}
+                `;
+                btn.onclick = () => {
+                    state.selectedStyle = style;
+                    renderStyles();
+                    lucide.createIcons();
+                };
+                elements.stylesContainer.appendChild(btn);
+            });
+        }
+
+        // Update UI Elements state
+        function updateGenerateButton() {
+            if (state.isGenerating || !state.base64Image) {
+                elements.generateBtn.disabled = true;
+                elements.generateBtn.className = "w-full py-4 rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] transition-all relative overflow-hidden group bg-slate-800/50 text-slate-500 border border-white/5 cursor-not-allowed font-num";
+            } else {
+                elements.generateBtn.disabled = false;
+                elements.generateBtn.className = "w-full py-4 rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] transition-all relative overflow-hidden group bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white shadow-[0_0_20px_rgba(6,182,212,0.4)] border border-cyan-400/20 cursor-pointer font-num";
+            }
+
+            if (state.isGenerating) {
+                elements.generateBtnText.classList.add('hidden');
+                elements.generateBtnText.classList.remove('flex');
+                elements.generateBtnLoading.classList.remove('hidden');
+                elements.generateBtnLoading.classList.add('flex');
+            } else {
+                elements.generateBtnText.classList.remove('hidden');
+                elements.generateBtnText.classList.add('flex');
+                elements.generateBtnLoading.classList.add('hidden');
+                elements.generateBtnLoading.classList.remove('flex');
+            }
+        }
+
+        function setStatus(msg) {
+            if (!msg) {
+                elements.statusMsgContainer.classList.add('hidden');
+                return;
+            }
+            elements.statusMsgContainer.innerHTML = `<i data-lucide="activity" class="w-4 h-4 inline-block mr-2"></i> ${msg}`;
+            elements.statusMsgContainer.classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        // Event Listeners Setup
+        function setupEventListeners() {
+            // Upload
+            elements.uploadZone.onclick = () => elements.fileInput.click();
+            
+            elements.fileInput.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        state.clothingImage = event.target.result;
+                        state.base64Image = event.target.result.split(',')[1];
+                        
+                        elements.uploadPlaceholder.classList.add('hidden');
+                        elements.uploadPreview.src = state.clothingImage;
+                        elements.uploadPreview.classList.remove('hidden');
+                        
+                        elements.uploadZone.classList.add('border-cyan-500/50', 'bg-cyan-900/10');
+                        elements.uploadZone.classList.remove('border-slate-700', 'bg-slate-900/40');
+                        
+                        updateGenerateButton();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+
+            // Model Config Toggles
+            elements.btnAiModel.onclick = () => {
+                state.isAiModel = true;
+                elements.btnAiModel.className = "py-2.5 text-[11px] font-bold rounded-lg transition-all bg-violet-500/20 text-violet-300 border border-violet-500/30 shadow-[0_0_10px_rgba(139,92,246,0.2)]";
+                elements.btnManualModel.className = "py-2.5 text-[11px] font-bold rounded-lg transition-all text-slate-400 hover:text-slate-300 border border-transparent";
+                elements.manualConfigPanel.classList.add('hidden');
+            };
+
+            elements.btnManualModel.onclick = () => {
+                state.isAiModel = false;
+                elements.btnManualModel.className = "py-2.5 text-[11px] font-bold rounded-lg transition-all bg-violet-500/20 text-violet-300 border border-violet-500/30 shadow-[0_0_10px_rgba(139,92,246,0.2)]";
+                elements.btnAiModel.className = "py-2.5 text-[11px] font-bold rounded-lg transition-all text-slate-400 hover:text-slate-300 border border-transparent";
+                elements.manualConfigPanel.classList.remove('hidden');
+            };
+
+            // Generate
+            elements.generateBtn.onclick = handleGenerate;
+
+            // Download
+            elements.downloadBtn.onclick = downloadBundle;
+
+            // Modal Close
+            elements.closeModalBtn.onclick = () => {
+                elements.compareModal.classList.add('hidden');
+                elements.compareModal.classList.remove('flex');
+            };
+        }
+
+        // API Call Function
+        async function callImageToImageApi(prompt, inputBase64, retries = 5) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${apiKey}`;
+            
+            const payload = {
+                contents: [
+                    {
+                        role: "user",
+                        parts: [
+                            { text: prompt },
+                            { inlineData: { mimeType: "image/png", data: inputBase64 } }
+                        ]
+                    }
+                ],
+                generationConfig: {
+                    responseModalities: ["IMAGE"]
+                }
+            };
+
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await response.json();
+                    const base64 = data.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
+                    if (base64) return base64;
+                    
+                    if (response.status !== 429 && response.status < 500) break;
+                } catch (e) {
+                    if (i === retries - 1) throw e;
+                }
+                await new Promise(r => setTimeout(r, Math.pow(2, i) * 1000));
+            }
+            return null;
+        }
+
+        // Generate Process
+        async function handleGenerate() {
+            if (!state.base64Image) {
+                alert("ကျေးဇူးပြု၍ အဝတ်အစားပုံ အရင်တင်ပေးပါ။");
+                return;
+            }
+
+            state.isGenerating = true;
+            state.generatedImages = [];
+            updateGenerateButton();
+            
+            elements.emptyState.classList.add('hidden');
+            elements.imagesGrid.classList.add('hidden');
+            elements.downloadBtn.classList.add('hidden');
+            
+            // Setup loading placeholders
+            elements.loadingState.innerHTML = '';
+            for(let i=0; i<8; i++){
+                elements.loadingState.innerHTML += `
+                    <div class="aspect-[3/4] rounded-3xl bg-slate-900/40 border border-white/5 flex flex-col items-center justify-center relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-b from-cyan-500/5 to-transparent animate-pulse"></div>
+                        <i data-lucide="loader-2" class="w-8 h-8 text-cyan-500/30 animate-spin mb-4 relative z-10"></i>
+                        <div class="h-1.5 w-16 bg-slate-800 rounded-full overflow-hidden relative z-10">
+                            <div class="h-full bg-cyan-500/50 w-full animate-[slideInRight_1.5s_ease-in-out_infinite]"></div>
+                        </div>
+                    </div>
+                `;
+            }
+            elements.loadingState.classList.remove('hidden');
+            lucide.createIcons();
+            
+            setStatus("ပစ်ဇယ်များကို တွက်ချက်ပြီး ပုံဖော်နေပါသည်...");
+
+            try {
+                const accessoriesPrompt = (!state.isAiModel && elements.configAccessories.value) ? `with ${elements.configAccessories.value}` : "";
+                const modelInfo = state.isAiModel 
+                    ? "A professional top-tier fashion model" 
+                    : `A ${elements.configAge.value}yo ${elements.configCountry.value} ${elements.configGender.value} model ${accessoriesPrompt}`;
+                
+                const tasks = [
+                    ...POSES.map((pose, idx) => ({
+                        type: 'model',
+                        prompt: `Create a professional high-fashion photo of ${modelInfo} wearing the EXACT SAME garment as shown in the input image. Maintain 100% literal consistency of every stitch, color, and pattern of the clothing. Do not change the garment. Only change the person and the background to ${state.selectedStyle.title} style. Pose: ${pose}. 8K HDR quality.`,
+                        id: idx
+                    })),
+                    {
+                        type: 'green_screen',
+                        prompt: `Create a 100% accurate ghost mannequin shot of the garment from the input image. FRONT VIEW. The clothing should be worn by an invisible body to show its 3D volume, shape, and hollow interior. Background: solid chroma key green screen. Professional studio product photography.`,
+                        id: 6
+                    },
+                    {
+                        type: 'green_screen',
+                        prompt: `Create a 100% accurate ghost mannequin shot of the garment from the input image. SIDE VIEW (profile angle). The clothing should be worn by an invisible body to show its 3D volume, profile shape, and depth. Background: solid chroma key green screen. Professional studio product photography.`,
+                        id: 7
+                    }
+                ];
+
+                const results = await Promise.allSettled(
+                    tasks.map(task => callImageToImageApi(task.prompt, state.base64Image))
+                );
+
+                const successfulImages = [];
+                results.forEach((res, index) => {
+                    if (res.status === 'fulfilled' && res.value) {
+                        successfulImages.push({
+                            url: `data:image/png;base64,${res.value}`,
+                            type: tasks[index].type,
+                            label: index < 6 ? `Fashion Pose ${index + 1}` : (index === 6 ? "Front Green Screen" : "Side Green Screen")
+                        });
+                    }
+                });
+
+                state.generatedImages = successfulImages;
+                
+                elements.loadingState.classList.add('hidden');
+                
+                if (successfulImages.length > 0) {
+                    renderGeneratedImages();
+                    elements.imagesGrid.classList.remove('hidden');
+                    elements.downloadBtn.classList.remove('hidden');
+                    elements.downloadBtn.classList.add('flex');
+                    setStatus("Pixel-level ဖန်တီးမှု ပြီးဆုံးပါပြီ!");
+                } else {
+                    elements.emptyState.classList.remove('hidden');
+                    setStatus("ပုံဖန်တီးမှု မအောင်မြင်ပါ။ ကျေးဇူးပြု၍ မူရင်းပုံကို ပြောင်းလဲပြီး ထပ်မံကြိုးစားကြည့်ပါ။");
+                }
+                
+            } catch (error) {
+                console.error(error);
+                elements.loadingState.classList.add('hidden');
+                elements.emptyState.classList.remove('hidden');
+                setStatus("ဆာဗာ အလုပ်များနေပါသည်။ ခဏစောင့်ပြီး ပြန်လည်ကြိုးစားပါ။");
+            } finally {
+                state.isGenerating = false;
+                updateGenerateButton();
+            }
+        }
+
+        // Render Gallery
+        function renderGeneratedImages() {
+            elements.imagesGrid.innerHTML = '';
+            state.generatedImages.forEach((img, index) => {
+                const div = document.createElement('div');
+                div.className = "aspect-[3/4] bg-slate-900 rounded-3xl overflow-hidden border border-white/5 group relative cursor-pointer shadow-2xl hover:border-cyan-500/50 transition-all duration-500";
+                
+                let badgeHtml = '';
+                if(img.type === 'green_screen') {
+                    badgeHtml = `
+                        <div class="absolute top-4 left-4 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[9px] font-bold px-3 py-1.5 rounded-full italic shadow-[0_0_10px_rgba(16,185,129,0.3)] backdrop-blur-md font-num flex items-center gap-1">
+                            <i data-lucide="layers" class="w-3 h-3"></i> CHROMA KEY
+                        </div>
+                    `;
+                }
+
+                div.innerHTML = `
+                    <img src="${img.url}" class="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110 group-hover:opacity-40" alt="Output" />
+                    
+                    <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 bg-black/60 backdrop-blur-[2px]">
+                         <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-white mb-3 shadow-[0_0_20px_rgba(6,182,212,0.6)] transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                             <i data-lucide="maximize-2" class="w-5 h-5"></i>
+                         </div>
+                         <div class="text-[10px] font-bold uppercase tracking-widest text-cyan-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-75">စစ်ဆေးရန် နှိပ်ပါ</div>
+                    </div>
+
+                    <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+                        <div class="flex justify-between items-end">
+                            <span class="text-[9px] font-bold uppercase tracking-widest text-cyan-300 drop-shadow-md font-num">${img.label}</span>
+                            <span class="text-[10px] font-black text-white drop-shadow-md bg-white/20 px-2 py-0.5 rounded font-num">8K</span>
+                        </div>
+                    </div>
+                    ${badgeHtml}
+                `;
+                
+                div.onclick = () => {
+                    elements.compareSourceImg.src = state.clothingImage;
+                    elements.compareOutputImg.src = img.url;
+                    elements.compareOutputLabel.textContent = img.label;
+                    elements.compareModal.classList.remove('hidden');
+                    elements.compareModal.classList.add('flex');
+                    lucide.createIcons();
+                };
+
+                elements.imagesGrid.appendChild(div);
+            });
+            lucide.createIcons();
+        }
+
+        // Download Logic
+        function downloadBundle() {
+            if (state.generatedImages.length === 0) return;
+            
+            state.generatedImages.forEach((img, index) => {
+                setTimeout(() => {
+                    const link = document.createElement("a");
+                    link.href = img.url;
+                    link.download = `AI_Fashion_Studio_${index + 1}.png`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }, index * 300);
+            });
+        }
+
+        // Run Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            init();
+            
+            // Preloader logic from sme.html
+            const progress = document.getElementById('progress-bar');
+            const text = document.getElementById('progress-text');
+            const preloader = document.getElementById('preloader');
+            let width = 0;
+
+            const interval = setInterval(() => {
+                width += Math.random() * 8; 
+                if (width > 100) width = 100;
+                
+                if (progress) progress.style.width = width + '%';
+                if (text) text.innerText = Math.floor(width) + '%';
+
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        if(preloader) {
+                            preloader.classList.add('opacity-0', 'scale-105', 'pointer-events-none');
+                            setTimeout(() => preloader.remove(), 700);
+                        }
+                    }, 500); 
+                }
+            }, 50); 
+        });
+
+    </script>
+</body>
+</html>
