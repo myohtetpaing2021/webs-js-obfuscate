@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CoC Gold Pass Profit Tracker - Ultimate Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#020617', 
+                            900: '#0f172a',
+                            800: '#1e293b',
+                        },
+                        primary: {
+                            400: '#38bdf8', 
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 8s ease-in-out infinite',
+                        'float-delayed': 'float 8s ease-in-out infinite 4s',
+                        'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                        'glow-flow': 'glowFlow 8s linear infinite',
+                        'scan': 'scan 3s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        slideUp: {
+                            'from': { opacity: 0, transform: 'translateY(20px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        fadeIn: {
+                            'from': { opacity: 0, transform: 'translateY(-10px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        glowFlow: {
+                            '0%': { backgroundPosition: '0% 50%' },
+                            '100%': { backgroundPosition: '200% 50%' }
+                        },
+                        scan: {
+                            '0%': { transform: 'translateY(-100vh)' },
+                            '100%': { transform: 'translateY(100vh)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Enhanced Premium Glass Effect */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7);
+        }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.4), transparent);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border-color: rgba(56, 189, 248, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 0 25px rgba(56, 189, 248, 0.1); 
+        }
+        
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Animated Glowing Button */
+        .btn-glow {
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(90deg, #059669, #0891b2);
+        }
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(90deg, #10b981, #06b6d4, #3b82f6, #10b981);
+            background-size: 200% 100%;
+            z-index: -1;
+            border-radius: inherit;
+            filter: blur(12px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            animation: glowFlow 4s linear infinite;
+        }
+        .btn-glow:hover::before {
+            opacity: 1;
+        }
+        .btn-glow:active {
+            transform: scale(0.98);
+        }
+
+        /* Input Styling */
+        .input-field {
+            transition: all 0.3s ease;
+            background: rgba(15, 23, 42, 0.6);
+        }
+        .input-field:focus {
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.4), 0 0 20px rgba(56, 189, 248, 0.2);
+            background: rgba(30, 41, 59, 0.9);
+            border-color: rgba(56, 189, 248, 0.6);
+            transform: translateY(-1px);
+        }
+        
+        select option {
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.5); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; border: 1px solid #0f172a; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #38bdf8; }
+
+        /* Advanced Neon Texts */
+        .text-neon-emerald { 
+            text-shadow: 0 0 15px rgba(16, 185, 129, 0.6), 0 0 30px rgba(16, 185, 129, 0.2); 
+        }
+        .text-neon-rose { 
+            text-shadow: 0 0 15px rgba(244, 63, 94, 0.6), 0 0 30px rgba(244, 63, 94, 0.2); 
+        }
+        .text-neon-cyan { 
+            text-shadow: 0 0 10px rgba(6, 182, 212, 0.5); 
+        }
+        
+        /* Compact Input */
+        .price-edit-input {
+            width: 85px;
+            background: rgba(2, 6, 23, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #38bdf8;
+            font-weight: 800;
+            text-align: right;
+            padding: 4px 10px;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+        }
+        .price-edit-input:focus {
+            border-color: #38bdf8;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5), 0 0 12px rgba(56, 189, 248, 0.3);
+            background: rgba(15, 23, 42, 0.9);
+            transform: scale(1.05);
+        }
+
+        /* Cyber Grid Background */
+        .cyber-grid {
+            background-image: 
+                linear-gradient(to right, rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, #000 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, #000 40%, transparent 100%);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/40 selection:text-cyan-100 min-h-[100dvh] bg-[#020617] text-slate-50 relative overflow-x-hidden">
+
+    <!-- PRELOADER (Enhanced Cyberpunk Edition) -->
+    <div id="preloader" class="fixed inset-0 z-[200] bg-[#020617] flex flex-col items-center justify-center transition-all duration-1000 ease-in-out overflow-hidden transform-gpu">
+        <div class="absolute inset-0 opacity-20 transform-gpu cyber-grid" style="transform: perspective(500px) rotateX(40deg); transform-origin: top;"></div>
+        <div class="absolute top-0 left-0 w-full h-1 bg-cyan-400/50 shadow-[0_0_30px_rgba(6,182,212,0.8)] animate-scan z-0"></div>
+
+        <div class="relative flex flex-col items-center z-10 w-full px-6">
+            <div class="relative w-48 h-48 flex items-center justify-center mb-12">
+                <div class="absolute inset-0 rounded-full border-2 border-cyan-900 border-dashed animate-[spin_15s_linear_infinite]"></div>
+                <div class="absolute inset-3 rounded-full border-t-2 border-l-2 border-cyan-400/80 shadow-[0_0_30px_rgba(6,182,212,0.3)] animate-[spin_3s_linear_infinite]"></div>
+                <div class="absolute inset-6 rounded-full border-b-2 border-r-2 border-emerald-400/90 shadow-[0_0_30px_rgba(16,185,129,0.3)] animate-[spin_2s_linear_infinite_reverse]"></div>
+                
+                <div class="relative w-24 h-24 bg-gradient-to-br from-cyan-950 to-slate-950 rounded-full flex items-center justify-center border border-cyan-400/40 shadow-[0_0_50px_rgba(6,182,212,0.6)] animate-pulse">
+                    <i data-lucide="cpu" class="text-cyan-300 w-10 h-10 relative z-10 drop-shadow-[0_0_15px_rgba(6,182,212,1)]"></i>
+                </div>
+            </div>
+            
+            <div class="w-full max-w-sm space-y-6 relative z-10">
+                <div class="text-center space-y-2">
+                    <h2 class="text-3xl md:text-4xl font-black tracking-[0.25em] text-white font-num mb-1 drop-shadow-[0_0_15px_rgba(255,255,255,0.4)] flex items-center justify-center gap-1">
+                        <span class="text-cyan-500 opacity-60">&lt;</span>PROFIT<span class="text-emerald-400 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">CORE</span><span class="text-cyan-500 opacity-60">&gt;</span>
+                    </h2>
+                    <div class="flex items-center justify-center gap-2">
+                        <div class="w-1.5 h-1.5 bg-rose-500 rounded-full animate-ping"></div>
+                        <p class="text-[10px] text-rose-400/90 font-num tracking-[0.5em] uppercase font-bold shadow-rose-500">System Booting</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-2">
+                    <div class="flex justify-between items-end px-1">
+                        <span id="loading-status" class="text-[10px] font-black uppercase tracking-widest text-cyan-400 bg-cyan-950/50 px-2.5 py-1 rounded border border-cyan-500/20 shadow-inner">
+                            Establishing Connection...
+                        </span>
+                        <span id="progress-text" class="text-xl font-black text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.6)] font-num">0%</span>
+                    </div>
+                    
+                    <div class="h-2 w-full bg-slate-900/80 rounded-full overflow-hidden border border-white/10 relative shadow-inner p-px">
+                        <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-emerald-400 w-0 rounded-full shadow-[0_0_20px_rgba(16,185,129,0.9)] relative transition-all duration-100 ease-out flex justify-end">
+                            <div class="w-4 h-full bg-white/60 blur-[2px] rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-[150] transition-all duration-300 transform -translate-y-24 opacity-0 flex items-center gap-3 px-5 py-3.5 rounded-2xl border shadow-2xl backdrop-blur-xl pointer-events-none min-w-[300px] justify-center">
+        <div id="toastIcon" class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"></div>
+        <p id="toastMessage" class="text-sm font-bold text-white font-num tracking-wide"></p>
+    </div>
+
+    <!-- Custom Delete Confirmation Modal -->
+    <div id="deleteModal" class="hidden fixed inset-0 z-[110] bg-black/80 backdrop-blur-md flex-col p-4 justify-center items-center animate-fade-in">
+        <div class="glass-card w-full max-w-xs rounded-3xl flex flex-col p-8 border border-rose-500/40 shadow-[0_0_50px_rgba(225,29,72,0.15)] relative overflow-hidden text-center transform transition-all scale-95">
+            <div class="w-20 h-20 bg-rose-500/10 rounded-full flex items-center justify-center mx-auto mb-5 border border-rose-500/30 shadow-[0_0_30px_rgba(244,63,94,0.3)]">
+                <i data-lucide="alert-triangle" class="w-10 h-10 text-rose-400 animate-pulse"></i>
+            </div>
+            <h3 class="text-lg font-black text-white mb-2 tracking-wide">ဖျက်ရန် သေချာပါသလား?</h3>
+            <p class="text-xs text-slate-400 mb-8 leading-relaxed">ဖျက်လိုက်သော မှတ်တမ်းကို ပြန်လည်ရယူနိုင်မည် မဟုတ်ပါ။</p>
+            <div class="flex gap-3">
+                <button onclick="closeDeleteModal()" class="flex-1 py-3.5 rounded-xl font-bold text-xs transition-all bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white border border-white/10 hover:shadow-lg">
+                    မဖျက်ပါ
+                </button>
+                <button onclick="confirmDelete()" class="flex-1 py-3.5 rounded-xl font-bold text-xs transition-all bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white shadow-[0_0_20px_rgba(225,29,72,0.4)] border border-rose-400/20 flex items-center justify-center gap-2 hover:scale-105">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i> ဖျက်မည်
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Reset Confirmation Modal -->
+    <div id="resetModal" class="hidden fixed inset-0 z-[110] bg-black/80 backdrop-blur-md flex-col p-4 justify-center items-center animate-fade-in">
+        <div class="glass-card w-full max-w-sm rounded-3xl flex flex-col p-8 border border-rose-500/40 shadow-[0_0_50px_rgba(225,29,72,0.15)] relative overflow-hidden text-center transform transition-all scale-95">
+            <div class="w-24 h-24 bg-rose-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-rose-500/30 shadow-[0_0_40px_rgba(244,63,94,0.3)]">
+                <i data-lucide="alert-octagon" class="w-12 h-12 text-rose-400 animate-pulse"></i>
+            </div>
+            <h3 class="text-2xl font-black text-white mb-3 tracking-wide">ဒေတာအားလုံး ဖျက်မည်</h3>
+            <p class="text-sm text-slate-400 mb-8 px-4 leading-relaxed">ဤလုပ်ဆောင်ချက်သည် မှတ်တမ်းများအားလုံးကို အပြီးတိုင် ဖျက်ပစ်မည်ဖြစ်သည်။ ပြန်လည်ရယူနိုင်မည် မဟုတ်ပါ။ ဆက်လုပ်ရန် သေချာပါသလား?</p>
+            <div class="flex gap-4">
+                <button onclick="closeResetModal()" class="flex-1 py-4 rounded-xl font-bold text-sm transition-all bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white border border-white/10 hover:shadow-lg">
+                    မလုပ်တော့ပါ
+                </button>
+                <button onclick="confirmReset()" class="flex-1 py-4 rounded-xl font-bold text-sm transition-all bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white shadow-[0_0_25px_rgba(225,29,72,0.5)] border border-rose-400/20 flex items-center justify-center gap-2 hover:scale-105">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i> အားလုံးဖျက်မည်
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Edit Modal -->
+    <div id="editModal" class="hidden fixed inset-0 z-[110] bg-black/80 backdrop-blur-md flex-col p-4 justify-center items-center animate-fade-in">
+        <div class="glass-card w-full max-w-md rounded-3xl flex flex-col p-8 border border-blue-500/40 shadow-[0_0_50px_rgba(59,130,246,0.15)] relative overflow-hidden transform transition-all scale-95">
+            <h3 class="text-xl font-black text-white mb-6 flex items-center gap-3 tracking-wide">
+                <div class="p-2.5 bg-blue-500/20 rounded-xl text-blue-400 border border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+                    <i data-lucide="edit-3" class="w-5 h-5"></i>
+                </div>
+                မှတ်တမ်း ပြင်ဆင်ရန်
+            </h3>
+            
+            <div class="space-y-5 mb-8">
+                <div>
+                    <label class="block text-[11px] font-bold uppercase tracking-widest text-cyan-400/80 mb-2 font-num">ရက်စွဲ (Date)</label>
+                    <div class="relative">
+                        <i data-lucide="calendar" class="absolute left-4 top-4 w-4 h-4 text-cyan-500"></i>
+                        <input type="date" id="editDateInput" class="input-field w-full bg-slate-900/90 border border-cyan-500/20 rounded-xl pl-12 pr-4 py-3.5 text-sm text-white outline-none font-num shadow-inner" style="color-scheme: dark;" />
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold uppercase tracking-widest text-cyan-400/80 mb-2 font-num">ဝယ်သူအမည် (Client Name)</label>
+                    <div class="relative">
+                        <i data-lucide="user" class="absolute left-4 top-4 w-4 h-4 text-cyan-500"></i>
+                        <input type="text" id="editClientInput" class="input-field w-full bg-slate-900/90 border border-cyan-500/20 rounded-xl pl-12 pr-4 py-3.5 text-sm text-white outline-none font-num shadow-inner" />
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold uppercase tracking-widest text-cyan-400/80 mb-2 font-num">Package Type</label>
+                    <div class="relative">
+                        <select id="editPackageSelect" class="input-field w-full bg-slate-900/90 border border-cyan-500/20 rounded-xl pl-4 pr-10 py-3.5 text-sm text-white outline-none cursor-pointer appearance-none font-num shadow-inner font-bold">
+                            <!-- Populated dynamically -->
+                        </select>
+                        <i data-lucide="chevron-down" class="absolute right-4 top-4 w-4 h-4 text-cyan-500 pointer-events-none"></i>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold uppercase tracking-widest text-cyan-400/80 mb-2 font-num">အရင်း (Cost in Ks)</label>
+                    <div class="relative">
+                        <i data-lucide="coins" class="absolute left-4 top-4 w-4 h-4 text-cyan-500"></i>
+                        <input type="number" id="editCostInput" class="input-field w-full bg-slate-900/90 border border-cyan-500/20 rounded-xl pl-12 pr-4 py-3.5 text-sm text-white outline-none font-num shadow-inner font-bold" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex gap-4">
+                <button onclick="closeEditModal()" class="flex-1 py-4 rounded-xl font-bold text-sm transition-all bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white border border-white/10 hover:shadow-lg">
+                    မပြင်တော့ပါ
+                </button>
+                <button onclick="saveEditTransaction()" class="flex-1 py-4 rounded-xl font-bold text-sm transition-all bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white shadow-[0_0_20px_rgba(56,189,248,0.4)] border border-blue-400/20 flex items-center justify-center gap-2 hover:scale-105">
+                    <i data-lucide="save" class="w-4 h-4"></i> သိမ်းဆည်းမည်
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Cyber Background -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden transform-gpu">
+        <div class="absolute inset-0 cyber-grid opacity-20"></div>
+        <div class="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-blue-600/10 rounded-full blur-[150px] animate-float will-change-transform"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-emerald-600/10 rounded-full blur-[150px] animate-float-delayed will-change-transform"></div>
+        <!-- Center subtle glow -->
+        <div class="absolute top-[30%] left-[20%] w-[40%] h-[40%] bg-cyan-600/5 rounded-full blur-[100px] animate-pulse-slow"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="glass-panel transform-gpu py-4 px-4 md:px-8 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-4 md:gap-5">
+            <div class="w-12 h-12 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-2xl flex items-center justify-center shadow-[0_0_25px_rgba(6,182,212,0.5)] border border-cyan-300/30 shrink-0 relative overflow-hidden group">
+                <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
+                <i data-lucide="calculator" class="text-white w-6 h-6 relative z-10"></i>
+            </div>
+            <div>
+                <h1 class="text-xl md:text-2xl font-black tracking-tight text-white font-num leading-tight drop-shadow-md">CoC <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Profit Tracker</span></h1>
+                <p class="text-[10px] md:text-xs text-cyan-400/80 font-num uppercase tracking-[0.15em] mt-0.5 font-bold">Ultimate System Engine</p>
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-5">
+            <div class="hidden sm:flex flex-col items-end">
+                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Network Status</span>
+                <span class="text-[11px] font-black text-emerald-400 flex items-center gap-2 font-num drop-shadow-[0_0_5px_rgba(16,185,129,0.5)]">
+                    <div class="w-2 h-2 bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.9)] animate-pulse"></div> SECURE
+                </span>
+            </div>
+            
+            <!-- Expanding Toggle Panel Menu -->
+            <div class="relative">
+                <button id="settingsBtn" onclick="toggleSettingsMenu()" class="w-12 h-12 rounded-2xl bg-slate-800/80 border border-white/10 flex items-center justify-center hover:bg-slate-700/80 hover:border-cyan-500/50 transition-all text-slate-300 hover:text-cyan-400 shadow-lg focus:outline-none group">
+                    <i data-lucide="settings" class="w-5 h-5 group-hover:animate-[spin_3s_linear_infinite]"></i>
+                </button>
+                
+                <div id="settingsPanel" class="absolute right-0 top-full mt-4 w-60 glass-card rounded-2xl border border-cyan-500/20 shadow-[0_20px_50px_rgba(0,0,0,0.8)] opacity-0 invisible translate-y-4 transition-all duration-300 z-50 p-2 flex flex-col gap-1 overflow-hidden">
+                    <div class="px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-cyan-400 font-num mb-1 border-b border-white/5 flex items-center gap-2 bg-slate-900/50 rounded-t-xl">
+                        <i data-lucide="sliders" class="w-3 h-3"></i> System Operations
+                    </div>
+                    
+                    <button onclick="exportReport()" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl hover:bg-cyan-500/10 text-slate-300 hover:text-cyan-400 transition-colors text-[13px] font-bold font-num text-left group mt-1 border border-transparent hover:border-cyan-500/20">
+                        <i data-lucide="file-text" class="w-4 h-4 text-slate-400 group-hover:text-cyan-400 transition-colors drop-shadow-[0_0_5px_rgba(6,182,212,0)] group-hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]"></i> Export Report (.txt)
+                    </button>
+                    
+                    <button onclick="backupData()" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl hover:bg-emerald-500/10 text-slate-300 hover:text-emerald-400 transition-colors text-[13px] font-bold font-num text-left group border border-transparent hover:border-emerald-500/20">
+                        <i data-lucide="download-cloud" class="w-4 h-4 text-slate-400 group-hover:text-emerald-400 transition-colors drop-shadow-[0_0_5px_rgba(16,185,129,0)] group-hover:drop-shadow-[0_0_8px_rgba(16,185,129,0.8)]"></i> Backup Data (.json)
+                    </button>
+                    
+                    <label class="flex items-center gap-3 w-full px-4 py-3 rounded-xl hover:bg-blue-500/10 text-slate-300 hover:text-blue-400 transition-colors text-[13px] font-bold font-num text-left cursor-pointer group border border-transparent hover:border-blue-500/20">
+                        <i data-lucide="upload-cloud" class="w-4 h-4 text-slate-400 group-hover:text-blue-400 transition-colors drop-shadow-[0_0_5px_rgba(59,130,246,0)] group-hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]"></i> Restore Data
+                        <input type="file" id="restoreInput" accept=".json" class="hidden" onchange="restoreData(event)">
+                    </label>
+                    
+                    <div class="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-1 w-full"></div>
+                    
+                    <button onclick="openResetModal()" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl hover:bg-rose-500/15 text-slate-300 hover:text-rose-400 transition-colors text-[13px] font-bold font-num text-left group border border-transparent hover:border-rose-500/30">
+                        <i data-lucide="trash-2" class="w-4 h-4 text-slate-400 group-hover:text-rose-400 transition-colors drop-shadow-[0_0_5px_rgba(244,63,94,0)] group-hover:drop-shadow-[0_0_8px_rgba(244,63,94,0.8)]"></i> Deep Clean Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-[85rem] mx-auto p-4 md:p-6 grid grid-cols-1 xl:grid-cols-12 gap-6 md:gap-8 relative z-10 pt-8 pb-24">
+        
+        <!-- Left Column: Information & Controls -->
+        <div class="xl:col-span-4 space-y-6 md:space-y-8">
+            
+            <!-- Rules & Payment Info -->
+            <section class="glass-card p-6 md:p-7 rounded-[2rem]">
+                <h2 class="text-[11px] font-black uppercase tracking-[0.2em] mb-5 text-slate-300 flex items-center gap-3">
+                    <div class="w-7 h-7 rounded-xl bg-violet-500/20 border border-violet-500/30 flex items-center justify-center text-violet-400 font-num shadow-[0_0_10px_rgba(139,92,246,0.2)]"><i data-lucide="info" class="w-3.5 h-3.5"></i></div>
+                    အချက်အလက်များ
+                </h2>
+                
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-br from-slate-900/80 to-slate-900/40 border border-blue-500/20 p-5 rounded-2xl flex items-center gap-4 group hover:border-blue-500/50 transition-all shadow-inner">
+                        <div class="p-3.5 bg-blue-500/20 rounded-xl text-blue-400 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] transition-all">
+                            <i data-lucide="credit-card" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold text-cyan-400/80 uppercase tracking-widest mb-1">Kpay ငွေလွှဲရန်</p>
+                            <p class="text-xl font-black text-white font-num tracking-wider drop-shadow-md">09668866400</p>
+                            <p class="text-xs font-bold text-blue-400/80 font-num tracking-wide mt-0.5">MYO HTET PAING</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-rose-500/10 border border-rose-500/20 p-4 rounded-2xl flex items-start gap-3 shadow-inner">
+                        <div class="p-1.5 bg-rose-500/20 rounded-lg shrink-0 mt-0.5">
+                            <i data-lucide="shield-alert" class="w-4 h-4 text-rose-400"></i>
+                        </div>
+                        <p class="text-xs font-medium text-rose-200/90 leading-relaxed pt-1">Supercell Mail & Login Otp တကြိမ်ပေးရပါမည်။</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Price Reference (Editable) -->
+            <section class="glass-card p-6 md:p-7 rounded-[2rem]">
+                <div class="flex justify-between items-center mb-5">
+                    <h2 class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-300 flex items-center gap-3">
+                        <div class="w-7 h-7 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-num shadow-[0_0_10px_rgba(6,182,212,0.2)]"><i data-lucide="tags" class="w-3.5 h-3.5"></i></div>
+                        ရောင်းဈေးများပြင်ရန်
+                    </h2>
+                    <span class="text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 bg-cyan-500/15 rounded-md text-cyan-400 border border-cyan-500/30 shadow-[0_0_10px_rgba(6,182,212,0.1)]">Editable</span>
+                </div>
+                <div class="space-y-1.5 text-sm font-num" id="priceListContainer">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+            <!-- Calculator Form -->
+            <section class="glass-card p-6 md:p-7 rounded-[2rem] border border-cyan-500/30 bg-gradient-to-b from-cyan-900/20 to-transparent shadow-[0_0_40px_rgba(6,182,212,0.1)]">
+                <h2 class="text-[11px] font-black uppercase tracking-[0.2em] mb-6 text-cyan-400 flex items-center gap-3 drop-shadow-[0_0_5px_rgba(6,182,212,0.5)]">
+                    <div class="w-7 h-7 rounded-xl bg-cyan-500/20 border border-cyan-400/50 flex items-center justify-center text-cyan-300 font-num shadow-[0_0_10px_rgba(6,182,212,0.3)]"><i data-lucide="plus-circle" class="w-3.5 h-3.5"></i></div>
+                    အရောင်းစာရင်းသွင်းရန်
+                </h2>
+                
+                <form id="trackerForm" class="space-y-5">
+                    
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-widest text-cyan-200/70 mb-2 font-num pl-1">ဝယ်သူအမည် (Client Name)</label>
+                        <div class="relative group">
+                            <i data-lucide="user" class="absolute left-4 top-3.5 w-4.5 h-4.5 text-cyan-500/70 group-focus-within:text-cyan-400 transition-colors"></i>
+                            <input type="text" id="clientInput" required placeholder="ဥပမာ - Aung Aung" class="input-field w-full rounded-xl pl-12 pr-4 py-3.5 text-sm text-white font-bold font-num shadow-inner" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-widest text-cyan-200/70 mb-2 font-num pl-1">ရောင်းချခဲ့သော Package</label>
+                        <div class="relative group">
+                            <select id="packageSelect" required class="input-field w-full rounded-xl pl-4 pr-10 py-3.5 text-sm text-white font-bold cursor-pointer appearance-none font-num shadow-inner">
+                                <option value="" disabled selected>-- ရွေးချယ်ပါ --</option>
+                                <!-- Populated by JS -->
+                            </select>
+                            <i data-lucide="chevron-down" class="absolute right-4 top-4 w-4.5 h-4.5 text-cyan-500/70 pointer-events-none"></i>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-widest text-cyan-200/70 mb-2 font-num pl-1">iTunes Giftcard အရင်း (Ks)</label>
+                        <div class="relative group">
+                            <i data-lucide="coins" class="absolute left-4 top-3.5 w-4.5 h-4.5 text-cyan-500/70 group-focus-within:text-cyan-400 transition-colors"></i>
+                            <input type="number" id="costInput" required placeholder="ဥပမာ - 21750" class="input-field w-full rounded-xl pl-12 pr-4 py-3.5 text-sm text-white font-bold font-num shadow-inner" />
+                        </div>
+                    </div>
+                    
+                    <div id="errorMsg" class="hidden text-rose-400 text-xs font-bold bg-rose-500/10 border border-rose-500/20 p-3 rounded-xl flex items-center gap-2 shadow-inner">
+                        <i data-lucide="alert-circle" class="w-4 h-4"></i> အချက်အလက်များ ပြည့်စုံစွာထည့်ပါ။
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="btn-glow w-full py-4 mt-4 rounded-xl font-black text-[13px] uppercase tracking-[0.2em] text-white shadow-[0_0_20px_rgba(16,185,129,0.4)] border border-emerald-400/30 cursor-pointer font-num transition-all">
+                        <span id="submitBtnText" class="flex items-center justify-center gap-2 relative z-10 drop-shadow-md">
+                            စာရင်းသွင်းမည် <i data-lucide="zap" class="w-4 h-4"></i>
+                        </span>
+                    </button>
+                </form>
+            </section>
+        </div>
+
+        <!-- Right Column: Dashboard & History -->
+        <div class="xl:col-span-8 flex flex-col gap-6 md:gap-8">
+            
+            <!-- Dashboard Stats -->
+            <section class="glass-card p-6 md:p-10 rounded-[2.5rem] border border-emerald-500/30 bg-gradient-to-br from-emerald-900/20 to-slate-900/50 relative shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+                <!-- Inner Glow Details -->
+                <div class="absolute top-0 right-0 w-72 h-72 bg-emerald-500/15 rounded-full blur-[90px] pointer-events-none -mr-20 -mt-20 animate-pulse-slow"></div>
+                <div class="absolute bottom-0 left-0 w-40 h-40 bg-cyan-500/10 rounded-full blur-[70px] pointer-events-none -ml-10 -mb-10"></div>
+                
+                <div class="relative z-10 w-full text-center md:text-left">
+                    <div class="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 mb-4 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+                        <i data-lucide="activity" class="w-4 h-4 text-emerald-400"></i>
+                        <p class="text-[11px] font-bold text-emerald-300 uppercase tracking-[0.3em] font-num">Total Net Profit</p>
+                    </div>
+                    <h2 id="totalProfitDisplay" class="text-5xl md:text-7xl font-black tracking-tighter text-white font-num text-neon-emerald">0 <span class="text-2xl md:text-4xl text-emerald-400 drop-shadow-none">Ks</span></h2>
+                </div>
+
+                <!-- Latest Result Card -->
+                <div id="latestResult" class="hidden w-full md:w-auto min-w-[320px] bg-slate-950/80 border border-cyan-500/20 rounded-[1.5rem] p-5 relative z-10 shadow-[0_15px_35px_rgba(0,0,0,0.6)] animate-fade-in backdrop-blur-xl">
+                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-400/80 mb-4 text-center font-num flex items-center justify-center gap-2">
+                        <i data-lucide="zap" class="w-3 h-3 text-cyan-400"></i> Latest Operation
+                    </p>
+                    <div class="grid grid-cols-3 gap-3 text-center divide-x divide-white/10">
+                        <div class="px-2">
+                            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">ရောင်းဈေး</p>
+                            <p class="font-black text-cyan-400 font-num text-lg" id="resSell">0</p>
+                        </div>
+                        <div class="px-2">
+                            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">အရင်း</p>
+                            <p class="font-black text-rose-400 font-num text-lg" id="resCost">0</p>
+                        </div>
+                        <div class="px-2 relative">
+                            <div class="absolute inset-0 bg-emerald-500/5 blur-md rounded-full"></div>
+                            <p class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 mb-1.5 relative z-10">အမြတ်</p>
+                            <p class="font-black text-emerald-400 text-xl font-num text-neon-emerald relative z-10" id="resProfit">0</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- History Table Section -->
+            <section class="glass-card flex-1 rounded-[2.5rem] border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.4)] overflow-hidden flex flex-col relative z-10">
+                <div class="p-6 md:p-7 border-b border-white/5 flex flex-col xl:flex-row justify-between items-start xl:items-center bg-slate-900/50 gap-5 backdrop-blur-md">
+                    <h2 class="text-xl font-black flex items-center gap-3 text-white shrink-0 tracking-wide drop-shadow-md">
+                        <div class="p-2.5 bg-blue-500/20 rounded-xl text-blue-400 border border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+                            <i data-lucide="server" class="w-5 h-5"></i>
+                        </div>
+                        Data Registry
+                    </h2>
+                    
+                    <!-- Modern Toolbar: Search, Filter, Sort -->
+                    <div class="flex flex-wrap items-center gap-3 w-full xl:w-auto font-num">
+                        <div class="relative w-full md:flex-1 xl:w-56 group">
+                            <i data-lucide="search" class="absolute left-3.5 top-3 w-4 h-4 text-slate-500 group-focus-within:text-cyan-400 transition-colors"></i>
+                            <input type="text" id="searchInput" placeholder="Search Client..." class="w-full bg-slate-950/80 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white font-bold outline-none focus:border-cyan-500/50 focus:bg-slate-900 shadow-inner transition-all">
+                        </div>
+                        
+                        <div class="relative shrink-0 flex-1 md:flex-none">
+                            <select id="monthFilter" class="w-full bg-slate-950/80 border border-white/10 rounded-xl pl-4 pr-9 py-2.5 text-xs font-bold text-slate-300 outline-none focus:border-cyan-500/50 focus:text-white appearance-none cursor-pointer shadow-inner transition-all">
+                                <option value="all">All Months</option>
+                                <option value="01">Jan</option>
+                                <option value="02">Feb</option>
+                                <option value="03">Mar</option>
+                                <option value="04">Apr</option>
+                                <option value="05">May</option>
+                                <option value="06">Jun</option>
+                                <option value="07">Jul</option>
+                                <option value="08">Aug</option>
+                                <option value="09">Sep</option>
+                                <option value="10">Oct</option>
+                                <option value="11">Nov</option>
+                                <option value="12">Dec</option>
+                            </select>
+                            <i data-lucide="calendar" class="absolute right-3 top-3 w-4 h-4 text-slate-500 pointer-events-none"></i>
+                        </div>
+
+                        <div class="relative shrink-0 flex-1 md:flex-none">
+                            <select id="sortOrder" class="w-full bg-slate-950/80 border border-white/10 rounded-xl pl-4 pr-9 py-2.5 text-xs font-bold text-slate-300 outline-none focus:border-cyan-500/50 focus:text-white appearance-none cursor-pointer shadow-inner transition-all">
+                                <option value="newest">Latest</option>
+                                <option value="oldest">Oldest</option>
+                                <option value="profit-high">Max Profit</option>
+                                <option value="profit-low">Min Profit</option>
+                            </select>
+                            <i data-lucide="arrow-up-down" class="absolute right-3 top-3 w-4 h-4 text-slate-500 pointer-events-none"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex-1 overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-sm text-left font-num min-w-[800px]">
+                        <thead class="text-[10px] text-slate-400 uppercase tracking-widest bg-slate-950/60 border-b border-white/5 backdrop-blur-xl">
+                            <tr>
+                                <th scope="col" class="px-6 py-5 font-black">Date & Time</th>
+                                <th scope="col" class="px-6 py-5 font-black">Client Name</th>
+                                <th scope="col" class="px-6 py-5 font-black text-center">Pack</th>
+                                <th scope="col" class="px-6 py-5 font-black text-right">Sell (Ks)</th>
+                                <th scope="col" class="px-6 py-5 font-black text-right">Cost (Ks)</th>
+                                <th scope="col" class="px-6 py-5 font-black text-right text-emerald-400">Profit</th>
+                                <th scope="col" class="px-6 py-5 font-black text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody" class="divide-y divide-white/5 bg-slate-900/20">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination System -->
+                <div class="p-5 border-t border-white/5 bg-slate-950/60 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-num text-slate-400 backdrop-blur-xl">
+                    <span id="pageInfo" class="font-bold tracking-wider">Showing: 0 - 0 of 0</span>
+                    <div class="flex gap-2">
+                        <button id="prevBtn" class="px-4 py-2.5 bg-slate-800/80 hover:bg-slate-700 rounded-xl transition-all border border-white/10 hover:border-cyan-500/30 disabled:opacity-40 disabled:cursor-not-allowed font-bold text-white shadow-md flex items-center gap-2"><i data-lucide="chevron-left" class="w-4 h-4"></i> Prev</button>
+                        <button id="nextBtn" class="px-4 py-2.5 bg-slate-800/80 hover:bg-slate-700 rounded-xl transition-all border border-white/10 hover:border-cyan-500/30 disabled:opacity-40 disabled:cursor-not-allowed font-bold text-white shadow-md flex items-center gap-2">Next <i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-white/5 relative z-10 text-center">
+        <div class="flex flex-col items-center justify-center gap-2 text-[10px] text-slate-500 uppercase tracking-[0.25em] font-num font-bold">
+            <span class="flex items-center gap-2"><i data-lucide="shield-check" class="w-4 h-4 text-cyan-500/70"></i> Ultimate Profit Engine</span>
+            <span class="opacity-60">&copy; 2026 CoC Tracker System</span>
+        </div>
+    </footer>
+
+    <!-- App Logic -->
+    <script>
+        // Data Configuration
+        let packages = [
+            { id: 1, usd: 1.49, accMmk: 3700, sellPrice: 10000 },
+            { id: 2, usd: 2.99, accMmk: 7500, sellPrice: 16000 },
+            { id: 3, usd: 3.49, accMmk: 8700, sellPrice: 18500 },
+            { id: 4, usd: 4.99, accMmk: 12500, sellPrice: 25000 },
+            { id: 5, usd: 6.99, accMmk: 17500, sellPrice: 35000 },
+            { id: 6, usd: 9.99, accMmk: 25000, sellPrice: 50000 }
+        ];
+
+        // State management
+        let transactions = [];
+        let totalProfit = 0;
+        let editingId = null;
+        let pendingDeleteId = null;
+        
+        // Pagination & Filter States
+        let currentPage = 1;
+        const itemsPerPage = 5;
+        let searchQuery = "";
+        let filterMonth = "all";
+        let sortOrder = "newest";
+
+        // Init App
+        function init() {
+            lucide.createIcons();
+            renderEditablePrices();
+            renderPackageSelect();
+            setupEventListeners();
+            renderTable();
+        }
+
+        // Render Editable Prices List
+        function renderEditablePrices() {
+            const container = document.getElementById('priceListContainer');
+            container.innerHTML = '';
+            
+            packages.forEach((pkg, index) => {
+                const div = document.createElement('div');
+                div.className = "flex justify-between items-center py-2.5 px-3.5 hover:bg-slate-800/60 rounded-xl transition-all group border border-transparent hover:border-white/5";
+                div.innerHTML = `
+                    <div class="flex items-center gap-2.5 text-slate-300">
+                        <span class="font-black text-white text-base">$${pkg.usd}</span>
+                        <span class="text-[10px] font-bold text-slate-500 hidden sm:inline uppercase tracking-wider">(MMK ${pkg.accMmk})</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="number" class="price-edit-input font-num" value="${pkg.sellPrice}" data-index="${index}" />
+                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Ks</span>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            document.querySelectorAll('.price-edit-input').forEach(input => {
+                input.addEventListener('change', (e) => {
+                    const idx = e.target.getAttribute('data-index');
+                    const newPrice = parseInt(e.target.value);
+                    if(!isNaN(newPrice)) {
+                        packages[idx].sellPrice = newPrice;
+                        renderPackageSelect();
+                    }
+                });
+            });
+        }
+
+        function renderPackageSelect() {
+            const selectEl = document.getElementById('packageSelect');
+            selectEl.innerHTML = '<option value="" disabled selected>-- ရွေးချယ်ပါ --</option>';
+            packages.forEach(pkg => {
+                const option = document.createElement('option');
+                option.value = pkg.id;
+                option.textContent = `$${pkg.usd} - ${pkg.sellPrice.toLocaleString()} Ks`;
+                selectEl.appendChild(option);
+            });
+        }
+
+        // --- Settings Menu & Export/Import Systems ---
+        function toggleSettingsMenu() {
+            const panel = document.getElementById('settingsPanel');
+            if (panel.classList.contains('opacity-0')) {
+                panel.classList.remove('opacity-0', 'invisible', 'translate-y-4');
+                panel.classList.add('opacity-100', 'visible', 'translate-y-0');
+            } else {
+                closeSettingsMenu();
+            }
+        }
+
+        function closeSettingsMenu() {
+            const panel = document.getElementById('settingsPanel');
+            if (panel) {
+                panel.classList.add('opacity-0', 'invisible', 'translate-y-4');
+                panel.classList.remove('opacity-100', 'visible', 'translate-y-0');
+            }
+        }
+
+        // Close setting panel if clicked outside
+        document.addEventListener('click', (e) => {
+            const panel = document.getElementById('settingsPanel');
+            const btn = document.getElementById('settingsBtn');
+            if (panel && btn && !panel.contains(e.target) && !btn.contains(e.target)) {
+                closeSettingsMenu();
+            }
+        });
+
+        // --- Toast Notification System ---
+        let toastTimeout;
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastIcon = document.getElementById('toastIcon');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            clearTimeout(toastTimeout);
+            
+            toastMessage.textContent = message;
+            
+            if (type === 'success') {
+                toast.className = "fixed top-6 left-1/2 -translate-x-1/2 z-[150] transition-all duration-300 transform translate-y-0 opacity-100 flex items-center gap-4 px-6 py-4 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-xl bg-emerald-950/80 border border-emerald-500/40 min-w-[320px] justify-center";
+                toastIcon.className = "flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.4)]";
+                toastIcon.innerHTML = '<i data-lucide="check-circle-2" class="w-5 h-5"></i>';
+            } else if (type === 'error') {
+                toast.className = "fixed top-6 left-1/2 -translate-x-1/2 z-[150] transition-all duration-300 transform translate-y-0 opacity-100 flex items-center gap-4 px-6 py-4 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-xl bg-rose-950/80 border border-rose-500/40 min-w-[320px] justify-center";
+                toastIcon.className = "flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center bg-rose-500/20 text-rose-400 border border-rose-500/30 shadow-[0_0_15px_rgba(244,63,94,0.4)]";
+                toastIcon.innerHTML = '<i data-lucide="alert-octagon" class="w-5 h-5"></i>';
+            }
+            
+            lucide.createIcons();
+            
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('-translate-y-24', 'opacity-0');
+            }, 3000);
+        }
+
+        function exportReport() {
+            const filteredTx = getProcessedTransactions();
+
+            if (filteredTx.length === 0) {
+                showToast("ထုတ်ယူရန် မှတ်တမ်းမရှိပါ။", "error");
+                closeSettingsMenu();
+                return;
+            }
+            
+            let report = "========================================\n";
+            report += "      CoC Profit Tracker - Report\n";
+            report += "========================================\n\n";
+            report += "Generated Date: " + new Date().toLocaleString() + "\n";
+            
+            if (searchQuery) {
+                report += "Client Filter: " + searchQuery + "\n";
+            }
+            if (filterMonth !== "all") {
+                report += "Month Filter: " + filterMonth + "\n";
+            }
+
+            const filteredProfit = filteredTx.reduce((sum, tx) => sum + tx.profit, 0);
+            report += "Total Profit (Filtered): " + filteredProfit.toLocaleString() + " Ks\n";
+            report += "----------------------------------------\n\n";
+            
+            filteredTx.forEach((tx, idx) => {
+                report += `${idx + 1}. [${tx.date} ${tx.time}] ${tx.clientName}\n`;
+                report += `    Package: $${tx.usd} | Sell: ${tx.sellPrice}Ks | Cost: ${tx.cost}Ks | Profit: ${tx.profit}Ks\n\n`;
+            });
+            
+            const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            
+            let fileNameStr = "All";
+            if (searchQuery) {
+                fileNameStr = searchQuery.replace(/[^a-z0-9]/gi, '_');
+            }
+            a.download = `CoC_Report_${fileNameStr}_${new Date().getTime()}.txt`;
+            
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            closeSettingsMenu();
+            showToast("Report ကို အောင်မြင်စွာ Export လုပ်ပြီးပါပြီ။", "success");
+        }
+
+        function backupData() {
+            if (transactions.length === 0) {
+                showToast("Backup လုပ်ရန် မှတ်တမ်းမရှိပါ။", "error");
+                closeSettingsMenu();
+                return;
+            }
+            
+            const dataToSave = {
+                version: "1.0",
+                exportedAt: new Date().toISOString(),
+                totalProfit: totalProfit,
+                transactions: transactions
+            };
+            
+            const dataStr = JSON.stringify(dataToSave, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `CoC_Backup_${new Date().getTime()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            closeSettingsMenu();
+            showToast("Data ကို အောင်မြင်စွာ Backup လုပ်ပြီးပါပြီ။", "success");
+        }
+
+        function restoreData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data && data.transactions) {
+                        transactions = data.transactions;
+                        recalculateStats();
+                        showToast("Data ကို အောင်မြင်စွာ Restore လုပ်ပြီးပါပြီ။", "success");
+                    } else {
+                        showToast("Invalid Backup File. မှန်ကန်သော Backup ဖိုင် မဟုတ်ပါ။", "error");
+                    }
+                } catch (error) {
+                    showToast("ဖိုင်ဖတ်ရာတွင် အမှားအယွင်းရှိနေပါသည်။", "error");
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; // Reset input
+            closeSettingsMenu();
+        }
+
+        // --- Custom Reset Alert Box ---
+        function openResetModal() {
+            const modal = document.getElementById('resetModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            closeSettingsMenu();
+            lucide.createIcons();
+        }
+
+        function closeResetModal() {
+            const modal = document.getElementById('resetModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function confirmReset() {
+            transactions = [];
+            recalculateStats();
+            closeResetModal();
+            showToast("ဒေတာအားလုံးကို အောင်မြင်စွာ ဖျက်လိုက်ပါပြီ။", "success");
+        }
+        // ------------------------------------------
+
+        function setupEventListeners() {
+            document.getElementById('trackerForm').addEventListener('submit', handleFormSubmit);
+
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                searchQuery = e.target.value.toLowerCase();
+                currentPage = 1;
+                renderTable();
+            });
+
+            document.getElementById('monthFilter').addEventListener('change', (e) => {
+                filterMonth = e.target.value;
+                currentPage = 1;
+                renderTable();
+            });
+
+            document.getElementById('sortOrder').addEventListener('change', (e) => {
+                sortOrder = e.target.value;
+                currentPage = 1;
+                renderTable();
+            });
+
+            document.getElementById('prevBtn').addEventListener('click', () => {
+                if (currentPage > 1) { currentPage--; renderTable(); }
+            });
+
+            document.getElementById('nextBtn').addEventListener('click', () => {
+                const filteredTx = getProcessedTransactions();
+                if (currentPage < Math.ceil(filteredTx.length / itemsPerPage)) { currentPage++; renderTable(); }
+            });
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            const clientName = document.getElementById('clientInput').value.trim();
+            const packageId = document.getElementById('packageSelect').value;
+            const cost = parseInt(document.getElementById('costInput').value);
+            const errorMsg = document.getElementById('errorMsg');
+
+            if (!clientName || !packageId || isNaN(cost)) {
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+            errorMsg.classList.add('hidden');
+
+            const selectedPkg = packages.find(p => p.id == packageId);
+            const profit = selectedPkg.sellPrice - cost;
+
+            // Highly robust date formulation
+            const now = new Date();
+            const yyyy = now.getFullYear();
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const dd = String(now.getDate()).padStart(2, '0');
+            const dateStr = `${dd} ${mm} ${yyyy}`; 
+            
+            const timeStr = now.toLocaleTimeString('en-US', { hour12: true, hour: 'numeric', minute: 'numeric' });
+            const monthVal = mm;
+
+            const transaction = {
+                id: Date.now(),
+                packageId: selectedPkg.id,
+                clientName: clientName,
+                date: dateStr, // Safely stored as strictly "DD MM YYYY"
+                time: timeStr,
+                month: monthVal,
+                usd: selectedPkg.usd,
+                sellPrice: selectedPkg.sellPrice,
+                cost: cost,
+                profit: profit,
+                timestamp: now.getTime()
+            };
+
+            transactions.push(transaction);
+            
+            recalculateStats();
+            
+            document.getElementById('clientInput').value = '';
+            document.getElementById('packageSelect').selectedIndex = 0;
+            document.getElementById('costInput').value = '';
+            
+            showToast("မှတ်တမ်း အသစ်ထည့်သွင်းပြီးပါပြီ။", "success");
+        }
+
+        function editTransaction(id) {
+            const tx = transactions.find(t => String(t.id) === String(id));
+            if (!tx) return;
+
+            editingId = tx.id;
+            
+            // Reconstruct Date strictly from 'DD MM YYYY' to bypass ANY local timezone drifts
+            let dateVal = "";
+            if (tx.date) {
+                const parts = tx.date.split(' ');
+                if (parts.length === 3) {
+                    dateVal = `${parts[2]}-${parts[1]}-${parts[0]}`; // YYYY-MM-DD
+                }
+            }
+            
+            const dateInput = document.getElementById('editDateInput');
+            if (dateInput) {
+                dateInput.value = dateVal;
+            }
+            
+            document.getElementById('editClientInput').value = tx.clientName || "";
+            
+            const editSelect = document.getElementById('editPackageSelect');
+            editSelect.innerHTML = '<option value="" disabled>-- ရွေးချယ်ပါ --</option>';
+            packages.forEach(pkg => {
+                const option = document.createElement('option');
+                option.value = pkg.id;
+                option.textContent = `$${pkg.usd} - ${pkg.sellPrice.toLocaleString()} Ks`;
+                editSelect.appendChild(option);
+            });
+            
+            const pkgValue = tx.packageId || packages.find(p => p.usd === tx.usd)?.id || "";
+            editSelect.value = String(pkgValue);
+            document.getElementById('editCostInput').value = tx.cost || "";
+
+            const modal = document.getElementById('editModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeEditModal() {
+            editingId = null;
+            const modal = document.getElementById('editModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function saveEditTransaction() {
+            if (!editingId) return;
+            
+            const dateInputVal = document.getElementById('editDateInput').value;
+            const clientName = document.getElementById('editClientInput').value.trim();
+            const packageId = document.getElementById('editPackageSelect').value;
+            const cost = parseInt(document.getElementById('editCostInput').value);
+            
+            if (!clientName || !packageId || isNaN(cost) || !dateInputVal) {
+                showToast("အချက်အလက်များ ပြည့်စုံစွာထည့်ပါ။", "error");
+                return;
+            }
+
+            const selectedPkg = packages.find(p => String(p.id) === String(packageId));
+            const profit = selectedPkg.sellPrice - cost;
+
+            const txIndex = transactions.findIndex(t => String(t.id) === String(editingId));
+            if (txIndex !== -1) {
+                transactions[txIndex].clientName = clientName;
+                transactions[txIndex].packageId = selectedPkg.id;
+                transactions[txIndex].usd = selectedPkg.usd;
+                transactions[txIndex].sellPrice = selectedPkg.sellPrice;
+                transactions[txIndex].cost = cost;
+                transactions[txIndex].profit = profit;
+                
+                // Safely update the string directly to bypass timezone calculation errors
+                const parts = dateInputVal.split('-');
+                if (parts.length === 3) {
+                    const yyyy = parts[0];
+                    const mm = parts[1];
+                    const dd = parts[2];
+                    
+                    transactions[txIndex].date = `${dd} ${mm} ${yyyy}`;
+                    transactions[txIndex].month = mm;
+                    
+                    // Safely patch the timestamp preserving existing hours if available
+                    const oldDateObj = new Date(transactions[txIndex].timestamp);
+                    const hours = isNaN(oldDateObj.getHours()) ? 0 : oldDateObj.getHours();
+                    const mins = isNaN(oldDateObj.getMinutes()) ? 0 : oldDateObj.getMinutes();
+                    const secs = isNaN(oldDateObj.getSeconds()) ? 0 : oldDateObj.getSeconds();
+                    
+                    transactions[txIndex].timestamp = new Date(parseInt(yyyy, 10), parseInt(mm, 10) - 1, parseInt(dd, 10), hours, mins, secs).getTime();
+                }
+            }
+            
+            recalculateStats();
+            closeEditModal();
+            showToast("မှတ်တမ်း ပြင်ဆင်ပြီးပါပြီ။", "success");
+        }
+
+        function deleteTransaction(id) {
+            pendingDeleteId = id;
+            const modal = document.getElementById('deleteModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeDeleteModal() {
+            pendingDeleteId = null;
+            const modal = document.getElementById('deleteModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function confirmDelete() {
+            if (pendingDeleteId !== null) {
+                transactions = transactions.filter(tx => String(tx.id) !== String(pendingDeleteId));
+                recalculateStats();
+                closeDeleteModal();
+                showToast("မှတ်တမ်း ဖျက်လိုက်ပါပြီ။", "success");
+            }
+        }
+
+        function recalculateStats() {
+            totalProfit = transactions.reduce((sum, tx) => sum + tx.profit, 0);
+            
+            let latestTx = null;
+            if (transactions.length > 0) {
+                latestTx = transactions.reduce((latest, current) => current.timestamp > latest.timestamp ? current : latest);
+            }
+            
+            updateDashboard(latestTx);
+            renderTable();
+        }
+
+        function getProcessedTransactions() {
+            let processed = [...transactions];
+
+            if (filterMonth !== "all") {
+                processed = processed.filter(tx => tx.month === filterMonth);
+            }
+
+            if (searchQuery) {
+                processed = processed.filter(tx => tx.clientName.toLowerCase().includes(searchQuery));
+            }
+
+            processed.sort((a, b) => {
+                switch (sortOrder) {
+                    case 'newest': return b.timestamp - a.timestamp;
+                    case 'oldest': return a.timestamp - b.timestamp;
+                    case 'profit-high': return b.profit - a.profit;
+                    case 'profit-low': return a.profit - b.profit;
+                    default: return b.timestamp - a.timestamp;
+                }
+            });
+
+            return processed;
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('historyTableBody');
+            const processedTx = getProcessedTransactions();
+            
+            const totalPages = Math.ceil(processedTx.length / itemsPerPage) || 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const paginatedTx = processedTx.slice(startIndex, startIndex + itemsPerPage);
+
+            tbody.innerHTML = '';
+
+            if (paginatedTx.length === 0) {
+                tbody.innerHTML = `
+                    <tr id="emptyState">
+                        <td colspan="7" class="px-6 py-16 text-center">
+                            <div class="flex flex-col items-center justify-center text-slate-500">
+                                <i data-lucide="clipboard-x" class="w-12 h-12 mb-4 opacity-30 text-cyan-500"></i>
+                                <p class="text-xs uppercase tracking-widest font-bold">မှတ်တမ်း မရှိသေးပါ / ရှာမတွေ့ပါ</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            } else {
+                paginatedTx.forEach(tx => {
+                    const profitClass = tx.profit >= 0 ? "text-emerald-400" : "text-rose-400";
+                    const profitPrefix = tx.profit > 0 ? "+" : "";
+
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-800/40 transition-all duration-300 animate-fade-in group border-b border-white/5 last:border-0";
+                    tr.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-white font-bold tracking-wide">${tx.date}</div>
+                            <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">${tx.time}</div>
+                        </td>
+                        <td class="px-6 py-4 font-bold text-blue-300">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(59,130,246,0.2)] border border-blue-500/30 group-hover:bg-blue-500/30 transition-colors"><i data-lucide="user" class="w-4 h-4"></i></div>
+                                ${tx.clientName}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="inline-block px-3 py-1 bg-slate-950 rounded-lg border border-white/10 font-black text-white shadow-inner">$${tx.usd}</span>
+                        </td>
+                        <td class="px-6 py-4 text-right text-cyan-300 font-black">${tx.sellPrice.toLocaleString()}</td>
+                        <td class="px-6 py-4 text-right text-rose-300 font-bold">${tx.cost.toLocaleString()}</td>
+                        <td class="px-6 py-4 text-right font-black text-base ${profitClass}">${profitPrefix}${tx.profit.toLocaleString()}</td>
+                        <td class="px-6 py-4 text-center">
+                            <div class="flex justify-center items-center gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+                                <button onclick="editTransaction('${tx.id}')" class="p-2 bg-blue-500/10 text-blue-400 hover:bg-blue-500/30 hover:text-white rounded-xl transition-all border border-blue-500/20 hover:border-blue-500/50 hover:shadow-[0_0_15px_rgba(59,130,246,0.5)] hover:scale-110" title="ပြင်ဆင်မည်">
+                                    <i data-lucide="edit-3" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="deleteTransaction('${tx.id}')" class="p-2 bg-rose-500/10 text-rose-400 hover:bg-rose-500/30 hover:text-white rounded-xl transition-all border border-rose-500/20 hover:border-rose-500/50 hover:shadow-[0_0_15px_rgba(244,63,94,0.5)] hover:scale-110" title="ဖျက်မည်">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            const pageInfo = document.getElementById('pageInfo');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            const endNum = Math.min(startIndex + itemsPerPage, processedTx.length);
+            pageInfo.textContent = `Showing: ${processedTx.length > 0 ? startIndex + 1 : 0} - ${endNum} of ${processedTx.length}`;
+
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages || processedTx.length === 0;
+
+            lucide.createIcons();
+        }
+
+        function updateDashboard(latestTx) {
+            const totalEl = document.getElementById('totalProfitDisplay');
+            if (totalProfit < 0) {
+                totalEl.innerHTML = `${totalProfit.toLocaleString()} <span class="text-2xl md:text-4xl text-rose-500 drop-shadow-none">Ks</span>`;
+                totalEl.className = "text-5xl md:text-7xl font-black tracking-tighter font-num text-rose-400 text-neon-rose drop-shadow-[0_0_20px_rgba(244,63,94,0.4)]";
+            } else {
+                totalEl.innerHTML = `${totalProfit.toLocaleString()} <span class="text-2xl md:text-4xl text-emerald-400 drop-shadow-none">Ks</span>`;
+                totalEl.className = "text-5xl md:text-7xl font-black tracking-tighter font-num text-white text-neon-emerald drop-shadow-[0_0_20px_rgba(16,185,129,0.3)]";
+            }
+
+            const latestDiv = document.getElementById('latestResult');
+            if (latestTx) {
+                latestDiv.classList.remove('hidden');
+                document.getElementById('resSell').textContent = latestTx.sellPrice.toLocaleString();
+                document.getElementById('resCost').textContent = latestTx.cost.toLocaleString();
+                
+                const resProfitEl = document.getElementById('resProfit');
+                resProfitEl.textContent = latestTx.profit.toLocaleString();
+                if(latestTx.profit >= 0) {
+                    resProfitEl.className = "font-black text-emerald-400 text-xl font-num text-neon-emerald relative z-10";
+                } else {
+                    resProfitEl.className = "font-black text-rose-400 text-xl font-num text-neon-rose relative z-10";
+                }
+            } else {
+                latestDiv.classList.add('hidden');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            init();
+            
+            const progress = document.getElementById('progress-bar');
+            const text = document.getElementById('progress-text');
+            const status = document.getElementById('loading-status');
+            const preloader = document.getElementById('preloader');
+            let width = 0;
+
+            // Hacker-style loading logs
+            const statuses = [
+                "Establishing Secure Link...",
+                "Decrypting Core Modules...",
+                "Loading Market Rates...",
+                "Bypassing Security Protocols...",
+                "Initializing UI Engine...",
+                "System Ready."
+            ];
+
+            const interval = setInterval(() => {
+                width += Math.random() * 8; 
+                if (width > 100) width = 100;
+                
+                if (progress) progress.style.width = width + '%';
+                if (text) text.innerText = Math.floor(width) + '%';
+
+                // Change status text based on percentage
+                if (status) {
+                    if (width < 15) status.innerText = statuses[0];
+                    else if (width < 35) status.innerText = statuses[1];
+                    else if (width < 55) status.innerText = statuses[2];
+                    else if (width < 75) status.innerText = statuses[3];
+                    else if (width < 95) status.innerText = statuses[4];
+                    else {
+                        status.innerText = statuses[5];
+                        status.classList.remove('text-cyan-400', 'bg-cyan-950/50', 'border-cyan-500/20');
+                        status.classList.add('text-emerald-400', 'bg-emerald-950/50', 'border-emerald-500/30');
+                    }
+                }
+
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        if(preloader) {
+                            // Warp-out exit animation
+                            preloader.classList.add('opacity-0', 'scale-110', 'blur-md', 'pointer-events-none');
+                            setTimeout(() => preloader.remove(), 1000);
+                        }
+                    }, 600); 
+                }
+            }, 60); 
+        });
+
+    </script>
+</body>
+</html>
