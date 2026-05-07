@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Budget Studio - Ultimate Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#020617', 
+                            900: '#0f172a',
+                            800: '#1e293b',
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'slide-up': 'slideUp 0.4s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            'from': { opacity: 0 },
+                            'to': { opacity: 1 },
+                        },
+                        slideUp: {
+                            'from': { opacity: 0, transform: 'translateY(15px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            /* Optimized ambient background instead of heavy blur divs */
+            background-color: #020617;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.04), transparent 30%),
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.04), transparent 30%);
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+            min-height: 100vh;
+        }
+
+        /* Remove Number Arrows */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Lightweight Glass Effect */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.5) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: border-color 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(56, 189, 248, 0.2);
+        }
+
+        /* Input Styling */
+        .input-field {
+            transition: all 0.2s ease;
+            background: rgba(15, 23, 42, 0.6);
+        }
+        .input-field:focus {
+            box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.4), 0 0 10px rgba(56, 189, 248, 0.1);
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+
+        .text-neon-cyan {
+            text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+        }
+        
+        /* Subtle grid pattern background */
+        .bg-grid-pattern {
+            background-image: linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-200 bg-grid-pattern">
+
+    <!-- PRELOADER (Optimized) -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
+        <div class="relative flex flex-col items-center">
+            <div class="relative w-32 h-32 flex items-center justify-center mb-8">
+                <!-- Simplified CSS spinner for better performance -->
+                <div class="absolute inset-0 rounded-full border-2 border-slate-800 border-t-cyan-500 animate-spin"></div>
+                <div class="absolute inset-3 rounded-full border-2 border-slate-800 border-b-violet-500 animate-[spin_1.5s_linear_infinite_reverse]"></div>
+                <div class="relative z-10 w-16 h-16 bg-slate-900 rounded-full flex items-center justify-center border border-white/10 shadow-[0_0_30px_rgba(6,182,212,0.2)]">
+                    <i data-lucide="calculator" class="text-cyan-400 w-6 h-6"></i>
+                </div>
+            </div>
+            
+            <div class="w-64 space-y-4">
+                <div class="text-center">
+                    <h2 class="text-2xl font-bold tracking-[0.2em] text-white font-num mb-1">BUDGET<span class="text-cyan-400">STUDIO</span></h2>
+                    <p class="text-[10px] text-cyan-500/70 font-num tracking-[0.4em] uppercase">Engine Initializing</p>
+                </div>
+                
+                <div class="h-1 w-full bg-slate-800/50 rounded-full overflow-hidden border border-white/5">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-500 to-violet-500 w-0 transition-all duration-100 ease-linear"></div>
+                </div>
+                
+                <div class="flex justify-between text-[10px] font-num text-slate-400 tracking-wider">
+                    <span class="animate-pulse">LOADING DATA...</span>
+                    <span id="progress-text" class="text-cyan-400 font-bold">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="glass-panel border-b border-white/5 py-4 px-4 md:px-8 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-4">
+            <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.3)] border border-white/10">
+                <i data-lucide="calculator" class="text-white w-5 h-5"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold tracking-tight text-white font-num">Budget <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Studio</span></h1>
+                <p class="text-[9px] text-cyan-400/60 font-num uppercase tracking-[0.2em] mt-0.5">Financial Auto-Calculator</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="hidden md:flex flex-col items-end">
+                <span class="text-[9px] text-slate-400 uppercase tracking-widest">System Status</span>
+                <span class="text-[10px] font-bold text-emerald-400 flex items-center gap-1.5 font-num">
+                    <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full shadow-[0_0_5px_rgba(16,185,129,0.5)]"></div> PRO READY
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10 pt-8 pb-12">
+        
+        <!-- Left: Inputs -->
+        <div class="lg:col-span-5 space-y-6 animate-slide-up">
+            
+            <section class="glass-card p-6 md:p-8 rounded-3xl">
+                <h2 class="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-slate-300 flex items-center gap-3">
+                    <div class="w-6 h-6 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-[10px] text-cyan-400 font-num">1</div>
+                    အချက်အလက်များ ထည့်သွင်းရန်
+                </h2>
+                
+                <div class="space-y-5">
+                    <!-- Income Input -->
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-2 uppercase tracking-wide">ဝင်ငွေ (ကျပ်)</label>
+                        <div class="relative">
+                            <i data-lucide="wallet" class="absolute left-4 top-3.5 w-5 h-5 text-cyan-500/70"></i>
+                            <input type="number" id="income" value="700000" class="input-field w-full border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white font-num font-bold text-lg outline-none" oninput="calculate()">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Savings % Input -->
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-2 uppercase tracking-wide">စုငွေ (%)</label>
+                            <div class="relative">
+                                <i data-lucide="piggy-bank" class="absolute left-3 top-3.5 w-4 h-4 text-violet-400/70"></i>
+                                <input type="number" id="savings-percent" value="20" class="input-field w-full border border-white/10 rounded-xl pl-10 pr-3 py-3 text-white font-num font-bold outline-none" oninput="calculate()">
+                            </div>
+                        </div>
+
+                        <!-- Expenses Input -->
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-2 uppercase tracking-wide">အသုံးစရိတ် (ကျပ်)</label>
+                            <div class="relative">
+                                <i data-lucide="receipt" class="absolute left-3 top-3.5 w-4 h-4 text-emerald-400/70"></i>
+                                <input type="number" id="expenses" value="350000" class="input-field w-full border border-white/10 rounded-xl pl-10 pr-3 py-3 text-white font-num font-bold outline-none" oninput="calculate()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Alert -->
+                <div class="mt-6 flex items-start gap-3 p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-200">
+                    <i data-lucide="info" class="w-5 h-5 flex-shrink-0 text-blue-400 mt-0.5"></i>
+                    <p class="text-[11px] leading-relaxed opacity-90">
+                        အထက်ပါ ဂဏန်းများကို ပြောင်းလဲထည့်သွင်းလိုက်သည်နှင့် တစ်ပြိုင်နက် တွက်ချက်မှုအဖြေများ အလိုအလျောက် ပြောင်းလဲသွားမည် ဖြစ်ပါသည်။
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Right: Results -->
+        <div class="lg:col-span-7 animate-slide-up" style="animation-delay: 0.1s;">
+            <section class="glass-card p-6 md:p-8 rounded-3xl h-full flex flex-col border-cyan-500/20 shadow-[0_0_40px_rgba(6,182,212,0.05)] relative overflow-hidden">
+                <!-- Background Accent glow -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-[80px] pointer-events-none"></div>
+
+                <h2 class="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-slate-300 flex items-center gap-3 relative z-10">
+                    <div class="w-6 h-6 rounded-full bg-violet-500/20 border border-violet-500/30 flex items-center justify-center text-[10px] text-violet-400 font-num">2</div>
+                    တွက်ချက်မှု အဆင့်ဆင့်
+                </h2>
+                
+                <div class="flex-1 space-y-3 relative z-10">
+                    
+                    <!-- Breakdown Items -->
+                    <div class="flex justify-between items-center p-3 sm:p-4 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-colors">
+                        <span class="text-sm text-slate-400 flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-violet-400"></div> စုငွေ (<span id="lbl-savings-percent" class="font-num text-violet-300">20</span>%) =
+                        </span>
+                        <span class="font-num text-white font-semibold text-right"><span id="res-savings">140,000</span> <span class="text-xs text-slate-500">ကျပ်</span></span>
+                    </div>
+
+                    <div class="flex justify-between items-center p-3 sm:p-4 rounded-xl bg-slate-800/50 border border-slate-700/50 shadow-inner">
+                        <span class="text-sm text-slate-300 font-medium">(A) စုငွေ + အသုံးစရိတ် =</span>
+                        <span class="font-num text-cyan-400 font-bold text-right"><span id="res-a">490,000</span> <span class="text-xs text-cyan-400/60">ကျပ်</span></span>
+                    </div>
+
+                    <div class="flex justify-between items-center p-3 sm:p-4 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-colors">
+                        <span class="text-sm text-slate-400">(B) လစဉ်လက်ကျန်သုံးငွေ = ဝင်ငွေ - (A)</span>
+                        <span id="res-b-container" class="font-num text-white font-semibold text-right"><span id="res-b">210,000</span> <span class="text-xs text-slate-500">ကျပ်</span></span>
+                    </div>
+
+                    <div class="flex justify-between items-center p-3 sm:p-4 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-colors">
+                        <span class="text-sm text-slate-400">
+                            (C) တစ်ပတ်သုံးရမည့်ငွေ = (B) ÷ 4<br>
+                            <span class="text-[10px] text-slate-500 mt-1 block">(၁ လမှာ ၄ ပတ်ရှိလို့)</span>
+                        </span>
+                        <span class="font-num text-white font-semibold text-right"><span id="res-c">52,500</span> <span class="text-xs text-slate-500">ကျပ်</span></span>
+                    </div>
+
+                    <div class="flex justify-between items-center p-3 sm:p-4 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-colors pb-6 border-b border-white/5">
+                        <span class="text-sm text-slate-400">
+                            (D) တစ်ရက်သုံးရမည့်ငွေ = (C) ÷ 7<br>
+                            <span class="text-[10px] text-slate-500 mt-1 block">(၁ ပတ်မှာ ၇ ရက်ရှိလို့)</span>
+                        </span>
+                        <span class="font-num text-white font-semibold text-right"><span id="res-d">7,500</span> <span class="text-xs text-slate-500">ကျပ်</span></span>
+                    </div>
+
+                </div>
+
+                <!-- Final Highlight Board -->
+                <div id="final-card" class="mt-6 rounded-2xl p-6 relative overflow-hidden transition-all duration-300 bg-gradient-to-br from-emerald-900/40 to-emerald-800/20 border border-emerald-500/30 text-center shadow-[0_0_20px_rgba(16,185,129,0.1)]">
+                    <i id="final-icon" data-lucide="check-circle" class="absolute -right-4 -top-4 w-24 h-24 text-emerald-500/10 rotate-12"></i>
+                    
+                    <p id="final-text" class="text-xs text-emerald-300 font-bold tracking-wide mb-2 uppercase relative z-10">စုပြီး၊ ပေးပြီး တစ်ရက်လျှင် အပိုသုံးနိုင်သောငွေ</p>
+                    <div class="flex items-baseline justify-center gap-2 relative z-10">
+                        <span id="res-final" class="font-num text-4xl md:text-5xl font-black text-emerald-400 text-neon-emerald tracking-tight">7,500</span>
+                        <span class="text-emerald-500 font-bold">ကျပ်</span>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-white/5 relative z-10 mt-auto">
+        <div class="max-w-4xl mx-auto flex flex-col items-center justify-center text-center px-4">
+            <div class="flex items-center gap-3 bg-slate-900/50 px-4 py-2 rounded-full border border-white/5 mb-4">
+                <span class="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-num">Version:</span>
+                <span class="text-[11px] font-bold text-cyan-400 tracking-wider font-num">Pro 1.0 (Optimized)</span>
+            </div>
+            <div class="text-[10px] text-slate-600 uppercase tracking-widest font-bold font-num">Budget & Finance Studio</div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Number formatter
+        const formatter = new Intl.NumberFormat('en-US');
+
+        // Main Calculation Logic
+        function calculate() {
+            const income = parseFloat(document.getElementById('income').value) || 0;
+            const savingsPercent = parseFloat(document.getElementById('savings-percent').value) || 0;
+            const expenses = parseFloat(document.getElementById('expenses').value) || 0;
+
+            const savingsAmount = (income * savingsPercent) / 100;
+            const stepA = savingsAmount + expenses;
+            const stepB = income - stepA;
+            const stepC = stepB / 4;
+            const stepD = stepC / 7;
+
+            // UI Updates
+            document.getElementById('lbl-savings-percent').innerText = savingsPercent;
+            document.getElementById('res-savings').innerText = formatter.format(savingsAmount);
+            document.getElementById('res-a').innerText = formatter.format(stepA);
+            
+            // Handle negative balance in Step B
+            const bContainer = document.getElementById('res-b-container');
+            const resB = document.getElementById('res-b');
+            resB.innerText = formatter.format(stepB);
+            if (stepB < 0) {
+                bContainer.className = "font-num text-red-400 font-bold text-right text-shadow-sm";
+            } else {
+                bContainer.className = "font-num text-white font-semibold text-right";
+            }
+
+            document.getElementById('res-c').innerText = formatter.format(stepC);
+            document.getElementById('res-d').innerText = formatter.format(stepD);
+            
+            // Handle Final Highlight Card
+            const finalValue = Math.floor(stepD);
+            document.getElementById('res-final').innerText = formatter.format(finalValue);
+            
+            const finalCard = document.getElementById('final-card');
+            const finalText = document.getElementById('final-text');
+            const finalIcon = document.getElementById('final-icon');
+            const resFinalElem = document.getElementById('res-final');
+
+            if (finalValue < 0) {
+                // Negative (Debt/Over budget)
+                finalCard.className = "mt-6 rounded-2xl p-6 relative overflow-hidden transition-all duration-300 bg-gradient-to-br from-red-900/40 to-red-800/20 border border-red-500/30 text-center shadow-[0_0_20px_rgba(239,68,68,0.1)]";
+                finalText.className = "text-xs text-red-300 font-bold tracking-wide mb-2 uppercase relative z-10";
+                finalText.innerText = "သတိပြုရန်! ဝင်ငွေထက် အသုံးစရိတ် ပိုများနေပါသည် (အကြွေး)";
+                resFinalElem.className = "font-num text-4xl md:text-5xl font-black text-red-400 tracking-tight";
+                resFinalElem.nextElementSibling.className = "text-red-500 font-bold";
+                // Change icon
+                finalIcon.setAttribute('data-lucide', 'alert-triangle');
+                finalIcon.className = "absolute -right-4 -top-4 w-24 h-24 text-red-500/10 rotate-12";
+                lucide.createIcons();
+            } else {
+                // Positive (Savings)
+                finalCard.className = "mt-6 rounded-2xl p-6 relative overflow-hidden transition-all duration-300 bg-gradient-to-br from-emerald-900/40 to-emerald-800/20 border border-emerald-500/30 text-center shadow-[0_0_20px_rgba(16,185,129,0.1)]";
+                finalText.className = "text-xs text-emerald-300 font-bold tracking-wide mb-2 uppercase relative z-10";
+                finalText.innerText = "စုပြီး၊ ပေးပြီး တစ်ရက်လျှင် အပိုသုံးနိုင်သောငွေ";
+                resFinalElem.className = "font-num text-4xl md:text-5xl font-black text-emerald-400 text-neon-emerald tracking-tight";
+                resFinalElem.nextElementSibling.className = "text-emerald-500 font-bold";
+                // Change icon
+                finalIcon.setAttribute('data-lucide', 'check-circle');
+                finalIcon.className = "absolute -right-4 -top-4 w-24 h-24 text-emerald-500/10 rotate-12";
+                lucide.createIcons();
+            }
+        }
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            calculate(); // Run default calculation
+
+            // Preloader Logic (Optimized to remove from DOM)
+            const progress = document.getElementById('progress-bar');
+            const text = document.getElementById('progress-text');
+            const preloader = document.getElementById('preloader');
+            let width = 0;
+
+            const interval = setInterval(() => {
+                // Fast load
+                width += Math.random() * 15; 
+                if (width >= 100) width = 100;
+                
+                if (progress) progress.style.width = width + '%';
+                if (text) text.innerText = Math.floor(width) + '%';
+
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        if(preloader) {
+                            preloader.classList.add('opacity-0');
+                            // Completely remove from DOM after fade out to save memory
+                            setTimeout(() => preloader.remove(), 500); 
+                        }
+                    }, 300); 
+                }
+            }, 50); 
+        });
+
+    </script>
+</body>
+</html>
