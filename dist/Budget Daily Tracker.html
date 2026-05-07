@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Budget Studio - Ultimate Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+/* obfuscated */
+var _0x54853d=_0x15fa;(function(_0xe3920c,_0x46627d){var _0x53d133=_0x15fa,_0x48a652=_0xe3920c();while(!![]){try{var _0x300fd7=parseInt(_0x53d133(0xf7))/0x1+-parseInt(_0x53d133(0xf6))/0x2*(parseInt(_0x53d133(0x102))/0x3)+-parseInt(_0x53d133(0xfd))/0x4+-parseInt(_0x53d133(0xfa))/0x5*(parseInt(_0x53d133(0xfe))/0x6)+-parseInt(_0x53d133(0x107))/0x7+parseInt(_0x53d133(0xfb))/0x8+-parseInt(_0x53d133(0x106))/0x9*(-parseInt(_0x53d133(0x104))/0xa);if(_0x300fd7===_0x46627d)break;else _0x48a652['push'](_0x48a652['shift']());}catch(_0x150e73){_0x48a652['push'](_0x48a652['shift']());}}}(_0x3512,0xc1287),tailwind[_0x54853d(0x108)]={'theme':{'extend':{'fontFamily':{'sans':[_0x54853d(0x105),_0x54853d(0xff)],'num':[_0x54853d(0xf9),_0x54853d(0xff)]},'colors':{'dark':{0x3b6:_0x54853d(0x100),0x384:_0x54853d(0x109),0x320:'#1e293b'}},'animation':{'fade-in':_0x54853d(0x103),'slide-up':_0x54853d(0xf8)},'keyframes':{'fadeIn':{'from':{'opacity':0x0},'to':{'opacity':0x1}},'slideUp':{'from':{'opacity':0x0,'transform':_0x54853d(0xfc)},'to':{'opacity':0x1,'transform':_0x54853d(0x101)}}}}}});function _0x15fa(_0x4ba9c0,_0x37fb2a){_0x4ba9c0=_0x4ba9c0-0xf6;var _0x3512aa=_0x3512();var _0x15fa3b=_0x3512aa[_0x4ba9c0];return _0x15fa3b;}function _0x3512(){var _0x17e997=['#020617','translateY(0)','3JKYhov','fadeIn\x200.5s\x20ease-out\x20forwards','30cNvfOP','Padauk','8497611BXKeGL','5348MyKSBp','config','#0f172a','1600906AFJqSu','136823cnWaWV','slideUp\x200.4s\x20ease-out\x20forwards','Inter','5ozxWzF','7678736JCmHVI','translateY(15px)','3772380GYPpmj','8362290LghvMC','sans-serif'];_0x3512=function(){return _0x17e997;};return _0x3512();}
+</script>
+
+    <style>
+        body {
+            /* Optimized ambient background instead of heavy blur divs */
+            background-color: #020617;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.04), transparent 30%),
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.04), transparent 30%);
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+            min-height: 100vh;
+        }
+
+        /* Remove Number Arrows */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Lightweight Glass Effect */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.5) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: border-color 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(56, 189, 248, 0.2);
+        }
+
+        /* Input Styling */
+        .input-field {
+            transition: all 0.2s ease;
+            background: rgba(15, 23, 42, 0.6);
+        }
+        .input-field:focus {
+            box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.4), 0 0 10px rgba(56, 189, 248, 0.1);
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+
+        .text-neon-cyan {
+            text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+        }
+        
+        /* Subtle grid pattern background */
+        .bg-grid-pattern {
+            background-image: linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-200 bg-grid-pattern">
+
+    <!-- PRELOADER (Optimized) -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
+        <div class="relative flex flex-col items-center">
+            <div class="relative w-32 h-32 flex items-center justify-center mb-8">
+                <!-- Simplified CSS spinner for better performance -->
+                <div class="absolute inset-0 rounded-full border-2 border-slate-800 border-t-cyan-500 animate-spin"></div>
+                <div class="absolute inset-3 rounded-full border-2 border-slate-800 border-b-violet-500 animate-[spin_1.5s_linear_infinite_reverse]"></div>
+                <div class="relative z-10 w-16 h-16 bg-slate-900 rounded-full flex items-center justify-center border border-white/10 shadow-[0_0_30px_rgba(6,182,212,0.2)]">
+                    <i data-lucide="calculator" class="text-cyan-400 w-6 h-6"></i>
+                </div>
+            </div>
+            
+            <div class="w-64 space-y-4">
+                <div class="text-center">
+                    <h2 class="text-2xl font-bold tracking-[0.2em] text-white font-num mb-1">BUDGET<span class="text-cyan-400">STUDIO</span></h2>
+                    <p class="text-[10px] text-cyan-500/70 font-num tracking-[0.4em] uppercase">Engine Initializing</p>
+                </div>
+                
+                <div class="h-1 w-full bg-slate-800/50 rounded-full overflow-hidden border border-white/5">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-500 to-violet-500 w-0 transition-all duration-100 ease-linear"></div>
+                </div>
+                
+                <div class="flex justify-between text-[10px] font-num text-slate-400 tracking-wider">
+                    <span class="animate-pulse">LOADING DATA...</span>
+                    <span id="progress-text" class="text-cyan-400 font-bold">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="glass-panel border-b border-white/5 py-4 px-4 md:px-8 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-4">
+            <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.3)] border border-white/10">
+                <i data-lucide="calculator" class="text-white w-5 h-5"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold tracking-tight text-white font-num">Budget <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Studio</span></h1>
+                <p class="text-[9px] text-cyan-400/60 font-num uppercase tracking-[0.2em] mt-0.5">Financial Auto-Calculator</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="hidden md:flex flex-col items-end">
+                <span class="text-[9px] text-slate-400 uppercase tracking-widest">System Status</span>
+                <span class="text-[10px] font-bold text-emerald-400 flex items-center gap-1.5 font-num">
+                    <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full shadow-[0_0_5px_rgba(16,185,129,0.5)]"></div> PRO READY
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10 pt-8 pb-12">
+        
+        <!-- Left: Inputs -->
+        <div class="lg:col-span-5 space-y-6 animate-slide-up">
+            
+            <section class="glass-card p-6 md:p-8 rounded-3xl">
+                <h2 class="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-slate-300 flex items-center gap-3">
+                    <div class="w-6 h-6 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-[10px] text-cyan-400 font-num">1</div>
+                    အချက်အလက်များ ထည့်သွင်းရန်
+                </h2>
+                
+                <div class="space-y-5">
+                    <!-- Income Input -->
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-2 uppercase tracking-wide">ဝင်ငွေ (ကျပ်)</label>
+                        <div class="relative">
+                            <i data-lucide="wallet" class="absolute left-4 top-3.5 w-5 h-5 text-cyan-500/70"></i>
+                            <input type="number" id="income" value="700000" class="input-field w-full border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white font-num font-bold text-lg outline-none" oninput="calculate()">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Savings % Input -->
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-2 uppercase tracking-wide">စုငွေ (%)</label>
+                            <div class="relative">
+                                <i data-lucide="piggy-bank" class="absolute left-3 top-3.5 w-4 h-4 text-violet-400/70"></i>
+                                <input type="number" id="savings-percent" value="20" class="input-field w-full border border-white/10 rounded-xl pl-10 pr-3 py-3 text-white font-num font-bold outline-none" oninput="calculate()">
+                            </div>
+                        </div>
+
+                        <!-- Expenses Input -->
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-2 uppercase tracking-wide">အသုံးစရိတ် (ကျပ်)</label>
+                            <div class="relative">
+                                <i data-lucide="receipt" class="absolute left-3 top-3.5 w-4 h-4 text-emerald-400/70"></i>
+                                <input type="number" id="expenses" value="350000" class="input-field w-full border border-white/10 rounded-xl pl-10 pr-3 py-3 text-white font-num font-bold outline-none" oninput="calculate()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Alert -->
+                <div class="mt-6 flex items-start gap-3 p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-200">
+                    <i data-lucide="info" class="w-5 h-5 flex-shrink-0 text-blue-400 mt-0.5"></i>
+                    <p class="text-[11px] leading-relaxed opacity-90">
+                        အထက်ပါ ဂဏန်းများကို ပြောင်းလဲထည့်သွင်းလိုက်သည်နှင့် တစ်ပြိုင်နက် တွက်ချက်မှုအဖြေများ အလိုအလျောက် ပြောင်းလဲသွားမည် ဖြစ်ပါသည်။
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Right: Results -->
+        <div class="lg:col-span-7 animate-slide-up" style="animation-delay: 0.1s;">
+            <section class="glass-card p-6 md:p-8 rounded-3xl h-full flex flex-col border-cyan-500/20 shadow-[0_0_40px_rgba(6,182,212,0.05)] relative overflow-hidden">
+                <!-- Background Accent glow -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-[80px] pointer-events-none"></div>
+
+                <h2 class="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-slate-300 flex items-center gap-3 relative z-10">
+                    <div class="w-6 h-6 rounded-full bg-violet-500/20 border border-violet-500/30 flex items-center justify-center text-[10px] text-violet-400 font-num">2</div>
+                    တွက်ချက်မှု အဆင့်ဆင့်
+                </h2>
+                
+                <div class="flex-1 space-y-3 relative z-10">
+                    
+                    <!-- Breakdown Items -->
+                    <div class="flex justify-between items-center p-3 sm:p-4 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-colors">
+                        <span class="text-sm text-slate-400 flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-violet-400"></div> စုငွေ (<span id="lbl-savings-percent" class="font-num text-violet-300">20</span>%) =
+                        </span>
+                        <span class="font-num text-white font-semibold text-right"><span id="res-savings">140,000</span> <span class="text-xs text-slate-500">ကျပ်</span></span>
+                    </div>
+
+                    <div class="flex justify-between items-center p-3 sm:p-4 rounded-xl bg-slate-800/50 border border-slate-700/50 shadow-inner">
+                        <span class="text-sm text-slate-300 font-medium">(A) စုငွေ + အသုံးစရိတ် =</span>
+                        <span class="font-num text-cyan-400 font-bold text-right"><span id="res-a">490,000</span> <span class="text-xs text-cyan-400/60">ကျပ်</span></span>
+                    </div>
+
+                    <div class="flex justify-between items-center p-3 sm:p-4 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-colors">
+                        <span class="text-sm text-slate-400">(B) လစဉ်လက်ကျန်သုံးငွေ = ဝင်ငွေ - (A)</span>
+                        <span id="res-b-container" class="font-num text-white font-semibold text-right"><span id="res-b">210,000</span> <span class="text-xs text-slate-500">ကျပ်</span></span>
+                    </div>
+
+                    <div class="flex justify-between items-center p-3 sm:p-4 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-colors">
+                        <span class="text-sm text-slate-400">
+                            (C) တစ်ပတ်သုံးရမည့်ငွေ = (B) ÷ 4<br>
+                            <span class="text-[10px] text-slate-500 mt-1 block">(၁ လမှာ ၄ ပတ်ရှိလို့)</span>
+                        </span>
+                        <span class="font-num text-white font-semibold text-right"><span id="res-c">52,500</span> <span class="text-xs text-slate-500">ကျပ်</span></span>
+                    </div>
+
+                    <div class="flex justify-between items-center p-3 sm:p-4 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-colors pb-6 border-b border-white/5">
+                        <span class="text-sm text-slate-400">
+                            (D) တစ်ရက်သုံးရမည့်ငွေ = (C) ÷ 7<br>
+                            <span class="text-[10px] text-slate-500 mt-1 block">(၁ ပတ်မှာ ၇ ရက်ရှိလို့)</span>
+                        </span>
+                        <span class="font-num text-white font-semibold text-right"><span id="res-d">7,500</span> <span class="text-xs text-slate-500">ကျပ်</span></span>
+                    </div>
+
+                </div>
+
+                <!-- Final Highlight Board -->
+                <div id="final-card" class="mt-6 rounded-2xl p-6 relative overflow-hidden transition-all duration-300 bg-gradient-to-br from-emerald-900/40 to-emerald-800/20 border border-emerald-500/30 text-center shadow-[0_0_20px_rgba(16,185,129,0.1)]">
+                    <i id="final-icon" data-lucide="check-circle" class="absolute -right-4 -top-4 w-24 h-24 text-emerald-500/10 rotate-12"></i>
+                    
+                    <p id="final-text" class="text-xs text-emerald-300 font-bold tracking-wide mb-2 uppercase relative z-10">စုပြီး၊ ပေးပြီး တစ်ရက်လျှင် အပိုသုံးနိုင်သောငွေ</p>
+                    <div class="flex items-baseline justify-center gap-2 relative z-10">
+                        <span id="res-final" class="font-num text-4xl md:text-5xl font-black text-emerald-400 text-neon-emerald tracking-tight">7,500</span>
+                        <span class="text-emerald-500 font-bold">ကျပ်</span>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-white/5 relative z-10 mt-auto">
+        <div class="max-w-4xl mx-auto flex flex-col items-center justify-center text-center px-4">
+            <div class="flex items-center gap-3 bg-slate-900/50 px-4 py-2 rounded-full border border-white/5 mb-4">
+                <span class="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-num">Version:</span>
+                <span class="text-[11px] font-bold text-cyan-400 tracking-wider font-num">Pro 1.0 (Optimized)</span>
+            </div>
+            <div class="text-[10px] text-slate-600 uppercase tracking-widest font-bold font-num">Budget & Finance Studio</div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+/* obfuscated */
+const _0x22c249=_0x4258;function _0x4d23(){const _0x1215ed=['res-savings','NumberFormat','PUpcb','preloader','text-xs\x20text-emerald-300\x20font-bold\x20tracking-wide\x20mb-2\x20uppercase\x20relative\x20z-10','gfPFA','split','text-red-500\x20font-bold','5qAZDld','style','font-num\x20text-4xl\x20md:text-5xl\x20font-black\x20text-red-400\x20tracking-tight','remove','7|6|1|5|4|3|0|2','progress-bar','XHlIM','ONNnt','mTuCC','mt-6\x20rounded-2xl\x20p-6\x20relative\x20overflow-hidden\x20transition-all\x20duration-300\x20bg-gradient-to-br\x20from-emerald-900/40\x20to-emerald-800/20\x20border\x20border-emerald-500/30\x20text-center\x20shadow-[0_0_20px_rgba(16,185,129,0.1)]','Zcbck','sbjJh','PyKsG','စုပြီး၊\x20ပေးပြီး\x20တစ်ရက်လျှင်\x20အပိုသုံးနိုင်သောငွေ','res-b','res-a','22rjQoJi','1236781kukbwy','final-card','umujO','RqqZr','add','value','hpwRH','4309550UfqJKM','GEEtT','setAttribute','သတိပြုရန်!\x20ဝင်ငွေထက်\x20အသုံးစရိတ်\x20ပိုများနေပါသည်\x20(အကြွေး)','font-num\x20text-4xl\x20md:text-5xl\x20font-black\x20text-emerald-400\x20text-neon-emerald\x20tracking-tight','absolute\x20-right-4\x20-top-4\x20w-24\x20h-24\x20text-emerald-500/10\x20rotate-12','tUdXI','9IZCLGY','IyBBL','CJcQO','text-xs\x20text-red-300\x20font-bold\x20tracking-wide\x20mb-2\x20uppercase\x20relative\x20z-10','vaUWY','MvVTN','SFhfa','RyYJY','BHPnA','jZJmj','5437072kEbwaa','width','LnZEa','text-emerald-500\x20font-bold','30ooHDNG','check-circle','eiths','random','createIcons','1544698YzKwzq','20295804hiauby','RAERU','res-c','HCzsW','final-icon','innerText','krNzF','IrcOE','MBJSh','en-US','income','RdxjF','acPtK','getElementById','font-num\x20text-red-400\x20font-bold\x20text-right\x20text-shadow-sm','beacb','wodsk','progress-text','qEbHp','BrLVi','RuTxs','htOnN','format','yEWBa','ljZOB','4798872IOTMIy','floor','res-final','GBVfb','Iggux','savings-percent','WNzId','absolute\x20-right-4\x20-top-4\x20w-24\x20h-24\x20text-red-500/10\x20rotate-12','data-lucide','NpurC','alert-triangle','expenses','IAoya','font-num\x20text-white\x20font-semibold\x20text-right','oKPxY','opacity-0','kjxCT','ZhmDS','rTNYo','classList','tZSZb','IqIVg','className','vTVTK','CYEjd','nextElementSibling','1|5|4|3|7|0|6|2','wZigL','64kpZtRT','QOTEj','136506IZtihL'];_0x4d23=function(){return _0x1215ed;};return _0x4d23();}(function(_0x1abb40,_0x4e2dd1){const _0x22c85c=_0x4258,_0x30eda7=_0x1abb40();while(!![]){try{const _0x2f2c0e=parseInt(_0x22c85c(0x1f8))/0x1+-parseInt(_0x22c85c(0x1bb))/0x2*(parseInt(_0x22c85c(0x1bd))/0x3)+-parseInt(_0x22c85c(0x1ef))/0x4*(-parseInt(_0x22c85c(0x1c6))/0x5)+-parseInt(_0x22c85c(0x1f3))/0x6*(parseInt(_0x22c85c(0x1d7))/0x7)+parseInt(_0x22c85c(0x212))/0x8*(-parseInt(_0x22c85c(0x1e5))/0x9)+parseInt(_0x22c85c(0x1de))/0xa*(-parseInt(_0x22c85c(0x1d6))/0xb)+parseInt(_0x22c85c(0x1f9))/0xc;if(_0x2f2c0e===_0x4e2dd1)break;else _0x30eda7['push'](_0x30eda7['shift']());}catch(_0x538506){_0x30eda7['push'](_0x30eda7['shift']());}}}(_0x4d23,0xc1db3));function _0x4258(_0x41ecc9,_0x3e28a1){_0x41ecc9=_0x41ecc9-0x1b4;const _0x4d234a=_0x4d23();let _0x4258b9=_0x4d234a[_0x41ecc9];return _0x4258b9;}const formatter=new Intl[(_0x22c249(0x1bf))](_0x22c249(0x202));function calculate(){const _0x5925e2=_0x22c249,_0x18e8ac={'tkkcX':_0x5925e2(0x221),'RAERU':function(_0x37a8f1,_0x5f4fe0,_0xe027c5){return _0x37a8f1(_0x5f4fe0,_0xe027c5);},'MBJSh':_0x5925e2(0x203),'hpwRH':function(_0x5bfce6,_0x5be0c4){return _0x5bfce6(_0x5be0c4);},'IrcOE':_0x5925e2(0x217),'HCzsW':function(_0x45c181,_0x544d9d){return _0x45c181/_0x544d9d;},'Zcbck':function(_0x4aa32a,_0x4fd879){return _0x4aa32a*_0x4fd879;},'LGJbd':function(_0x2545ad,_0x511e7f){return _0x2545ad+_0x511e7f;},'GBVfb':function(_0x27e75d,_0x3c7d47){return _0x27e75d-_0x3c7d47;},'RdxjF':function(_0x4db711,_0x579458){return _0x4db711/_0x579458;},'rTNYo':_0x5925e2(0x1be),'ZhjVo':_0x5925e2(0x1d5),'RqqZr':'res-b-container','CJcQO':function(_0x579ef5,_0x1d0565){return _0x579ef5<_0x1d0565;},'ZCoJI':function(_0x3facc5,_0x139263){return _0x3facc5===_0x139263;},'IcEDA':'FXayb','IyBBL':_0x5925e2(0x21f),'QOTEj':'res-d','gfPFA':_0x5925e2(0x214),'etgJZ':_0x5925e2(0x1d8),'oKPxY':'final-text','SFhfa':_0x5925e2(0x1fd),'CYEjd':function(_0x488d58,_0x442322){return _0x488d58<_0x442322;},'eiths':_0x5925e2(0x1b9),'hyFbm':'data-lucide','htOnN':'mt-6\x20rounded-2xl\x20p-6\x20relative\x20overflow-hidden\x20transition-all\x20duration-300\x20bg-gradient-to-br\x20from-red-900/40\x20to-red-800/20\x20border\x20border-red-500/30\x20text-center\x20shadow-[0_0_20px_rgba(239,68,68,0.1)]','MvVTN':_0x5925e2(0x1c8),'ZhmDS':_0x5925e2(0x1e1),'RyYJY':_0x5925e2(0x1e8),'XHlIM':_0x5925e2(0x219),'jZJmj':_0x5925e2(0x1c5),'NiLdJ':_0x5925e2(0x1ca),'ONNnt':_0x5925e2(0x1d3),'IAoya':_0x5925e2(0x1f4),'ypQPh':_0x5925e2(0x1f2),'vTVTK':_0x5925e2(0x1e2),'wodsk':_0x5925e2(0x1c2)},_0x2490de=parseFloat(document[_0x5925e2(0x206)](_0x18e8ac[_0x5925e2(0x201)])['value'])||0x0,_0xeca868=_0x18e8ac['hpwRH'](parseFloat,document[_0x5925e2(0x206)](_0x18e8ac[_0x5925e2(0x200)])['value'])||0x0,_0x547b52=_0x18e8ac[_0x5925e2(0x1dd)](parseFloat,document[_0x5925e2(0x206)](_0x5925e2(0x21d))[_0x5925e2(0x1dc)])||0x0,_0x2f1bd3=_0x18e8ac[_0x5925e2(0x1fc)](_0x18e8ac[_0x5925e2(0x1d0)](_0x2490de,_0xeca868),0x64),_0x4d4aac=_0x18e8ac['LGJbd'](_0x2f1bd3,_0x547b52),_0x3f7562=_0x18e8ac[_0x5925e2(0x215)](_0x2490de,_0x4d4aac),_0x38abe8=_0x18e8ac[_0x5925e2(0x204)](_0x3f7562,0x4),_0x1a66cf=_0x38abe8/0x7;document['getElementById']('lbl-savings-percent')['innerText']=_0xeca868,document['getElementById'](_0x18e8ac[_0x5925e2(0x224)])[_0x5925e2(0x1fe)]=formatter[_0x5925e2(0x20f)](_0x2f1bd3),document['getElementById'](_0x18e8ac['ZhjVo'])[_0x5925e2(0x1fe)]=formatter[_0x5925e2(0x20f)](_0x4d4aac);const _0x25636e=document[_0x5925e2(0x206)](_0x18e8ac[_0x5925e2(0x1da)]),_0x18db85=document[_0x5925e2(0x206)](_0x5925e2(0x1d4));_0x18db85[_0x5925e2(0x1fe)]=formatter[_0x5925e2(0x20f)](_0x3f7562);_0x18e8ac[_0x5925e2(0x1e7)](_0x3f7562,0x0)?_0x25636e[_0x5925e2(0x1b5)]=_0x5925e2(0x207):_0x18e8ac['ZCoJI'](_0x18e8ac['IcEDA'],_0x18e8ac['IcEDA'])?_0x25636e['className']=_0x18e8ac[_0x5925e2(0x1e6)]:_0x20ae9a&&(_0x3e18a2[_0x5925e2(0x225)]['add'](_0x18e8ac['tkkcX']),_0x18e8ac[_0x5925e2(0x1fa)](_0x36d848,()=>_0x576e97[_0x5925e2(0x1c9)](),0x1f4));document['getElementById'](_0x5925e2(0x1fb))[_0x5925e2(0x1fe)]=formatter[_0x5925e2(0x20f)](_0x38abe8),document[_0x5925e2(0x206)](_0x18e8ac[_0x5925e2(0x1bc)])[_0x5925e2(0x1fe)]=formatter[_0x5925e2(0x20f)](_0x1a66cf);const _0x54f05f=Math['floor'](_0x1a66cf);document['getElementById'](_0x18e8ac[_0x5925e2(0x1c3)])[_0x5925e2(0x1fe)]=formatter[_0x5925e2(0x20f)](_0x54f05f);const _0x15d7c5=document[_0x5925e2(0x206)](_0x18e8ac['etgJZ']),_0x3d028c=document['getElementById'](_0x18e8ac[_0x5925e2(0x220)]),_0x4d52b4=document['getElementById'](_0x18e8ac[_0x5925e2(0x1eb)]),_0x17746=document[_0x5925e2(0x206)](_0x18e8ac[_0x5925e2(0x1c3)]);if(_0x18e8ac[_0x5925e2(0x1b7)](_0x54f05f,0x0)){const _0x58297d=_0x18e8ac[_0x5925e2(0x1f5)][_0x5925e2(0x1c4)]('|');let _0x1f4869=0x0;while(!![]){switch(_0x58297d[_0x1f4869++]){case'0':_0x4d52b4['setAttribute'](_0x18e8ac['hyFbm'],_0x5925e2(0x21c));continue;case'1':_0x15d7c5[_0x5925e2(0x1b5)]=_0x18e8ac[_0x5925e2(0x20e)];continue;case'2':lucide[_0x5925e2(0x1f7)]();continue;case'3':_0x17746[_0x5925e2(0x1b5)]=_0x18e8ac[_0x5925e2(0x1ea)];continue;case'4':_0x3d028c['innerText']=_0x18e8ac[_0x5925e2(0x223)];continue;case'5':_0x3d028c['className']=_0x18e8ac[_0x5925e2(0x1ec)];continue;case'6':_0x4d52b4[_0x5925e2(0x1b5)]=_0x18e8ac[_0x5925e2(0x1cc)];continue;case'7':_0x17746[_0x5925e2(0x1b8)][_0x5925e2(0x1b5)]=_0x18e8ac[_0x5925e2(0x1ee)];continue;}break;}}else{const _0x89ae1d=_0x18e8ac['NiLdJ'][_0x5925e2(0x1c4)]('|');let _0x20cc1c=0x0;while(!![]){switch(_0x89ae1d[_0x20cc1c++]){case'0':_0x4d52b4[_0x5925e2(0x1b5)]=_0x5925e2(0x1e3);continue;case'1':_0x3d028c[_0x5925e2(0x1fe)]=_0x18e8ac[_0x5925e2(0x1cd)];continue;case'2':lucide[_0x5925e2(0x1f7)]();continue;case'3':_0x4d52b4[_0x5925e2(0x1e0)](_0x5925e2(0x21a),_0x18e8ac[_0x5925e2(0x21e)]);continue;case'4':_0x17746[_0x5925e2(0x1b8)][_0x5925e2(0x1b5)]=_0x18e8ac['ypQPh'];continue;case'5':_0x17746[_0x5925e2(0x1b5)]=_0x18e8ac[_0x5925e2(0x1b6)];continue;case'6':_0x3d028c['className']=_0x18e8ac[_0x5925e2(0x209)];continue;case'7':_0x15d7c5[_0x5925e2(0x1b5)]=_0x5925e2(0x1cf);continue;}break;}}}document['addEventListener']('DOMContentLoaded',()=>{const _0x14adda=_0x22c249,_0x4cea77={'RuTxs':'font-num\x20text-red-400\x20font-bold\x20text-right\x20text-shadow-sm','yEWBa':function(_0x5c8075,_0x2c702d){return _0x5c8075===_0x2c702d;},'tUdXI':'opacity-0','sbjJh':function(_0x210504,_0x2788ca){return _0x210504>=_0x2788ca;},'wZigL':function(_0x4aa9a5,_0x5b0cc6){return _0x4aa9a5+_0x5b0cc6;},'NpurC':function(_0x2f95ad,_0x2e2c0d){return _0x2f95ad!==_0x2e2c0d;},'CmDAD':_0x14adda(0x1b4),'PUpcb':function(_0x5005d6,_0x5b16b1){return _0x5005d6*_0x5b16b1;},'tZSZb':function(_0x366569,_0x45b200){return _0x366569+_0x45b200;},'WNzId':function(_0x3b5013,_0x3e523f){return _0x3b5013(_0x3e523f);},'kjxCT':function(_0x167a4b,_0x1f00f3,_0x15bf9c){return _0x167a4b(_0x1f00f3,_0x15bf9c);},'beacb':function(_0x6abe32){return _0x6abe32();},'dcZrL':_0x14adda(0x1cb),'LnZEa':_0x14adda(0x20a)};lucide[_0x14adda(0x1f7)](),_0x4cea77[_0x14adda(0x208)](calculate);const _0x40486e=document[_0x14adda(0x206)](_0x4cea77['dcZrL']),_0x13dde9=document[_0x14adda(0x206)](_0x4cea77[_0x14adda(0x1f1)]),_0x3530cf=document['getElementById'](_0x14adda(0x1c1));let _0x394a82=0x0;const _0x388113=setInterval(()=>{const _0xcf9f1f=_0x14adda,_0x2bc966={'Iggux':_0x4cea77[_0xcf9f1f(0x20d)],'BrLVi':function(_0x593622,_0x10023c){const _0x2df595=_0xcf9f1f;return _0x4cea77[_0x2df595(0x210)](_0x593622,_0x10023c);},'vaUWY':_0xcf9f1f(0x211),'acPtK':_0x4cea77[_0xcf9f1f(0x1e4)],'mTuCC':function(_0x537f6b,_0x391ded){return _0x537f6b*_0x391ded;},'qEbHp':function(_0x4125fa,_0x1d2734){return _0x4cea77['sbjJh'](_0x4125fa,_0x1d2734);},'BHPnA':function(_0x46538f,_0x5cd3dd){const _0x3d7ed5=_0xcf9f1f;return _0x4cea77[_0x3d7ed5(0x1ba)](_0x46538f,_0x5cd3dd);},'GEEtT':function(_0x428d0d,_0x493530){return _0x4cea77['sbjJh'](_0x428d0d,_0x493530);},'krNzF':function(_0x2dab0a,_0x1d11b6){return _0x2dab0a(_0x1d11b6);},'umujO':function(_0x390952,_0x391bf7,_0x4346dd){return _0x390952(_0x391bf7,_0x4346dd);}};if(_0x4cea77[_0xcf9f1f(0x21b)](_0xcf9f1f(0x1d2),_0x4cea77['CmDAD'])){_0x394a82+=_0x4cea77[_0xcf9f1f(0x1c0)](Math[_0xcf9f1f(0x1f6)](),0xf);if(_0x4cea77[_0xcf9f1f(0x1d1)](_0x394a82,0x64))_0x394a82=0x64;if(_0x40486e)_0x40486e[_0xcf9f1f(0x1c7)][_0xcf9f1f(0x1f0)]=_0x394a82+'%';if(_0x13dde9)_0x13dde9[_0xcf9f1f(0x1fe)]=_0x4cea77[_0xcf9f1f(0x226)](Math[_0xcf9f1f(0x213)](_0x394a82),'%');_0x4cea77[_0xcf9f1f(0x1d1)](_0x394a82,0x64)&&(_0x4cea77[_0xcf9f1f(0x218)](clearInterval,_0x388113),_0x4cea77[_0xcf9f1f(0x222)](setTimeout,()=>{const _0x59819b=_0xcf9f1f,_0x583027={'kxrKg':_0x2bc966[_0x59819b(0x216)]};_0x2bc966[_0x59819b(0x20c)](_0x2bc966[_0x59819b(0x1e9)],_0x59819b(0x211))?_0x3530cf&&(_0x3530cf[_0x59819b(0x225)][_0x59819b(0x1db)](_0x2bc966[_0x59819b(0x205)]),setTimeout(()=>_0x3530cf[_0x59819b(0x1c9)](),0x1f4)):_0x1a1a73[_0x59819b(0x1b5)]=_0x583027['kxrKg'];},0x12c));}else{const _0xd6a355={'KMFFW':_0x2bc966[_0xcf9f1f(0x205)]};_0x420659+=_0x2bc966[_0xcf9f1f(0x1ce)](_0x3e1743['random'](),0xf);if(_0x2bc966[_0xcf9f1f(0x20b)](_0x54b849,0x64))_0x4c35d2=0x64;if(_0x362fb0)_0x440412[_0xcf9f1f(0x1c7)][_0xcf9f1f(0x1f0)]=_0x2bc966[_0xcf9f1f(0x1ed)](_0x2c1e51,'%');if(_0x541b2b)_0x39b712['innerText']=_0x2bc966[_0xcf9f1f(0x1ed)](_0x43ce24[_0xcf9f1f(0x213)](_0x273179),'%');_0x2bc966[_0xcf9f1f(0x1df)](_0x5dc82a,0x64)&&(_0x2bc966[_0xcf9f1f(0x1ff)](_0x2eb1c4,_0x2201ec),_0x2bc966[_0xcf9f1f(0x1d9)](_0x283e8a,()=>{const _0x495bd0=_0xcf9f1f;_0x3ce885&&(_0x278b5a[_0x495bd0(0x225)][_0x495bd0(0x1db)](_0xd6a355['KMFFW']),_0x1f4b37(()=>_0x15e68f[_0x495bd0(0x1c9)](),0x1f4));},0x12c));}},0x32);});
+</script>
+</body>
+</html>
