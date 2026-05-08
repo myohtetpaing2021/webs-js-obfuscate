@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SME Business Metrics - Pro Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#030712', 
+                            900: '#0f172a',
+                            800: '#1e293b',
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.4s ease-out forwards',
+                        'pulse-result': 'pulseResult 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                        'slide-right': 'slideRight 0.3s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            'from': { opacity: 0, transform: 'translateY(15px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        pulseResult: {
+                            '0%': { transform: 'scale(1)', filter: 'brightness(1)' },
+                            '50%': { transform: 'scale(1.05)', filter: 'brightness(1.5)', textShadow: '0 0 20px rgba(52,211,153,0.8)' },
+                            '100%': { transform: 'scale(1)', filter: 'brightness(1)' },
+                        },
+                        slideRight: {
+                            'from': { opacity: 0, transform: 'translateX(-10px)' },
+                            'to': { opacity: 1, transform: 'translateX(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #030712;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+            overflow: hidden; /* Prevent body scroll, everything scrolls inside containers */
+        }
+
+        /* Tech Grid Background */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+        }
+
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Premium Glass Effects */
+        .glass-header {
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.6) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.1), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(6, 182, 212, 0.4);
+            box-shadow: 0 10px 40px -10px rgba(6, 182, 212, 0.15), inset 0 0 20px rgba(6, 182, 212, 0.05);
+        }
+
+        /* Result Container Styling */
+        .result-hud {
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(15, 23, 42, 0.8),
+                rgba(15, 23, 42, 0.8) 10px,
+                rgba(30, 41, 59, 0.8) 10px,
+                rgba(30, 41, 59, 0.8) 20px
+            );
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            box-shadow: inset 0 0 30px rgba(16, 185, 129, 0.1), 0 0 20px rgba(16, 185, 129, 0.05);
+        }
+
+        /* Input Styling */
+        .input-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        .input-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 0.75rem;
+            background: linear-gradient(to right, rgba(6,182,212,0.5), rgba(59,130,246,0.5));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .input-wrapper:focus-within::before {
+            opacity: 1;
+        }
+        .input-field {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            background: rgba(3, 7, 18, 0.9);
+            border-color: transparent;
+            box-shadow: inset 0 0 15px rgba(6,182,212,0.1);
+        }
+
+        /* Hover Sidebar Styles */
+        .expanding-sidebar {
+            width: 300px;
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        @media (min-width: 1024px) {
+            .expanding-sidebar {
+                width: 84px; /* Default collapsed width */
+            }
+            .expanding-sidebar:hover {
+                width: 320px; /* Expanded width on hover */
+            }
+        }
+
+        /* Custom Nav Button Tech Pattern Base64 */
+        .bg-tech-dots {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=');
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-200 min-h-screen relative">
+
+    <!-- Ambient Grid & Glows -->
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 bg-grid"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[100px] will-change-transform"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-emerald-600/10 rounded-full blur-[100px] will-change-transform"></div>
+    </div>
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#030712] flex flex-col items-center justify-center transition-all duration-700 ease-out">
+        <div class="relative w-24 h-24 flex items-center justify-center mb-6">
+            <div class="absolute inset-0 rounded-xl border-2 border-cyan-500/30 animate-[spin_3s_linear_infinite] shadow-[0_0_30px_rgba(6,182,212,0.2)]"></div>
+            <div class="absolute inset-2 rounded-xl border-2 border-violet-500/30 animate-[spin_2s_linear_infinite_reverse]"></div>
+            <div class="relative z-10 w-12 h-12 bg-gradient-to-br from-cyan-600 to-blue-700 rounded-lg flex items-center justify-center shadow-lg">
+                <i data-lucide="cpu" class="text-white w-6 h-6 animate-pulse"></i>
+            </div>
+        </div>
+        <div class="text-center space-y-2">
+            <h2 class="text-xl font-black tracking-[0.2em] text-white font-num">SYS<span class="text-cyan-400">INIT</span></h2>
+            <div class="h-0.5 w-48 bg-slate-800 rounded-full overflow-hidden">
+                <div id="progress-bar" class="h-full bg-cyan-400 w-0 transition-all duration-100 shadow-[0_0_10px_#22d3ee]"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header (Fixed Top) -->
+    <header class="glass-header h-[70px] fixed top-0 w-full px-4 md:px-6 flex justify-between items-center z-50">
+        <div class="flex items-center gap-3 md:gap-4">
+            <!-- Mobile Hamburger Toggle -->
+            <button id="menuToggleBtn" class="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-slate-900 border border-white/10 text-cyan-400 hover:bg-slate-800 transition-colors focus:outline-none relative z-50">
+                <i data-lucide="menu" class="w-5 h-5"></i>
+            </button>
+            
+            <div class="w-10 h-10 bg-slate-900 border border-white/10 rounded-xl hidden sm:flex items-center justify-center relative group overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 group-hover:opacity-100 opacity-50 transition-opacity"></div>
+                <i data-lucide="command" class="text-cyan-400 w-5 h-5 relative z-10"></i>
+            </div>
+            <div>
+                <h1 class="text-lg font-black tracking-tight text-white font-num flex items-center gap-2">
+                    BIZ<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">METRICS</span>
+                    <span class="text-[8px] px-1.5 py-0.5 rounded border border-cyan-500/30 text-cyan-400 bg-cyan-500/10 tracking-widest hidden sm:inline-block">PRO</span>
+                </h1>
+                <p class="text-[9px] text-slate-400 font-num uppercase tracking-[0.2em] mt-0.5 hidden sm:block">Financial Analysis Engine</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3 bg-slate-900/50 border border-white/5 px-3 py-1.5 rounded-lg">
+                <div class="w-2 h-2 bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.8)] animate-pulse"></div>
+                <span class="text-[9px] font-bold text-slate-300 tracking-widest font-num uppercase">System Online</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Overlay -->
+    <div id="mobileOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[55] hidden lg:hidden opacity-0 transition-opacity duration-300"></div>
+
+    <!-- Sidebar / Expanding Hover Menu (Fixed Position) -->
+    <aside id="sidebar" class="expanding-sidebar fixed top-0 lg:top-[70px] left-0 h-full lg:h-[calc(100vh-70px)] z-[60] lg:z-40 bg-[#030712]/95 lg:bg-[#030712]/90 backdrop-blur-2xl border-r border-white/5 flex flex-col group/sidebar shadow-2xl lg:shadow-none -translate-x-full lg:translate-x-0 transition-transform lg:transition-none hover:border-cyan-500/20 duration-300">
+        
+        <div class="flex items-center justify-between p-4 lg:hidden border-b border-white/5 shrink-0">
+            <h2 class="text-xs font-black uppercase tracking-[0.3em] text-slate-400 font-num flex items-center gap-2">
+                <i data-lucide="layers" class="w-4 h-4 text-cyan-500"></i> Modules
+            </h2>
+            <button id="closeMenuBtn" class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition-colors">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <div class="hidden lg:flex items-center justify-center h-16 border-b border-white/5 mx-4 group-hover/sidebar:justify-start transition-all shrink-0">
+            <div class="w-10 h-10 flex items-center justify-center shrink-0">
+                <i data-lucide="layers" class="w-5 h-5 text-cyan-500 shrink-0 lg:group-hover/sidebar:mr-3 transition-all duration-300"></i>
+            </div>
+            <span class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 font-num opacity-0 lg:group-hover/sidebar:opacity-100 transition-opacity duration-300 whitespace-nowrap hidden lg:block">
+                Modules (၁၀) မျိုး
+            </span>
+        </div>
+
+        <!-- Nav List inside Sidebar -->
+        <div id="navList" class="flex flex-col gap-2 p-3 lg:p-4 overflow-y-auto custom-scrollbar flex-1 pb-24 lg:pb-8 min-h-0">
+            <!-- Nav Items Injected by JS -->
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main id="mainContent" class="fixed top-[70px] left-0 lg:left-[84px] right-0 bottom-0 overflow-y-auto custom-scrollbar px-4 py-6 md:px-8 scroll-smooth z-10 transition-all duration-300">
+        <div id="contentContainer" class="max-w-5xl mx-auto space-y-6 pb-20">
+            <!-- Dynamic Content Will Render Here -->
+        </div>
+    </main>
+
+    <script>
+        const data = [
+            {
+                id: 'profit',
+                icon: 'activity',
+                title: '၁။ အမြတ်ငွေ တွက်ချက်ခြင်း',
+                shortName: 'Profit Calculation',
+                desc: 'လုပ်ငန်းများအတွက် အခြေခံအကျဆုံး တွက်ချက်မှုဖြစ်ပါတယ်။',
+                formulaHTML: `
+                    <span class="text-cyan-400">Profit</span> 
+                    <span class="text-slate-500">=</span> 
+                    <span class="text-emerald-400">Revenue</span> 
+                    <span class="text-slate-500">-</span> 
+                    <span class="text-rose-400">Cost</span>
+                `,
+                calcInputs: [
+                    { id: 'rev', label: 'စုစုပေါင်းရောင်းရငွေ (ကျပ်)', icon: 'trending-up', color: 'text-emerald-400' },
+                    { id: 'cost', label: 'ကုန်ကျစရိတ် (ကျပ်)', icon: 'trending-down', color: 'text-rose-400' }
+                ],
+                calcFn: (inputs) => inputs.rev - inputs.cost,
+                resultLabel: 'အသားတင်အမြတ်ငွေ (Net Profit)',
+                resultUnit: 'ကျပ်',
+                exampleTitle: 'တွက်ချက်မှု ဥပမာ',
+                exampleList: [
+                    'ဘာဂါ ၅၀ ရောင်းရတယ် (၁ လုံး = ၃,၀၀၀ ကျပ်) <br><span class="text-slate-400 text-xs font-mono">Revenue = ၁၅၀,၀၀၀ ကျပ်</span>',
+                    'ဘာဂါ ၁ လုံး အရင်းက ၂,၀၀၀ ကျပ် <br><span class="text-slate-400 text-xs font-mono">Cost = ၁၀၀,၀၀၀ ကျပ်</span>',
+                    '<span class="text-emerald-400 font-bold">အမြတ်: ၁၅၀,၀၀၀ - ၁၀၀,၀၀၀ = ၅၀,၀၀၀ ကျပ်</span>'
+                ],
+                insight: 'ရောင်းအားဘယ်လောက်တက်တက် ကုန်ကျစရိတ် (အရင်း) ကို မထိန်းချုပ်နိုင်ရင် တကယ့်အမြတ်မကျန်ဘဲ "အမြတ်တု၊ တိုးတက်မှုအစစ်မဖြစ်" ဘူးဆိုတာ သတိပြုပါ။'
+            },
+            {
+                id: 'margin',
+                icon: 'percent',
+                title: '၂။ အမြတ်ရာခိုင်နှုန်း',
+                shortName: 'Profit Margin',
+                desc: 'မိမိလုပ်ငန်းရဲ့ အမြတ်အစွန်း ကြီးထွားမှုကို တိုင်းတာရန်ဖြစ်ပါတယ်။',
+                formulaHTML: `
+                    <span class="text-cyan-400">Margin %</span> 
+                    <span class="text-slate-500">=</span>
+                    <span class="text-slate-500">(</span>
+                    <span class="text-emerald-400">Profit</span>
+                    <span class="text-slate-500">/</span>
+                    <span class="text-blue-400">Revenue</span>
+                    <span class="text-slate-500">)</span>
+                    <span class="text-violet-400">× 100</span>
+                `,
+                calcInputs: [
+                    { id: 'profit', label: 'အမြတ်ငွေ (ကျပ်)', icon: 'wallet', color: 'text-emerald-400' },
+                    { id: 'rev', label: 'ရောင်းရငွေ (ကျပ်)', icon: 'coins', color: 'text-cyan-400' }
+                ],
+                calcFn: (inputs) => (inputs.profit / inputs.rev) * 100,
+                resultLabel: 'အမြတ်ရာခိုင်နှုန်း (Margin)',
+                resultUnit: '%',
+                exampleTitle: 'တွက်ချက်မှု ဥပမာ',
+                exampleList: [
+                    'အင်္ကျီအဝယ်စျေး (အရင်း) = ၈,၀၀၀ ကျပ်',
+                    'ရောင်းစျေး = ၁၂,၀၀၀ ကျပ်',
+                    'အမြတ်ငွေ = ၄,၀၀၀ ကျပ်',
+                    '<span class="text-emerald-400 font-bold">Margin: (၄,၀၀၀ / ၁၂,၀၀၀) × ၁၀၀ = ၃၃%</span>'
+                ],
+                insight: 'ဆိုင်အများစုက ဒီရာခိုင်နှုန်းကို သေချာမတွက်တတ်ကြပါဘူး။ ဒါကိုမသိရင် ဈေးမှားတင်မိတတ်ပြီး ရေရှည်မှာ အရှုံးပေါ်တတ်ပါတယ်။'
+            },
+            {
+                id: 'price',
+                icon: 'tag',
+                title: '၃။ ရောင်းစျေး သတ်မှတ်ခြင်း',
+                shortName: 'Pricing Strategy',
+                desc: 'ကိုယ့်ပစ္စည်းကို ဘယ်လောက်နဲ့ရောင်းရင် လိုချင်တဲ့ အမြတ်ရာခိုင်နှုန်းရမလဲ တွက်တာပါ။',
+                formulaHTML: `
+                    <span class="text-cyan-400">Price</span> 
+                    <span class="text-slate-500">=</span> 
+                    <span class="text-rose-400">Cost</span> 
+                    <span class="text-slate-500">×</span> 
+                    <span class="text-slate-500">(</span>
+                    <span class="text-slate-300">1</span>
+                    <span class="text-slate-500">+</span>
+                    <span class="text-emerald-400">Target Margin %</span>
+                    <span class="text-slate-500">)</span>
+                `,
+                calcInputs: [
+                    { id: 'cost', label: 'ပစ္စည်းအရင်း (ကျပ်)', icon: 'package', color: 'text-rose-400' },
+                    { id: 'margin', label: 'လိုချင်သော အမြတ် %', icon: 'target', color: 'text-emerald-400' }
+                ],
+                calcFn: (inputs) => inputs.cost * (1 + (inputs.margin / 100)),
+                resultLabel: 'သတ်မှတ်ရမည့် ရောင်းစျေး',
+                resultUnit: 'ကျပ်',
+                exampleTitle: 'တွက်ချက်မှု ဥပမာ',
+                exampleList: [
+                    'ဘိုဘာတီး ၁ ခွက် အရင်း = ၁,၅၀၀ ကျပ်',
+                    'လိုချင်တဲ့ အမြတ် = ၅၀% (၀.၅)',
+                    '<span class="text-emerald-400 font-bold">ရောင်းစျေး: ၁,၅၀၀ × (၁ + ၀.၅) = ၂,၂၅၀ ကျပ်</span>'
+                ],
+                insight: 'ဆိုင်အများစုက ရောင်းစျေးကို သူများဆိုင်တွေနဲ့ယှဉ်ပြီး ရမ်းသတ်မှတ်တတ်ကြပါတယ်။ အဲဒီလိုလုပ်ရင် ကိုယ့်အရင်းနဲ့မကိုက်ဘဲ အမြတ်ဆုံးရှုံးတတ်ပါတယ်။'
+            },
+            {
+                id: 'bep',
+                icon: 'anchor',
+                title: '၄။ အရင်းကျေသည့်အမှတ်',
+                shortName: 'Break-Even Point',
+                desc: 'တစ်လကို အနည်းဆုံး ပစ္စည်းဘယ်လောက်ရောင်းရမှ အရင်းကျေမလဲဆိုတာ တွက်တာပါ။',
+                formulaHTML: `
+                    <span class="text-cyan-400">Target Qty</span> 
+                    <span class="text-slate-500">=</span>
+                    <span class="text-rose-400">Fixed Cost</span>
+                    <span class="text-slate-500">/</span>
+                    <span class="text-slate-500">(</span>
+                    <span class="text-emerald-400">Price</span>
+                    <span class="text-slate-500">-</span>
+                    <span class="text-orange-400">Unit Cost</span>
+                    <span class="text-slate-500">)</span>
+                `,
+                calcInputs: [
+                    { id: 'fixed', label: 'ပုံသေစရိတ် (လခ/လစာ)', icon: 'home', color: 'text-rose-400' },
+                    { id: 'price', label: 'ပစ္စည်း ၁ ခု ရောင်းစျေး', icon: 'tag', color: 'text-emerald-400' },
+                    { id: 'cost', label: 'ပစ္စည်း ၁ ခု အရင်းစရိတ်', icon: 'package-minus', color: 'text-orange-400' }
+                ],
+                calcFn: (inputs) => {
+                    const margin = inputs.price - inputs.cost;
+                    return margin > 0 ? inputs.fixed / margin : 0;
+                },
+                resultLabel: 'ရောင်းရမည့် အနည်းဆုံး ခုရေ',
+                resultUnit: 'ခု',
+                exampleTitle: 'တွက်ချက်မှု ဥပမာ',
+                exampleList: [
+                    'ပုံသေစရိတ် = ၃၀၀,၀၀၀ ကျပ်',
+                    'ခေါက်ဆွဲ ၁ ပွဲ ရောင်းစျေး ၂,၅၀၀ ကျပ်၊ အရင်း ၁,၅၀၀ ကျပ် <br><span class="text-slate-400 text-xs font-mono">Profit/Unit = ၁,၀၀၀ ကျပ်</span>',
+                    '<span class="text-emerald-400 font-bold">အရင်းကျေရန်: ၃၀၀,၀၀၀ / ၁,၀၀၀ = အနည်းဆုံး ပွဲ ၃၀၀</span>'
+                ],
+                insight: 'ဒီအချက်ကိုမသိရင် ကိုယ့်လုပ်ငန်း ရှင်သန်ရပ်တည်ဖို့အတွက် အနိမ့်ဆုံး ရောက်ရမယ့်ပစ်မှတ် (Survival Point) ကို သိမှာမဟုတ်ပါဘူး။'
+            },
+            {
+                id: 'cac',
+                icon: 'user-plus',
+                title: '၅။ ဖောက်သည် ၁ ယောက်ရရန် စရိတ်',
+                shortName: 'Customer Acq. Cost',
+                desc: 'Facebook Ads လို ကြော်ငြာတွေလုပ်တဲ့အခါ တွက်ရမယ့် အရေးကြီးတဲ့ အချက်ပါ။',
+                formulaHTML: `
+                    <span class="text-cyan-400">CAC</span> 
+                    <span class="text-slate-500">=</span>
+                    <span class="text-rose-400">Total Ad Spend</span>
+                    <span class="text-slate-500">/</span>
+                    <span class="text-emerald-400">New Customers</span>
+                `,
+                calcInputs: [
+                    { id: 'adcost', label: 'စုစုပေါင်း ကြော်ငြာစရိတ် (ကျပ်)', icon: 'megaphone', color: 'text-rose-400' },
+                    { id: 'customers', label: 'ရလာသော ဖောက်သည်အသစ် (ဦးရေ)', icon: 'users', color: 'text-emerald-400' }
+                ],
+                calcFn: (inputs) => inputs.adcost / inputs.customers,
+                resultLabel: 'လူ ၁ ယောက်ရရန် ကုန်ကျစရိတ်',
+                resultUnit: 'ကျပ်',
+                exampleTitle: 'တွက်ချက်မှု ဥပမာ',
+                exampleList: [
+                    'ကြော်ငြာခ သုံးလိုက်တာ = ၅၀,၀၀၀ ကျပ်',
+                    'ရလာတဲ့ ဖောက်သည် = ၂၅ ယောက်',
+                    '<span class="text-emerald-400 font-bold">CAC: ၅၀,၀၀၀ / ၂၅ = ၂,၀၀၀ ကျပ် / ယောက်</span>'
+                ],
+                insight: 'ပစ္စည်းရောင်းရလို့ မြတ်တဲ့ငွေက ၁,၅၀၀ ကျပ်ပဲရှိပြီး၊ ကြော်ငြာခက ဖောက်သည်တစ်ယောက်ကို ၂,၀၀၀ ကျပ်ကျနေရင် သင့်လုပ်ငန်း အရှုံးပေါ်နေပါပြီ။'
+            },
+            {
+                id: 'ltv',
+                icon: 'infinity',
+                title: '၆။ ဖောက်သည်၏ ရေရှည်တန်ဖိုး',
+                shortName: 'Lifetime Value',
+                desc: 'ဖောက်သည်တစ်ယောက်က ကိုယ့်ဆိုင်မှာ ရေရှည် ဘယ်လောက်ဖိုး ဝယ်သွားနိုင်လဲ တွက်တာပါ။',
+                formulaHTML: `
+                    <span class="text-cyan-400">LTV</span> 
+                    <span class="text-slate-500">=</span> 
+                    <span class="text-emerald-400">Avg Spend</span> 
+                    <span class="text-slate-500">×</span> 
+                    <span class="text-violet-400">Repeat Purchases</span>
+                `,
+                calcInputs: [
+                    { id: 'avgspend', label: '၁ ခါဝယ်လျှင် ပျမ်းမျှသုံးငွေ (ကျပ်)', icon: 'shopping-bag', color: 'text-emerald-400' },
+                    { id: 'repeats', label: 'ပြန်လည်ဝယ်ယူမည့် အကြိမ်ရေ', icon: 'refresh-cw', color: 'text-violet-400' }
+                ],
+                calcFn: (inputs) => inputs.avgspend * inputs.repeats,
+                resultLabel: 'ဖောက်သည် ၁ ဦး၏ တန်ဖိုး',
+                resultUnit: 'ကျပ်',
+                exampleTitle: 'တွက်ချက်မှု ဥပမာ',
+                exampleList: [
+                    'ဖောက်သည် ၁ ယောက် ပျမ်းမျှဝယ်တာ = ၂၅,၀၀၀ ကျပ်',
+                    'သူက လစဉ်ပုံမှန်လာဝယ်တယ် (၆ လ ဆက်တိုက်)',
+                    '<span class="text-emerald-400 font-bold">LTV: ၂၅,၀၀၀ × ၆ = ၁၅၀,၀၀၀ ကျပ်</span>'
+                ],
+                insight: 'ဖောက်သည်အသစ်တွေချည်း လိုက်ရှာနေတာထက်၊ ရှိပြီးသား ဖောက်သည်ကို သစ္စာရှိဖောက်သည် (Loyal Customer) ဖြစ်အောင် ဂရုစိုက်တာက ပိုတန်ဖိုးကြီးပါတယ်။'
+            },
+            {
+                id: 'roi',
+                icon: 'pie-chart',
+                title: '၇။ ရင်းနှီးမြှုပ်နှံမှုမှ ပြန်ရငွေ',
+                shortName: 'ROI',
+                desc: 'ကိုယ်စိုက်ထုတ်လိုက်တဲ့ အရင်းအပေါ်မှာ ဘယ်လောက်ရာခိုင်နှုန်း ပြန်မြတ်လဲ တွက်တာပါ။',
+                formulaHTML: `
+                    <span class="text-cyan-400">ROI %</span> 
+                    <span class="text-slate-500">=</span>
+                    <span class="text-slate-500">(</span>
+                    <span class="text-emerald-400">Net Return</span>
+                    <span class="text-slate-500">/</span>
+                    <span class="text-rose-400">Investment</span>
+                    <span class="text-slate-500">)</span>
+                    <span class="text-violet-400">× 100</span>
+                `,
+                calcInputs: [
+                    { id: 'profit', label: 'အသားတင် ပြန်မြတ်သောငွေ (ကျပ်)', icon: 'arrow-up-circle', color: 'text-emerald-400' },
+                    { id: 'invest', label: 'သုံးလိုက်သောငွေ / အရင်း (ကျပ်)', icon: 'arrow-down-circle', color: 'text-rose-400' }
+                ],
+                calcFn: (inputs) => (inputs.profit / inputs.invest) * 100,
+                resultLabel: 'ပြန်ရငွေရာခိုင်နှုန်း (ROI)',
+                resultUnit: '%',
+                exampleTitle: 'တွက်ချက်မှု ဥပမာ',
+                exampleList: [
+                    'ပရိုမိုးရှင်းအတွက် သုံးလိုက်တဲ့ငွေ (အရင်း) = ၁၀၀,၀၀၀ ကျပ်',
+                    'အသားတင်ပြန်မြတ်တဲ့ငွေ = ၆၀,၀၀၀ ကျပ်',
+                    '<span class="text-emerald-400 font-bold">ROI: (၆၀,၀၀၀ / ၁၀၀,၀၀၀) × ၁၀၀ = ၆၀%</span>'
+                ],
+                insight: 'ရောင်းရငွေ (Sales) တက်တိုင်း လုပ်ငန်းကောင်းတယ်လို့ ပြောလို့မရပါဘူး။ ကိုယ်သုံးလိုက်တဲ့ ငွေအပေါ်မှာ တကယ်ပြန်မြတ်ရဲ့လားဆိုတဲ့ ROI ကို အမြဲစစ်ဆေးရပါမယ်။'
+            },
+            {
+                id: 'aov',
+                icon: 'shopping-cart',
+                title: '၈။ အော်ဒါတစ်ခု၏ ပျမ်းမျှတန်ဖိုး',
+                shortName: 'Average Order Value',
+                desc: 'အွန်လိုင်းစတိုးတွေမှာ လူတစ်ယောက်လာဝယ်ရင် ပျမ်းမျှ ဘယ်လောက်ဖိုး ဝယ်သွားလဲဆိုတာပါ။',
+                formulaHTML: `
+                    <span class="text-cyan-400">AOV</span> 
+                    <span class="text-slate-500">=</span>
+                    <span class="text-emerald-400">Total Revenue</span>
+                    <span class="text-slate-500">/</span>
+                    <span class="text-violet-400">Total Orders</span>
+                `,
+                calcInputs: [
+                    { id: 'totalrev', label: 'စုစုပေါင်း ရောင်းရငွေ (ကျပ်)', icon: 'banknote', color: 'text-emerald-400' },
+                    { id: 'orders', label: 'စုစုပေါင်း အော်ဒါအရေအတွက်', icon: 'hash', color: 'text-violet-400' }
+                ],
+                calcFn: (inputs) => inputs.totalrev / inputs.orders,
+                resultLabel: 'ပျမ်းမျှ အော်ဒါတန်ဖိုး',
+                resultUnit: 'ကျပ်',
+                exampleTitle: 'တွက်ချက်မှု ဥပမာ',
+                exampleList: [
+                    'တစ်နေ့တာ ရောင်းရငွေ = ၅၀၀,၀၀၀ ကျပ်',
+                    'အော်ဒါအရေအတွက် = ၂၅ ခု',
+                    '<span class="text-emerald-400 font-bold">AOV: ၅၀၀,၀၀၀ / ၂၅ = ၂၀,၀၀၀ ကျပ်</span>'
+                ],
+                insight: 'ဒီပမာဏကို မြှင့်တင်ချင်ရင် Bundle Sale လိုမျိုး (ဥပမာ - ၂ ခုဝယ်ရင် လျှော့ဈေးပေးတာ၊ တွဲရောင်းတာမျိုး) တွေ လုပ်ပေးသင့်ပါတယ်။'
+            },
+            {
+                id: 'inventory',
+                icon: 'boxes',
+                title: '၉။ ကုန်ပစ္စည်း လည်ပတ်နှုန်း',
+                shortName: 'Inventory Turnover',
+                desc: 'ပစ္စည်းတွေ ဘယ်လောက်မြန်မြန် ရောင်းထွက်လဲဆိုတာ တိုင်းတာတာပါ။',
+                formulaHTML: `
+                    <span class="text-cyan-400">Turnover</span> 
+                    <span class="text-slate-500">=</span>
+                    <span class="text-emerald-400">COGS</span>
+                    <span class="text-slate-500">/</span>
+                    <span class="text-rose-400">Avg Inventory</span>
+                `,
+                calcInputs: [
+                    { id: 'cogs', label: 'ရောင်းရသော ပစ္စည်းများ၏အရင်း (ကျပ်)', icon: 'truck', color: 'text-emerald-400' },
+                    { id: 'avg_inv', label: 'ဆိုင်ရှိ လက်ကျန်ပစ္စည်းတန်ဖိုး (ကျပ်)', icon: 'archive', color: 'text-rose-400' }
+                ],
+                calcFn: (inputs) => inputs.cogs / inputs.avg_inv,
+                resultLabel: 'လည်ပတ်နှုန်း',
+                resultUnit: 'ကြိမ်',
+                exampleTitle: 'တွက်ချက်မှု ဥပမာ',
+                exampleList: [
+                    'ရောင်းလိုက်ရတဲ့ ပစ္စည်းတန်ဖိုး (COGS) = ၈၀၀,၀၀၀ ကျပ်',
+                    'ဆိုင်မှာ အမြဲရှိနေတဲ့ ပစ္စည်းတန်ဖိုး = ၂၀၀,၀၀၀ ကျပ်',
+                    '<span class="text-emerald-400 font-bold">လည်ပတ်နှုန်း: ၈၀၀,၀၀၀ / ၂၀၀,၀၀၀ = ၄ ကြိမ်</span>'
+                ],
+                insight: 'လည်ပတ်နှုန်း အရမ်းနှေးနေပြီဆိုရင် သင့်ငွေတွေက ပစ္စည်းတွေအဖြစ်နဲ့ ဂိုဒေါင်ထဲမှာ အောင်းနေပါပြီ (Dead stock)။ အရှုံးပေါ်ဖို့ နီးစပ်လာတာဖြစ်ပါတယ်။'
+            },
+            {
+                id: 'target',
+                icon: 'crosshair',
+                title: '၁၀။ နေ့စဉ် ရောင်းရမည့် ပစ်မှတ်',
+                shortName: 'Daily Target',
+                desc: 'လုပ်ငန်းရည်မှန်းချက် ပြည့်ဖို့ တစ်နေ့ကို ဘယ်လောက်ရောင်းရမလဲ ခွဲခြမ်းစိတ်ဖြာတာပါ။',
+                formulaHTML: `
+                    <span class="text-cyan-400">Daily Target</span> 
+                    <span class="text-slate-500">=</span>
+                    <span class="text-emerald-400">Monthly Goal</span>
+                    <span class="text-slate-500">/</span>
+                    <span class="text-violet-400">Working Days</span>
+                `,
+                calcInputs: [
+                    { id: 'monthly', label: 'တစ်လစာ ရည်မှန်းချက် (ကျပ်)', icon: 'calendar', color: 'text-emerald-400' },
+                    { id: 'days', label: 'ဆိုင်ဖွင့်မည့် ရက်အရေအတွက်', icon: 'sun', color: 'text-violet-400' }
+                ],
+                calcFn: (inputs) => inputs.monthly / inputs.days,
+                resultLabel: 'တစ်နေ့တာ ရောင်းရမည့်ပစ်မှတ်',
+                resultUnit: 'ကျပ်',
+                exampleTitle: 'တွက်ချက်မှု ဥပမာ',
+                exampleList: [
+                    '၁ လ ရောင်းရငွေ ၁,၂၀၀,၀၀၀ ကျပ် ပြည့်ချင်တယ်',
+                    'ဆိုင်ဖွင့်မည့်ရက် = ၃၀ ရက်',
+                    '<span class="text-emerald-400 font-bold">နေ့စဉ် ပစ်မှတ်: ၁,၂၀၀,၀၀၀ / ၃၀ = ၄၀,၀၀၀ ကျပ်</span>'
+                ],
+                insight: 'တစ်လစာ ပစ်မှတ်ကြီးကို ကြည့်ပြီး စိတ်ဖိစီးနေမယ့်အစား၊ နေ့စဉ်ပြည့်ရမယ့် ပစ်မှတ်သေးသေးလေးတွေကို အာရုံစိုက်လုပ်ဆောင်တာက ပိုမိုတည်ငြိမ်တဲ့ တိုးတက်မှုကို ဖြစ်စေပါတယ်။'
+            }
+        ];
+
+        let activeItemId = data[0].id;
+        
+        function formatNumber(num) {
+            if(isNaN(num) || !isFinite(num)) return '0';
+            return Number.isInteger(num) ? num.toLocaleString('en-US') : parseFloat(num).toFixed(2).toLocaleString('en-US');
+        }
+
+        // ENHANCED: Pro Dashboard Style Navigation Injection
+        function initNavigation() {
+            const navList = document.getElementById('navList');
+            if(!navList) return;
+            navList.innerHTML = '';
+            
+            data.forEach((item, index) => {
+                const isSelected = item.id === activeItemId;
+                
+                // Enhanced classes for "Cooler" UI
+                const baseClass = "nav-btn w-full p-2 rounded-xl text-left transition-all duration-300 relative group/btn overflow-hidden flex items-center shrink-0 cursor-pointer border";
+                const activeClass = "bg-gradient-to-r from-cyan-500/20 via-cyan-500/5 to-transparent border-cyan-500/40 shadow-[inset_3px_0_0_#22d3ee,0_0_20px_rgba(6,182,212,0.15)] ml-1 md:ml-2";
+                const inactiveClass = "border-transparent hover:border-white/10 hover:bg-slate-800/50 hover:ml-1 md:hover:ml-2 text-slate-400";
+                
+                const btn = document.createElement('button');
+                btn.className = `${baseClass} ${isSelected ? activeClass : inactiveClass}`;
+                btn.id = `nav-btn-${item.id}`;
+                
+                const iconColor = isSelected ? 'text-cyan-300' : 'text-slate-400 group-hover/btn:text-cyan-400 transition-colors duration-300';
+                const titleColor = isSelected ? 'text-white' : 'text-slate-300 group-hover/btn:text-white transition-colors duration-300';
+                
+                btn.innerHTML = `
+                    ${isSelected ? '<div class="absolute inset-0 bg-tech-dots opacity-40"></div>' : ''}
+                    <div class="flex items-center gap-3 lg:gap-4 w-full relative z-10">
+                        <div class="w-10 h-10 shrink-0 rounded-lg flex items-center justify-center transition-all duration-300 ${isSelected ? 'bg-cyan-500/20 border border-cyan-400/50 shadow-[0_0_15px_rgba(6,182,212,0.3)]' : 'bg-slate-900/60 border border-white/5 group-hover/btn:border-cyan-500/30 group-hover/btn:bg-slate-800'}">
+                            <i data-lucide="${item.icon}" class="w-5 h-5 ${iconColor}"></i>
+                        </div>
+                        <div class="flex flex-col justify-center text-left opacity-100 lg:opacity-0 lg:group-hover/sidebar:opacity-100 transition-opacity duration-300 whitespace-nowrap overflow-hidden flex-1">
+                            <div class="flex justify-between items-center pr-2">
+                                <div class="text-[9px] uppercase tracking-widest font-black font-num ${isSelected ? 'text-cyan-400 drop-shadow-[0_0_5px_rgba(34,211,238,0.8)]' : 'text-slate-500'}">MOD 0${index + 1}</div>
+                                ${isSelected ? '<div class="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_#22d3ee] animate-pulse"></div>' : ''}
+                            </div>
+                            <div class="text-[13px] md:text-sm font-bold truncate w-full ${titleColor}">${item.shortName}</div>
+                        </div>
+                    </div>
+                    ${isSelected ? '<div class="absolute left-0 top-0 w-full h-[1px] bg-gradient-to-r from-cyan-400/50 to-transparent"></div>' : ''}
+                `;
+                btn.onclick = () => selectItem(item.id);
+                navList.appendChild(btn);
+            });
+            lucide.createIcons();
+        }
+
+        function renderContent() {
+            const item = data.find(d => d.id === activeItemId);
+            if(!item) return;
+
+            let inputsHTML = item.calcInputs.map(input => `
+                <div class="mb-5">
+                    <label class="flex items-center gap-2 text-[10px] uppercase tracking-[0.1em] font-bold text-slate-400 mb-2 font-num">
+                        <i data-lucide="${input.icon}" class="w-3.5 h-3.5 ${input.color}"></i>
+                        ${input.label}
+                    </label>
+                    <div class="input-wrapper rounded-xl relative">
+                        <input type="number" id="input-${input.id}" oninput="calculateResult()" 
+                               class="input-field w-full rounded-xl px-4 py-3.5 text-sm text-white outline-none font-mono font-bold placeholder-slate-600 relative z-10"
+                               placeholder="0">
+                    </div>
+                </div>
+            `).join('');
+
+            let listHTML = item.exampleList.map(li => `
+                <li class="mb-4 text-slate-300 flex items-start text-sm bg-slate-900/30 p-3 rounded-lg border border-white/5 hover:border-white/10 transition-colors animate-slide-right">
+                    <div class="bg-cyan-500/10 p-1 rounded-md mr-3 mt-0.5 border border-cyan-500/20 shrink-0">
+                        <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i>
+                    </div>
+                    <div class="leading-relaxed flex-1">${li}</div>
+                </li>
+            `).join('');
+
+            const contentHTML = `
+                <div class="space-y-6 animate-fade-in relative pb-4">
+                    <!-- Title Section -->
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-14 h-14 shrink-0 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 shadow-xl flex items-center justify-center relative overflow-hidden">
+                            <div class="absolute inset-0 bg-cyan-500/20 blur-xl"></div>
+                            <i data-lucide="${item.icon}" class="w-7 h-7 text-cyan-400 relative z-10"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl md:text-2xl font-black tracking-tight text-white mb-1 font-sans leading-tight">${item.title}</h2>
+                            <p class="text-xs text-slate-400 tracking-wide">${item.desc}</p>
+                        </div>
+                    </div>
+
+                    <!-- Layout Grid -->
+                    <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+                        
+                        <!-- Left Column (Calculator & Formula) -->
+                        <div class="xl:col-span-7 space-y-6 flex flex-col">
+                            
+                            <!-- Formula Block -->
+                            <div class="bg-[#0b1121] border border-slate-800 rounded-2xl p-4 md:p-5 shadow-inner relative overflow-hidden group">
+                                <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                <div class="flex items-center gap-2 mb-3 border-b border-slate-800/50 pb-2">
+                                    <div class="w-2 h-2 rounded-full bg-rose-500"></div>
+                                    <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+                                    <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+                                    <span class="text-[9px] text-slate-500 font-mono tracking-widest ml-2">FORMULA_LOGIC</span>
+                                </div>
+                                <div class="font-mono text-xs md:text-sm font-bold flex flex-wrap items-center gap-x-2 gap-y-3 leading-loose relative z-10 tracking-wide">
+                                    ${item.formulaHTML}
+                                </div>
+                            </div>
+
+                            <!-- Calculator Inputs -->
+                            <div class="glass-card p-5 md:p-8 rounded-[2rem] flex-1">
+                                <div class="flex items-center justify-between mb-6 border-b border-white/5 pb-4">
+                                    <h3 class="text-[11px] uppercase tracking-widest font-black text-white font-num flex items-center gap-2">
+                                        <i data-lucide="cpu" class="w-4 h-4 text-cyan-400"></i> Variables Input
+                                    </h3>
+                                    <span class="text-[9px] font-mono text-cyan-500/70 bg-cyan-500/10 px-2 py-1 rounded border border-cyan-500/20">LIVE_CALC</span>
+                                </div>
+                                <div class="space-y-2">
+                                    ${inputsHTML}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Column (Result & Info) -->
+                        <div class="xl:col-span-5 space-y-6 flex flex-col">
+                            
+                            <!-- Premium Result HUD -->
+                            <div class="result-hud rounded-[2rem] p-6 md:p-8 flex flex-col justify-center items-center text-center relative overflow-hidden group min-h-[200px]">
+                                <div class="absolute inset-0 bg-gradient-to-t from-emerald-500/10 to-transparent"></div>
+                                
+                                <div class="absolute top-4 left-4 flex gap-1">
+                                    <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
+                                    <div class="w-1.5 h-1.5 bg-emerald-500/50 rounded-full"></div>
+                                </div>
+                                <div class="absolute top-4 right-4 text-[8px] font-mono text-emerald-500/50 border border-emerald-500/20 px-1 rounded">OUTPUT</div>
+
+                                <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-emerald-400/80 mb-4 font-num relative z-10">${item.resultLabel}</span>
+                                <div id="result-container" class="text-3xl md:text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-emerald-200 break-all relative z-10 font-mono tracking-tight drop-shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+                                    <span id="calc-result">0</span> 
+                                    <span class="text-base md:text-xl text-emerald-400/50 font-sans ml-1">${item.resultUnit}</span>
+                                </div>
+                            </div>
+
+                            <!-- Insight Card -->
+                            <div class="glass-card p-5 md:p-6 rounded-[2rem] border-l-4 border-l-amber-500/80 bg-gradient-to-r from-amber-900/20 to-transparent flex-1 relative overflow-hidden">
+                                <i data-lucide="lightbulb" class="absolute -right-4 -bottom-4 w-24 h-24 text-amber-500/10 rotate-12"></i>
+                                <h3 class="text-[10px] uppercase tracking-widest font-black text-amber-400 mb-3 font-num flex items-center gap-2 relative z-10">
+                                    <i data-lucide="zap" class="w-3.5 h-3.5"></i> Pro Insight
+                                </h3>
+                                <p class="text-sm text-slate-300 leading-relaxed relative z-10 font-medium">${item.insight}</p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Examples -->
+                    <div class="mt-8 glass-card p-5 md:p-6 rounded-2xl border-white/5">
+                        <h3 class="text-[11px] uppercase tracking-widest font-black text-slate-400 mb-5 font-num flex items-center gap-2">
+                            <i data-lucide="book-open" class="w-4 h-4 text-blue-400"></i> ${item.exampleTitle}
+                        </h3>
+                        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            ${listHTML}
+                        </ul>
+                    </div>
+                </div>
+            `;
+            
+            const container = document.getElementById('contentContainer');
+            if(container) {
+                container.innerHTML = contentHTML;
+                lucide.createIcons();
+                
+                // Staggered animation for example list
+                const listItems = container.querySelectorAll('.animate-slide-right');
+                listItems.forEach((li, idx) => {
+                    li.style.animationDelay = `${idx * 0.1}s`;
+                });
+            }
+        }
+
+        // Calculation function attached to Window
+        window.calculateResult = function() {
+            const item = data.find(d => d.id === activeItemId);
+            if(!item) return;
+
+            const inputs = {};
+            let allFilled = true;
+
+            item.calcInputs.forEach(input => {
+                const el = document.getElementById(`input-${input.id}`);
+                if(el) {
+                    const val = parseFloat(el.value);
+                    if(isNaN(val)) {
+                        allFilled = false;
+                    }
+                    inputs[input.id] = val;
+                }
+            });
+
+            const resultEl = document.getElementById('calc-result');
+            const resultContainer = document.getElementById('result-container');
+            
+            if(allFilled && resultEl) {
+                const result = item.calcFn(inputs);
+                resultEl.textContent = formatNumber(result);
+                
+                if(resultContainer) {
+                    resultContainer.classList.remove('animate-pulse-result');
+                    void resultContainer.offsetWidth; // Trigger reflow
+                    resultContainer.classList.add('animate-pulse-result');
+                }
+            } else if(resultEl) {
+                resultEl.textContent = '0';
+            }
+        }
+
+        function selectItem(id) {
+            activeItemId = id;
+            initNavigation(); // Updates active state UI
+            renderContent();
+            
+            // Auto close mobile menu on selection
+            if(window.innerWidth < 1024) {
+                toggleMobileMenu(true);
+            }
+            
+            // Scroll main content to top smoothly
+            const mainContent = document.getElementById('mainContent');
+            if(mainContent) {
+                mainContent.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Mobile Toggle Function
+        function toggleMobileMenu(forceClose = false) {
+            const sidebar = document.getElementById('sidebar');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            
+            if(!sidebar || !mobileOverlay) return;
+            
+            const isClosed = sidebar.classList.contains('-translate-x-full');
+            if (isClosed && !forceClose) {
+                // Open menu
+                sidebar.classList.remove('-translate-x-full');
+                mobileOverlay.classList.remove('hidden');
+                setTimeout(() => mobileOverlay.classList.remove('opacity-0'), 10);
+            } else {
+                // Close menu
+                sidebar.classList.add('-translate-x-full');
+                mobileOverlay.classList.add('opacity-0');
+                setTimeout(() => mobileOverlay.classList.add('hidden'), 300);
+            }
+        }
+
+        // Run Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            initNavigation();
+            renderContent();
+            
+            // Setup Mobile Toggle Events safely
+            const menuToggleBtn = document.getElementById('menuToggleBtn');
+            const closeMenuBtn = document.getElementById('closeMenuBtn');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            
+            if(menuToggleBtn) menuToggleBtn.addEventListener('click', () => toggleMobileMenu());
+            if(closeMenuBtn) closeMenuBtn.addEventListener('click', () => toggleMobileMenu(true));
+            if(mobileOverlay) mobileOverlay.addEventListener('click', () => toggleMobileMenu(true));
+
+            // Fast Tech Preloader
+            const progress = document.getElementById('progress-bar');
+            const preloader = document.getElementById('preloader');
+            let width = 0;
+
+            const interval = setInterval(() => {
+                width += Math.random() * 20; 
+                if (width > 100) width = 100;
+                
+                if (progress) progress.style.width = width + '%';
+
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        if(preloader) {
+                            preloader.classList.add('-translate-y-full', 'opacity-0');
+                            setTimeout(() => preloader.remove(), 700);
+                        }
+                    }, 300); 
+                }
+            }, 30); 
+        });
+
+    </script>
+</body>
+</html>
