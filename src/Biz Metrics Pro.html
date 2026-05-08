@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SME Business Metrics - Ultimate Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#020617', 
+                            900: '#0f172a',
+                            800: '#1e293b',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 8s ease-in-out infinite',
+                        'float-delayed': 'float 8s ease-in-out infinite 4s',
+                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        },
+                        fadeIn: {
+                            'from': { opacity: 0, transform: 'translateY(10px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Optimized Glass Effect - Less expensive for GPU */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            will-change: transform;
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.6) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(6, 182, 212, 0.3);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(6, 182, 212, 0.1); 
+        }
+
+        /* Input Styling */
+        .input-field {
+            transition: all 0.2s ease;
+        }
+        .input-field:focus {
+            box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.3);
+            background: rgba(30, 41, 59, 0.9);
+            border-color: rgba(6, 182, 212, 0.5);
+        }
+
+        /* Custom Scrollbar - Lightweight */
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        .text-neon-cyan { text-shadow: 0 0 10px rgba(6, 182, 212, 0.5); }
+        .text-neon-emerald { text-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+        
+        /* Hide scrollbar for mobile nav */
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-200 min-h-screen relative flex flex-col">
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-opacity duration-500 ease-out overflow-hidden">
+        <div class="absolute inset-0 opacity-10" 
+             style="background-image: radial-gradient(#38bdf8 1px, transparent 1px); background-size: 40px 40px; transform: perspective(500px) rotateX(20deg);">
+        </div>
+
+        <div class="relative flex flex-col items-center">
+            <div class="relative w-32 h-32 flex items-center justify-center mb-8">
+                <div class="absolute inset-0 rounded-full border-2 border-transparent border-t-cyan-500 border-l-cyan-500/30 animate-[spin_1.5s_linear_infinite] shadow-[0_0_20px_rgba(6,182,212,0.2)]"></div>
+                <div class="absolute inset-3 rounded-full border-2 border-transparent border-b-violet-500 border-r-violet-500/30 animate-[spin_2s_linear_infinite_reverse]"></div>
+                <div class="relative z-10 w-16 h-16 bg-gradient-to-br from-cyan-950 to-slate-900 rounded-full flex items-center justify-center border border-white/10 shadow-[0_0_30px_rgba(6,182,212,0.3)]">
+                    <i data-lucide="calculator" class="text-cyan-400 w-7 h-7 relative z-10 animate-pulse"></i>
+                </div>
+            </div>
+            
+            <div class="w-64 space-y-4">
+                <div class="text-center">
+                    <h2 class="text-2xl font-bold tracking-[0.1em] text-white font-num mb-1">BIZ<span class="text-cyan-400">METRICS</span></h2>
+                    <p class="text-[10px] text-cyan-500/70 font-num tracking-[0.2em] uppercase">Engine Initializing</p>
+                </div>
+                
+                <div class="h-1 w-full bg-slate-800/50 rounded-full overflow-hidden border border-white/5 relative">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 w-0 relative transition-all duration-75">
+                        <div class="absolute right-0 top-0 bottom-0 w-2 bg-white/50 blur-[1px]"></div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between text-[10px] font-num text-slate-400 font-medium tracking-wider">
+                    <span class="animate-pulse">LOADING FORMULAS...</span>
+                    <span id="progress-text" class="text-cyan-400 font-bold">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Background (Optimized: Reduced blur radius and used opacity) -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[80px] will-change-transform"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-600/10 rounded-full blur-[80px] will-change-transform"></div>
+        <div class="absolute inset-0 opacity-[0.02]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="glass-panel border-b border-white/5 py-3 px-4 md:px-8 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.3)] border border-white/10">
+                <i data-lucide="bar-chart-2" class="text-white w-5 h-5"></i>
+            </div>
+            <div>
+                <h1 class="text-lg font-bold tracking-tight text-white font-num">Biz <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Metrics Pro</span></h1>
+                <p class="text-[9px] text-cyan-400/60 font-num uppercase tracking-[0.1em] mt-0.5">Financial Calculator Engine</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="flex flex-col items-end">
+                <span class="text-[8px] text-slate-400 uppercase tracking-widest hidden sm:block">System Status</span>
+                <span class="text-[10px] font-bold text-emerald-400 flex items-center gap-1.5 font-num">
+                    <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse"></div> READY
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10 h-full">
+        
+        <!-- Left: Navigation (Metrics List) -->
+        <div class="lg:col-span-4 lg:h-[calc(100vh-120px)] lg:overflow-y-auto custom-scrollbar lg:pr-2 flex flex-col gap-4">
+            <div class="flex justify-between items-center px-1">
+                <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-slate-300 flex items-center gap-2">
+                    <i data-lucide="list" class="w-4 h-4 text-cyan-400"></i>
+                    ပုံသေနည်းများ (၁၀) မျိုး
+                </h2>
+            </div>
+            
+            <!-- Mobile Horizontal Scroll / Desktop Vertical List -->
+            <div id="navList" class="flex lg:flex-col overflow-x-auto lg:overflow-x-visible hide-scroll snap-x snap-mandatory gap-3 pb-2 lg:pb-0">
+                <!-- Nav Items Injected by JS -->
+            </div>
+        </div>
+
+        <!-- Right: Content & Calculator -->
+        <div class="lg:col-span-8 lg:h-[calc(100vh-120px)] lg:overflow-y-auto custom-scrollbar pb-10">
+            <div id="contentContainer" class="space-y-6">
+                <!-- Dynamic Content Will Render Here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- App Logic -->
+    <script>
+        const FASHION_STYLES_THEME = {
+            activeBtn: 'border-cyan-500/50 bg-cyan-500/10 shadow-[0_0_15px_rgba(6,182,212,0.15)]',
+            inactiveBtn: 'border-white/5 bg-slate-900/40 hover:bg-slate-800 hover:border-white/10'
+        };
+
+        const data = [
+            {
+                id: 'profit',
+                icon: 'dollar-sign',
+                title: '၁။ အမြတ်ငွေ တွက်ချက်ခြင်း',
+                shortName: 'Profit Calculation',
+                desc: 'လုပ်ငန်းများအတွက် အခြေခံအကျဆုံး တွက်ချက်မှုဖြစ်ပါတယ်။',
+                formulaHTML: `
+                    <div class="text-center text-sm md:text-lg font-bold flex flex-wrap justify-center items-center gap-2 text-white">
+                        <span class="text-cyan-400">အမြတ်</span> 
+                        <span>=</span> 
+                        <span class="text-emerald-400">ရောင်းရငွေ (Revenue)</span> 
+                        <span>-</span> 
+                        <span class="text-rose-400">ကုန်ကျစရိတ်</span>
+                    </div>
+                `,
+                calcInputs: [
+                    { id: 'rev', label: 'စုစုပေါင်းရောင်းရငွေ (ကျပ်)', icon: 'trending-up', color: 'text-emerald-400' },
+                    { id: 'cost', label: 'ကုန်ကျစရိတ် (ကျပ်)', icon: 'trending-down', color: 'text-rose-400' }
+                ],
+                calcFn: (inputs) => inputs.rev - inputs.cost,
+                resultLabel: 'အသားတင်အမြတ်ငွေ',
+                resultUnit: 'ကျပ်',
+                exampleTitle: 'ဥပမာ',
+                exampleList: [
+                    'တစ်နေ့ကို ဘာဂါ ၅၀ ရောင်းရတယ် (တစ်လုံးကို ၃,၀၀၀ ကျပ်) = စုစုပေါင်းရောင်းရငွေ <span class="text-cyan-300 font-num">၁၅၀,၀၀၀</span> ကျပ်',
+                    'ဘာဂါတစ်လုံးရဲ့ အရင်း/ကုန်ကျစရိတ်က ၂,၀၀၀ ကျပ် = စုစုပေါင်း ကုန်ကျစရိတ် <span class="text-cyan-300 font-num">၁၀၀,၀၀၀</span> ကျပ်',
+                    'အသားတင်အမြတ်: <span class="font-num">၁၅၀,၀၀၀ - ၁၀၀,၀၀၀</span> = <span class="text-emerald-400 font-bold font-num">၅၀,၀၀၀</span> ကျပ်'
+                ],
+                insight: 'ရောင်းအားဘယ်လောက်တက်တက် ကုန်ကျစရိတ် (အရင်း) ကို မထိန်းချုပ်နိုင်ရင် တကယ့်အမြတ်မကျန်ဘဲ "အမြတ်တု၊ တိုးတက်မှုအစစ်မဖြစ်" ဘူးဆိုတာ သတိပြုပါ။'
+            },
+            {
+                id: 'margin',
+                icon: 'percent',
+                title: '၂။ အမြတ်ရာခိုင်နှုန်း',
+                shortName: 'Profit Margin',
+                desc: 'မိမိလုပ်ငန်းရဲ့ အမြတ်အစွန်း ကြီးထွားမှုကို တိုင်းတာရန်ဖြစ်ပါတယ်။',
+                formulaHTML: `
+                    <div class="flex items-center justify-center gap-3 text-sm md:text-lg font-bold text-white">
+                        <span class="text-cyan-400">ရာခိုင်နှုန်း</span> 
+                        <span>=</span>
+                        <div class="flex flex-col items-center">
+                            <span class="text-emerald-400 border-b border-white/30 px-2 pb-1">အမြတ်ငွေ</span>
+                            <span class="text-slate-300 px-2 pt-1">ရောင်းရငွေ</span>
+                        </div>
+                        <span class="text-violet-400">× ၁၀၀</span>
+                    </div>
+                `,
+                calcInputs: [
+                    { id: 'profit', label: 'အမြတ်ငွေ (ကျပ်)', icon: 'wallet', color: 'text-emerald-400' },
+                    { id: 'rev', label: 'ရောင်းရငွေ (ကျပ်)', icon: 'coins', color: 'text-cyan-400' }
+                ],
+                calcFn: (inputs) => (inputs.profit / inputs.rev) * 100,
+                resultLabel: 'အမြတ်ရာခိုင်နှုန်း',
+                resultUnit: '%',
+                exampleTitle: 'ဥပမာ (တီရှပ်ဆိုင်)',
+                exampleList: [
+                    'အင်္ကျီအဝယ်စျေး (အရင်း) = ၈,၀၀၀ ကျပ်',
+                    'ရောင်းစျေး = ၁၂,၀၀၀ ကျပ်',
+                    'အမြတ်ငွေ = ၄,၀၀၀ ကျပ် (၁၂,၀၀၀ - ၈,၀၀၀)',
+                    'အမြတ်ရာခိုင်နှုန်း: (၄,၀၀၀ / ၁၂,၀၀၀) × ၁၀၀ = <span class="text-emerald-400 font-bold font-num">၃၃%</span>'
+                ],
+                insight: 'ဆိုင်အများစုက ဒီရာခိုင်နှုန်းကို သေချာမတွက်တတ်ကြပါဘူး။ ဒါကိုမသိရင် ဈေးမှားတင်မိတတ်ပြီး ရေရှည်မှာ အရှုံးပေါ်တတ်ပါတယ်။'
+            },
+            {
+                id: 'price',
+                icon: 'tag',
+                title: '၃။ ရောင်းစျေး သတ်မှတ်ခြင်း',
+                shortName: 'Pricing Strategy',
+                desc: 'ကိုယ့်ပစ္စည်းကို ဘယ်လောက်နဲ့ရောင်းရင် လိုချင်တဲ့ အမြတ်ရာခိုင်နှုန်းရမလဲ တွက်တာပါ။',
+                formulaHTML: `
+                    <div class="text-center text-sm md:text-lg font-bold flex flex-wrap justify-center items-center gap-2 text-white">
+                        <span class="text-cyan-400">ရောင်းစျေး</span> 
+                        <span>=</span> 
+                        <span class="text-rose-400">အရင်း</span> 
+                        <span class="text-slate-400">×</span> 
+                        <span class="text-emerald-400">(၁ + လိုချင်သော အမြတ်%)</span>
+                    </div>
+                `,
+                calcInputs: [
+                    { id: 'cost', label: 'ပစ္စည်းအရင်း (ကျပ်)', icon: 'package', color: 'text-rose-400' },
+                    { id: 'margin', label: 'လိုချင်သော အမြတ် % (ဥပမာ: 50)', icon: 'target', color: 'text-emerald-400' }
+                ],
+                calcFn: (inputs) => inputs.cost * (1 + (inputs.margin / 100)),
+                resultLabel: 'သတ်မှတ်ရမည့် ရောင်းစျေး',
+                resultUnit: 'ကျပ်',
+                exampleTitle: 'ဥပမာ (Bubble Tea ဆိုင်)',
+                exampleList: [
+                    'ဘိုဘာတီးတစ်ခွက် အရင်း = ၁,၅၀၀ ကျပ်',
+                    'ကိုယ်လိုချင်တဲ့ အမြတ် = ၅၀% (၀.၅)',
+                    'ရောင်းစျေး: ၁,၅၀၀ × (၁ + ၀.၅) = <span class="text-emerald-400 font-bold font-num">၂,၂၅၀</span> ကျပ်'
+                ],
+                insight: 'ဆိုင်အများစုက ရောင်းစျေးကို သူများဆိုင်တွေနဲ့ယှဉ်ပြီး ရမ်းသတ်မှတ်တတ်ကြပါတယ်။ အဲဒီလိုလုပ်ရင် ကိုယ့်အရင်းနဲ့မကိုက်ဘဲ အမြတ်ဆုံးရှုံးတတ်ပါတယ်။'
+            },
+            {
+                id: 'bep',
+                icon: 'anchor',
+                title: '၄။ အရင်းကျေသည့်အမှတ်',
+                shortName: 'Break-Even Point',
+                desc: 'တစ်လကို အနည်းဆုံး ပစ္စည်းဘယ်လောက်ရောင်းရမှ အရင်းကျေမလဲဆိုတာ တွက်တာပါ။',
+                formulaHTML: `
+                    <div class="flex items-center justify-center gap-3 text-sm md:text-lg font-bold text-white flex-wrap">
+                        <span class="text-cyan-400">ရောင်းရမည့် အရေအတွက်</span> 
+                        <span>=</span>
+                        <div class="flex flex-col items-center">
+                            <span class="text-rose-400 border-b border-white/30 px-2 pb-1">ပုံသေကုန်ကျစရိတ်</span>
+                            <span class="text-emerald-400 px-2 pt-1 text-xs md:text-sm">(ရောင်းစျေး - ပစ္စည်းတစ်ခုချင်းစီ၏ အရင်း)</span>
+                        </div>
+                    </div>
+                `,
+                calcInputs: [
+                    { id: 'fixed', label: 'လစဉ်ပုံသေစရိတ် (ဆိုင်လခ/လစာ)', icon: 'home', color: 'text-rose-400' },
+                    { id: 'price', label: 'ပစ္စည်းတစ်ခု ရောင်းစျေး', icon: 'tag', color: 'text-cyan-400' },
+                    { id: 'cost', label: 'ပစ္စည်းတစ်ခု အရင်းစရိတ်', icon: 'package-minus', color: 'text-orange-400' }
+                ],
+                calcFn: (inputs) => {
+                    const margin = inputs.price - inputs.cost;
+                    return margin > 0 ? inputs.fixed / margin : 0;
+                },
+                resultLabel: 'အရင်းကျေရန် ရောင်းရမည့် ခုရေ',
+                resultUnit: 'ခု',
+                exampleTitle: 'ဥပမာ (ခေါက်ဆွဲဆိုင်)',
+                exampleList: [
+                    'ပုံသေစရိတ် (လခ+လစာ) = ၃၀၀,၀၀၀ ကျပ်',
+                    'ခေါက်ဆွဲတစ်ပွဲ ရောင်းစျေး = ၂,၅၀၀ ကျပ်၊ အရင်း = ၁,၅၀၀ ကျပ်',
+                    'တစ်ပွဲမြတ်ငွေ = ၁,၀၀၀ ကျပ်',
+                    'အရင်းကျေရန်: ၃၀၀,၀၀၀ / ၁,၀၀၀ = အနည်းဆုံး <span class="text-emerald-400 font-bold font-num">ပွဲ ၃၀၀</span>'
+                ],
+                insight: 'ဒီအချက်ကိုမသိရင် ကိုယ့်လုပ်ငန်း ရှင်သန်ရပ်တည်ဖို့အတွက် အနိမ့်ဆုံး ရောက်ရမယ့်ပစ်မှတ် (Survival Point) ကို သိမှာမဟုတ်ပါဘူး။'
+            },
+            {
+                id: 'cac',
+                icon: 'users',
+                title: '၅။ ဖောက်သည်တစ်ယောက်ရရန် စရိတ်',
+                shortName: 'Customer Acq. Cost',
+                desc: 'အွန်လိုင်း Facebook Ads လို ကြော်ငြာတွေလုပ်တဲ့အခါ တွက်ရမယ့် အရေးကြီးတဲ့ အချက်ပါ။',
+                formulaHTML: `
+                    <div class="flex items-center justify-center gap-3 text-sm md:text-lg font-bold text-white">
+                        <span class="text-cyan-400">CAC</span> 
+                        <span>=</span>
+                        <div class="flex flex-col items-center">
+                            <span class="text-rose-400 border-b border-white/30 px-2 pb-1 text-center">ကြော်ငြာစရိတ်</span>
+                            <span class="text-emerald-400 px-2 pt-1 text-center">ရလာသော ဖောက်သည်အသစ်</span>
+                        </div>
+                    </div>
+                `,
+                calcInputs: [
+                    { id: 'adcost', label: 'စုစုပေါင်း ကြော်ငြာစရိတ် (ကျပ်)', icon: 'megaphone', color: 'text-rose-400' },
+                    { id: 'customers', label: 'ရရှိလာသော ဖောက်သည်အသစ် (ဦးရေ)', icon: 'user-plus', color: 'text-emerald-400' }
+                ],
+                calcFn: (inputs) => inputs.adcost / inputs.customers,
+                resultLabel: 'လူတစ်ယောက်ရရန် ကုန်ကျစရိတ်',
+                resultUnit: 'ကျပ်',
+                exampleTitle: 'ဥပမာ (Facebook Ads)',
+                exampleList: [
+                    'ကြော်ငြာခ သုံးလိုက်တာ = ၅၀,၀၀၀ ကျပ်',
+                    'ပစ္စည်းလာဝယ်တဲ့ ဖောက်သည် = ၂၅ ယောက်',
+                    'CAC: ၅၀,၀၀၀ / ၂၅ = ဖောက်သည်တစ်ယောက်ရဖို့ <span class="text-emerald-400 font-bold font-num">၂,၀၀၀ ကျပ်</span> ကုန်ကျပါတယ်။'
+                ],
+                insight: 'ပစ္စည်းရောင်းရလို့ မြတ်တဲ့ငွေက ၁,၅၀၀ ကျပ်ပဲရှိပြီး၊ ကြော်ငြာခက ဖောက်သည်တစ်ယောက်ကို ၂,၀၀၀ ကျပ်ကျနေရင် သင့်လုပ်ငန်း အရှုံးပေါ်နေပါပြီ။'
+            },
+            {
+                id: 'ltv',
+                icon: 'heart',
+                title: '၆။ ဖောက်သည်၏ ရေရှည်တန်ဖိုး',
+                shortName: 'Lifetime Value',
+                desc: 'ဖောက်သည်တစ်ယောက်က ကိုယ့်ဆိုင်မှာ ရေရှည် ဘယ်လောက်ဖိုး ဝယ်သွားနိုင်လဲဆိုတာ တွက်တာပါ။',
+                formulaHTML: `
+                    <div class="text-center text-sm md:text-lg font-bold flex flex-wrap justify-center items-center gap-2 text-white">
+                        <span class="text-cyan-400">LTV</span> 
+                        <span>=</span> 
+                        <span class="text-emerald-400">ပျမ်းမျှဝယ်သောပမာဏ</span> 
+                        <span class="text-slate-400">×</span> 
+                        <span class="text-violet-400">ပြန်လည်ဝယ်ယူသည့် အကြိမ်ရေ</span>
+                    </div>
+                `,
+                calcInputs: [
+                    { id: 'avgspend', label: 'တစ်ခါဝယ်လျှင် ပျမ်းမျှသုံးငွေ (ကျပ်)', icon: 'shopping-bag', color: 'text-emerald-400' },
+                    { id: 'repeats', label: 'ပြန်လည်ဝယ်ယူမည့် အကြိမ်ရေ', icon: 'refresh-cw', color: 'text-violet-400' }
+                ],
+                calcFn: (inputs) => inputs.avgspend * inputs.repeats,
+                resultLabel: 'ဖောက်သည်တစ်ဦး၏ တန်ဖိုး',
+                resultUnit: 'ကျပ်',
+                exampleTitle: 'ဥပမာ (Skincare ဆိုင်)',
+                exampleList: [
+                    'ဖောက်သည်တစ်ယောက် ပျမ်းမျှဝယ်တာ = ၂၅,၀၀၀ ကျပ်',
+                    'သူက လစဉ်ပုံမှန်လာဝယ်တယ် (၆ လ ဆက်တိုက်)',
+                    'LTV: ၂၅,၀၀၀ × ၆ = <span class="text-emerald-400 font-bold font-num">၁၅၀,၀၀၀</span> ကျပ်'
+                ],
+                insight: 'ဖောက်သည်အသစ်တွေချည်း လိုက်ရှာနေတာထက်၊ ရှိပြီးသား ဖောက်သည်ကို သစ္စာရှိဖောက်သည် (Loyal Customer) ဖြစ်အောင် ဂရုစိုက်တာက လုပ်ငန်းအတွက် ပိုတန်ဖိုးကြီးပါတယ်။'
+            },
+            {
+                id: 'roi',
+                icon: 'pie-chart',
+                title: '၇။ ရင်းနှီးမြှုပ်နှံမှုမှ ပြန်ရငွေ',
+                shortName: 'ROI',
+                desc: 'ကိုယ်စိုက်ထုတ်လိုက်တဲ့ အရင်းအပေါ်မှာ ဘယ်လောက်ရာခိုင်နှုန်း ပြန်မြတ်လဲ တွက်တာပါ။',
+                formulaHTML: `
+                    <div class="flex items-center justify-center gap-3 text-sm md:text-lg font-bold text-white">
+                        <span class="text-cyan-400">ROI</span> 
+                        <span>=</span>
+                        <div class="flex flex-col items-center">
+                            <span class="text-emerald-400 border-b border-white/30 px-2 pb-1 w-full text-center">အမြတ်ငွေ</span>
+                            <span class="text-rose-400 px-2 pt-1 w-full text-center">ရင်းနှီးမြှုပ်နှံမှု</span>
+                        </div>
+                        <span class="text-violet-400">× ၁၀၀</span>
+                    </div>
+                `,
+                calcInputs: [
+                    { id: 'profit', label: 'အသားတင် ပြန်မြတ်သောငွေ (ကျပ်)', icon: 'arrow-up-circle', color: 'text-emerald-400' },
+                    { id: 'invest', label: 'သုံးလိုက်သောငွေ / အရင်း (ကျပ်)', icon: 'arrow-down-circle', color: 'text-rose-400' }
+                ],
+                calcFn: (inputs) => (inputs.profit / inputs.invest) * 100,
+                resultLabel: 'ပြန်ရငွေရာခိုင်နှုန်း (ROI)',
+                resultUnit: '%',
+                exampleTitle: 'ဥပမာ (ပရိုမိုးရှင်း ကမ်ပိန်း)',
+                exampleList: [
+                    'ပရိုမိုးရှင်းအတွက် သုံးလိုက်တဲ့ငွေ (အရင်း) = ၁၀၀,၀၀၀ ကျပ်',
+                    'အဲဒီကနေ အသားတင်ပြန်မြတ်တဲ့ငွေ = ၆၀,၀၀၀ ကျပ်',
+                    'ROI: (၆၀,၀၀၀ / ၁၀၀,၀၀၀) × ၁၀၀ = <span class="text-emerald-400 font-bold font-num">၆၀%</span>'
+                ],
+                insight: 'ရောင်းရငွေ (Sales) တက်တိုင်း လုပ်ငန်းကောင်းတယ်လို့ ပြောလို့မရပါဘူး။ ကိုယ်သုံးလိုက်တဲ့ ငွေအပေါ်မှာ တကယ်ပြန်မြတ်ရဲ့လားဆိုတဲ့ ROI ကို အမြဲစစ်ဆေးရပါမယ်။'
+            },
+            {
+                id: 'aov',
+                icon: 'shopping-cart',
+                title: '၈။ အော်ဒါတစ်ခု၏ ပျမ်းမျှတန်ဖိုး',
+                shortName: 'Average Order Value',
+                desc: 'အွန်လိုင်းစတိုးတွေမှာ လူတစ်ယောက်လာဝယ်ရင် ပျမ်းမျှ ဘယ်လောက်ဖိုး ဝယ်သွားလဲဆိုတာပါ။',
+                formulaHTML: `
+                    <div class="flex items-center justify-center gap-3 text-sm md:text-lg font-bold text-white flex-wrap">
+                        <span class="text-cyan-400">AOV</span> 
+                        <span>=</span>
+                        <div class="flex flex-col items-center">
+                            <span class="text-emerald-400 border-b border-white/30 px-2 pb-1 w-full text-center">စုစုပေါင်း ရောင်းရငွေ</span>
+                            <span class="text-violet-400 px-2 pt-1 w-full text-center">စုစုပေါင်း အော်ဒါအရေအတွက်</span>
+                        </div>
+                    </div>
+                `,
+                calcInputs: [
+                    { id: 'totalrev', label: 'စုစုပေါင်း ရောင်းရငွေ (ကျပ်)', icon: 'banknote', color: 'text-emerald-400' },
+                    { id: 'orders', label: 'စုစုပေါင်း အော်ဒါအရေအတွက်', icon: 'hash', color: 'text-violet-400' }
+                ],
+                calcFn: (inputs) => inputs.totalrev / inputs.orders,
+                resultLabel: 'ပျမ်းမျှ အော်ဒါတန်ဖိုး',
+                resultUnit: 'ကျပ်',
+                exampleTitle: 'ဥပမာ (Online Store)',
+                exampleList: [
+                    'တစ်နေ့တာ ရောင်းရငွေ = ၅၀၀,၀၀၀ ကျပ်',
+                    'အော်ဒါအရေအတွက် = ၂၅ ခု',
+                    'AOV: ၅၀၀,၀၀၀ / ၂၅ = <span class="text-emerald-400 font-bold font-num">၂၀,၀၀၀</span> ကျပ် (အော်ဒါတစ်ခုကို ပျမ်းမျှ ၂သောင်းဖိုး ဝယ်ကြတယ်)'
+                ],
+                insight: 'ဒီပမာဏကို မြှင့်တင်ချင်ရင် Bundle Sale လိုမျိုး (ဥပမာ - ၂ ခုဝယ်ရင် လျှော့ဈေးပေးတာ၊ တွဲရောင်းတာမျိုး) တွေ လုပ်ပေးသင့်ပါတယ်။'
+            },
+            {
+                id: 'inventory',
+                icon: 'layers',
+                title: '၉။ ကုန်ပစ္စည်း လည်ပတ်နှုန်း',
+                shortName: 'Inventory Turnover',
+                desc: 'ပစ္စည်းတွေ ဘယ်လောက်မြန်မြန် ရောင်းထွက်လဲဆိုတာ တိုင်းတာတာပါ။',
+                formulaHTML: `
+                    <div class="flex items-center justify-center gap-3 text-sm md:text-lg font-bold text-white flex-wrap">
+                        <span class="text-cyan-400">လည်ပတ်နှုန်း</span> 
+                        <span>=</span>
+                        <div class="flex flex-col items-center">
+                            <span class="text-emerald-400 border-b border-white/30 px-2 pb-1 w-full text-center text-xs md:text-sm">ရောင်းလိုက်ရသော ပစ္စည်းအရင်းတန်ဖိုး</span>
+                            <span class="text-rose-400 px-2 pt-1 w-full text-center text-xs md:text-sm">လက်ကျန်ပစ္စည်းများ၏ ပျမ်းမျှတန်ဖိုး</span>
+                        </div>
+                    </div>
+                `,
+                calcInputs: [
+                    { id: 'cogs', label: 'ရောင်းရသော ပစ္စည်းများ၏အရင်း (ကျပ်)', icon: 'truck', color: 'text-emerald-400' },
+                    { id: 'avg_inv', label: 'ဆိုင်ရှိ လက်ကျန်ပစ္စည်းတန်ဖိုး (ကျပ်)', icon: 'archive', color: 'text-rose-400' }
+                ],
+                calcFn: (inputs) => inputs.cogs / inputs.avg_inv,
+                resultLabel: 'လည်ပတ်နှုန်း',
+                resultUnit: 'ကြိမ်',
+                exampleTitle: 'ဥပမာ (Mini Mart)',
+                exampleList: [
+                    'ရောင်းလိုက်ရတဲ့ ပစ္စည်းတန်ဖိုး = ၈၀၀,၀၀၀ ကျပ်',
+                    'ဆိုင်မှာ အမြဲရှိနေတဲ့ ပစ္စည်းတန်ဖိုး = ၂၀၀,၀၀၀ ကျပ်',
+                    'ကုန်ပစ္စည်း လည်ပတ်နှုန်း: ၈၀၀,၀၀၀ / ၂၀၀,၀၀၀ = <span class="text-emerald-400 font-bold font-num">၄ ကြိမ်</span> (တစ်လကို စတော့ ၄ ခါ ပြတ်ပြီး ပြန်ဖြည့်ရတယ်)'
+                ],
+                insight: 'လည်ပတ်နှုန်း အရမ်းနှေးနေပြီဆိုရင် သင့်ငွေတွေက ပစ္စည်းတွေအဖြစ်နဲ့ ဂိုဒေါင်ထဲမှာ အောင်းနေပါပြီ (Dead stock)။ အရှုံးပေါ်ဖို့ နီးစပ်လာတာဖြစ်ပါတယ်။'
+            },
+            {
+                id: 'target',
+                icon: 'crosshair',
+                title: '၁၀။ နေ့စဉ် ရောင်းရမည့် ပစ်မှတ်',
+                shortName: 'Daily Sales Target',
+                desc: 'လုပ်ငန်းရည်မှန်းချက် ပြည့်ဖို့ တစ်နေ့ကို ဘယ်လောက်ရောင်းရမလဲ ခွဲခြမ်းစိတ်ဖြာတာပါ။',
+                formulaHTML: `
+                    <div class="flex items-center justify-center gap-3 text-sm md:text-lg font-bold text-white">
+                        <span class="text-cyan-400">နေ့စဉ် ပစ်မှတ်</span> 
+                        <span>=</span>
+                        <div class="flex flex-col items-center">
+                            <span class="text-emerald-400 border-b border-white/30 px-2 pb-1 w-full text-center">တစ်လစာ ရည်မှန်းချက်</span>
+                            <span class="text-violet-400 px-2 pt-1 w-full text-center">ဖွင့်မည့် ရက်အရေအတွက်</span>
+                        </div>
+                    </div>
+                `,
+                calcInputs: [
+                    { id: 'monthly', label: 'တစ်လစာ ရည်မှန်းချက် (ကျပ်)', icon: 'calendar', color: 'text-emerald-400' },
+                    { id: 'days', label: 'ဆိုင်ဖွင့်မည့် ရက်အရေအတွက်', icon: 'sun', color: 'text-violet-400' }
+                ],
+                calcFn: (inputs) => inputs.monthly / inputs.days,
+                resultLabel: 'တစ်နေ့တာ ရောင်းရမည့်ပစ်မှတ်',
+                resultUnit: 'ကျပ်',
+                exampleTitle: 'ဥပမာ',
+                exampleList: [
+                    'တစ်လကို ရောင်းရငွေ ၁,၂၀၀,၀၀၀ ကျပ် ပြည့်ချင်တယ်',
+                    'ဆိုင်ဖွင့်မည့်ရက် = ၃၀ ရက်',
+                    'နေ့စဉ် ပစ်မှတ်: ၁,၂၀၀,၀၀၀ / ၃၀ = တစ်နေ့ကို <span class="text-emerald-400 font-bold font-num">၄၀,၀၀၀</span> ကျပ်ဖိုး ရောင်းရမယ်။'
+                ],
+                insight: 'တစ်လစာ ပစ်မှတ်ကြီးကို ကြည့်ပြီး စိတ်ဖိစီးနေမယ့်အစား၊ နေ့စဉ်ပြည့်ရမယ့် ပစ်မှတ်သေးသေးလေးတွေကို အာရုံစိုက်လုပ်ဆောင်တာက ပိုမိုတည်ငြိမ်တဲ့ တိုးတက်မှုကို ဖြစ်စေပါတယ်။'
+            }
+        ];
+
+        let activeItemId = data[0].id;
+
+        function formatNumber(num) {
+            if(isNaN(num) || !isFinite(num)) return '0';
+            return Number.isInteger(num) ? num.toLocaleString('en-US') : parseFloat(num).toFixed(2).toLocaleString('en-US');
+        }
+
+        function initNavigation() {
+            const navList = document.getElementById('navList');
+            navList.innerHTML = '';
+            
+            data.forEach((item, index) => {
+                const isSelected = item.id === activeItemId;
+                const btnClass = isSelected ? FASHION_STYLES_THEME.activeBtn : FASHION_STYLES_THEME.inactiveBtn;
+                const labelClass = isSelected ? 'text-cyan-400' : 'text-slate-500';
+                const textClass = isSelected ? 'text-white' : 'text-slate-300';
+                
+                const btn = document.createElement('button');
+                btn.className = `min-w-[140px] lg:min-w-0 flex-shrink-0 p-3 md:p-4 rounded-2xl border text-left transition-all duration-300 relative overflow-hidden group ${btnClass}`;
+                btn.id = `nav-btn-${item.id}`;
+                btn.innerHTML = `
+                    ${isSelected ? '<div class="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-transparent pointer-events-none"></div>' : ''}
+                    <div class="relative z-10 flex flex-col h-full justify-center">
+                        <div class="flex items-center gap-2 mb-1">
+                            <i data-lucide="${item.icon}" class="w-4 h-4 ${labelClass}"></i>
+                            <div class="text-[10px] uppercase tracking-widest font-bold font-num ${labelClass}">FORMULA ${index + 1}</div>
+                        </div>
+                        <div class="text-xs md:text-sm font-bold truncate ${textClass}">${item.shortName}</div>
+                    </div>
+                    ${isSelected ? '<i data-lucide="check-circle-2" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cyan-400"></i>' : ''}
+                `;
+                btn.onclick = () => selectItem(item.id);
+                navList.appendChild(btn);
+            });
+            lucide.createIcons();
+        }
+
+        function updateSidebarUI() {
+            initNavigation(); // Re-render nav to update classes and icons properly
+        }
+
+        function renderContent() {
+            const item = data.find(d => d.id === activeItemId);
+            if(!item) return;
+
+            let inputsHTML = item.calcInputs.map(input => `
+                <div class="mb-4">
+                    <label class="flex items-center gap-2 text-[11px] uppercase tracking-widest font-bold text-slate-400 mb-2 font-num">
+                        <i data-lucide="${input.icon}" class="w-3.5 h-3.5 ${input.color}"></i>
+                        ${input.label}
+                    </label>
+                    <input type="number" id="input-${input.id}" oninput="calculateResult()" 
+                           class="input-field w-full bg-slate-900/60 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none font-num shadow-inner"
+                           placeholder="0">
+                </div>
+            `).join('');
+
+            let listHTML = item.exampleList.map(li => `<li class="mb-3 text-slate-300 flex items-start text-sm"><i data-lucide="chevron-right" class="w-4 h-4 text-cyan-500 mt-0.5 mr-2 flex-shrink-0"></i> <span>${li}</span></li>`).join('');
+
+            const contentHTML = `
+                <div class="space-y-6 animate-fade-in relative">
+                    <!-- Title & Desc -->
+                    <div class="glass-card p-6 md:p-8 rounded-[2rem]">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-[60px] pointer-events-none -mr-20 -mt-20"></div>
+                        <h2 class="text-xl md:text-2xl font-black tracking-tight flex items-center gap-3 text-white mb-3">
+                            <div class="p-2.5 bg-cyan-500/20 rounded-xl shadow-[0_0_15px_rgba(6,182,212,0.3)] text-cyan-400 border border-cyan-500/30">
+                                <i data-lucide="${item.icon}" class="w-6 h-6"></i>
+                            </div>
+                            ${item.title}
+                        </h2>
+                        <p class="text-sm text-slate-400 relative z-10">${item.desc}</p>
+                    </div>
+
+                    <!-- Formula -->
+                    <div class="glass-panel p-6 rounded-[2rem]">
+                        <h3 class="text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-4 font-num flex items-center gap-2">
+                            <i data-lucide="cpu" class="w-3.5 h-3.5"></i> Formula Logic
+                        </h3>
+                        <div class="p-4 bg-slate-900/80 rounded-xl border border-white/5 shadow-inner">
+                            ${item.formulaHTML}
+                        </div>
+                    </div>
+
+                    <!-- Calculator Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Inputs -->
+                        <div class="glass-card p-6 rounded-[2rem]">
+                            <h3 class="text-[10px] uppercase tracking-widest font-bold text-cyan-400 mb-5 font-num flex items-center gap-2">
+                                <i data-lucide="sliders" class="w-3.5 h-3.5"></i> Input Variables
+                            </h3>
+                            ${inputsHTML}
+                        </div>
+                        
+                        <!-- Result -->
+                        <div class="glass-card p-6 rounded-[2rem] flex flex-col justify-center items-center text-center border-cyan-500/30 bg-gradient-to-br from-cyan-900/20 to-transparent relative group overflow-hidden">
+                            <div class="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <span class="text-[11px] uppercase tracking-widest font-bold text-slate-400 mb-3 font-num relative z-10">${item.resultLabel}</span>
+                            <div class="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 break-all relative z-10 font-num drop-shadow-[0_0_10px_rgba(52,211,153,0.3)]">
+                                <span id="calc-result">0</span> 
+                                <span class="text-lg md:text-xl text-slate-400 font-sans">${item.resultUnit}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Example & Insight Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Example -->
+                        <div class="glass-card p-6 rounded-[2rem]">
+                            <h3 class="text-[10px] uppercase tracking-widest font-bold text-blue-400 mb-4 font-num flex items-center gap-2">
+                                <i data-lucide="book-open" class="w-3.5 h-3.5"></i> ${item.exampleTitle}
+                            </h3>
+                            <ul>
+                                ${listHTML}
+                            </ul>
+                        </div>
+
+                        <!-- Insight -->
+                        <div class="glass-card p-6 rounded-[2rem] border-l-4 border-l-amber-500/70 bg-amber-900/10">
+                            <h3 class="text-[10px] uppercase tracking-widest font-bold text-amber-400 mb-3 font-num flex items-center gap-2">
+                                <i data-lucide="lightbulb" class="w-3.5 h-3.5"></i> Insight (မှတ်သားဖွယ်)
+                            </h3>
+                            <p class="text-sm text-amber-200/80 leading-relaxed">${item.insight}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            const container = document.getElementById('contentContainer');
+            container.innerHTML = contentHTML;
+            lucide.createIcons();
+            
+            // Trigger animation
+            container.classList.remove('animate-fade-in');
+            void container.offsetWidth; // Reflow
+            container.classList.add('animate-fade-in');
+        }
+
+        function calculateResult() {
+            const item = data.find(d => d.id === activeItemId);
+            if(!item) return;
+
+            const inputs = {};
+            let allFilled = true;
+
+            item.calcInputs.forEach(input => {
+                const el = document.getElementById(`input-${input.id}`);
+                const val = parseFloat(el.value);
+                if(isNaN(val)) {
+                    allFilled = false;
+                }
+                inputs[input.id] = val;
+            });
+
+            const resultEl = document.getElementById('calc-result');
+            if(allFilled) {
+                const result = item.calcFn(inputs);
+                resultEl.textContent = formatNumber(result);
+            } else {
+                resultEl.textContent = '0';
+            }
+        }
+
+        function selectItem(id) {
+            activeItemId = id;
+            updateSidebarUI();
+            renderContent();
+            
+            // Scroll selected item into view on mobile
+            if(window.innerWidth < 1024) {
+                const selectedBtn = document.getElementById(`nav-btn-${id}`);
+                if(selectedBtn) {
+                    selectedBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }
+        }
+
+        // Run Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            initNavigation();
+            renderContent();
+            
+            // Preloader Logic (Optimized for performance)
+            const progress = document.getElementById('progress-bar');
+            const text = document.getElementById('progress-text');
+            const preloader = document.getElementById('preloader');
+            let width = 0;
+
+            const interval = setInterval(() => {
+                width += Math.random() * 15; // Faster loading
+                if (width > 100) width = 100;
+                
+                if (progress) progress.style.width = width + '%';
+                if (text) text.innerText = Math.floor(width) + '%';
+
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        if(preloader) {
+                            preloader.classList.add('opacity-0', 'pointer-events-none');
+                            setTimeout(() => preloader.remove(), 500);
+                        }
+                    }, 200); 
+                }
+            }, 40); // Slightly shorter interval to finish quicker
+        });
+
+    </script>
+</body>
+</html>
