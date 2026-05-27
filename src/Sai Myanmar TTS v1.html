@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>စိုင်းမြန်မာ အသံပြောင်းစနစ် - Ultimate Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Padauk', 'sans-serif'],
+                        num: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#020617', 
+                            900: '#0f172a',
+                            800: '#1e293b',
+                        },
+                        primary: {
+                            400: '#ec4899', 
+                            500: '#d946ef', 
+                            600: '#8b5cf6', 
+                        }
+                    },
+                    animation: {
+                        'float': 'float 12s ease-in-out infinite',
+                        'float-delayed': 'float 12s ease-in-out infinite 6s',
+                        'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) translateZ(0)' },
+                            '50%': { transform: 'translateY(-15px) translateZ(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base Performance Rules */
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        /* Hardware Accelerated Ambient Backgrounds */
+        .ambient-blob {
+            will-change: transform, opacity;
+            transform: translateZ(0); /* Force GPU Rendering */
+            pointer-events: none;
+        }
+
+        /* Premium Glass Effect - Optimized */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            transform: translateZ(0);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-radius: 2rem;
+            transform: translateZ(0); /* Fix for blur bleed and perf */
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Hover states using transform instead of heavy shadows for performance */
+        @media (hover: hover) {
+            .glass-card:hover {
+                transform: translateY(-2px) translateZ(0);
+                box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.5); 
+            }
+            .glass-card:hover::before { opacity: 1; }
+        }
+
+        /* Inputs */
+        .input-field { 
+            transition: border-color 0.2s ease, background-color 0.2s ease; 
+        }
+        .input-field:focus {
+            background: rgba(30, 41, 59, 0.9);
+            border-color: rgba(236, 72, 153, 0.5);
+            outline: none;
+            /* Replaced expensive box-shadow on focus with simple border glow */
+        }
+
+        /* Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #ec4899; }
+
+        /* Range Slider */
+        .neon-slider { -webkit-appearance: none; width: 100%; height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 5px; outline: none; }
+        .neon-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #ec4899; cursor: pointer; border: 2px solid #fff; transition: transform 0.1s ease; }
+        .neon-slider::-webkit-slider-thumb:active { transform: scale(1.1); }
+
+        /* Active Button States */
+        .active-voice {
+            border-color: rgba(59, 130, 246, 0.8) !important;
+            background: rgba(59, 130, 246, 0.1) !important;
+        }
+        .active-voice .name-text { color: #60a5fa !important; }
+
+        .active-style {
+            border-color: rgba(217, 70, 239, 0.8) !important;
+            background: rgba(217, 70, 239, 0.1) !important;
+            color: #f0abfc !important;
+        }
+
+        /* Pure CSS Audio Visualizer (High Performance - No JS required) */
+        .visualizer-container { display: flex; align-items: center; justify-content: center; height: 40px; gap: 4px; }
+        .wave-bar { 
+            width: 4px; 
+            background: linear-gradient(to top, #3b82f6, #d946ef); 
+            border-radius: 3px; 
+            height: 6px; 
+            will-change: transform;
+            transform-origin: bottom;
+        }
+        
+        @keyframes soundWave {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(5); }
+        }
+
+        .visualizer-container.playing .wave-bar {
+            animation: soundWave 1.2s ease-in-out infinite;
+        }
+
+        /* Staggered CSS Animation Delays */
+        .visualizer-container.playing .wave-bar:nth-child(1) { animation-duration: 0.9s; animation-delay: 0.1s; }
+        .visualizer-container.playing .wave-bar:nth-child(2) { animation-duration: 1.1s; animation-delay: 0.3s; }
+        .visualizer-container.playing .wave-bar:nth-child(3) { animation-duration: 0.8s; animation-delay: 0.0s; }
+        .visualizer-container.playing .wave-bar:nth-child(4) { animation-duration: 1.3s; animation-delay: 0.4s; }
+        .visualizer-container.playing .wave-bar:nth-child(5) { animation-duration: 1.0s; animation-delay: 0.2s; }
+        .visualizer-container.playing .wave-bar:nth-child(6) { animation-duration: 1.2s; animation-delay: 0.5s; }
+        .visualizer-container.playing .wave-bar:nth-child(7) { animation-duration: 0.9s; animation-delay: 0.1s; }
+        .visualizer-container.playing .wave-bar:nth-child(8) { animation-duration: 1.1s; animation-delay: 0.3s; }
+        .visualizer-container.playing .wave-bar:nth-child(9) { animation-duration: 0.8s; animation-delay: 0.0s; }
+        .visualizer-container.playing .wave-bar:nth-child(10) { animation-duration: 1.3s; animation-delay: 0.4s; }
+        .visualizer-container.playing .wave-bar:nth-child(11) { animation-duration: 1.0s; animation-delay: 0.2s; }
+        .visualizer-container.playing .wave-bar:nth-child(12) { animation-duration: 1.2s; animation-delay: 0.5s; }
+
+        /* Disable animations if user prefers reduced motion (Battery Saver/Accessibility) */
+        @media (prefers-reduced-motion: reduce) {
+            * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-pink-500/30 selection:text-pink-200 min-h-screen relative font-sans">
+
+    <!-- PRELOADER (Optimized) -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
+        <div class="relative flex flex-col items-center">
+            <div class="relative w-32 h-32 flex items-center justify-center mb-8">
+                <div class="absolute inset-0 rounded-full border-2 border-transparent border-t-pink-500 animate-[spin_1.5s_linear_infinite]"></div>
+                <div class="absolute inset-2 rounded-full border-2 border-transparent border-b-blue-500 animate-[spin_2s_linear_infinite_reverse]"></div>
+                <div class="relative z-10 w-16 h-16 bg-slate-900 rounded-full flex items-center justify-center border border-white/10">
+                    <i data-lucide="mic" class="text-pink-400 w-6 h-6"></i>
+                </div>
+            </div>
+            <div class="text-center">
+                <h2 class="text-xl font-bold tracking-[0.2em] text-white font-num mb-1">SAI MYANMAR</h2>
+                <p class="text-[10px] text-pink-500/70 font-num tracking-[0.4em] uppercase">Loading Engine...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Background (Hardware Accelerated & Reduced Blur for Perf) -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-pink-600/10 rounded-full blur-[80px] ambient-blob animate-float"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[80px] ambient-blob animate-float-delayed"></div>
+        <div class="absolute inset-0 opacity-[0.02]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="glass-panel border-b border-white/5 py-3 px-4 md:px-8 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-gradient-to-br from-pink-500 to-violet-600 rounded-xl flex items-center justify-center border border-white/10">
+                <i data-lucide="waves" class="text-white w-4 h-4"></i>
+            </div>
+            <div>
+                <h1 class="text-lg font-bold tracking-tight text-white font-num">စိုင်းမြန်မာ <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-blue-500">အသံပြောင်းစနစ်</span></h1>
+                <p class="text-[8px] text-pink-400/80 font-num uppercase tracking-[0.2em]">Neural TTS Engine</p>
+            </div>
+        </div>
+        <div class="hidden md:flex flex-col items-end">
+            <span class="text-[8px] text-slate-400 uppercase tracking-widest font-num">Status</span>
+            <span class="text-[9px] font-bold text-emerald-400 flex items-center gap-1.5 font-num">
+                <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div> ONLINE
+            </span>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-4 md:p-6 relative z-10 pt-6 pb-20 space-y-6">
+        
+        <!-- 1. Voice Selection -->
+        <section class="glass-card p-5 border border-white/5">
+            <h2 class="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-300 flex items-center gap-2">
+                <div class="w-5 h-5 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-[9px] text-blue-400 font-num">1</div>
+                အသံရွေးချယ်ရန်
+            </h2>
+            <div id="voices-grid" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 max-h-[220px] overflow-y-auto custom-scrollbar pr-1">
+                <!-- Injected via JS using DocumentFragment -->
+            </div>
+        </section>
+
+        <!-- 2. Styles & Emotions -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <!-- Vocal Styles -->
+            <section class="glass-card p-5 border border-white/5">
+                <h2 class="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-300 flex items-center gap-2">
+                    <div class="w-5 h-5 rounded-full bg-pink-500/20 border border-pink-500/30 flex items-center justify-center text-[9px] text-pink-400 font-num">2</div>
+                    အသံစတိုင်နှင့် ပေါင်းစပ်မှုများ
+                </h2>
+                <div id="recap-grid" class="grid grid-cols-2 gap-2 max-h-[180px] overflow-y-auto custom-scrollbar pr-1">
+                    <!-- Injected via JS -->
+                </div>
+            </section>
+
+            <!-- Emotions -->
+            <section class="glass-card p-5 border border-white/5">
+                <h2 class="text-xs font-bold uppercase tracking-[0.2em] mb-2 text-slate-300 flex items-center gap-2">
+                    <div class="w-5 h-5 rounded-full bg-violet-500/20 border border-violet-500/30 flex items-center justify-center text-[9px] text-violet-400 font-num">3</div>
+                    စိတ်ခံစားမှု စတိုင်များ
+                </h2>
+                <p class="text-[9px] text-slate-400 mb-3 leading-relaxed bg-slate-900/30 p-2 rounded border border-white/5">
+                    <i data-lucide="info" class="w-3 h-3 inline-block mr-1 text-violet-400"></i> မှတ်ချက် - စိတ်ခံစားမှုပါဝင်စေရန် အမြန်နှုန်းနှင့် အသံအတက်အကျကို အလိုအလျောက် ချိန်ညှိပေးပါသည်။
+                </p>
+                <div id="emotions-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[140px] overflow-y-auto custom-scrollbar pr-1">
+                    <!-- Injected via JS -->
+                </div>
+            </section>
+        </div>
+
+        <!-- 3. Parameters (Sliders) -->
+        <section class="glass-card p-5 border border-white/5 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Speed -->
+            <div>
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold text-slate-300 flex items-center gap-2"><i data-lucide="fast-forward" class="w-3 h-3 text-pink-400"></i> အမြန်နှုန်း</span>
+                    <span id="speed-val" class="font-num text-[10px] font-bold text-white bg-pink-500/20 border border-pink-500/30 px-2 py-0.5 rounded">+၀</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-[10px] font-bold text-slate-500 font-num">-100</span>
+                    <input type="range" id="speed" min="-100" max="100" value="0" class="neon-slider flex-1">
+                    <span class="text-[10px] font-bold text-slate-500 font-num">+100</span>
+                </div>
+            </div>
+            
+            <!-- Pitch -->
+            <div>
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold text-slate-300 flex items-center gap-2"><i data-lucide="activity" class="w-3 h-3 text-blue-400"></i> အသံ အတက်/အကျ</span>
+                    <span id="pitch-val" class="font-num text-[10px] font-bold text-white bg-blue-500/20 border border-blue-500/30 px-2 py-0.5 rounded">+၀</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-[10px] font-bold text-slate-500 font-num">-100</span>
+                    <input type="range" id="pitch" min="-100" max="100" value="0" class="neon-slider flex-1">
+                    <span class="text-[10px] font-bold text-slate-500 font-num">+100</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Text Input & Generate -->
+        <section class="glass-card p-5 border border-white/5">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-slate-300 flex items-center gap-2">
+                    <div class="w-5 h-5 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-[9px] text-emerald-400 font-num">4</div>
+                    စာသားထည့်သွင်းရန်
+                </h2>
+                <div class="flex gap-2">
+                    <button id="btn-paste" class="text-[9px] uppercase font-bold tracking-wider bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-300 px-2 py-1 rounded transition-colors flex items-center gap-1">
+                        <i data-lucide="clipboard-paste" class="w-3 h-3"></i> ကူးထည့်မည်
+                    </button>
+                    <button id="btn-clear" class="text-[9px] uppercase font-bold tracking-wider bg-red-900/30 hover:bg-red-900/50 border border-red-500/30 text-red-400 px-2 py-1 rounded transition-colors flex items-center gap-1">
+                        <i data-lucide="trash-2" class="w-3 h-3"></i> ဖျက်မည်
+                    </button>
+                </div>
+            </div>
+            
+            <textarea id="text-input" rows="4" maxlength="10000" class="w-full bg-slate-900/50 text-slate-200 border border-white/10 rounded-xl p-3 text-sm leading-relaxed custom-scrollbar input-field" placeholder="ဖတ်စေလိုသော စာသားများကို ဤနေရာတွင် ရိုက်ထည့်ပါ..."></textarea>
+            
+            <div class="text-right text-[10px] font-bold text-slate-500 mt-1 mb-4 font-num">
+                <span id="char-count" class="text-pink-400">၀</span> / ၁၀၀၀၀
+            </div>
+
+            <button id="generate-btn" class="w-full bg-gradient-to-r from-pink-600 to-violet-600 active:from-pink-700 active:to-violet-700 text-white font-bold py-3 px-4 rounded-xl transition-all flex justify-center items-center text-sm uppercase tracking-widest border border-pink-400/20">
+                <span id="btn-text" class="flex items-center gap-2"><i data-lucide="play-circle" class="w-4 h-4"></i> အသံထုတ်ယူမည်</span>
+                <span id="btn-loader" class="hidden flex items-center gap-2"><i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> SYNTHESIZING...</span>
+            </button>
+        </section>
+
+        <!-- 5. Audio Player Result -->
+        <section id="audio-container" class="hidden glass-card p-5 border border-emerald-500/30 bg-emerald-900/10">
+            <div class="flex flex-col items-center w-full">
+                <div class="text-[10px] font-bold text-emerald-400 uppercase tracking-[0.2em] mb-3 flex items-center gap-1.5">
+                    <i data-lucide="check-circle-2" class="w-3 h-3"></i> Synthesis Complete
+                </div>
+                
+                <div id="visualizer" class="visualizer-container mb-4 w-full max-w-sm bg-slate-900/50 p-3 rounded-lg border border-white/5">
+                    <!-- Generated 12 wave bars for pure CSS animation -->
+                    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                </div>
+                
+                <audio id="audio-player" controls class="w-full max-w-sm mb-4 rounded shadow-md h-10 [&::-webkit-media-controls-panel]:bg-slate-800 [&::-webkit-media-controls-current-time-display]:text-slate-300 [&::-webkit-media-controls-time-remaining-display]:text-slate-300"></audio>
+                
+                <a id="download-link" href="#" download="SaiMyanmar_TTS.mp3" class="w-full max-w-sm bg-slate-800 active:bg-slate-700 text-white font-bold py-2.5 px-4 rounded-lg flex justify-center items-center text-[11px] uppercase tracking-widest border border-slate-600 transition-colors">
+                    <i data-lucide="download" class="w-3 h-3 mr-2 text-emerald-400"></i> အသံဖိုင်ဒေါင်းမည်
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="py-6 border-t border-white/5 text-center pointer-events-none">
+        <div class="text-[9px] text-slate-600 uppercase tracking-[0.3em] font-bold font-num mb-1">Sai Myanmar Network</div>
+        <div class="text-[8px] text-slate-500 font-num">V4.1 Optimized Edition</div>
+    </footer>
+
+    <script>
+        const API_URL = "https://sai-myanmar-tts-pro.onrender.com/api/tts"; 
+
+        const voices = [
+            { id: 'v1', name: 'ကိုစိုင်းစိုင်း', gender: 'ယောကျ်ားလေး', icon: '👦' },
+            { id: 'v2', name: 'မဖွေးဖွေး', gender: 'မိန်းကလေး', icon: '👧' },
+            { id: 'v3', name: 'ကိုနေတိုး', gender: 'ယောကျ်ားလေး', icon: '👦' },
+            { id: 'v4', name: 'ကိုအောင်ရဲလင်း', gender: 'ယောကျ်ားလေး', icon: '👦' },
+            { id: 'v5', name: 'ကိုမြင့်မြတ်', gender: 'ယောကျ်ားလေး', icon: '👦' },
+            { id: 'v6', name: 'မဝတ်မှုံရွှေရည်', gender: 'မိန်းကလေး', icon: '👧' },
+            { id: 'v7', name: 'ကိုဒေါင်း', gender: 'ယောကျ်ားလေး', icon: '👦' },
+            { id: 'v8', name: 'မသက်မွန်မြင့်', gender: 'မိန်းကလေး', icon: '👧' },
+            { id: 'v9', name: 'ကိုလူမင်း', gender: 'ယောကျ်ားလေး', icon: '👦' },
+            { id: 'v10', name: 'မအိန္ဒြာကျော်ဇင်', gender: 'မိန်းကလေး', icon: '👧' },
+            { id: 'v11', name: 'မရွှေမှုံရတီ', gender: 'မိန်းကလေး', icon: '👧' },
+            { id: 'v12', name: 'ကိုပြေတီဦး', gender: 'ယောကျ်ားလေး', icon: '👦' },
+            { id: 'v13', name: 'မသင်ဇာဝင့်ကျော်', gender: 'မိန်းကလေး', icon: '👧' },
+            { id: 'v14', name: 'ကိုပိုင်တံခွန်', gender: 'ယောကျ်ားလေး', icon: '👦' }
+        ];
+
+        const recapStyles = [
+            { id: 'Normal', name: 'ပုံမှန်အသံ', speed: 0, pitch: 0 },
+            { id: 'NyoGyi_25', name: 'ကျားကြီး ၁', speed: 0, pitch: 25 },
+            { id: 'NyoGyi_35', name: 'ကျားကြီး ၂', speed: 0, pitch: 35 },
+            { id: 'NyoGyi_45', name: 'ကျားကြီး ၃', speed: 0, pitch: 45 },
+            { id: 'Nilar_40', name: 'နီလာ ချွဲသံ', speed: 0, pitch: 40 },
+            { id: 'Combo_15', name: 'ပေါင်းစပ် ၁၅', speed: 15, pitch: 15 },
+            { id: 'Combo_30', name: 'ပေါင်းစပ် ၃၀', speed: 30, pitch: 30 },
+            { id: 'Combo_50', name: 'ပေါင်းစပ် ၅၀', speed: 50, pitch: 50 },
+            { id: 'Pitch_20', name: 'အသံသေး ၂၀', speed: 0, pitch: 20 },
+            { id: 'Pitch_50', name: 'အသံသေး ၅၀', speed: 0, pitch: 50 }
+        ];
+
+        const emotions = [
+            { id: 'EXCITING', name: 'စိတ်လှုပ်ရှားဖွယ်', icon: 'zap', s: 15, p: 10 },
+            { id: 'CALM', name: 'တည်ငြိမ်သော', icon: 'coffee', s: -10, p: -5 },
+            { id: 'PROFESSIONAL', name: 'သတင်းကြေညာ', icon: 'briefcase', s: 0, p: -2 },
+            { id: 'NARRATIVE', name: 'ဇာတ်ကြောင်းပြော', icon: 'book-open', s: -5, p: 0 },
+            { id: 'HAPPY', name: 'ပျော်ရွှင်သော', icon: 'smile', s: 10, p: 15 },
+            { id: 'SERIOUS', name: 'လေးနက်သော', icon: 'alert-circle', s: -5, p: -10 },
+            { id: 'WHISPER', name: 'တီးတိုးပြော', icon: 'volume-x', s: -15, p: -20 },
+            { id: 'SAD', name: 'ဝမ်းနည်းသော', icon: 'cloud-rain', s: -15, p: -15 },
+            { id: 'SARCASTIC', name: 'ရွဲ့ပြောသော', icon: 'eye-off', s: -10, p: 5 },
+            { id: 'ANGRY', name: 'ဒေါသထွက်သော', icon: 'flame', s: 20, p: -10 },
+            { id: 'FEAR', name: 'ကြောက်လန့်သော', icon: 'ghost', s: 10, p: 20 }
+        ];
+
+        // --- Performance Optimization: Pre-compile word replacement regex to avoid compiling in loops ---
+        const engToMmMap = {
+            'A':'အေ ', 'B':'ဘီ ', 'C':'စီ ', 'D':'ဒီ ', 'E':'အီး ', 'F':'အက်ဖ် ', 'G':'ဂျီ ', 'H':'အိတ်ချ် ', 'I':'အိုင် ', 'J':'ဂျေ ', 'K':'ကေ ', 'L':'အယ်လ် ', 'M':'အမ် ', 'N':'အန် ', 'O':'အို ', 'P':'ပီ ', 'Q':'ကျူ ', 'R':'အာ ', 'S':'အက်စ် ', 'T':'တီ ', 'U':'ယူ ', 'V':'ဗွီ ', 'W':'ဒဗလျူ ', 'X':'အက်စ် ', 'Y':'ဝိုင် ', 'Z':'ဇက် '
+        };
+
+        const wordMap = {
+            'subscribe': 'ဆပ်စခရိုက်ဘ်', 'like': 'လိုက်ခ်', 'follow': 'ဖောလိုး', 'share': 'ရှယ်ယာ', 'comment': 'ကောမန့်', 'page': 'ပေ့ချ်', 'channel': 'ချန်နယ်', 'admin': 'အက်ဒမင်', 'car': 'ကား', 'part': 'အပိုင်း', 'ep': 'အပိုင်း', 'episode': 'အပိုင်း', 'website': 'ဝက်ဘ်ဆိုက်', 'welcome': 'ဝဲလ်ကမ်း', 'hello': 'ဟဲလို', 'hi': 'ဟိုင်း', 'facebook': 'ဖေ့စ်ဘွတ်ခ်', 'youtube': 'ယူကျု', 'tiktok': 'တစ်တော့', 'google': 'ဂူဂယ်လ်', 'movie': 'ရုပ်ရှင်', 'recap': 'ရီကပ်', 'spoiler': 'စပွိုင်လာ', 'story': 'စတိုရီ', 'end': 'ဇာတ်သိမ်း', 'action': 'အက်ရှင်', 'drama': 'ဒရာမာ', 'comedy': 'ကော်မဒီ', 'ok': 'အိုကေ', 'yes': 'ယက်စ်', 'no': 'နိုး', 'boy': 'ဘွိုင်း', 'girl': 'ဂဲလ်', 'man': 'မန်း', 'boss': 'ဘော့စ်', 'sir': 'ဆာ', 'mr': 'မစ္စတာ', 'miss': 'မစ်စ်', 'link': 'လင့်ခ်', 'video': 'ဗီဒီယို', 'update': 'အပ်ဒိတ်', 'tools': 'တူးလ်စ်', 'error': 'အဲရာ', 'code': 'ကုတ်', 'free': 'ဖရီး', 'vpn': 'ဗွီပီအန်', 'wifi': 'ဝိုင်ဖိုင်', 'internet': 'အင်တာနက်', 'group': 'ဂရု', 'post': 'ပို့စ်', 'live': 'လိုက်ဖ်', 'stream': 'စထရင်း', 'bot': 'ဘော့တ်', 'api': 'အေပီအိုင်', 'server': 'ဆာဗာ', 'app': 'အက်ပ်', 'game': 'ဂိမ်း', 'play': 'ပလေး', 'pause': 'ပေါ့စ်', 'stop': 'စတော့ပ်', 'next': 'နက်စ်', 'back': 'ဘက်', 'cancel': 'ကင်ဆယ်', 'save': 'ဆေ့ဖ်', 'delete': 'ဒိလစ်', 'edit': 'အက်ဒစ်', 'copy': 'ကော်ပီ', 'paste': 'ပေ့စ်', 'cut': 'ကတ်', 'settings': 'ဆက်တင်', 'profile': 'ပရိုဖိုင်', 'account': 'အကောင့်', 'login': 'လော့ဂ်အင်', 'logout': 'လော့ဂ်အောက်', 'password': 'ပတ်စ်ဝေါ့ဒ်', 'email': 'အီးမေးလ်', 'phone': 'ဖုန်း', 'message': 'မက်ဆေ့ချ်', 'chat': 'ချက်', 'call': 'ကော', 'video call': 'ဗီဒီယိုကော', 'voice': 'ဗွိုက်စ်', 'audio': 'အော်ဒီယို', 'sound': 'ဆောင်း', 'music': 'မြူးဇစ်', 'song': 'သီချင်း', 'singer': 'ဆင်ဂါ', 'actor': 'အက်တာ', 'actress': 'အက်ထရက်စ်', 'director': 'ဒါရိုက်တာ', 'producer': 'ပရိုဂျူဆာ', 'writer': 'ရိုက်တာ', 'camera': 'ကင်မရာ', 'photo': 'ဖိုတို', 'picture': 'ပစ်ချာ', 'image': 'အင်းမေ့ချ်', 'download': 'ဒေါင်းလုဒ်', 'upload': 'အပ်လုဒ်', 'install': 'အင်စတော', 'uninstall': 'အန်အင်စတော', 'upgrade': 'အပ်ဂရိတ်', 'premium': 'ပရီမီယမ်', 'pro': 'ပရို', 'vip': 'ဗွီအိုင်ပီ', 'ai': 'အေအိုင်', 'cpu': 'စီပီယူ', 'gpu': 'ဂျီပီယူ', 'ram': 'ရမ်', 'rom': 'ရွမ်', 'pc': 'ပီစီ', 'laptop': 'လက်ပ်တော့', 'mobile': 'မိုဘိုင်း', 'tablet': 'တက်ဘလက်', 'android': 'အန်ဒရွိုက်', 'ios': 'အိုင်အိုအက်စ်', 'windows': 'ဝင်းဒိုး', 'mac': 'မက်', 'linux': 'လင်းနစ်'
+        };
+        const precompiledWordMap = Object.keys(wordMap).map(word => ({
+            regex: new RegExp('\\b' + word + '\\b', 'gi'),
+            replacement: wordMap[word] + ' '
+        }));
+        // --- End of Pre-compilation ---
+
+        let selectedVoiceId = voices[0].id;
+
+        // Cached DOM Elements
+        const DOM = {};
+
+        function init() {
+            // Cache elements
+            DOM.speed = document.getElementById('speed');
+            DOM.pitch = document.getElementById('pitch');
+            DOM.textInput = document.getElementById('text-input');
+            DOM.charCount = document.getElementById('char-count');
+            DOM.audioContainer = document.getElementById('audio-container');
+            DOM.audioPlayer = document.getElementById('audio-player');
+            DOM.visualizer = document.getElementById('visualizer');
+            DOM.btnText = document.getElementById('btn-text');
+            DOM.btnLoader = document.getElementById('btn-loader');
+            DOM.generateBtn = document.getElementById('generate-btn');
+
+            // 1. Performance Optimization: Use DocumentFragments to reduce DOM reflows
+            const vFrag = document.createDocumentFragment();
+            voices.forEach(v => {
+                let btn = document.createElement('button');
+                btn.className = `voice-btn border border-white/10 bg-slate-900/40 rounded-xl p-2.5 flex flex-col items-center transition-colors hover:bg-slate-800 ${v.id === selectedVoiceId ? 'active-voice' : ''}`;
+                btn.onclick = () => selectVoice(v.id, btn);
+                btn.innerHTML = `
+                    <span class="text-xl mb-1">${v.icon}</span>
+                    <span class="name-text font-bold text-[11px] text-slate-300 mb-1 transition-colors">${v.name}</span>
+                    <span class="text-[8px] font-bold text-pink-400 bg-pink-500/10 border border-pink-500/20 px-1.5 py-0.5 rounded font-num">${v.gender}</span>
+                `;
+                vFrag.appendChild(btn);
+            });
+            document.getElementById('voices-grid').appendChild(vFrag);
+
+            const rFrag = document.createDocumentFragment();
+            recapStyles.forEach(r => {
+                let btn = document.createElement('button');
+                btn.className = 'style-btn border border-white/10 bg-slate-900/40 text-[10px] font-bold p-2 rounded-lg hover:border-pink-500/40 transition-colors text-slate-300 flex items-center justify-center gap-1.5';
+                btn.onclick = () => applyPreset(btn, r.speed, r.pitch);
+                btn.innerHTML = `<i data-lucide="layers" class="w-3 h-3 text-slate-500"></i> ${r.name}`;
+                rFrag.appendChild(btn);
+            });
+            document.getElementById('recap-grid').appendChild(rFrag);
+
+            const eFrag = document.createDocumentFragment();
+            emotions.forEach(e => {
+                let btn = document.createElement('button');
+                btn.className = 'style-btn border border-white/10 bg-slate-900/40 text-[9px] font-bold p-2 rounded-lg hover:border-violet-500/40 transition-colors text-slate-300 flex items-center gap-1.5';
+                btn.onclick = () => applyPreset(btn, e.s, e.p);
+                btn.innerHTML = `<i data-lucide="${e.icon}" class="w-3 h-3 text-violet-400"></i> ${e.name}`;
+                eFrag.appendChild(btn);
+            });
+            document.getElementById('emotions-grid').appendChild(eFrag);
+            
+            // Initialize Icons
+            lucide.createIcons();
+            
+            // Event Listeners
+            DOM.speed.addEventListener('input', (e) => updateVal('speed', e.target.value));
+            DOM.pitch.addEventListener('input', (e) => updateVal('pitch', e.target.value));
+            DOM.textInput.addEventListener('input', updateCharCount);
+            document.getElementById('btn-paste').addEventListener('click', pasteText);
+            document.getElementById('btn-clear').addEventListener('click', clearText);
+            DOM.generateBtn.addEventListener('click', generateAudio);
+
+            /* High Performance Audio Visualizer using Pure CSS Class Toggle */
+            DOM.audioPlayer.addEventListener('play', () => DOM.visualizer.classList.add('playing'));
+            DOM.audioPlayer.addEventListener('pause', () => DOM.visualizer.classList.remove('playing'));
+            DOM.audioPlayer.addEventListener('ended', () => DOM.visualizer.classList.remove('playing'));
+
+            // Remove Preloader Cleanly
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                if(preloader) {
+                    preloader.classList.add('opacity-0');
+                    setTimeout(() => preloader.remove(), 500);
+                }
+            }, 600);
+        }
+
+        function selectVoice(id, btnElement) {
+            selectedVoiceId = id;
+            const activeBtns = document.querySelectorAll('.active-voice');
+            for(let i=0; i<activeBtns.length; i++) activeBtns[i].classList.remove('active-voice');
+            btnElement.classList.add('active-voice');
+        }
+
+        function applyPreset(btnElement, speed, pitch) {
+            const activeStyles = document.querySelectorAll('.active-style');
+            for(let i=0; i<activeStyles.length; i++) activeStyles[i].classList.remove('active-style');
+            btnElement.classList.add('active-style');
+            
+            DOM.speed.value = speed;
+            DOM.pitch.value = pitch;
+            updateVal('speed', speed);
+            updateVal('pitch', pitch);
+            lucide.createIcons();
+        }
+
+        const mmNums = ['၀','၁','၂','၃','၄','၅','၆','၇','၈','၉'];
+        function toMyanmarNum(numStr) {
+            return numStr.toString().replace(/[0-9]/g, w => mmNums[w]);
+        }
+
+        function updateVal(id, val) {
+            let displayVal = val > 0 ? "+" + val : val;
+            document.getElementById(id + '-val').textContent = toMyanmarNum(displayVal);
+        }
+
+        function updateCharCount() {
+            DOM.charCount.textContent = toMyanmarNum(DOM.textInput.value.length);
+        }
+
+        async function pasteText() {
+            try {
+                const text = await navigator.clipboard.readText();
+                DOM.textInput.value = (DOM.textInput.value + text).substring(0, 10000); 
+                updateCharCount();
+            } catch (err) { alert("စာသား ကူးထည့်၍ မရပါ။ စာရိုက်မည့်အကွက်ကို ဖိ၍ ကူးထည့်ပါ။"); }
+        }
+
+        function clearText() {
+            DOM.textInput.value = '';
+            updateCharCount();
+            DOM.audioContainer.classList.add('hidden');
+        }
+
+        /* API Integration */
+        async function generateAudio() {
+            let originalText = DOM.textInput.value;
+            const speed = DOM.speed.value;
+            const pitch = DOM.pitch.value;
+
+            if(!originalText.trim()) { alert("ကျေးဇူးပြု၍ စာသားထည့်သွင်းပါ။"); return; }
+
+            // UI Loading State (Optimized DOM updates)
+            DOM.btnText.classList.add('hidden');
+            DOM.btnLoader.classList.remove('hidden');
+            DOM.btnLoader.classList.add('flex');
+            DOM.generateBtn.classList.add('opacity-80', 'pointer-events-none');
+            DOM.audioContainer.classList.add('hidden');
+
+            let processedText = originalText;
+
+            // System 1: Auto spell out uppercase acronyms
+            processedText = processedText.replace(/\b[A-Z]{2,}\b/g, function(match) {
+                let spelledOut = '';
+                for(let i=0; i<match.length; i++) {
+                    spelledOut += engToMmMap[match[i]] || match[i];
+                }
+                return spelledOut;
+            });
+
+            // System 2: Fast Replace using pre-compiled regex array
+            for (let i = 0; i < precompiledWordMap.length; i++) {
+                const item = precompiledWordMap[i];
+                processedText = processedText.replace(item.regex, item.replacement);
+            }
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: processedText, voice: selectedVoiceId, speed: speed, pitch: pitch })
+                });
+
+                if(response.ok) {
+                    const blob = await response.blob();
+                    const audioUrl = URL.createObjectURL(blob);
+                    DOM.audioPlayer.src = audioUrl;
+                    document.getElementById('download-link').href = audioUrl;
+                    
+                    DOM.audioContainer.classList.remove('hidden');
+                    DOM.audioContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else { alert("အင်တာနက် သို့မဟုတ် API လင့်ခ်ကို စစ်ဆေးပါ။"); }
+            } catch (error) { 
+                alert("ချိတ်ဆက်မှု ပြတ်တောက်သွားပါသည်။ ဆာဗာ အလုပ်များနေနိုင်ပါသည်။"); 
+            } finally {
+                // Restore UI State
+                DOM.btnLoader.classList.add('hidden');
+                DOM.btnLoader.classList.remove('flex');
+                DOM.btnText.classList.remove('hidden');
+                DOM.btnText.classList.add('flex');
+                DOM.generateBtn.classList.remove('opacity-80', 'pointer-events-none');
+            }
+        }
+
+        // Delay init slightly to ensure DOM is fully ready and paint cycle runs
+        document.addEventListener('DOMContentLoaded', () => { requestAnimationFrame(init); });
+    </script>
+</body>
+</html>
