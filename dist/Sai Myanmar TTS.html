@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>စိုင်းမြန်မာ အသံပြောင်းစနစ် - Ultimate Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+/* obfuscated */
+function _0x4655(_0x2a48c6,_0x53c871){_0x2a48c6=_0x2a48c6-0xa3;var _0x536ca4=_0x536c();var _0x465568=_0x536ca4[_0x2a48c6];return _0x465568;}function _0x536c(){var _0x46cff9=['#0f172a','#8b5cf6','24HuwppT','40IuXzZs','#ec4899','#d946ef','163092gBcNCp','31WOOHiw','51232lqtmMN','Padauk','config','400030nKsrls','104hNwaxW','1595088sDbIcd','sans-serif','7115598KqiYcY','float\x208s\x20ease-in-out\x20infinite','translateY(-20px)','1975188cIxesK','88781FsHPcW','1298ZFstQt'];_0x536c=function(){return _0x46cff9;};return _0x536c();}var _0x54f9e5=_0x4655;(function(_0x31dd5e,_0x2ce04f){var _0x57dc68=_0x4655,_0xb40849=_0x31dd5e();while(!![]){try{var _0x3e5103=parseInt(_0x57dc68(0xa8))/0x1*(parseInt(_0x57dc68(0xa9))/0x2)+-parseInt(_0x57dc68(0xb3))/0x3+parseInt(_0x57dc68(0xa3))/0x4*(-parseInt(_0x57dc68(0xac))/0x5)+-parseInt(_0x57dc68(0xb0))/0x6+-parseInt(_0x57dc68(0xb4))/0x7*(parseInt(_0x57dc68(0xad))/0x8)+-parseInt(_0x57dc68(0xae))/0x9*(-parseInt(_0x57dc68(0xa4))/0xa)+-parseInt(_0x57dc68(0xb5))/0xb*(-parseInt(_0x57dc68(0xa7))/0xc);if(_0x3e5103===_0x2ce04f)break;else _0xb40849['push'](_0xb40849['shift']());}catch(_0x3af676){_0xb40849['push'](_0xb40849['shift']());}}}(_0x536c,0x96c2e),tailwind[_0x54f9e5(0xab)]={'theme':{'extend':{'fontFamily':{'sans':[_0x54f9e5(0xaa),'sans-serif'],'num':['Inter',_0x54f9e5(0xaf)]},'colors':{'dark':{0x3b6:'#020617',0x384:_0x54f9e5(0xb6),0x320:'#1e293b'},'primary':{0x190:_0x54f9e5(0xa5),0x1f4:_0x54f9e5(0xa6),0x258:_0x54f9e5(0xb7)}},'animation':{'float':_0x54f9e5(0xb1),'float-delayed':'float\x208s\x20ease-in-out\x20infinite\x204s','pulse-slow':'pulse\x204s\x20cubic-bezier(0.4,\x200,\x200.6,\x201)\x20infinite'},'keyframes':{'float':{'0%,\x20100%':{'transform':'translateY(0px)'},'50%':{'transform':_0x54f9e5(0xb2)}}}}}});
+</script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Premium Glass Effect */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.6) 100%);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6); 
+        }
+        
+        .glass-card:hover::before { opacity: 1; }
+
+        /* Input & Textarea Styling */
+        .input-field { transition: all 0.3s ease; }
+        .input-field:focus {
+            box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.3), 0 0 15px rgba(236, 72, 153, 0.2);
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(236, 72, 153, 0.5);
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.5); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #ec4899; }
+
+        /* Custom Range Slider */
+        .neon-slider { -webkit-appearance: none; width: 100%; height: 6px; background: rgba(30, 41, 59, 0.8); border-radius: 5px; outline: none; border: 1px solid rgba(255,255,255,0.1); }
+        .neon-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #ec4899; cursor: pointer; border: 2px solid #fff; box-shadow: 0 0 10px rgba(236, 72, 153, 0.8); transition: transform 0.1s; }
+        .neon-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+        /* Active States for Buttons */
+        .active-voice {
+            border-color: #3b82f6 !important;
+            background: rgba(59, 130, 246, 0.15) !important;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3) !important;
+        }
+        .active-voice .name-text { color: #60a5fa !important; }
+
+        .active-style {
+            border-color: #d946ef !important;
+            background: rgba(217, 70, 239, 0.15) !important;
+            box-shadow: 0 0 15px rgba(217, 70, 239, 0.2) !important;
+            color: #f0abfc !important;
+        }
+
+        /* Audio Visualizer */
+        .visualizer-container { display: flex; align-items: flex-end; justify-content: center; height: 40px; gap: 4px; }
+        .wave-bar { width: 6px; background: linear-gradient(to top, #3b82f6, #ec4899, #d946ef); border-radius: 3px; height: 6px; transition: height 0.1s ease; box-shadow: 0 0 10px rgba(236, 72, 153, 0.5); }
+    </style>
+</head>
+<body class="antialiased selection:bg-pink-500/30 selection:text-pink-200 min-h-screen relative font-sans">
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-all duration-1000 ease-out overflow-hidden">
+        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#ec4899 1px, transparent 1px); background-size: 40px 40px; transform: perspective(500px) rotateX(20deg);"></div>
+
+        <div class="relative flex flex-col items-center">
+            <div class="relative w-40 h-40 flex items-center justify-center mb-10">
+                <div class="absolute inset-0 rounded-full border-2 border-transparent border-t-pink-500 border-l-pink-500/30 animate-[spin_2s_linear_infinite] shadow-[0_0_30px_rgba(236,72,153,0.2)]"></div>
+                <div class="absolute inset-3 rounded-full border-2 border-transparent border-b-blue-500 border-r-blue-500/30 animate-[spin_3s_linear_infinite_reverse]"></div>
+                <div class="relative z-10 w-20 h-20 bg-gradient-to-br from-pink-950 to-slate-900 rounded-full flex items-center justify-center border border-white/10 shadow-[0_0_50px_rgba(236,72,153,0.4)] animate-pulse">
+                    <div class="absolute inset-0 bg-pink-500/20 rounded-full blur-xl animate-pulse"></div>
+                    <i data-lucide="mic" class="text-white w-8 h-8 relative z-10 drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]"></i>
+                </div>
+            </div>
+            
+            <div class="w-64 space-y-4">
+                <div class="text-center">
+                    <h2 class="text-2xl font-bold tracking-[0.2em] text-white font-num mb-1">SAI MYANMAR<span class="text-pink-400 block text-3xl mt-1">TTS PRO</span></h2>
+                    <p class="text-[10px] text-pink-500/70 font-num tracking-[0.4em] uppercase">Engine Initializing</p>
+                </div>
+                
+                <div class="h-1 w-full bg-slate-800/50 rounded-full overflow-hidden border border-white/5 relative">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-blue-500 via-pink-500 to-violet-500 w-0 shadow-[0_0_20px_rgba(236,72,153,0.8)] relative">
+                        <div class="absolute right-0 top-0 bottom-0 w-2 bg-white/50 blur-[2px]"></div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between text-[10px] font-num text-slate-400 font-medium tracking-wider">
+                    <span class="animate-pulse">LOADING VOICES...</span>
+                    <span id="progress-text" class="text-pink-400 font-bold">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Background -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-pink-600/10 rounded-full blur-[120px] animate-float"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px] animate-float-delayed"></div>
+        <div class="absolute top-[30%] left-[40%] w-[40%] h-[40%] bg-violet-600/10 rounded-full blur-[100px] animate-pulse-slow"></div>
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="glass-panel border-b border-white/5 py-4 px-4 md:px-8 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-4">
+            <div class="w-10 h-10 bg-gradient-to-br from-pink-500 to-violet-600 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(236,72,153,0.4)] border border-white/10">
+                <i data-lucide="waves" class="text-white w-5 h-5"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold tracking-tight text-white font-num">စိုင်းမြန်မာ <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-blue-500">အသံပြောင်းစနစ်</span></h1>
+                <p class="text-[9px] text-pink-400/60 font-num uppercase tracking-[0.2em] mt-0.5">Neural Text-To-Speech Engine</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="hidden md:flex flex-col items-end">
+                <span class="text-[9px] text-slate-400 uppercase tracking-widest font-num">System Status</span>
+                <span class="text-[10px] font-bold text-emerald-400 flex items-center gap-1.5 font-num">
+                    <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse"></div> ONLINE
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-4 md:p-6 relative z-10 pt-8 pb-20 space-y-6">
+        
+        <!-- 1. Voice Selection -->
+        <section class="glass-card p-6 rounded-[2rem] border border-white/5">
+            <h2 class="text-xs font-bold uppercase tracking-[0.2em] mb-5 text-slate-300 flex items-center gap-3">
+                <div class="w-6 h-6 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-[10px] text-blue-400 font-num">1</div>
+                အသံရွေးချယ်ရန်
+            </h2>
+            <div id="voices-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-h-[280px] overflow-y-auto custom-scrollbar pr-2">
+                <!-- Injected via JS -->
+            </div>
+        </section>
+
+        <!-- 2. Styles & Emotions -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Vocal Styles -->
+            <section class="glass-card p-6 rounded-[2rem] border border-white/5">
+                <h2 class="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-300 flex items-center gap-3">
+                    <div class="w-6 h-6 rounded-full bg-pink-500/20 border border-pink-500/30 flex items-center justify-center text-[10px] text-pink-400 font-num">2</div>
+                    အသံစတိုင်နှင့် ပေါင်းစပ်မှုများ
+                </h2>
+                <div id="recap-grid" class="grid grid-cols-2 gap-2 max-h-[200px] overflow-y-auto custom-scrollbar pr-2">
+                    <!-- Injected via JS -->
+                </div>
+            </section>
+
+            <!-- Emotions -->
+            <section class="glass-card p-6 rounded-[2rem] border border-white/5">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-slate-300 flex items-center gap-3">
+                        <div class="w-6 h-6 rounded-full bg-violet-500/20 border border-violet-500/30 flex items-center justify-center text-[10px] text-violet-400 font-num">3</div>
+                        စိတ်ခံစားမှု စတိုင်များ
+                    </h2>
+                </div>
+                <p class="text-[10px] text-slate-400 mb-4 leading-relaxed bg-slate-900/50 p-2 rounded-lg border border-white/5">
+                    <i data-lucide="info" class="w-3 h-3 inline-block mr-1 text-violet-400"></i> မှတ်ချက် - ဤစတိုင်များသည် စိတ်ခံစားမှုပါဝင်စေရန် အမြန်နှုန်းနှင့် အသံအတက်အကျကို အလိုအလျောက် ချိန်ညှိပေးပါသည်။
+                </p>
+                <div id="emotions-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[140px] overflow-y-auto custom-scrollbar pr-2">
+                    <!-- Injected via JS -->
+                </div>
+            </section>
+        </div>
+
+        <!-- 3. Parameters (Sliders) -->
+        <section class="glass-card p-6 rounded-[2rem] border border-white/5 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Speed -->
+            <div>
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-sm font-bold text-slate-300 flex items-center gap-2"><i data-lucide="fast-forward" class="w-4 h-4 text-pink-400"></i> အမြန်နှုန်း</span>
+                    <span id="speed-val" class="font-num text-xs font-bold text-white bg-pink-500/20 border border-pink-500/30 px-3 py-1 rounded-md shadow-[0_0_10px_rgba(236,72,153,0.2)]">+၀</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-xs font-bold text-slate-500 font-num">-100</span>
+                    <input type="range" id="speed" min="-100" max="100" value="0" class="neon-slider flex-1" oninput="updateVal('speed', this.value)">
+                    <span class="text-xs font-bold text-slate-500 font-num">+100</span>
+                </div>
+            </div>
+            
+            <!-- Pitch -->
+            <div>
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-sm font-bold text-slate-300 flex items-center gap-2"><i data-lucide="activity" class="w-4 h-4 text-blue-400"></i> အသံ အတက်/အကျ</span>
+                    <span id="pitch-val" class="font-num text-xs font-bold text-white bg-blue-500/20 border border-blue-500/30 px-3 py-1 rounded-md shadow-[0_0_10px_rgba(59,130,246,0.2)]">+၀</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-xs font-bold text-slate-500 font-num">-100</span>
+                    <input type="range" id="pitch" min="-100" max="100" value="0" class="neon-slider flex-1" oninput="updateVal('pitch', this.value)">
+                    <span class="text-xs font-bold text-slate-500 font-num">+100</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Text Input & Generate -->
+        <section class="glass-card p-6 rounded-[2rem] border border-white/5 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-pink-500/5 rounded-full blur-[80px] pointer-events-none -mr-20 -mt-20"></div>
+
+            <div class="flex justify-between items-center mb-4 relative z-10">
+                <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-slate-300 flex items-center gap-3">
+                    <div class="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-[10px] text-emerald-400 font-num">4</div>
+                    စာသားထည့်သွင်းရန်
+                </h2>
+                <div class="flex gap-2">
+                    <button onclick="pasteText()" class="text-[10px] uppercase font-bold tracking-wider bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-300 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5">
+                        <i data-lucide="clipboard-paste" class="w-3 h-3"></i> ကူးထည့်မည်
+                    </button>
+                    <button onclick="clearText()" class="text-[10px] uppercase font-bold tracking-wider bg-red-900/30 hover:bg-red-900/50 border border-red-500/30 text-red-400 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5">
+                        <i data-lucide="trash-2" class="w-3 h-3"></i> ဖျက်မည်
+                    </button>
+                </div>
+            </div>
+            
+            <textarea id="text-input" rows="5" maxlength="10000" oninput="updateCharCount()" class="w-full bg-slate-900/60 text-white border border-white/10 rounded-xl p-4 focus:outline-none focus:border-pink-500/50 text-sm leading-relaxed custom-scrollbar shadow-inner relative z-10 input-field" placeholder="ဖတ်စေလိုသော စာသားများကို ဤနေရာတွင် ရိုက်ထည့်ပါ..."></textarea>
+            
+            <div class="text-right text-[10px] font-bold text-slate-500 mt-2 mb-6 font-num relative z-10">
+                <span id="char-count" class="text-pink-400">၀</span> / ၁၀၀၀၀
+            </div>
+
+            <button id="generate-btn" onclick="generateAudio()" class="w-full bg-gradient-to-r from-pink-600 to-violet-600 hover:from-pink-500 hover:to-violet-500 text-white font-black py-4 px-4 rounded-xl shadow-[0_0_20px_rgba(236,72,153,0.3)] transition-all transform hover:scale-[1.01] flex justify-center items-center text-sm uppercase tracking-widest relative z-10 border border-pink-400/20">
+                <span id="btn-text" class="flex items-center gap-2"><i data-lucide="play-circle" class="w-5 h-5"></i> အသံထုတ်ယူမည်</span>
+                <span id="btn-loader" class="hidden flex items-center gap-2"><i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> SYNTHESIZING...</span>
+            </button>
+        </section>
+
+        <!-- 5. Audio Player Result -->
+        <section id="audio-container" class="hidden glass-card p-6 rounded-[2rem] border border-emerald-500/30 bg-gradient-to-br from-emerald-900/10 to-transparent shadow-[0_0_30px_rgba(16,185,129,0.1)] relative overflow-hidden">
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-50"></div>
+            
+            <div class="relative z-10 flex flex-col items-center">
+                <div class="text-xs font-bold text-emerald-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                    <i data-lucide="check-circle-2" class="w-4 h-4"></i> Synthesis Complete
+                </div>
+                
+                <div id="visualizer" class="visualizer-container mb-6 w-full max-w-md bg-slate-900/50 p-4 rounded-xl border border-white/5">
+                    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                </div>
+                
+                <audio id="audio-player" controls class="w-full max-w-md mb-6 rounded-lg shadow-lg [&::-webkit-media-controls-panel]:bg-slate-800 [&::-webkit-media-controls-current-time-display]:text-white [&::-webkit-media-controls-time-remaining-display]:text-white"></audio>
+                
+                <a id="download-link" href="#" download="SaiMyanmar_TTS.mp3" class="w-full max-w-md bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-colors flex justify-center items-center text-xs uppercase tracking-widest border border-slate-600 hover:border-emerald-500/50 group">
+                    <i data-lucide="download" class="w-4 h-4 mr-2 group-hover:-translate-y-1 transition-transform text-emerald-400"></i> အသံဖိုင်ဒေါင်းမည်
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-white/5 relative z-10 text-center">
+        <div class="text-[10px] text-slate-600 uppercase tracking-[0.3em] font-bold font-num mb-1">Sai Myanmar Network</div>
+        <div class="text-[9px] text-slate-500 font-num">V4.0 Ultimate Edition</div>
+    </footer>
+
+    <script>
+/* obfuscated */
+const _0x3063e6=_0x34f5;(function(_0x5a400d,_0x53acd7){const _0xf43c6d=_0x34f5,_0x4f3d07=_0x5a400d();while(!![]){try{const _0x6ee7a2=-parseInt(_0xf43c6d(0x27b))/0x1+-parseInt(_0xf43c6d(0x265))/0x2+-parseInt(_0xf43c6d(0x20c))/0x3+-parseInt(_0xf43c6d(0x231))/0x4*(-parseInt(_0xf43c6d(0x24d))/0x5)+-parseInt(_0xf43c6d(0x1cd))/0x6+parseInt(_0xf43c6d(0x226))/0x7+parseInt(_0xf43c6d(0x246))/0x8;if(_0x6ee7a2===_0x53acd7)break;else _0x4f3d07['push'](_0x4f3d07['shift']());}catch(_0x322b7c){_0x4f3d07['push'](_0x4f3d07['shift']());}}}(_0x51c1,0x46b68));const API_URL='https://sai-myanmar-tts-pro.onrender.com/api/tts',voices=[{'id':'v1','name':_0x3063e6(0x2f9),'gender':'ယောကျ်ားလေး','icon':'👦'},{'id':'v2','name':'မဖွေးဖွေး','gender':_0x3063e6(0x2a3),'icon':'👧'},{'id':'v3','name':_0x3063e6(0x325),'gender':_0x3063e6(0x1b1),'icon':'👦'},{'id':'v4','name':_0x3063e6(0x233),'gender':_0x3063e6(0x1b1),'icon':'👦'},{'id':'v5','name':_0x3063e6(0x2c1),'gender':_0x3063e6(0x1b1),'icon':'👦'},{'id':'v6','name':_0x3063e6(0x228),'gender':_0x3063e6(0x2a3),'icon':'👧'},{'id':'v7','name':_0x3063e6(0x210),'gender':_0x3063e6(0x1b1),'icon':'👦'},{'id':'v8','name':_0x3063e6(0x315),'gender':_0x3063e6(0x2a3),'icon':'👧'},{'id':'v9','name':_0x3063e6(0x1dc),'gender':_0x3063e6(0x1b1),'icon':'👦'},{'id':_0x3063e6(0x2a1),'name':_0x3063e6(0x306),'gender':_0x3063e6(0x2a3),'icon':'👧'},{'id':'v11','name':'မရွှေမှုံရတီ','gender':'မိန်းကလေး','icon':'👧'},{'id':_0x3063e6(0x24e),'name':_0x3063e6(0x24b),'gender':_0x3063e6(0x1b1),'icon':'👦'},{'id':_0x3063e6(0x1ba),'name':_0x3063e6(0x2fb),'gender':_0x3063e6(0x2a3),'icon':'👧'},{'id':_0x3063e6(0x286),'name':_0x3063e6(0x202),'gender':_0x3063e6(0x1b1),'icon':'👦'}],recapStyles=[{'id':_0x3063e6(0x2cb),'name':'ပုံမှန်အသံ','speed':0x0,'pitch':0x0},{'id':'NyoGyi_25','name':_0x3063e6(0x2c4),'speed':0x0,'pitch':0x19},{'id':_0x3063e6(0x31b),'name':_0x3063e6(0x279),'speed':0x0,'pitch':0x23},{'id':_0x3063e6(0x338),'name':_0x3063e6(0x336),'speed':0x0,'pitch':0x2d},{'id':_0x3063e6(0x324),'name':_0x3063e6(0x2f8),'speed':0x0,'pitch':0x28},{'id':_0x3063e6(0x28c),'name':_0x3063e6(0x2e2),'speed':0xf,'pitch':0xf},{'id':_0x3063e6(0x1cb),'name':_0x3063e6(0x2bb),'speed':0x1e,'pitch':0x1e},{'id':_0x3063e6(0x2b3),'name':_0x3063e6(0x2b7),'speed':0x32,'pitch':0x32},{'id':'Pitch_20','name':_0x3063e6(0x320),'speed':0x0,'pitch':0x14},{'id':_0x3063e6(0x2fc),'name':_0x3063e6(0x2f6),'speed':0x0,'pitch':0x32}],emotions=[{'id':_0x3063e6(0x1d2),'name':_0x3063e6(0x25a),'icon':_0x3063e6(0x2cf),'s':0xf,'p':0xa},{'id':_0x3063e6(0x299),'name':'တည်ငြိမ်သော','icon':_0x3063e6(0x214),'s':-0xa,'p':-0x5},{'id':'PROFESSIONAL','name':'သတင်းကြေညာ','icon':_0x3063e6(0x322),'s':0x0,'p':-0x2},{'id':'NARRATIVE','name':_0x3063e6(0x22f),'icon':_0x3063e6(0x1e7),'s':-0x5,'p':0x0},{'id':_0x3063e6(0x221),'name':_0x3063e6(0x25b),'icon':_0x3063e6(0x25c),'s':0xa,'p':0xf},{'id':_0x3063e6(0x26d),'name':'လေးနက်သော','icon':'alert-circle','s':-0x5,'p':-0xa},{'id':_0x3063e6(0x217),'name':_0x3063e6(0x1c5),'icon':_0x3063e6(0x32a),'s':-0xf,'p':-0x14},{'id':'SAD','name':_0x3063e6(0x2d4),'icon':_0x3063e6(0x326),'s':-0xf,'p':-0xf},{'id':_0x3063e6(0x220),'name':_0x3063e6(0x20b),'icon':'eye-off','s':-0xa,'p':0x5},{'id':_0x3063e6(0x1e4),'name':_0x3063e6(0x2a0),'icon':_0x3063e6(0x2c7),'s':0x14,'p':-0xa},{'id':_0x3063e6(0x308),'name':_0x3063e6(0x1ee),'icon':_0x3063e6(0x1fd),'s':0xa,'p':0x14}];let selectedVoiceId=voices[0x0]['id'];function init(){const _0x58102f=_0x3063e6,_0x1a4d16={'TfDSD':_0x58102f(0x256),'vSywO':'active-voice','wFWQR':function(_0x2949ed,_0x4ab1de){return _0x2949ed!==_0x4ab1de;},'VJOtk':_0x58102f(0x258),'qzskk':_0x58102f(0x2fa),'BccVG':function(_0x34b4e0,_0xbd5ff){return _0x34b4e0===_0xbd5ff;},'PmLBT':_0x58102f(0x272),'TjGrb':function(_0x242b5f,_0xbfb8ab){return _0x242b5f(_0xbfb8ab);},'FTdlD':function(_0x21ec2d,_0x1fea75){return _0x21ec2d!==_0x1fea75;},'WHZxU':_0x58102f(0x1f7),'xOVWh':_0x58102f(0x284),'AlfEg':function(_0x2b324d,_0x5532cd,_0x457f48){return _0x2b324d(_0x5532cd,_0x457f48);},'PmQFD':_0x58102f(0x259),'bvdtf':function(_0x5ef6db,_0xe4d0e8){return _0x5ef6db===_0xe4d0e8;},'bUmQk':_0x58102f(0x1d0),'jTurH':_0x58102f(0x21f),'EjfRC':function(_0x11efc4,_0x428e61){return _0x11efc4*_0x428e61;},'MSTgc':function(_0x5b2b68,_0x208dfb){return _0x5b2b68+_0x208dfb;},'sqlUu':function(_0x1d0a1b,_0x40a664){return _0x1d0a1b>=_0x40a664;},'eqGaC':function(_0x4d5414,_0x498e6d,_0x2b2344){return _0x4d5414(_0x498e6d,_0x2b2344);},'znZEg':'voices-grid','dIlah':_0x58102f(0x20a),'ripJG':_0x58102f(0x238),'gaUKo':_0x58102f(0x2a8),'qTAyu':_0x58102f(0x243),'tAPsA':_0x58102f(0x275),'ewoKd':function(_0x106482,_0x1e0319,_0x2d3ba9){return _0x106482(_0x1e0319,_0x2d3ba9);}};lucide[_0x58102f(0x2c5)]();const _0xd18cd0=document['getElementById'](_0x1a4d16[_0x58102f(0x21c)]);voices[_0x58102f(0x218)](_0x5ef412=>{const _0x2d49a6=_0x58102f;if(_0x1a4d16[_0x2d49a6(0x1ab)](_0x2d49a6(0x258),_0x1a4d16[_0x2d49a6(0x1d6)]))_0x29fdad=_0x25e3c4,_0x4524ce[_0x2d49a6(0x1e9)](_0x1a4d16['TfDSD'])[_0x2d49a6(0x218)](_0x8b5555=>_0x8b5555[_0x2d49a6(0x26f)][_0x2d49a6(0x277)](_0x2d49a6(0x31e))),_0x1d9ebc[_0x2d49a6(0x26f)][_0x2d49a6(0x1ed)](_0x1a4d16['vSywO']);else{let _0x4af62=document[_0x2d49a6(0x31d)](_0x1a4d16['qzskk']);const _0x26aff3=_0x1a4d16['BccVG'](_0x5ef412['id'],selectedVoiceId);_0x4af62['className']=_0x2d49a6(0x28e)+(_0x26aff3?_0x1a4d16['vSywO']:''),_0x4af62['onclick']=()=>selectVoice(_0x5ef412['id'],_0x4af62),_0x4af62['innerHTML']=_0x2d49a6(0x335)+_0x5ef412[_0x2d49a6(0x2df)]+'</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22name-text\x20font-bold\x20text-xs\x20text-slate-300\x20mb-1\x20transition-colors\x22>'+_0x5ef412[_0x2d49a6(0x204)]+_0x2d49a6(0x28d)+_0x5ef412['gender']+'</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20',_0xd18cd0[_0x2d49a6(0x1ea)](_0x4af62);}});const _0x4e2ab9=document[_0x58102f(0x1c3)](_0x1a4d16['dIlah']);recapStyles[_0x58102f(0x218)](_0x1ee9cf=>{const _0x4adb4a=_0x58102f;let _0x5d926b=document[_0x4adb4a(0x31d)]('button');_0x5d926b['className']=_0x4adb4a(0x259),_0x5d926b[_0x4adb4a(0x1d8)]=()=>applyPreset(_0x5d926b,_0x1ee9cf[_0x4adb4a(0x1b5)],_0x1ee9cf[_0x4adb4a(0x1b0)]),_0x5d926b[_0x4adb4a(0x2fe)]=_0x4adb4a(0x1ef)+_0x1ee9cf[_0x4adb4a(0x204)],_0x4e2ab9[_0x4adb4a(0x1ea)](_0x5d926b);});const _0x5ae6ce=document[_0x58102f(0x1c3)](_0x1a4d16['ripJG']);emotions[_0x58102f(0x218)](_0x18fa4e=>{const _0x4c2128=_0x58102f;let _0x4bb6a5=document[_0x4c2128(0x31d)](_0x1a4d16['qzskk']);_0x4bb6a5[_0x4c2128(0x32d)]=_0x1a4d16[_0x4c2128(0x316)],_0x4bb6a5[_0x4c2128(0x1d8)]=()=>applyPreset(_0x4bb6a5,_0x18fa4e['s'],_0x18fa4e['p']),_0x4bb6a5[_0x4c2128(0x2fe)]=_0x4c2128(0x2c8)+_0x18fa4e[_0x4c2128(0x2df)]+_0x4c2128(0x235)+_0x18fa4e['name'],_0x5ae6ce[_0x4c2128(0x1ea)](_0x4bb6a5);}),lucide[_0x58102f(0x2c5)]();const _0x2aba8f=document[_0x58102f(0x1c3)](_0x1a4d16[_0x58102f(0x26c)]),_0x2b9916=document[_0x58102f(0x1c3)](_0x1a4d16[_0x58102f(0x1f8)]),_0x937e94=document[_0x58102f(0x1c3)](_0x1a4d16[_0x58102f(0x333)]);let _0xe66ea=0x0;const _0x4a3f79=_0x1a4d16[_0x58102f(0x22d)](setInterval,()=>{const _0x32a2e0=_0x58102f,_0x103c4c={'AZFXg':_0x1a4d16[_0x32a2e0(0x2c2)],'AHCXI':_0x1a4d16['PmQFD']};if(_0x1a4d16[_0x32a2e0(0x28a)](_0x1a4d16[_0x32a2e0(0x2ef)],_0x1a4d16[_0x32a2e0(0x2b5)])){let _0x363835=_0x1b9725['createElement'](_0x103c4c[_0x32a2e0(0x26b)]);_0x363835[_0x32a2e0(0x32d)]=_0x103c4c[_0x32a2e0(0x1f5)],_0x363835['onclick']=()=>_0x4da234(_0x363835,_0x345a4a[_0x32a2e0(0x1b5)],_0xfb8333['pitch']),_0x363835['innerHTML']=_0x32a2e0(0x1ef)+_0x40f8b0[_0x32a2e0(0x204)],_0x30a8ec[_0x32a2e0(0x1ea)](_0x363835);}else{_0xe66ea+=_0x1a4d16[_0x32a2e0(0x1bf)](Math[_0x32a2e0(0x209)](),0xf);if(_0xe66ea>0x64)_0xe66ea=0x64;if(_0x2aba8f)_0x2aba8f[_0x32a2e0(0x2b4)][_0x32a2e0(0x1cc)]=_0xe66ea+'%';if(_0x2b9916)_0x2b9916[_0x32a2e0(0x2ca)]=_0x1a4d16[_0x32a2e0(0x2ed)](Math[_0x32a2e0(0x27f)](_0xe66ea),'%');_0x1a4d16['sqlUu'](_0xe66ea,0x64)&&(_0x1a4d16['TjGrb'](clearInterval,_0x4a3f79),_0x1a4d16[_0x32a2e0(0x330)](setTimeout,()=>{const _0x378b4a=_0x32a2e0,_0xbf4a0d={'EFonY':function(_0x16d0c2,_0x5d720b){return _0x1a4d16['TjGrb'](_0x16d0c2,_0x5d720b);},'XKJRd':_0x378b4a(0x2ad)};_0x937e94&&(_0x1a4d16['FTdlD'](_0x1a4d16[_0x378b4a(0x29c)],_0x378b4a(0x1e5))?(_0x937e94[_0x378b4a(0x26f)][_0x378b4a(0x1ed)]('opacity-0',_0x378b4a(0x311),_0x1a4d16[_0x378b4a(0x1c4)]),_0x1a4d16['AlfEg'](setTimeout,()=>_0x937e94[_0x378b4a(0x277)](),0x320)):_0xbf4a0d[_0x378b4a(0x32f)](_0x595b2a,_0xbf4a0d[_0x378b4a(0x1ae)]));},0x1f4));}},0x32);}function selectVoice(_0x31212c,_0x19e82d){const _0x503dd1=_0x3063e6;selectedVoiceId=_0x31212c,document[_0x503dd1(0x1e9)]('.voice-btn')['forEach'](_0x175880=>_0x175880[_0x503dd1(0x26f)][_0x503dd1(0x277)](_0x503dd1(0x31e))),_0x19e82d['classList'][_0x503dd1(0x1ed)]('active-voice');}function applyPreset(_0x5b17f3,_0x2b269d,_0x559bfd){const _0x2093c3=_0x3063e6,_0x4a7a99={'iHmAw':_0x2093c3(0x2d9),'mowSD':'.style-btn','YGuJs':_0x2093c3(0x1b0),'yuWQu':'speed'},_0x413167=_0x4a7a99[_0x2093c3(0x305)][_0x2093c3(0x2ce)]('|');let _0x318cb6=0x0;while(!![]){switch(_0x413167[_0x318cb6++]){case'0':document['querySelectorAll'](_0x4a7a99[_0x2093c3(0x2f3)])['forEach'](_0xb3d06=>_0xb3d06['classList']['remove'](_0x2093c3(0x281)));continue;case'1':updateVal(_0x2093c3(0x1b0),_0x559bfd);continue;case'2':document[_0x2093c3(0x1c3)](_0x4a7a99[_0x2093c3(0x29d)])[_0x2093c3(0x1e3)]=_0x559bfd;continue;case'3':_0x5b17f3['classList'][_0x2093c3(0x1ed)](_0x2093c3(0x281));continue;case'4':updateVal(_0x4a7a99[_0x2093c3(0x255)],_0x2b269d);continue;case'5':document[_0x2093c3(0x1c3)](_0x4a7a99[_0x2093c3(0x255)])[_0x2093c3(0x1e3)]=_0x2b269d;continue;case'6':lucide[_0x2093c3(0x2c5)]();continue;}break;}}function toMyanmarNum(_0x179de7){const _0x5d9488=_0x3063e6,_0x53ea14=['၀','၁','၂','၃','၄','၅','၆','၇','၈','၉'];return _0x179de7[_0x5d9488(0x21a)]()[_0x5d9488(0x28f)](/[0-9]/g,function(_0x401402){return _0x53ea14[_0x401402];});}function updateVal(_0x31e0fd,_0x331f3e){const _0xcafe2=_0x3063e6,_0x5d8d40={'fIStD':function(_0xdc0eca,_0x512063){return _0xdc0eca>_0x512063;},'GiCUu':function(_0x494fd7,_0x3f479d){return _0x494fd7+_0x3f479d;},'CCuRH':function(_0x25f91e,_0x24fdd2){return _0x25f91e(_0x24fdd2);}};let _0x3e7343=_0x5d8d40[_0xcafe2(0x2cc)](_0x331f3e,0x0)?_0x5d8d40[_0xcafe2(0x2c0)]('+',_0x331f3e):_0x331f3e;document['getElementById'](_0x5d8d40[_0xcafe2(0x2c0)](_0x31e0fd,_0xcafe2(0x2a9)))['innerText']=_0x5d8d40['CCuRH'](toMyanmarNum,_0x3e7343);}function _0x34f5(_0x5c45d4,_0x15f30a){_0x5c45d4=_0x5c45d4-0x1a9;const _0x51c136=_0x51c1();let _0x34f5c6=_0x51c136[_0x5c45d4];return _0x34f5c6;}function updateCharCount(){const _0x2ba662=_0x3063e6,_0xdac9dd={'nCFGR':_0x2ba662(0x222)};let _0x2c3b58=document[_0x2ba662(0x1c3)](_0x2ba662(0x332))[_0x2ba662(0x1e3)][_0x2ba662(0x1b8)];document[_0x2ba662(0x1c3)](_0xdac9dd[_0x2ba662(0x1bc)])['innerText']=toMyanmarNum(_0x2c3b58);}async function pasteText(){const _0x9cd9=_0x3063e6,_0x11d7eb={'tDHQX':function(_0x463d00,_0x56ec7d){return _0x463d00+_0x56ec7d;},'hnpFB':function(_0x3366d1){return _0x3366d1();},'yoTeY':function(_0x5ed6fc,_0x3545a5){return _0x5ed6fc(_0x3545a5);}};try{const _0x4f95fa=await navigator[_0x9cd9(0x296)][_0x9cd9(0x1c6)](),_0x19161e=document['getElementById'](_0x9cd9(0x332));_0x19161e['value']=_0x11d7eb[_0x9cd9(0x31f)](_0x19161e[_0x9cd9(0x1e3)],_0x4f95fa)[_0x9cd9(0x240)](0x0,0x2710),_0x11d7eb[_0x9cd9(0x2eb)](updateCharCount);}catch(_0x15b8ac){_0x11d7eb[_0x9cd9(0x2ec)](alert,'စာသား\x20ကူးထည့်၍\x20မရပါ။\x20စာရိုက်မည့်အကွက်ကို\x20ဖိ၍\x20ကူးထည့်ပါ။');}}function _0x51c1(){const _0x35a157=['ဇက်\x20','qlppZ','speed','6px','အမ်\x20','length','play','v13','အေ\x20','nCFGR','ကင်မရာ','ended','EjfRC','ချက်','nearest','လိုက်ခ်','getElementById','xOVWh','တီးတိုးပြော','readText','ရမ်','eJCNJ','အပ်လုဒ်','ဒါရိုက်တာ','Combo_30','width','718404FyOYSl','ဂိမ်း','ehfoz','wZbyE','RabyJ','EXCITING','nMaER','ရွမ်','btn-loader','VJOtk','ဗွီပီအန်','onclick','မက်ဆေ့ချ်','ပရို','ချန်နယ်','ကိုလူမင်း','aQfEe','ပီ\x20','kzwyF','smooth','ကျူ\x20','addEventListener','value','ANGRY','LXoXQ','အေပီအိုင်','book-open','cAOMN','querySelectorAll','appendChild','NjhKG','rKKbv','add','ကြောက်လန့်သော','<i\x20data-lucide=\x22layers\x22\x20class=\x22w-3\x20h-3\x20text-slate-500\x22></i>\x20','ရီကပ်','နိုး','အက်ပ်','blob','ပေ့ချ်','AHCXI','အာ\x20','UaErF','qTAyu','ဘွိုင်း','sRRgu','bMplm','UnVli','ghost','ဝိုင်\x20','XsQvM','GaTwn','ပလေး','ကိုပိုင်တံခွန်','ဂဲလ်','name','QpEQT','GKlhu','to-slate-700','ကုတ်','random','recap-grid','ရွဲ့ပြောသော','381174TrujGb','လက်ပ်တော့','WcwDx','ရိုက်တာ','ကိုဒေါင်း','ကော်မဒီ','fLXDm','XolLh','coffee','တစ်တော့','အန်အင်စတော','WHISPER','forEach','AUauE','toString','from-pink-600','znZEg','ဝင်းဒိုး','fVByB','mkdnr','SARCASTIC','HAPPY','char-count','XTyow','ဗွိုက်စ်','tQten','1042937SryHpX','မစ်စ်','မဝတ်မှုံရွှေရည်','စတော့ပ်','ihuxB','ပရိုဂျူဆာ','အင်စတော','ewoKd','ပေ့စ်','ဇာတ်ကြောင်းပြော','CNcXE','1946076mLjHda','WMRtE','ကိုအောင်ရဲလင်း','itluL','\x22\x20class=\x22w-3\x20h-3\x20text-violet-400\x22></i>\x20','ဘက်','WlUez','emotions-grid','height','from-slate-600','dMZSN','ကေ\x20','bZBsZ','trim','အဲရာ','substring','အိုကေ','စီ\x20','progress-text','ဆက်တင်','ဘော့တ်','2775000VAfrZN','POST','yYujL','ဖေ့စ်ဘွတ်ခ်','rgOGv','ကိုပြေတီဦး','အင်တာနက်\x20သို့မဟုတ်\x20API\x20လင့်ခ်ကို\x20စစ်ဆေးပါ။','5HDjwYd','v12','မိုဘိုင်း','WwQnI','REuSR','XwJqD','AjaQX','IdNoO','yuWQu','.voice-btn','whvdO','MmAip','style-btn\x20border\x20border-white/10\x20bg-slate-900/50\x20text-[11px]\x20font-bold\x20p-3\x20rounded-xl\x20hover:border-pink-500/50\x20transition-all\x20text-slate-300\x20flex\x20items-center\x20justify-center\x20gap-2','စိတ်လှုပ်ရှားဖွယ်','ပျော်ရွှင်သော','smile','gqPGQ','nbWAe','DnDBO','SfoYr','XLOaH','စပွိုင်လာ','hgqBr','လိုက်ဖ်','797872hpMglj','တက်ဘလက်','TQtHa','အိတ်ချ်\x20','JoIIr','MbduX','AZFXg','gaUKo','SERIOUS','ဖိုတို','classList','IvrTl','ကျေးဇူးပြု၍\x20စာသားထည့်သွင်းပါ။','style-btn\x20border\x20border-white/10\x20bg-slate-900/50\x20text-[10px]\x20font-bold\x20p-2.5\x20rounded-lg\x20hover:border-violet-500/50\x20transition-all\x20text-slate-300\x20flex\x20items-center\x20gap-2','EHoph','အပ်ဂရိတ်','preloader','ဟိုင်း','remove','Nstkm','ကျားကြီး\x20၂','AjuxY','47017cJhahw','opacity-80','audio-container','opXxj','floor','yGZeK','active-style','အန်\x20','ရုပ်ရှင်','pointer-events-none','BHiNE','v14','zbEOw','အက်တာ','ဝိုင်ဖိုင်','bvdtf','Nzodm','Combo_15','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-[9px]\x20font-bold\x20text-pink-400\x20bg-pink-500/10\x20border\x20border-pink-500/20\x20px-2\x20py-0.5\x20rounded-full\x20font-num\x22>','voice-btn\x20border\x20border-white/10\x20bg-slate-900/50\x20rounded-xl\x20p-3\x20flex\x20flex-col\x20items-center\x20transition-all\x20hover:bg-slate-800\x20','replace','xBBGl','EQNoe','မန်း','koaHS','CPxKG','အက်စ်\x20','clipboard','ocypc','ကော်ပီ','CALM','ဒီ\x20','flex','WHZxU','YGuJs','ဘီ\x20','TdChQ','ဒေါသထွက်သော','v10','HoxJu','မိန်းကလေး','gBgEY','ဒရာမာ','eIIVh','xwLIa','progress-bar','-val','အီးမေးလ်','stringify','အို\x20','ချိတ်ဆက်မှု\x20ပြတ်တောက်သွားပါသည်။\x20ဆာဗာ\x20အလုပ်များနေနိုင်ပါသည်။','ရှယ်ယာ','စတိုရီ','PqSkv','FCtzf','အပိုင်း','Combo_50','style','jTurH','ttktd','ပေါင်းစပ်\x20၅၀','ဒေါင်းလုဒ်','Kfuak','ဗွီ\x20','ပေါင်းစပ်\x20၃၀','ပီစီ','IzEwy','လော့ဂ်အောက်','qFolo','GiCUu','ကိုမြင့်မြတ်','qzskk','အကောင့်','ကျားကြီး\x20၁','createIcons','PHOrL','flame','<i\x20data-lucide=\x22','generate-btn','innerText','Normal','fIStD','အက်ရှင်','split','zap','ဆေ့ဖ်','လင့်ခ်','PWbCK','သီချင်း','ဝမ်းနည်းသော','hover:scale-[1.01]','lJTjy','cJCVZ','LOsnS','0|3|5|2|4|1|6','tWSwT','ZMtfJ','to-violet-600','PAWOw','ဗီဒီယိုကော','icon','အပ်ဒိတ်','BknQb','ပေါင်းစပ်\x20၁၅','GxHoC','iHXnO','ဖုန်း','အင်းမေ့ချ်','ကော','ဇာတ်သိမ်း','မစ္စတာ','အော်ဒီယို','hnpFB','yoTeY','MSTgc','အိုင်အိုအက်စ်','bUmQk','ekLDh','ဂူဂယ်လ်','.wave-bar','mowSD','SgSPZ','IhHkG','အသံသေး\x20၅၀','အေအိုင်','နီလာ\x20ချွဲသံ','ကိုစိုင်းစိုင်း','button','မသင်ဇာဝင့်ကျော်','Pitch_50','UoOpM','innerHTML','HnCpS','ကောမန့်','DlSFV','နက်စ်','pause','ဖောလိုး','iHmAw','မအိန္ဒြာကျော်ဇင်','ဆောင်း','FEAR','oJCyo','ဝဲလ်ကမ်း','ယူကျု','apxNm','audio-player','nJMGz','ယက်စ်','woAUb','scale-105','ကား','OWtGV','မြူးဇစ်','မသက်မွန်မြင့်','PmLBT','ACoBF','ယူ\x20','စထရင်း','အယ်လ်\x20','NyoGyi_35','IwgYw','createElement','active-voice','tDHQX','အသံသေး\x20၂၀','dReju','briefcase','LRfAx','Nilar_40','ကိုနေတိုး','cloud-rain','အီး\x20','ဗီဒီယို','xkSTX','volume-x','ဗွီအိုင်ပီ','လင်းနစ်','className','ပရီမီယမ်','EFonY','eqGaC','hidden','text-input','tAPsA','kFcay','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-2xl\x20mb-2\x20drop-shadow-md\x22>','ကျားကြီး\x20၃','ဂျေ\x20','NyoGyi_45','fVEZD','ဂျီပီယူ','အက်ဒစ်','VNxYR','wFWQR','kIzOX','အက်ဒမင်','XKJRd','Ciobi','pitch','ယောကျ်ားလေး','ပေါ့စ်'];_0x51c1=function(){return _0x35a157;};return _0x51c1();}function clearText(){const _0xdda2f5=_0x3063e6,_0x4b5cc8={'yYujL':_0xdda2f5(0x332),'BMBEZ':function(_0x5283bb){return _0x5283bb();},'RSmXm':_0xdda2f5(0x331)};document[_0xdda2f5(0x1c3)](_0x4b5cc8[_0xdda2f5(0x248)])['value']='',_0x4b5cc8['BMBEZ'](updateCharCount),document[_0xdda2f5(0x1c3)](_0xdda2f5(0x27d))['classList']['add'](_0x4b5cc8['RSmXm']);}let audioVisualizerInterval;const audioPlayer=document['getElementById'](_0x3063e6(0x30d)),waveBars=document['querySelectorAll'](_0x3063e6(0x2f2));audioPlayer[_0x3063e6(0x1e2)](_0x3063e6(0x1b9),()=>{const _0x21a436=_0x3063e6,_0xd0c5e={'IzEwy':function(_0x4d2d45,_0x3b7988){return _0x4d2d45+_0x3b7988;},'AUauE':function(_0x13e45e,_0xef7288){return _0x13e45e*_0xef7288;},'itluL':function(_0x478b45,_0x239204,_0x471c6a){return _0x478b45(_0x239204,_0x471c6a);}};audioVisualizerInterval=_0xd0c5e[_0x21a436(0x234)](setInterval,()=>{const _0x4f1eb9=_0x21a436;waveBars[_0x4f1eb9(0x218)](_0x5949d4=>{const _0x3f5c62=_0x4f1eb9;_0x5949d4[_0x3f5c62(0x2b4)][_0x3f5c62(0x239)]=_0xd0c5e[_0x3f5c62(0x2bd)](_0xd0c5e[_0x3f5c62(0x2bd)](Math[_0x3f5c62(0x27f)](_0xd0c5e[_0x3f5c62(0x219)](Math['random'](),0x1e)),0x6),'px');});},0x64);}),audioPlayer['addEventListener'](_0x3063e6(0x303),()=>{const _0x402914=_0x3063e6,_0x4ef5e8={'HnCpS':function(_0x4437d5,_0x10a8d4){return _0x4437d5(_0x10a8d4);}};_0x4ef5e8[_0x402914(0x2ff)](clearInterval,audioVisualizerInterval),waveBars[_0x402914(0x218)](_0x52b2e7=>_0x52b2e7[_0x402914(0x2b4)][_0x402914(0x239)]=_0x402914(0x1b6));}),audioPlayer[_0x3063e6(0x1e2)](_0x3063e6(0x1be),()=>{const _0x66ecc=_0x3063e6,_0x4e8642={'XTyow':function(_0x1240ea,_0x2bad20){return _0x1240ea(_0x2bad20);}};_0x4e8642[_0x66ecc(0x223)](clearInterval,audioVisualizerInterval),waveBars[_0x66ecc(0x218)](_0x115c50=>_0x115c50['style'][_0x66ecc(0x239)]='6px');});async function generateAudio(){const _0x28d6e0=_0x3063e6,_0x10860e={'PWbCK':function(_0x2ee347,_0x18dab6){return _0x2ee347<_0x18dab6;},'IdNoO':_0x28d6e0(0x332),'bmYTK':function(_0x3f6d0e){return _0x3f6d0e();},'cAOMN':'audio-container','FCtzf':_0x28d6e0(0x331),'lJTjy':'speed','jZQpX':_0x28d6e0(0x1d5),'mXIqe':_0x28d6e0(0x2c9),'oHEoE':_0x28d6e0(0x271),'JoIIr':_0x28d6e0(0x27c),'sRRgu':'cursor-not-allowed','lshTn':_0x28d6e0(0x207),'hgqBr':_0x28d6e0(0x21b),'SfoYr':_0x28d6e0(0x2dc),'tWSwT':_0x28d6e0(0x2d5),'WwQnI':_0x28d6e0(0x1bb),'aQfEe':_0x28d6e0(0x29a),'wdOTY':'အက်ဖ်\x20','TQtHa':'ဂျီ\x20','eIIVh':'အိုင်\x20','UnVli':_0x28d6e0(0x337),'ZMtfJ':_0x28d6e0(0x23c),'LRfAx':_0x28d6e0(0x31a),'EHoph':_0x28d6e0(0x1b7),'fLXDm':_0x28d6e0(0x1e1),'xwLIa':_0x28d6e0(0x1f6),'bMplm':_0x28d6e0(0x295),'nJMGz':'တီ\x20','PAWOw':_0x28d6e0(0x318),'XsQvM':'ဒဗလျူ\x20','opXxj':_0x28d6e0(0x1fe),'XolLh':'ဆပ်စခရိုက်ဘ်','DnDBO':_0x28d6e0(0x1c2),'LOsnS':_0x28d6e0(0x304),'fVByB':_0x28d6e0(0x2ae),'oJCyo':_0x28d6e0(0x300),'xkSTX':_0x28d6e0(0x1f4),'SYjBu':_0x28d6e0(0x1db),'oSraB':_0x28d6e0(0x1ad),'AjuxY':_0x28d6e0(0x2b2),'gcRiD':'ဝက်ဘ်ဆိုက်','ehfoz':_0x28d6e0(0x30a),'HoxJu':'ဟဲလို','ekLDh':_0x28d6e0(0x276),'uDkCk':_0x28d6e0(0x30b),'sQYcE':_0x28d6e0(0x2f1),'IhHkG':_0x28d6e0(0x283),'YsBMh':_0x28d6e0(0x1f0),'ttktd':_0x28d6e0(0x2af),'qFolo':_0x28d6e0(0x2e8),'dMZSN':_0x28d6e0(0x211),'jbeQc':_0x28d6e0(0x30f),'PHOrL':_0x28d6e0(0x1f9),'kFcay':_0x28d6e0(0x292),'VOLDS':'ဘော့စ်','whvdO':_0x28d6e0(0x2e9),'CNcXE':_0x28d6e0(0x227),'SMvLv':_0x28d6e0(0x2d1),'WMRtE':_0x28d6e0(0x328),'RabyJ':_0x28d6e0(0x2e0),'yPGgM':_0x28d6e0(0x23f),'IvrTl':_0x28d6e0(0x208),'koaHS':'ဖရီး','TdChQ':_0x28d6e0(0x1d7),'gqPGQ':_0x28d6e0(0x289),'YTIYp':'ဂရု','CPxKG':'ပို့စ်','rgOGv':_0x28d6e0(0x319),'iHXnO':_0x28d6e0(0x245),'XwTeo':_0x28d6e0(0x1f2),'OWtGV':_0x28d6e0(0x1ce),'XwJqD':_0x28d6e0(0x201),'JvUff':_0x28d6e0(0x1b2),'VNxYR':_0x28d6e0(0x229),'IwgYw':_0x28d6e0(0x302),'XRLFN':_0x28d6e0(0x236),'ocypc':'ကင်ဆယ်','Nzodm':_0x28d6e0(0x2d0),'bZBsZ':_0x28d6e0(0x298),'SgSPZ':_0x28d6e0(0x22e),'IHatD':'ကတ်','Ciobi':_0x28d6e0(0x244),'nbWAe':'ပရိုဖိုင်','eJCNJ':_0x28d6e0(0x2c3),'dReju':'လော့ဂ်အင်','iOSbz':'ပတ်စ်ဝေါ့ဒ်','tbkAQ':_0x28d6e0(0x2aa),'MbduX':_0x28d6e0(0x2e5),'GxHoC':_0x28d6e0(0x1d9),'GTxCO':_0x28d6e0(0x1c0),'rVCvq':_0x28d6e0(0x2e7),'RcjAO':_0x28d6e0(0x2de),'WwCrH':_0x28d6e0(0x224),'AjaQX':_0x28d6e0(0x307),'NjhKG':_0x28d6e0(0x314),'ZpLSI':_0x28d6e0(0x2d3),'UoOpM':'ဆင်ဂါ','oVKIM':_0x28d6e0(0x288),'hWUhr':'အက်ထရက်စ်','REuSR':_0x28d6e0(0x22b),'xBBGl':_0x28d6e0(0x20f),'zbEOw':'ပစ်ချာ','WlUez':_0x28d6e0(0x2e6),'nMaER':_0x28d6e0(0x2b8),'WcwDx':_0x28d6e0(0x216),'tQten':_0x28d6e0(0x274),'cJCVZ':_0x28d6e0(0x32e),'qlppZ':_0x28d6e0(0x1da),'kIzOX':_0x28d6e0(0x32b),'PqSkv':_0x28d6e0(0x2f7),'ihuxB':'စီပီယူ','Nstkm':_0x28d6e0(0x33a),'BHiNE':_0x28d6e0(0x1c7),'XLOaH':_0x28d6e0(0x1d4),'woAUb':_0x28d6e0(0x2bc),'apxNm':_0x28d6e0(0x20d),'rKKbv':_0x28d6e0(0x24f),'QpEQT':_0x28d6e0(0x266),'DlSFV':'အန်ဒရွိုက်','GaTwn':_0x28d6e0(0x21d),'OONzU':'မက်','gBgEY':_0x28d6e0(0x32c),'tNFph':_0x28d6e0(0x247),'yGZeK':_0x28d6e0(0x1c1),'qOryZ':function(_0x2f5957,_0x48cb40){return _0x2f5957===_0x48cb40;},'ACoBF':'uLvPz','fVEZD':'xkADe','BknQb':_0x28d6e0(0x24c),'Kfuak':function(_0x12615d,_0x482023){return _0x12615d(_0x482023);},'GKlhu':_0x28d6e0(0x2ad),'kzwyF':_0x28d6e0(0x29b),'EQNoe':_0x28d6e0(0x23a)};let _0x2f8ef1=document['getElementById'](_0x10860e[_0x28d6e0(0x254)])[_0x28d6e0(0x1e3)];const _0x63240d=document['getElementById'](_0x10860e[_0x28d6e0(0x2d6)])[_0x28d6e0(0x1e3)],_0x37d14f=document[_0x28d6e0(0x1c3)](_0x28d6e0(0x1b0))[_0x28d6e0(0x1e3)],_0x1991e8=document[_0x28d6e0(0x1c3)]('btn-text'),_0x495f3c=document['getElementById'](_0x10860e['jZQpX']),_0x4c8258=document[_0x28d6e0(0x1c3)](_0x10860e['mXIqe']);if(!_0x2f8ef1[_0x28d6e0(0x23e)]()){alert(_0x10860e['oHEoE']);return;}_0x1991e8[_0x28d6e0(0x26f)][_0x28d6e0(0x1ed)](_0x10860e[_0x28d6e0(0x2b1)]),_0x495f3c[_0x28d6e0(0x26f)][_0x28d6e0(0x277)](_0x10860e['FCtzf']),_0x495f3c[_0x28d6e0(0x26f)][_0x28d6e0(0x1ed)](_0x28d6e0(0x29b)),_0x4c8258[_0x28d6e0(0x26f)][_0x28d6e0(0x1ed)](_0x10860e[_0x28d6e0(0x269)],_0x10860e['sRRgu'],_0x28d6e0(0x23a),_0x10860e['lshTn']),_0x4c8258[_0x28d6e0(0x26f)][_0x28d6e0(0x277)](_0x10860e[_0x28d6e0(0x263)],_0x10860e[_0x28d6e0(0x260)],_0x10860e['tWSwT']),document[_0x28d6e0(0x1c3)](_0x28d6e0(0x27d))[_0x28d6e0(0x26f)][_0x28d6e0(0x1ed)](_0x10860e[_0x28d6e0(0x2b1)]);let _0x56c7fe=_0x2f8ef1;const _0x3d6d27={'A':_0x10860e[_0x28d6e0(0x250)],'B':_0x28d6e0(0x29e),'C':_0x28d6e0(0x242),'D':_0x10860e[_0x28d6e0(0x1dd)],'E':_0x28d6e0(0x327),'F':_0x10860e['wdOTY'],'G':_0x10860e[_0x28d6e0(0x267)],'H':_0x28d6e0(0x268),'I':_0x10860e[_0x28d6e0(0x2a6)],'J':_0x10860e[_0x28d6e0(0x1fc)],'K':_0x10860e[_0x28d6e0(0x2db)],'L':_0x10860e[_0x28d6e0(0x323)],'M':_0x10860e[_0x28d6e0(0x273)],'N':_0x28d6e0(0x282),'O':_0x28d6e0(0x2ac),'P':_0x28d6e0(0x1de),'Q':_0x10860e[_0x28d6e0(0x212)],'R':_0x10860e[_0x28d6e0(0x2a7)],'S':_0x10860e[_0x28d6e0(0x1fb)],'T':_0x10860e[_0x28d6e0(0x30e)],'U':_0x10860e[_0x28d6e0(0x2dd)],'V':_0x28d6e0(0x2ba),'W':_0x10860e[_0x28d6e0(0x1ff)],'X':_0x28d6e0(0x295),'Y':_0x10860e[_0x28d6e0(0x27e)],'Z':_0x28d6e0(0x1b3)};_0x56c7fe=_0x56c7fe[_0x28d6e0(0x28f)](/\b[A-Z]{2,}\b/g,function(_0x503032){const _0x46b70f=_0x28d6e0;let _0x499d0c='';for(let _0x282609=0x0;_0x10860e[_0x46b70f(0x2d2)](_0x282609,_0x503032[_0x46b70f(0x1b8)]);_0x282609++){_0x499d0c+=_0x3d6d27[_0x503032[_0x282609]]||_0x503032[_0x282609];}return _0x499d0c;});const _0x2fa449={'subscribe':_0x10860e[_0x28d6e0(0x213)],'like':_0x10860e[_0x28d6e0(0x25f)],'follow':_0x10860e[_0x28d6e0(0x2d8)],'share':_0x10860e[_0x28d6e0(0x21e)],'comment':_0x10860e[_0x28d6e0(0x309)],'page':_0x10860e[_0x28d6e0(0x329)],'channel':_0x10860e['SYjBu'],'admin':_0x10860e['oSraB'],'car':_0x28d6e0(0x312),'part':_0x10860e[_0x28d6e0(0x27a)],'ep':_0x10860e['AjuxY'],'episode':_0x10860e[_0x28d6e0(0x27a)],'website':_0x10860e['gcRiD'],'welcome':_0x10860e[_0x28d6e0(0x1cf)],'hello':_0x10860e[_0x28d6e0(0x2a2)],'hi':_0x10860e[_0x28d6e0(0x2f0)],'facebook':_0x28d6e0(0x249),'youtube':_0x10860e['uDkCk'],'tiktok':_0x28d6e0(0x215),'google':_0x10860e['sQYcE'],'movie':_0x10860e[_0x28d6e0(0x2f5)],'recap':_0x10860e['YsBMh'],'spoiler':_0x28d6e0(0x262),'story':_0x10860e[_0x28d6e0(0x2b6)],'end':_0x10860e[_0x28d6e0(0x2bf)],'action':_0x28d6e0(0x2cd),'drama':_0x28d6e0(0x2a5),'comedy':_0x10860e[_0x28d6e0(0x23b)],'ok':_0x28d6e0(0x241),'yes':_0x10860e['jbeQc'],'no':_0x28d6e0(0x1f1),'boy':_0x10860e[_0x28d6e0(0x2c6)],'girl':_0x28d6e0(0x203),'man':_0x10860e[_0x28d6e0(0x334)],'boss':_0x10860e['VOLDS'],'sir':'ဆာ','mr':_0x10860e[_0x28d6e0(0x257)],'miss':_0x10860e[_0x28d6e0(0x230)],'link':_0x10860e['SMvLv'],'video':_0x10860e[_0x28d6e0(0x232)],'update':_0x10860e[_0x28d6e0(0x1d1)],'tools':'တူးလ်စ်','error':_0x10860e['yPGgM'],'code':_0x10860e[_0x28d6e0(0x270)],'free':_0x10860e[_0x28d6e0(0x293)],'vpn':_0x10860e[_0x28d6e0(0x29f)],'wifi':_0x10860e[_0x28d6e0(0x25d)],'internet':'အင်တာနက်','group':_0x10860e['YTIYp'],'post':_0x10860e[_0x28d6e0(0x294)],'live':_0x28d6e0(0x264),'stream':_0x10860e[_0x28d6e0(0x24a)],'bot':_0x10860e[_0x28d6e0(0x2e4)],'api':_0x28d6e0(0x1e6),'server':'ဆာဗာ','app':_0x10860e['XwTeo'],'game':_0x10860e[_0x28d6e0(0x313)],'play':_0x10860e[_0x28d6e0(0x252)],'pause':_0x10860e['JvUff'],'stop':_0x10860e[_0x28d6e0(0x1aa)],'next':_0x10860e[_0x28d6e0(0x31c)],'back':_0x10860e['XRLFN'],'cancel':_0x10860e[_0x28d6e0(0x297)],'save':_0x10860e[_0x28d6e0(0x28b)],'delete':'ဒိလစ်','edit':_0x28d6e0(0x1a9),'copy':_0x10860e[_0x28d6e0(0x23d)],'paste':_0x10860e[_0x28d6e0(0x2f4)],'cut':_0x10860e['IHatD'],'settings':_0x10860e[_0x28d6e0(0x1af)],'profile':_0x10860e[_0x28d6e0(0x25e)],'account':_0x10860e[_0x28d6e0(0x1c8)],'login':_0x10860e[_0x28d6e0(0x321)],'logout':_0x28d6e0(0x2be),'password':_0x10860e['iOSbz'],'email':_0x10860e['tbkAQ'],'phone':_0x10860e[_0x28d6e0(0x26a)],'message':_0x10860e[_0x28d6e0(0x2e3)],'chat':_0x10860e['GTxCO'],'call':_0x10860e['rVCvq'],'video\x20call':_0x10860e['RcjAO'],'voice':_0x10860e['WwCrH'],'audio':_0x28d6e0(0x2ea),'sound':_0x10860e[_0x28d6e0(0x253)],'music':_0x10860e[_0x28d6e0(0x1eb)],'song':_0x10860e['ZpLSI'],'singer':_0x10860e[_0x28d6e0(0x2fd)],'actor':_0x10860e['oVKIM'],'actress':_0x10860e['hWUhr'],'director':_0x28d6e0(0x1ca),'producer':_0x10860e[_0x28d6e0(0x251)],'writer':_0x10860e[_0x28d6e0(0x290)],'camera':_0x28d6e0(0x1bd),'photo':_0x28d6e0(0x26e),'picture':_0x10860e[_0x28d6e0(0x287)],'image':_0x10860e[_0x28d6e0(0x237)],'download':_0x10860e[_0x28d6e0(0x1d3)],'upload':_0x28d6e0(0x1c9),'install':_0x28d6e0(0x22c),'uninstall':_0x10860e[_0x28d6e0(0x20e)],'upgrade':_0x10860e[_0x28d6e0(0x225)],'premium':_0x10860e[_0x28d6e0(0x2d7)],'pro':_0x10860e[_0x28d6e0(0x1b4)],'vip':_0x10860e[_0x28d6e0(0x1ac)],'ai':_0x10860e[_0x28d6e0(0x2b0)],'cpu':_0x10860e[_0x28d6e0(0x22a)],'gpu':_0x10860e[_0x28d6e0(0x278)],'ram':_0x10860e[_0x28d6e0(0x285)],'rom':_0x10860e[_0x28d6e0(0x261)],'pc':_0x10860e[_0x28d6e0(0x310)],'laptop':_0x10860e[_0x28d6e0(0x30c)],'mobile':_0x10860e[_0x28d6e0(0x1ec)],'tablet':_0x10860e[_0x28d6e0(0x205)],'android':_0x10860e[_0x28d6e0(0x301)],'ios':_0x28d6e0(0x2ee),'windows':_0x10860e[_0x28d6e0(0x200)],'mac':_0x10860e['OONzU'],'linux':_0x10860e[_0x28d6e0(0x2a4)]};for(let _0x21c0d9 in _0x2fa449){let _0x509588=new RegExp('\x5cb'+_0x21c0d9+'\x5cb','gi');_0x56c7fe=_0x56c7fe['replace'](_0x509588,_0x2fa449[_0x21c0d9]+'\x20');}let _0x14424e=_0x56c7fe;try{const _0x2ed3b6=await fetch(API_URL,{'method':_0x10860e['tNFph'],'headers':{'Content-Type':'application/json'},'body':JSON[_0x28d6e0(0x2ab)]({'text':_0x14424e,'voice':selectedVoiceId,'speed':_0x63240d,'pitch':_0x37d14f})});if(_0x2ed3b6['ok']){const _0x1f4906=await _0x2ed3b6[_0x28d6e0(0x1f3)](),_0x1d89b3=URL['createObjectURL'](_0x1f4906);audioPlayer['src']=_0x1d89b3,document[_0x28d6e0(0x1c3)]('download-link')['href']=_0x1d89b3;const _0x5c0eee=document[_0x28d6e0(0x1c3)](_0x10860e[_0x28d6e0(0x1e8)]);_0x5c0eee['classList'][_0x28d6e0(0x277)](_0x10860e[_0x28d6e0(0x2b1)]),_0x5c0eee['scrollIntoView']({'behavior':_0x28d6e0(0x1e0),'block':_0x10860e[_0x28d6e0(0x280)]});}else _0x10860e['qOryZ'](_0x10860e[_0x28d6e0(0x317)],_0x10860e[_0x28d6e0(0x339)])?(_0x12376a[_0x28d6e0(0x1c3)](_0x10860e[_0x28d6e0(0x254)])[_0x28d6e0(0x1e3)]='',_0x10860e['bmYTK'](_0x4af9d1),_0x493c92['getElementById'](_0x10860e['cAOMN'])[_0x28d6e0(0x26f)][_0x28d6e0(0x1ed)](_0x10860e[_0x28d6e0(0x2b1)])):alert(_0x10860e[_0x28d6e0(0x2e1)]);}catch(_0x7656b1){_0x10860e[_0x28d6e0(0x2b9)](alert,_0x10860e[_0x28d6e0(0x206)]);}finally{_0x495f3c['classList'][_0x28d6e0(0x1ed)](_0x10860e['FCtzf']),_0x495f3c[_0x28d6e0(0x26f)][_0x28d6e0(0x277)](_0x10860e[_0x28d6e0(0x1df)]),_0x1991e8[_0x28d6e0(0x26f)][_0x28d6e0(0x277)](_0x10860e[_0x28d6e0(0x2b1)]),_0x1991e8[_0x28d6e0(0x26f)][_0x28d6e0(0x1ed)](_0x10860e['kzwyF']),_0x4c8258[_0x28d6e0(0x26f)][_0x28d6e0(0x277)](_0x10860e[_0x28d6e0(0x269)],_0x10860e[_0x28d6e0(0x1fa)],_0x10860e[_0x28d6e0(0x291)],_0x28d6e0(0x207)),_0x4c8258[_0x28d6e0(0x26f)]['add']('from-pink-600','to-violet-600',_0x10860e[_0x28d6e0(0x2da)]);}}window['onload']=init;
+</script>
+</body>
+</html>
