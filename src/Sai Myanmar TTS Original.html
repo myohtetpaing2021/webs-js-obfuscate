@@ -1,0 +1,398 @@
+
+<!DOCTYPE html>
+<html lang="my" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>စိုင်းမြန်မာ အသံပြောင်းစနစ်</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { colors: { pink: { 500: '#ec4899' }, blue: { 500: '#3b82f6' } } } }
+        }
+    </script>
+    <style>
+        /* အဆွဲမျဉ်း (Scrollbar) အဖြူရောင် အကြီးစား */
+        .custom-scrollbar::-webkit-scrollbar { width: 14px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #1e293b; border-radius: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #ffffff; border-radius: 8px; border: 3px solid #1e293b; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+
+        /* ပန်းရောင် Slider */
+        .pink-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 10px; background: #334155; border-radius: 5px; outline: none; }
+        .pink-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 28px; height: 28px; border-radius: 50%; background: #ec4899; cursor: pointer; border: 3px solid #fff; box-shadow: 0 0 12px rgba(236, 72, 153, 0.8); transition: transform 0.1s; }
+        .pink-slider::-webkit-slider-thumb:active { transform: scale(1.2); }
+
+        /* ရွေးချယ်ထားသော ခလုတ် (အပြာရောင်တောက်တောက်) */
+        .active-btn {
+            border-color: #3b82f6 !important; 
+            background-color: rgba(59, 130, 246, 0.2) !important; 
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.7) !important;
+        }
+        .active-btn span.name-text {
+            color: #60a5fa !important;
+        }
+
+        /* လိုဂို အဝိုင်းလည်ခြင်း (အစက်အပြောက်နှင့်) */
+        @keyframes spinSlow { 100% { transform: rotate(360deg); } }
+        .fancy-spin { animation: spinSlow 7s linear infinite; position: relative; }
+        .fancy-spin::before { content: ''; position: absolute; top: -6px; left: -6px; right: -6px; bottom: -6px; border-radius: 50%; border: 3px dotted #3b82f6; animation: spinSlow 5s linear infinite reverse; }
+        .fancy-spin::after { content: ''; position: absolute; top: -12px; left: -12px; right: -12px; bottom: -12px; border-radius: 50%; border: 2px dashed #ec4899; animation: spinSlow 9s linear infinite; }
+
+        /* အသံလှိုင်း */
+        .visualizer-container { display: flex; align-items: flex-end; justify-content: center; height: 35px; gap: 4px; margin-bottom: 15px; }
+        .wave-bar { width: 5px; background: linear-gradient(to top, #3b82f6, #ec4899); border-radius: 3px; height: 6px; transition: height 0.1s ease; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-[#0b1120] text-slate-900 dark:text-white transition-colors duration-300 font-sans min-h-screen p-4 flex flex-col items-center">
+
+    <!-- အလင်း / အမှောင် ခလုတ် -->
+    <div class="w-full max-w-2xl flex justify-end items-center mb-6">
+        <button onclick="toggleTheme()" id="themeBtn" class="bg-slate-200 dark:bg-slate-800 px-5 py-2.5 rounded-full text-sm font-bold shadow-lg border border-slate-300 dark:border-slate-700 transition">🌙 အမှောင်မုဒ်</button>
+    </div>
+
+    <!-- ခေါင်းစဉ်ပိုင်း -->
+    <div class="text-center mb-8">
+        <div class="w-24 h-24 mx-auto rounded-full flex items-center justify-center mb-6 fancy-spin bg-slate-900 shadow-[0_0_20px_rgba(59,130,246,0.4)] border-4 border-slate-800">
+            <span class="text-[11px] font-bold text-center leading-tight">
+                <span class="text-blue-400">စိုင်းမြန်မာ</span><br>
+                <span class="text-pink-500">အသံပြောင်း</span><br>
+                <span class="text-white">စနစ်</span>
+            </span>
+        </div>
+        <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-pink-500 tracking-wider mb-2">စိုင်းမြန်မာ အသံပြောင်းစနစ်</h1>
+        <p class="text-sm font-semibold text-slate-500 dark:text-slate-400">စိုင်းမြန်မာ တယ်လီဂရမ်ချန်နယ်မှ ကြိုဆိုပါသည်</p>
+    </div>
+
+    <div class="w-full max-w-2xl bg-white dark:bg-[#111827] rounded-3xl shadow-2xl p-6 border border-slate-200 dark:border-slate-800">
+        
+        <!-- အသံရွေးချယ်ရန် (ခလုတ် ၃ ခု တစ်တန်း) -->
+        <h2 class="text-pink-500 text-sm font-bold tracking-widest mb-3 border-b border-slate-700 pb-2">အသံရွေးချယ်ပါ</h2>
+        <div id="voices-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6 max-h-[320px] overflow-y-auto custom-scrollbar p-2">
+            <!-- ဤနေရာတွင် JS ဖြင့် အသံများ ဝင်လာမည် -->
+        </div>
+
+        <!-- အသံစတိုင်နှင့် ပေါင်းစပ်မှုများ -->
+        <h2 class="text-blue-400 text-sm font-bold tracking-widest mb-3 border-b border-slate-700 pb-2 mt-6">အသံစတိုင်နှင့် ပေါင်းစပ်မှုများ</h2>
+        <div id="recap-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6 max-h-40 overflow-y-auto custom-scrollbar p-2">
+            <!-- ဤနေရာတွင် JS ဖြင့် အသံစတိုင်များ ဝင်လာမည် -->
+        </div>
+
+        <!-- စိတ်ခံစားမှု စတိုင်များ -->
+        <h2 class="text-green-400 text-sm font-bold tracking-widest mb-2 border-b border-slate-700 pb-2 mt-6">စကားပြော စိတ်ခံစားမှု စတိုင်များ</h2>
+        <p class="text-[11px] text-slate-500 mb-4 font-medium">မှတ်ချက် - ဤစတိုင်များသည် စိတ်ခံစားမှုပါဝင်စေရန် အမြန်နှုန်းနှင့် အသံအတက်အကျကို အလိုအလျောက် ချိန်ညှိပေးထားခြင်း ဖြစ်ပါသည်။</p>
+        <div id="emotions-grid" class="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-8 p-1">
+            <!-- ဤနေရာတွင် JS ဖြင့် စိတ်ခံစားမှုများ ဝင်လာမည် -->
+        </div>
+
+        <!-- အမြန်နှုန်း နှင့် အသံအတက်အကျ (ပန်းရောင်စာသားများ) -->
+        <div class="mb-5 bg-slate-100 dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-base font-extrabold text-pink-500">အမြန်နှုန်း</span>
+                <span id="speed-val" class="font-mono text-lg font-bold text-white bg-pink-600 px-4 py-1 rounded-lg shadow">+၀</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="text-sm font-bold text-pink-500">-၁၀၀</span>
+                <input type="range" id="speed" min="-100" max="100" value="0" class="pink-slider" oninput="updateVal('speed', this.value)">
+                <span class="text-sm font-bold text-pink-500">+၁၀၀</span>
+            </div>
+        </div>
+
+        <div class="mb-8 bg-slate-100 dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-base font-extrabold text-pink-500">အသံ အတက် / အကျ</span>
+                <span id="pitch-val" class="font-mono text-lg font-bold text-white bg-pink-600 px-4 py-1 rounded-lg shadow">+၀</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="text-sm font-bold text-pink-500">-၁၀၀</span>
+                <input type="range" id="pitch" min="-100" max="100" value="0" class="pink-slider" oninput="updateVal('pitch', this.value)">
+                <span class="text-sm font-bold text-pink-500">+၁၀၀</span>
+            </div>
+        </div>
+
+        <!-- စာသားထည့်သွင်းရန် နေရာ -->
+        <div class="flex justify-between items-center mb-3">
+            <h2 class="text-pink-500 text-sm font-bold tracking-widest">စာသားထည့်သွင်းပါ</h2>
+            <div class="flex gap-3">
+                <button onclick="pasteText()" class="text-xs bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg shadow flex items-center transition">ကူးထည့်မည်</button>
+                <button onclick="clearText()" class="text-xs bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg shadow flex items-center transition">ဖျက်မည်</button>
+            </div>
+        </div>
+        
+        <textarea id="text-input" rows="6" maxlength="10000" oninput="updateCharCount()" class="w-full bg-slate-50 dark:bg-[#1e293b] text-slate-900 dark:text-white border-2 border-slate-300 dark:border-slate-700 rounded-2xl p-4 focus:outline-none focus:border-blue-500 text-base leading-relaxed custom-scrollbar shadow-inner" placeholder="စာသားများကို ဤနေရာတွင် ရိုက်ထည့်ပါ သို့မဟုတ် ကူးထည့်ပါ..."></textarea>
+        
+        <div class="text-right text-xs font-bold text-slate-500 mt-2 mb-6">
+            <span id="char-count">၀</span> / ၁၀၀၀၀
+        </div>
+
+        <!-- အသံထုတ်ယူရန် ခလုတ် -->
+        <button id="generate-btn" onclick="generateAudio()" class="w-full bg-gradient-to-r from-blue-500 to-pink-500 hover:from-blue-400 hover:to-pink-400 text-white font-extrabold py-4 px-4 rounded-2xl shadow-[0_10px_20px_rgba(236,72,153,0.3)] transition-transform transform hover:scale-[1.02] flex justify-center items-center text-xl tracking-wide">
+            အသံထုတ်ယူမည်
+        </button>
+
+        <!-- အသံဖွင့်စက် (Player) -->
+        <div id="audio-container" class="mt-8 hidden">
+            <div class="bg-slate-100 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 rounded-2xl p-5 shadow-inner">
+                <p class="text-center text-sm font-bold text-blue-400 mb-4">အသံဖွင့်စက်</p>
+                <div id="visualizer" class="visualizer-container">
+                    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                </div>
+                <audio id="audio-player" controls class="w-full mb-5 rounded-xl"></audio>
+                <a id="download-link" href="#" download="SaiMyanmar_TTS.mp3" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-4 px-4 rounded-xl shadow-lg transition-colors flex justify-center items-center text-base">
+                    အသံဖိုင်ဒေါင်းမည်
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ⚠️ အရေးကြီး - အောက်ပါလင့်ခ်နေရာတွင် အစ်ကို၏ Render API ကို အစားထိုးပါ
+        const API_URL = "https://sai-myanmar-tts-pro.onrender.com/api/tts"; 
+
+        // ၁။ မြန်မာအမည်ပြောင်းထားသော အသံ ၁၄ မျိုး (အမည်ဝှက် - v1 မှ v14 ဖြင့်သာ သုံးထားသည်)
+        const voices = [
+            { id: 'v1', name: 'ကိုစိုင်းစိုင်း', gender: 'ယောကျ်ားလေး', icon: '👦' },
+            { id: 'v2', name: 'မဖွေးဖွေး', gender: 'မိန်းကလေး', icon: '👧' },
+            { id: 'v3', name: 'ကိုနေတိုး', gender: 'ယောကျ်ားလေး', icon: '👦' },
+            { id: 'v4', name: 'ကိုအောင်ရဲလင်း', gender: 'ယောကျ်ားလေး', icon: '👦' },
+            { id: 'v5', name: 'ကိုမြင့်မြတ်', gender: 'ယောကျ်ားလေး', icon: '👦' },
+            { id: 'v6', name: 'မဝတ်မှုံရွှေရည်', gender: 'မိန်းကလေး', icon: '👧' },
+            { id: 'v7', name: 'ကိုဒေါင်း', gender: 'ယောကျ်ားလေး', icon: '👦' },
+            { id: 'v8', name: 'မသက်မွန်မြင့်', gender: 'မိန်းကလေး', icon: '👧' },
+            { id: 'v9', name: 'ကိုလူမင်း', gender: 'ယောကျ်ားလေး', icon: '👦' },
+            { id: 'v10', name: 'မအိန္ဒြာကျော်ဇင်', gender: 'မိန်းကလေး', icon: '👧' },
+            { id: 'v11', name: 'မရွှေမှုံရတီ', gender: 'မိန်းကလေး', icon: '👧' },
+            { id: 'v12', name: 'ကိုပြေတီဦး', gender: 'ယောကျ်ားလေး', icon: '👦' },
+            { id: 'v13', name: 'မသင်ဇာဝင့်ကျော်', gender: 'မိန်းကလေး', icon: '👧' },
+            { id: 'v14', name: 'ကိုပိုင်တံခွန်', gender: 'ယောကျ်ားလေး', icon: '👦' }
+        ];
+
+        // ၂။ အသံစတိုင်များနှင့် ပေါင်းစပ်မှုများ
+        const recapStyles = [
+            { id: 'Normal', name: 'ပုံမှန်အသံ', speed: 0, pitch: 0 },
+            { id: 'NyoGyi_25', name: 'ကျားကြီး ၁', speed: 0, pitch: 25 },
+            { id: 'NyoGyi_35', name: 'ကျားကြီး ၂', speed: 0, pitch: 35 },
+            { id: 'NyoGyi_45', name: 'ကျားကြီး ၃', speed: 0, pitch: 45 },
+            { id: 'Nilar_40', name: 'နီလာ ချွဲသံ', speed: 0, pitch: 40 },
+            { id: 'Combo_15', name: 'ပေါင်းစပ် ၁၅', speed: 15, pitch: 15 },
+            { id: 'Combo_30', name: 'ပေါင်းစပ် ၃၀', speed: 30, pitch: 30 },
+            { id: 'Combo_50', name: 'ပေါင်းစပ် ၅၀', speed: 50, pitch: 50 },
+            { id: 'Pitch_20', name: 'အသံသေး ၂၀', speed: 0, pitch: 20 },
+            { id: 'Pitch_50', name: 'အသံသေး ၅၀', speed: 0, pitch: 50 }
+        ];
+
+        // ၃။ စိတ်ခံစားမှု စတိုင် ၁၁ မျိုး
+        const emotions = [
+            { id: 'EXCITING', name: 'စိတ်လှုပ်ရှားဖွယ် 🤩', s: 15, p: 10 },
+            { id: 'CALM', name: 'တည်ငြိမ်သော 😌', s: -10, p: -5 },
+            { id: 'PROFESSIONAL', name: 'သတင်းကြေညာ 💼', s: 0, p: -2 },
+            { id: 'NARRATIVE', name: 'ဇာတ်ကြောင်းပြော 📖', s: -5, p: 0 },
+            { id: 'HAPPY', name: 'ပျော်ရွှင်သော 😊', s: 10, p: 15 },
+            { id: 'SERIOUS', name: 'လေးနက်သော 😠', s: -5, p: -10 },
+            { id: 'WHISPER', name: 'တီးတိုးပြော 🤫', s: -15, p: -20 },
+            { id: 'SAD', name: 'ဝမ်းနည်းသော 😢', s: -15, p: -15 },
+            { id: 'SARCASTIC', name: 'ရွဲ့ပြောသော 🙄', s: -10, p: 5 },
+            { id: 'ANGRY', name: 'ဒေါသထွက်သော 🤬', s: 20, p: -10 },
+            { id: 'FEAR', name: 'ကြောက်လန့်သော 😨', s: 10, p: 20 }
+        ];
+
+        let selectedVoiceId = voices[0].id;
+
+        // UI စတင်တည်ဆောက်ခြင်း
+        function init() {
+            // အသံခလုတ်များ ဖန်တီးခြင်း
+            const vGrid = document.getElementById('voices-grid');
+            voices.forEach(v => {
+                let btn = document.createElement('button');
+                btn.className = `voice-btn border-2 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-xl p-3 flex flex-col items-center transition-all hover:bg-slate-100 dark:hover:bg-slate-700 ${v.id === selectedVoiceId ? 'active-btn' : ''}`;
+                btn.onclick = () => selectVoice(v.id, btn);
+                btn.innerHTML = `<span class="text-3xl mb-2">${v.icon}</span><span class="name-text font-extrabold text-sm dark:text-white mb-1 transition-colors">${v.name}</span><span class="text-[10px] font-bold text-pink-500 bg-pink-100 dark:bg-pink-900/30 px-2 py-0.5 rounded">${v.gender}</span>`;
+                vGrid.appendChild(btn);
+            });
+
+            // စတိုင်ခလုတ်များ ဖန်တီးခြင်း
+            const rGrid = document.getElementById('recap-grid');
+            recapStyles.forEach(r => {
+                let btn = document.createElement('button');
+                btn.className = 'style-btn border-2 border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-xs font-bold p-3 rounded-xl hover:border-blue-500 transition-all dark:text-white';
+                btn.onclick = () => applyPreset(btn, r.speed, r.pitch);
+                btn.innerText = r.name;
+                rGrid.appendChild(btn);
+            });
+
+            // စိတ်ခံစားမှုခလုတ်များ ဖန်တီးခြင်း
+            const eGrid = document.getElementById('emotions-grid');
+            emotions.forEach(e => {
+                let btn = document.createElement('button');
+                btn.className = 'style-btn border-2 border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-[10px] font-bold p-2.5 rounded-lg hover:border-blue-500 transition-all dark:text-white';
+                btn.onclick = () => applyPreset(btn, e.s, e.p);
+                btn.innerText = e.name;
+                eGrid.appendChild(btn);
+            });
+        }
+
+        // အသံရွေးချယ်ခြင်း (အပြာရောင်ပြောင်းရန်)
+        function selectVoice(id, btnElement) {
+            selectedVoiceId = id;
+            document.querySelectorAll('.voice-btn').forEach(b => b.classList.remove('active-btn'));
+            btnElement.classList.add('active-btn');
+        }
+
+        // စတိုင်ရွေးချယ်ခြင်း (အပြာရောင်ပြောင်းရန်)
+        function applyPreset(btnElement, speed, pitch) {
+            document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active-btn'));
+            btnElement.classList.add('active-btn');
+            
+            document.getElementById('speed').value = speed;
+            document.getElementById('pitch').value = pitch;
+            updateVal('speed', speed);
+            updateVal('pitch', pitch);
+        }
+
+        // ဂဏန်းများကို မြန်မာဂဏန်းပြောင်းပေးခြင်း
+        function toMyanmarNum(numStr) {
+            const mmNums = ['၀','၁','၂','၃','၄','၅','၆','၇','၈','၉'];
+            return numStr.toString().replace(/[0-9]/g, function(w) { return mmNums[w]; });
+        }
+
+        function updateVal(id, val) {
+            let displayVal = val > 0 ? "+" + val : val;
+            document.getElementById(id + '-val').innerText = toMyanmarNum(displayVal);
+        }
+
+        function updateCharCount() {
+            let len = document.getElementById('text-input').value.length;
+            document.getElementById('char-count').innerText = toMyanmarNum(len);
+        }
+
+        async function pasteText() {
+            try {
+                const text = await navigator.clipboard.readText();
+                const inputArea = document.getElementById('text-input');
+                inputArea.value = (inputArea.value + text).substring(0, 10000); 
+                updateCharCount();
+            } catch (err) { alert("စာသား ကူးထည့်၍ မရပါ။ စာရိုက်မည့်အကွက်ကို ဖိ၍ ကူးထည့်ပါ။"); }
+        }
+
+        function clearText() {
+            document.getElementById('text-input').value = '';
+            updateCharCount();
+        }
+
+        // အလင်း / အမှောင် ခလုတ်
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            document.getElementById('themeBtn').innerText = isDark ? "☀️ အလင်းမုဒ်" : "🌙 အမှောင်မုဒ်";
+        }
+
+        /* အသံလှိုင်း လှုပ်ရှားမှု */
+        let audioVisualizerInterval;
+        const audioPlayer = document.getElementById('audio-player');
+        const waveBars = document.querySelectorAll('.wave-bar');
+
+        audioPlayer.addEventListener('play', () => {
+            audioVisualizerInterval = setInterval(() => {
+                waveBars.forEach(bar => { bar.style.height = (Math.floor(Math.random() * 25) + 6) + 'px'; });
+            }, 100);
+        });
+        audioPlayer.addEventListener('pause', () => { clearInterval(audioVisualizerInterval); waveBars.forEach(bar => bar.style.height = '6px'); });
+        audioPlayer.addEventListener('ended', () => { clearInterval(audioVisualizerInterval); waveBars.forEach(bar => bar.style.height = '6px'); });
+
+        /* API သို့ လှမ်းပို့ခြင်း */
+        async function generateAudio() {
+            let originalText = document.getElementById('text-input').value;
+            const speed = document.getElementById('speed').value;
+            const pitch = document.getElementById('pitch').value;
+            const btn = document.getElementById('generate-btn');
+
+            if(!originalText.trim()) { alert("ကျေးဇူးပြု၍ စာသားထည့်သွင်းပါ။"); return; }
+
+            btn.innerHTML = "ခဏစောင့်ပါ...";
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            document.getElementById('audio-container').classList.add('hidden');
+
+            let processedText = originalText;
+
+            // --- စနစ် (၁): စာလုံးအကြီးများ (ဥပမာ - AI, VIP, CEO) ကို အော်တို ပေါင်းဖတ်ခြင်း ---
+            const engToMmMap = {
+                'A':'အေ ', 'B':'ဘီ ', 'C':'စီ ', 'D':'ဒီ ', 'E':'အီး ', 'F':'အက်ဖ် ', 'G':'ဂျီ ', 'H':'အိတ်ချ် ', 'I':'အိုင် ', 'J':'ဂျေ ', 'K':'ကေ ', 'L':'အယ်လ် ', 'M':'အမ် ', 'N':'အန် ', 'O':'အို ', 'P':'ပီ ', 'Q':'ကျူ ', 'R':'အာ ', 'S':'အက်စ် ', 'T':'တီ ', 'U':'ယူ ', 'V':'ဗွီ ', 'W':'ဒဗလျူ ', 'X':'အက်စ် ', 'Y':'ဝိုင် ', 'Z':'ဇက် '
+            };
+            processedText = processedText.replace(/\b[A-Z]{2,}\b/g, function(match) {
+                let spelledOut = '';
+                for(let i=0; i<match.length; i++) {
+                    spelledOut += engToMmMap[match[i]] || match[i];
+                }
+                return spelledOut;
+            });
+
+            // --- စနစ် (၂): လူသုံးများသော စကားလုံးများကို မြန်မာလို အသံထွက်/အဓိပ္ပာယ် ပြောင်းခြင်း ---
+            const wordMap = {
+                'subscribe': 'ဆပ်စခရိုက်ဘ်', 'like': 'လိုက်ခ်', 'follow': 'ဖောလိုး', 'share': 'ရှယ်ယာ',
+                'comment': 'ကောမန့်', 'page': 'ပေ့ချ်', 'channel': 'ချန်နယ်', 'admin': 'အက်ဒမင်',
+                'car': 'ကား', 'part': 'အပိုင်း', 'ep': 'အပိုင်း', 'episode': 'အပိုင်း',
+                'website': 'ဝက်ဘ်ဆိုက်', 'welcome': 'ဝဲလ်ကမ်း', 'hello': 'ဟဲလို', 'hi': 'ဟိုင်း',
+                'facebook': 'ဖေ့စ်ဘွတ်ခ်', 'youtube': 'ယူကျု', 'tiktok': 'တစ်တော့', 'google': 'ဂူဂယ်လ်',
+                'movie': 'ရုပ်ရှင်', 'recap': 'ရီကပ်', 'spoiler': 'စပွိုင်လာ', 'story': 'စတိုရီ',
+                'end': 'ဇာတ်သိမ်း', 'action': 'အက်ရှင်', 'drama': 'ဒရာမာ', 'comedy': 'ကော်မဒီ',
+                'ok': 'အိုကေ', 'yes': 'ယက်စ်', 'no': 'နိုး', 'boy': 'ဘွိုင်း', 'girl': 'ဂဲလ်',
+                'man': 'မန်း', 'boss': 'ဘော့စ်', 'sir': 'ဆာ', 'mr': 'မစ္စတာ', 'miss': 'မစ်စ်',
+                'link': 'လင့်ခ်', 'video': 'ဗီဒီယို', 'update': 'အပ်ဒိတ်', 
+                'tools': 'တူးလ်စ်', 'error': 'အဲရာ', 'code': 'ကုတ်', 'free': 'ဖရီး', 'vpn': 'ဗွီပီအန်', 
+                'wifi': 'ဝိုင်ဖိုင်', 'internet': 'အင်တာနက်', 'group': 'ဂရု',
+                'post': 'ပို့စ်', 'live': 'လိုက်ဖ်', 'stream': 'စထရင်း', 'bot': 'ဘော့တ်', 'api': 'အေပီအိုင်',
+                'server': 'ဆာဗာ', 'app': 'အက်ပ်', 'game': 'ဂိမ်း', 'play': 'ပလေး', 'pause': 'ပေါ့စ်',
+                'stop': 'စတော့ပ်', 'next': 'နက်စ်', 'back': 'ဘက်', 'cancel': 'ကင်ဆယ်', 'save': 'ဆေ့ဖ်',
+                'delete': 'ဒိလစ်', 'edit': 'အက်ဒစ်', 'copy': 'ကော်ပီ', 'paste': 'ပေ့စ်', 'cut': 'ကတ်',
+                'settings': 'ဆက်တင်', 'profile': 'ပရိုဖိုင်', 'account': 'အကောင့်', 'login': 'လော့ဂ်အင်',
+                'logout': 'လော့ဂ်အောက်', 'password': 'ပတ်စ်ဝေါ့ဒ်', 'email': 'အီးမေးလ်', 'phone': 'ဖုန်း',
+                'message': 'မက်ဆေ့ချ်', 'chat': 'ချက်', 'call': 'ကော', 'video call': 'ဗီဒီယိုကော',
+                'voice': 'ဗွိုက်စ်', 'audio': 'အော်ဒီယို', 'sound': 'ဆောင်း', 'music': 'မြူးဇစ်',
+                'song': 'သီချင်း', 'singer': 'ဆင်ဂါ', 'actor': 'အက်တာ', 'actress': 'အက်ထရက်စ်',
+                'director': 'ဒါရိုက်တာ', 'producer': 'ပရိုဂျူဆာ', 'writer': 'ရိုက်တာ', 'camera': 'ကင်မရာ',
+                'photo': 'ဖိုတို', 'picture': 'ပစ်ချာ', 'image': 'အင်းမေ့ချ်', 'download': 'ဒေါင်းလုဒ်',
+                'upload': 'အပ်လုဒ်', 'install': 'အင်စတော', 'uninstall': 'အန်အင်စတော',
+                'upgrade': 'အပ်ဂရိတ်', 'premium': 'ပရီမီယမ်', 'pro': 'ပရို', 'vip': 'ဗွီအိုင်ပီ',
+                'ai': 'အေအိုင်', 'cpu': 'စီပီယူ', 'gpu': 'ဂျီပီယူ', 'ram': 'ရမ်', 'rom': 'ရွမ်',
+                'pc': 'ပီစီ', 'laptop': 'လက်ပ်တော့', 'mobile': 'မိုဘိုင်း', 'tablet': 'တက်ဘလက်',
+                'android': 'အန်ဒရွိုက်', 'ios': 'အိုင်အိုအက်စ်', 'windows': 'ဝင်းဒိုး', 'mac': 'မက်',
+                'linux': 'လင်းနစ်'
+            };
+            
+            for (let word in wordMap) {
+                let regex = new RegExp('\\b' + word + '\\b', 'gi');
+                processedText = processedText.replace(regex, wordMap[word] + ' ');
+            }
+
+            // --- စနစ် (၃): ဖျက်ပစ်မည့်အစား မူရင်းအတိုင်းထားရှိခြင်း ---
+            // စာရင်းထဲတွင်မပါသော အခြား အင်္ဂလိပ်စာလုံးများကို မဖျက်ဘဲ အင်္ဂလိပ်လိုပင် ဆက်လက် အသံထွက်စေမည်
+            let finalText = processedText;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: finalText, voice: selectedVoiceId, speed: speed, pitch: pitch })
+                });
+
+                if(response.ok) {
+                    const blob = await response.blob();
+                    const audioUrl = URL.createObjectURL(blob);
+                    audioPlayer.src = audioUrl;
+                    document.getElementById('download-link').href = audioUrl;
+                    document.getElementById('audio-container').classList.remove('hidden');
+                } else { alert("အင်တာနက် သို့မဟုတ် API လင့်ခ်ကို စစ်ဆေးပါ။"); }
+            } catch (error) { alert("ချိတ်ဆက်မှု ပြတ်တောက်သွားပါသည်။"); } 
+            finally {
+                btn.innerHTML = "အသံထုတ်ယူမည်";
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
