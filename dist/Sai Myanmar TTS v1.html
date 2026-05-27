@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>စိုင်းမြန်မာ အသံပြောင်းစနစ် - Ultimate Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+/* obfuscated */
+function _0x2e02(_0x4050c9,_0x436329){_0x4050c9=_0x4050c9-0x15e;var _0x4235d4=_0x4235();var _0x2e02e6=_0x4235d4[_0x4050c9];return _0x2e02e6;}var _0x21703d=_0x2e02;function _0x4235(){var _0x182261=['3104182GZrlqv','12mxxMyX','1gXPAtd','100610AHbdNS','#0f172a','88UjMfYp','Padauk','sans-serif','4091549XjcPsa','#8b5cf6','#d946ef','#ec4899','float\x2012s\x20ease-in-out\x20infinite\x206s','#1e293b','7255568AwplJV','1481244kggbaC','22goRofA','translateY(-15px)\x20translateZ(0)','333JdKXYL','config','#020617','57597MchFMZ','pulse\x206s\x20cubic-bezier(0.4,\x200,\x200.6,\x201)\x20infinite','float\x2012s\x20ease-in-out\x20infinite','2967955VfGOGg'];_0x4235=function(){return _0x182261;};return _0x4235();}(function(_0x3a18ba,_0x5a6cd8){var _0x5d4ac4=_0x2e02,_0x32c5b0=_0x3a18ba();while(!![]){try{var _0x4d8001=-parseInt(_0x5d4ac4(0x173))/0x1*(-parseInt(_0x5d4ac4(0x171))/0x2)+-parseInt(_0x5d4ac4(0x16d))/0x3*(parseInt(_0x5d4ac4(0x176))/0x4)+-parseInt(_0x5d4ac4(0x170))/0x5*(parseInt(_0x5d4ac4(0x172))/0x6)+parseInt(_0x5d4ac4(0x160))/0x7+parseInt(_0x5d4ac4(0x166))/0x8+-parseInt(_0x5d4ac4(0x16a))/0x9*(parseInt(_0x5d4ac4(0x174))/0xa)+-parseInt(_0x5d4ac4(0x168))/0xb*(parseInt(_0x5d4ac4(0x167))/0xc);if(_0x4d8001===_0x5a6cd8)break;else _0x32c5b0['push'](_0x32c5b0['shift']());}catch(_0x2fc5c7){_0x32c5b0['push'](_0x32c5b0['shift']());}}}(_0x4235,0xc6f05),tailwind[_0x21703d(0x16b)]={'theme':{'extend':{'fontFamily':{'sans':[_0x21703d(0x15e),_0x21703d(0x15f)],'num':['Inter',_0x21703d(0x15f)]},'colors':{'dark':{0x3b6:_0x21703d(0x16c),0x384:_0x21703d(0x175),0x320:_0x21703d(0x165)},'primary':{0x190:_0x21703d(0x163),0x1f4:_0x21703d(0x162),0x258:_0x21703d(0x161)}},'animation':{'float':_0x21703d(0x16f),'float-delayed':_0x21703d(0x164),'pulse-slow':_0x21703d(0x16e)},'keyframes':{'float':{'0%,\x20100%':{'transform':'translateY(0px)\x20translateZ(0)'},'50%':{'transform':_0x21703d(0x169)}}}}}});
+</script>
+
+    <style>
+        /* Base Performance Rules */
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        /* Hardware Accelerated Ambient Backgrounds */
+        .ambient-blob {
+            will-change: transform, opacity;
+            transform: translateZ(0); /* Force GPU Rendering */
+            pointer-events: none;
+        }
+
+        /* Premium Glass Effect - Optimized */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            transform: translateZ(0);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-radius: 2rem;
+            transform: translateZ(0); /* Fix for blur bleed and perf */
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Hover states using transform instead of heavy shadows for performance */
+        @media (hover: hover) {
+            .glass-card:hover {
+                transform: translateY(-2px) translateZ(0);
+                box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.5); 
+            }
+            .glass-card:hover::before { opacity: 1; }
+        }
+
+        /* Inputs */
+        .input-field { 
+            transition: border-color 0.2s ease, background-color 0.2s ease; 
+        }
+        .input-field:focus {
+            background: rgba(30, 41, 59, 0.9);
+            border-color: rgba(236, 72, 153, 0.5);
+            outline: none;
+            /* Replaced expensive box-shadow on focus with simple border glow */
+        }
+
+        /* Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #ec4899; }
+
+        /* Range Slider */
+        .neon-slider { -webkit-appearance: none; width: 100%; height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 5px; outline: none; }
+        .neon-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #ec4899; cursor: pointer; border: 2px solid #fff; transition: transform 0.1s ease; }
+        .neon-slider::-webkit-slider-thumb:active { transform: scale(1.1); }
+
+        /* Active Button States */
+        .active-voice {
+            border-color: rgba(59, 130, 246, 0.8) !important;
+            background: rgba(59, 130, 246, 0.1) !important;
+        }
+        .active-voice .name-text { color: #60a5fa !important; }
+
+        .active-style {
+            border-color: rgba(217, 70, 239, 0.8) !important;
+            background: rgba(217, 70, 239, 0.1) !important;
+            color: #f0abfc !important;
+        }
+
+        /* Pure CSS Audio Visualizer (High Performance - No JS required) */
+        .visualizer-container { display: flex; align-items: center; justify-content: center; height: 40px; gap: 4px; }
+        .wave-bar { 
+            width: 4px; 
+            background: linear-gradient(to top, #3b82f6, #d946ef); 
+            border-radius: 3px; 
+            height: 6px; 
+            will-change: transform;
+            transform-origin: bottom;
+        }
+        
+        @keyframes soundWave {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(5); }
+        }
+
+        .visualizer-container.playing .wave-bar {
+            animation: soundWave 1.2s ease-in-out infinite;
+        }
+
+        /* Staggered CSS Animation Delays */
+        .visualizer-container.playing .wave-bar:nth-child(1) { animation-duration: 0.9s; animation-delay: 0.1s; }
+        .visualizer-container.playing .wave-bar:nth-child(2) { animation-duration: 1.1s; animation-delay: 0.3s; }
+        .visualizer-container.playing .wave-bar:nth-child(3) { animation-duration: 0.8s; animation-delay: 0.0s; }
+        .visualizer-container.playing .wave-bar:nth-child(4) { animation-duration: 1.3s; animation-delay: 0.4s; }
+        .visualizer-container.playing .wave-bar:nth-child(5) { animation-duration: 1.0s; animation-delay: 0.2s; }
+        .visualizer-container.playing .wave-bar:nth-child(6) { animation-duration: 1.2s; animation-delay: 0.5s; }
+        .visualizer-container.playing .wave-bar:nth-child(7) { animation-duration: 0.9s; animation-delay: 0.1s; }
+        .visualizer-container.playing .wave-bar:nth-child(8) { animation-duration: 1.1s; animation-delay: 0.3s; }
+        .visualizer-container.playing .wave-bar:nth-child(9) { animation-duration: 0.8s; animation-delay: 0.0s; }
+        .visualizer-container.playing .wave-bar:nth-child(10) { animation-duration: 1.3s; animation-delay: 0.4s; }
+        .visualizer-container.playing .wave-bar:nth-child(11) { animation-duration: 1.0s; animation-delay: 0.2s; }
+        .visualizer-container.playing .wave-bar:nth-child(12) { animation-duration: 1.2s; animation-delay: 0.5s; }
+
+        /* Disable animations if user prefers reduced motion (Battery Saver/Accessibility) */
+        @media (prefers-reduced-motion: reduce) {
+            * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-pink-500/30 selection:text-pink-200 min-h-screen relative font-sans">
+
+    <!-- PRELOADER (Optimized) -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
+        <div class="relative flex flex-col items-center">
+            <div class="relative w-32 h-32 flex items-center justify-center mb-8">
+                <div class="absolute inset-0 rounded-full border-2 border-transparent border-t-pink-500 animate-[spin_1.5s_linear_infinite]"></div>
+                <div class="absolute inset-2 rounded-full border-2 border-transparent border-b-blue-500 animate-[spin_2s_linear_infinite_reverse]"></div>
+                <div class="relative z-10 w-16 h-16 bg-slate-900 rounded-full flex items-center justify-center border border-white/10">
+                    <i data-lucide="mic" class="text-pink-400 w-6 h-6"></i>
+                </div>
+            </div>
+            <div class="text-center">
+                <h2 class="text-xl font-bold tracking-[0.2em] text-white font-num mb-1">SAI MYANMAR</h2>
+                <p class="text-[10px] text-pink-500/70 font-num tracking-[0.4em] uppercase">Loading Engine...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Background (Hardware Accelerated & Reduced Blur for Perf) -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-pink-600/10 rounded-full blur-[80px] ambient-blob animate-float"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[80px] ambient-blob animate-float-delayed"></div>
+        <div class="absolute inset-0 opacity-[0.02]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="glass-panel border-b border-white/5 py-3 px-4 md:px-8 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-gradient-to-br from-pink-500 to-violet-600 rounded-xl flex items-center justify-center border border-white/10">
+                <i data-lucide="waves" class="text-white w-4 h-4"></i>
+            </div>
+            <div>
+                <h1 class="text-lg font-bold tracking-tight text-white font-num">စိုင်းမြန်မာ <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-blue-500">အသံပြောင်းစနစ်</span></h1>
+                <p class="text-[8px] text-pink-400/80 font-num uppercase tracking-[0.2em]">Neural TTS Engine</p>
+            </div>
+        </div>
+        <div class="hidden md:flex flex-col items-end">
+            <span class="text-[8px] text-slate-400 uppercase tracking-widest font-num">Status</span>
+            <span class="text-[9px] font-bold text-emerald-400 flex items-center gap-1.5 font-num">
+                <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div> ONLINE
+            </span>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-4 md:p-6 relative z-10 pt-6 pb-20 space-y-6">
+        
+        <!-- 1. Voice Selection -->
+        <section class="glass-card p-5 border border-white/5">
+            <h2 class="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-300 flex items-center gap-2">
+                <div class="w-5 h-5 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-[9px] text-blue-400 font-num">1</div>
+                အသံရွေးချယ်ရန်
+            </h2>
+            <div id="voices-grid" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 max-h-[220px] overflow-y-auto custom-scrollbar pr-1">
+                <!-- Injected via JS using DocumentFragment -->
+            </div>
+        </section>
+
+        <!-- 2. Styles & Emotions -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <!-- Vocal Styles -->
+            <section class="glass-card p-5 border border-white/5">
+                <h2 class="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-300 flex items-center gap-2">
+                    <div class="w-5 h-5 rounded-full bg-pink-500/20 border border-pink-500/30 flex items-center justify-center text-[9px] text-pink-400 font-num">2</div>
+                    အသံစတိုင်နှင့် ပေါင်းစပ်မှုများ
+                </h2>
+                <div id="recap-grid" class="grid grid-cols-2 gap-2 max-h-[180px] overflow-y-auto custom-scrollbar pr-1">
+                    <!-- Injected via JS -->
+                </div>
+            </section>
+
+            <!-- Emotions -->
+            <section class="glass-card p-5 border border-white/5">
+                <h2 class="text-xs font-bold uppercase tracking-[0.2em] mb-2 text-slate-300 flex items-center gap-2">
+                    <div class="w-5 h-5 rounded-full bg-violet-500/20 border border-violet-500/30 flex items-center justify-center text-[9px] text-violet-400 font-num">3</div>
+                    စိတ်ခံစားမှု စတိုင်များ
+                </h2>
+                <p class="text-[9px] text-slate-400 mb-3 leading-relaxed bg-slate-900/30 p-2 rounded border border-white/5">
+                    <i data-lucide="info" class="w-3 h-3 inline-block mr-1 text-violet-400"></i> မှတ်ချက် - စိတ်ခံစားမှုပါဝင်စေရန် အမြန်နှုန်းနှင့် အသံအတက်အကျကို အလိုအလျောက် ချိန်ညှိပေးပါသည်။
+                </p>
+                <div id="emotions-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[140px] overflow-y-auto custom-scrollbar pr-1">
+                    <!-- Injected via JS -->
+                </div>
+            </section>
+        </div>
+
+        <!-- 3. Parameters (Sliders) -->
+        <section class="glass-card p-5 border border-white/5 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Speed -->
+            <div>
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold text-slate-300 flex items-center gap-2"><i data-lucide="fast-forward" class="w-3 h-3 text-pink-400"></i> အမြန်နှုန်း</span>
+                    <span id="speed-val" class="font-num text-[10px] font-bold text-white bg-pink-500/20 border border-pink-500/30 px-2 py-0.5 rounded">+၀</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-[10px] font-bold text-slate-500 font-num">-100</span>
+                    <input type="range" id="speed" min="-100" max="100" value="0" class="neon-slider flex-1">
+                    <span class="text-[10px] font-bold text-slate-500 font-num">+100</span>
+                </div>
+            </div>
+            
+            <!-- Pitch -->
+            <div>
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold text-slate-300 flex items-center gap-2"><i data-lucide="activity" class="w-3 h-3 text-blue-400"></i> အသံ အတက်/အကျ</span>
+                    <span id="pitch-val" class="font-num text-[10px] font-bold text-white bg-blue-500/20 border border-blue-500/30 px-2 py-0.5 rounded">+၀</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-[10px] font-bold text-slate-500 font-num">-100</span>
+                    <input type="range" id="pitch" min="-100" max="100" value="0" class="neon-slider flex-1">
+                    <span class="text-[10px] font-bold text-slate-500 font-num">+100</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Text Input & Generate -->
+        <section class="glass-card p-5 border border-white/5">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-slate-300 flex items-center gap-2">
+                    <div class="w-5 h-5 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-[9px] text-emerald-400 font-num">4</div>
+                    စာသားထည့်သွင်းရန်
+                </h2>
+                <div class="flex gap-2">
+                    <button id="btn-paste" class="text-[9px] uppercase font-bold tracking-wider bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-300 px-2 py-1 rounded transition-colors flex items-center gap-1">
+                        <i data-lucide="clipboard-paste" class="w-3 h-3"></i> ကူးထည့်မည်
+                    </button>
+                    <button id="btn-clear" class="text-[9px] uppercase font-bold tracking-wider bg-red-900/30 hover:bg-red-900/50 border border-red-500/30 text-red-400 px-2 py-1 rounded transition-colors flex items-center gap-1">
+                        <i data-lucide="trash-2" class="w-3 h-3"></i> ဖျက်မည်
+                    </button>
+                </div>
+            </div>
+            
+            <textarea id="text-input" rows="4" maxlength="10000" class="w-full bg-slate-900/50 text-slate-200 border border-white/10 rounded-xl p-3 text-sm leading-relaxed custom-scrollbar input-field" placeholder="ဖတ်စေလိုသော စာသားများကို ဤနေရာတွင် ရိုက်ထည့်ပါ..."></textarea>
+            
+            <div class="text-right text-[10px] font-bold text-slate-500 mt-1 mb-4 font-num">
+                <span id="char-count" class="text-pink-400">၀</span> / ၁၀၀၀၀
+            </div>
+
+            <button id="generate-btn" class="w-full bg-gradient-to-r from-pink-600 to-violet-600 active:from-pink-700 active:to-violet-700 text-white font-bold py-3 px-4 rounded-xl transition-all flex justify-center items-center text-sm uppercase tracking-widest border border-pink-400/20">
+                <span id="btn-text" class="flex items-center gap-2"><i data-lucide="play-circle" class="w-4 h-4"></i> အသံထုတ်ယူမည်</span>
+                <span id="btn-loader" class="hidden flex items-center gap-2"><i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> SYNTHESIZING...</span>
+            </button>
+        </section>
+
+        <!-- 5. Audio Player Result -->
+        <section id="audio-container" class="hidden glass-card p-5 border border-emerald-500/30 bg-emerald-900/10">
+            <div class="flex flex-col items-center w-full">
+                <div class="text-[10px] font-bold text-emerald-400 uppercase tracking-[0.2em] mb-3 flex items-center gap-1.5">
+                    <i data-lucide="check-circle-2" class="w-3 h-3"></i> Synthesis Complete
+                </div>
+                
+                <div id="visualizer" class="visualizer-container mb-4 w-full max-w-sm bg-slate-900/50 p-3 rounded-lg border border-white/5">
+                    <!-- Generated 12 wave bars for pure CSS animation -->
+                    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                </div>
+                
+                <audio id="audio-player" controls class="w-full max-w-sm mb-4 rounded shadow-md h-10 [&::-webkit-media-controls-panel]:bg-slate-800 [&::-webkit-media-controls-current-time-display]:text-slate-300 [&::-webkit-media-controls-time-remaining-display]:text-slate-300"></audio>
+                
+                <a id="download-link" href="#" download="SaiMyanmar_TTS.mp3" class="w-full max-w-sm bg-slate-800 active:bg-slate-700 text-white font-bold py-2.5 px-4 rounded-lg flex justify-center items-center text-[11px] uppercase tracking-widest border border-slate-600 transition-colors">
+                    <i data-lucide="download" class="w-3 h-3 mr-2 text-emerald-400"></i> အသံဖိုင်ဒေါင်းမည်
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="py-6 border-t border-white/5 text-center pointer-events-none">
+        <div class="text-[9px] text-slate-600 uppercase tracking-[0.3em] font-bold font-num mb-1">Sai Myanmar Network</div>
+        <div class="text-[8px] text-slate-500 font-num">V4.1 Optimized Edition</div>
+    </footer>
+
+    <script>
+/* obfuscated */
+const _0x2c8da6=_0x5371;(function(_0x48f1da,_0x25ef8a){const _0x2d49a6=_0x5371,_0x2232b5=_0x48f1da();while(!![]){try{const _0x2e8258=-parseInt(_0x2d49a6(0x2a1))/0x1+parseInt(_0x2d49a6(0x25e))/0x2*(-parseInt(_0x2d49a6(0x24a))/0x3)+parseInt(_0x2d49a6(0x242))/0x4*(parseInt(_0x2d49a6(0x1a6))/0x5)+-parseInt(_0x2d49a6(0x1bf))/0x6+-parseInt(_0x2d49a6(0x248))/0x7+-parseInt(_0x2d49a6(0x2d0))/0x8*(parseInt(_0x2d49a6(0x1dd))/0x9)+-parseInt(_0x2d49a6(0x1ed))/0xa*(-parseInt(_0x2d49a6(0x1f8))/0xb);if(_0x2e8258===_0x25ef8a)break;else _0x2232b5['push'](_0x2232b5['shift']());}catch(_0x1cac4b){_0x2232b5['push'](_0x2232b5['shift']());}}}(_0x11ad,0xb33f8));const API_URL='https://sai-myanmar-tts-pro.onrender.com/api/tts',voices=[{'id':'v1','name':_0x2c8da6(0x2b8),'gender':_0x2c8da6(0x2c4),'icon':'👦'},{'id':'v2','name':'မဖွေးဖွေး','gender':'မိန်းကလေး','icon':'👧'},{'id':'v3','name':_0x2c8da6(0x25a),'gender':_0x2c8da6(0x2c4),'icon':'👦'},{'id':'v4','name':'ကိုအောင်ရဲလင်း','gender':_0x2c8da6(0x2c4),'icon':'👦'},{'id':'v5','name':_0x2c8da6(0x1b7),'gender':_0x2c8da6(0x2c4),'icon':'👦'},{'id':'v6','name':_0x2c8da6(0x205),'gender':_0x2c8da6(0x252),'icon':'👧'},{'id':'v7','name':'ကိုဒေါင်း','gender':_0x2c8da6(0x2c4),'icon':'👦'},{'id':'v8','name':_0x2c8da6(0x2a3),'gender':'မိန်းကလေး','icon':'👧'},{'id':'v9','name':_0x2c8da6(0x2ba),'gender':'ယောကျ်ားလေး','icon':'👦'},{'id':_0x2c8da6(0x1f6),'name':_0x2c8da6(0x27b),'gender':_0x2c8da6(0x252),'icon':'👧'},{'id':_0x2c8da6(0x27c),'name':_0x2c8da6(0x22a),'gender':_0x2c8da6(0x252),'icon':'👧'},{'id':'v12','name':'ကိုပြေတီဦး','gender':_0x2c8da6(0x2c4),'icon':'👦'},{'id':_0x2c8da6(0x221),'name':_0x2c8da6(0x25d),'gender':_0x2c8da6(0x252),'icon':'👧'},{'id':_0x2c8da6(0x287),'name':'ကိုပိုင်တံခွန်','gender':_0x2c8da6(0x2c4),'icon':'👦'}],recapStyles=[{'id':_0x2c8da6(0x263),'name':_0x2c8da6(0x2af),'speed':0x0,'pitch':0x0},{'id':_0x2c8da6(0x1a0),'name':'ကျားကြီး\x20၁','speed':0x0,'pitch':0x19},{'id':_0x2c8da6(0x222),'name':_0x2c8da6(0x1fb),'speed':0x0,'pitch':0x23},{'id':_0x2c8da6(0x1a1),'name':_0x2c8da6(0x1c8),'speed':0x0,'pitch':0x2d},{'id':_0x2c8da6(0x1ba),'name':_0x2c8da6(0x282),'speed':0x0,'pitch':0x28},{'id':'Combo_15','name':_0x2c8da6(0x29f),'speed':0xf,'pitch':0xf},{'id':'Combo_30','name':_0x2c8da6(0x1b9),'speed':0x1e,'pitch':0x1e},{'id':_0x2c8da6(0x1e8),'name':_0x2c8da6(0x2a8),'speed':0x32,'pitch':0x32},{'id':_0x2c8da6(0x194),'name':'အသံသေး\x20၂၀','speed':0x0,'pitch':0x14},{'id':'Pitch_50','name':_0x2c8da6(0x298),'speed':0x0,'pitch':0x32}],emotions=[{'id':_0x2c8da6(0x249),'name':_0x2c8da6(0x2c0),'icon':_0x2c8da6(0x2b4),'s':0xf,'p':0xa},{'id':'CALM','name':_0x2c8da6(0x23d),'icon':_0x2c8da6(0x20b),'s':-0xa,'p':-0x5},{'id':_0x2c8da6(0x274),'name':_0x2c8da6(0x239),'icon':'briefcase','s':0x0,'p':-0x2},{'id':_0x2c8da6(0x1ee),'name':_0x2c8da6(0x259),'icon':_0x2c8da6(0x261),'s':-0x5,'p':0x0},{'id':_0x2c8da6(0x27e),'name':_0x2c8da6(0x220),'icon':_0x2c8da6(0x2ca),'s':0xa,'p':0xf},{'id':_0x2c8da6(0x1e9),'name':_0x2c8da6(0x1c0),'icon':_0x2c8da6(0x2c6),'s':-0x5,'p':-0xa},{'id':_0x2c8da6(0x2b2),'name':_0x2c8da6(0x1dc),'icon':_0x2c8da6(0x267),'s':-0xf,'p':-0x14},{'id':'SAD','name':'ဝမ်းနည်းသော','icon':_0x2c8da6(0x246),'s':-0xf,'p':-0xf},{'id':'SARCASTIC','name':_0x2c8da6(0x2c7),'icon':_0x2c8da6(0x229),'s':-0xa,'p':0x5},{'id':_0x2c8da6(0x2d1),'name':_0x2c8da6(0x1c6),'icon':_0x2c8da6(0x23a),'s':0x14,'p':-0xa},{'id':_0x2c8da6(0x2a5),'name':'ကြောက်လန့်သော','icon':_0x2c8da6(0x2d3),'s':0xa,'p':0x14}],engToMmMap={'A':_0x2c8da6(0x2b3),'B':_0x2c8da6(0x1ff),'C':'စီ\x20','D':_0x2c8da6(0x195),'E':_0x2c8da6(0x1ac),'F':'အက်ဖ်\x20','G':'ဂျီ\x20','H':_0x2c8da6(0x240),'I':_0x2c8da6(0x29c),'J':'ဂျေ\x20','K':'ကေ\x20','L':_0x2c8da6(0x281),'M':'အမ်\x20','N':_0x2c8da6(0x254),'O':'အို\x20','P':_0x2c8da6(0x218),'Q':_0x2c8da6(0x26f),'R':_0x2c8da6(0x292),'S':_0x2c8da6(0x2cf),'T':'တီ\x20','U':'ယူ\x20','V':_0x2c8da6(0x1e1),'W':'ဒဗလျူ\x20','X':_0x2c8da6(0x2cf),'Y':_0x2c8da6(0x2c3),'Z':_0x2c8da6(0x286)},wordMap={'subscribe':'ဆပ်စခရိုက်ဘ်','like':_0x2c8da6(0x1c5),'follow':'ဖောလိုး','share':_0x2c8da6(0x20c),'comment':_0x2c8da6(0x2cb),'page':_0x2c8da6(0x247),'channel':'ချန်နယ်','admin':_0x2c8da6(0x2ad),'car':_0x2c8da6(0x2b0),'part':_0x2c8da6(0x289),'ep':_0x2c8da6(0x289),'episode':'အပိုင်း','website':'ဝက်ဘ်ဆိုက်','welcome':'ဝဲလ်ကမ်း','hello':_0x2c8da6(0x283),'hi':'ဟိုင်း','facebook':_0x2c8da6(0x21f),'youtube':'ယူကျု','tiktok':_0x2c8da6(0x1f2),'google':'ဂူဂယ်လ်','movie':_0x2c8da6(0x1ae),'recap':'ရီကပ်','spoiler':_0x2c8da6(0x2c5),'story':'စတိုရီ','end':_0x2c8da6(0x1ea),'action':_0x2c8da6(0x1bb),'drama':_0x2c8da6(0x2a2),'comedy':'ကော်မဒီ','ok':_0x2c8da6(0x1ca),'yes':_0x2c8da6(0x201),'no':_0x2c8da6(0x238),'boy':_0x2c8da6(0x23f),'girl':_0x2c8da6(0x291),'man':_0x2c8da6(0x1b6),'boss':_0x2c8da6(0x23b),'sir':'ဆာ','mr':_0x2c8da6(0x228),'miss':_0x2c8da6(0x22b),'link':_0x2c8da6(0x21d),'video':_0x2c8da6(0x2b9),'update':_0x2c8da6(0x24e),'tools':'တူးလ်စ်','error':'အဲရာ','code':_0x2c8da6(0x24f),'free':_0x2c8da6(0x26d),'vpn':_0x2c8da6(0x299),'wifi':_0x2c8da6(0x214),'internet':_0x2c8da6(0x285),'group':_0x2c8da6(0x20f),'post':_0x2c8da6(0x1b5),'live':_0x2c8da6(0x251),'stream':_0x2c8da6(0x1d2),'bot':_0x2c8da6(0x1de),'api':_0x2c8da6(0x277),'server':_0x2c8da6(0x206),'app':'အက်ပ်','game':_0x2c8da6(0x245),'play':_0x2c8da6(0x197),'pause':_0x2c8da6(0x208),'stop':_0x2c8da6(0x1b8),'next':'နက်စ်','back':_0x2c8da6(0x1cb),'cancel':_0x2c8da6(0x19f),'save':_0x2c8da6(0x256),'delete':_0x2c8da6(0x224),'edit':'အက်ဒစ်','copy':'ကော်ပီ','paste':_0x2c8da6(0x212),'cut':_0x2c8da6(0x26b),'settings':_0x2c8da6(0x199),'profile':_0x2c8da6(0x1e2),'account':_0x2c8da6(0x23e),'login':_0x2c8da6(0x209),'logout':_0x2c8da6(0x1d7),'password':_0x2c8da6(0x1aa),'email':'အီးမေးလ်','phone':_0x2c8da6(0x266),'message':_0x2c8da6(0x203),'chat':_0x2c8da6(0x20a),'call':'ကော','video\x20call':'ဗီဒီယိုကော','voice':_0x2c8da6(0x260),'audio':_0x2c8da6(0x257),'sound':'ဆောင်း','music':'မြူးဇစ်','song':_0x2c8da6(0x2b6),'singer':'ဆင်ဂါ','actor':_0x2c8da6(0x243),'actress':_0x2c8da6(0x19c),'director':_0x2c8da6(0x22c),'producer':_0x2c8da6(0x1cd),'writer':_0x2c8da6(0x1e4),'camera':_0x2c8da6(0x21b),'photo':_0x2c8da6(0x1d0),'picture':_0x2c8da6(0x19e),'image':'အင်းမေ့ချ်','download':_0x2c8da6(0x250),'upload':_0x2c8da6(0x24d),'install':_0x2c8da6(0x1bd),'uninstall':_0x2c8da6(0x1db),'upgrade':_0x2c8da6(0x2d5),'premium':_0x2c8da6(0x1a7),'pro':_0x2c8da6(0x2bd),'vip':_0x2c8da6(0x270),'ai':_0x2c8da6(0x231),'cpu':_0x2c8da6(0x272),'gpu':_0x2c8da6(0x19a),'ram':_0x2c8da6(0x210),'rom':'ရွမ်','pc':_0x2c8da6(0x28e),'laptop':'လက်ပ်တော့','mobile':_0x2c8da6(0x28f),'tablet':_0x2c8da6(0x1e0),'android':_0x2c8da6(0x1e5),'ios':_0x2c8da6(0x1d3),'windows':'ဝင်းဒိုး','mac':_0x2c8da6(0x1e7),'linux':_0x2c8da6(0x1ce)},precompiledWordMap=Object['keys'](wordMap)[_0x2c8da6(0x2a0)](_0x33fbc8=>({'regex':new RegExp('\x5cb'+_0x33fbc8+'\x5cb','gi'),'replacement':wordMap[_0x33fbc8]+'\x20'}));let selectedVoiceId=voices[0x0]['id'];function _0x5371(_0x21bff3,_0x240e97){_0x21bff3=_0x21bff3-0x194;const _0x11ad50=_0x11ad();let _0x537167=_0x11ad50[_0x21bff3];return _0x537167;}const DOM={};function init(){const _0x36d0a2=_0x2c8da6,_0x5d26e2={'WkEWa':_0x36d0a2(0x27f),'dhaTa':'style-btn\x20border\x20border-white/10\x20bg-slate-900/40\x20text-[9px]\x20font-bold\x20p-2\x20rounded-lg\x20hover:border-violet-500/40\x20transition-colors\x20text-slate-300\x20flex\x20items-center\x20gap-1.5','eegST':function(_0x69a3c9,_0x541e30){return _0x69a3c9!==_0x541e30;},'AvGrC':_0x36d0a2(0x265),'kPFwk':function(_0x4339af,_0x1acbbd){return _0x4339af===_0x1acbbd;},'iTyCx':function(_0x402565,_0x54aac5){return _0x402565===_0x54aac5;},'MUQvP':_0x36d0a2(0x19b),'wtoOk':'uwqYB','Pyhkz':_0x36d0a2(0x20d),'HBMbj':'TqTmA','OLkaG':_0x36d0a2(0x1ab),'RcHoM':'pitch','IyBGT':_0x36d0a2(0x1a3),'pAZqN':'char-count','LVfNJ':'visualizer','xFEsJ':_0x36d0a2(0x232),'hDKnW':_0x36d0a2(0x1b3),'ULUDc':_0x36d0a2(0x28d),'HVbhy':_0x36d0a2(0x278),'XLfTd':'input','fGjQd':'btn-paste','oUUdz':_0x36d0a2(0x295),'NeXhS':'play','fqxRa':_0x36d0a2(0x25b),'fDGXD':_0x36d0a2(0x1da),'nYnjz':function(_0x354aa5,_0x534252,_0x400e66){return _0x354aa5(_0x534252,_0x400e66);}};DOM[_0x36d0a2(0x204)]=document[_0x36d0a2(0x235)]('speed'),DOM[_0x36d0a2(0x1d8)]=document[_0x36d0a2(0x235)](_0x5d26e2[_0x36d0a2(0x1b4)]),DOM[_0x36d0a2(0x2ae)]=document[_0x36d0a2(0x235)](_0x5d26e2[_0x36d0a2(0x226)]),DOM[_0x36d0a2(0x1eb)]=document[_0x36d0a2(0x235)](_0x5d26e2[_0x36d0a2(0x1e3)]),DOM[_0x36d0a2(0x279)]=document[_0x36d0a2(0x235)](_0x36d0a2(0x223)),DOM['audioPlayer']=document[_0x36d0a2(0x235)](_0x36d0a2(0x297)),DOM[_0x36d0a2(0x269)]=document['getElementById'](_0x5d26e2['LVfNJ']),DOM[_0x36d0a2(0x237)]=document[_0x36d0a2(0x235)]('btn-text'),DOM['btnLoader']=document['getElementById'](_0x5d26e2[_0x36d0a2(0x1ef)]),DOM[_0x36d0a2(0x22d)]=document[_0x36d0a2(0x235)](_0x5d26e2['hDKnW']);const _0x187266=document['createDocumentFragment']();voices[_0x36d0a2(0x1fd)](_0x53a7c0=>{const _0x37bd59=_0x36d0a2,_0x68b7a4={'JYUFt':_0x5d26e2[_0x37bd59(0x1d4)],'agwcZ':_0x5d26e2['dhaTa']};if(_0x5d26e2[_0x37bd59(0x280)](_0x5d26e2[_0x37bd59(0x24b)],_0x5d26e2[_0x37bd59(0x24b)])){let _0x1c90dd=_0x99336e[_0x37bd59(0x1f4)](_0x68b7a4[_0x37bd59(0x2bf)]);_0x1c90dd[_0x37bd59(0x2be)]=_0x68b7a4['agwcZ'],_0x1c90dd['onclick']=()=>_0x488a6a(_0x1c90dd,_0x4da076['s'],_0x11181b['p']),_0x1c90dd[_0x37bd59(0x1af)]=_0x37bd59(0x275)+_0x32959f['icon']+_0x37bd59(0x25f)+_0x40e3ce[_0x37bd59(0x273)],_0x1d33ba['appendChild'](_0x1c90dd);}else{let _0x5f787=document[_0x37bd59(0x1f4)](_0x37bd59(0x27f));_0x5f787[_0x37bd59(0x2be)]=_0x37bd59(0x20e)+(_0x5d26e2['kPFwk'](_0x53a7c0['id'],selectedVoiceId)?'active-voice':''),_0x5f787['onclick']=()=>selectVoice(_0x53a7c0['id'],_0x5f787),_0x5f787[_0x37bd59(0x1af)]=_0x37bd59(0x217)+_0x53a7c0[_0x37bd59(0x207)]+_0x37bd59(0x233)+_0x53a7c0[_0x37bd59(0x273)]+_0x37bd59(0x211)+_0x53a7c0[_0x37bd59(0x255)]+_0x37bd59(0x236),_0x187266[_0x37bd59(0x25c)](_0x5f787);}}),document[_0x36d0a2(0x235)](_0x5d26e2['ULUDc'])['appendChild'](_0x187266);const _0xe2cfc6=document[_0x36d0a2(0x244)]();recapStyles[_0x36d0a2(0x1fd)](_0x82ea60=>{const _0x17f483=_0x36d0a2,_0x3ac7e1={'lITQd':_0x17f483(0x1ab),'NfMAX':function(_0x1d3a31,_0x57b191,_0x2c705a){return _0x1d3a31(_0x57b191,_0x2c705a);}};if(_0x5d26e2['iTyCx'](_0x5d26e2[_0x17f483(0x1d1)],_0x5d26e2[_0x17f483(0x28b)])){const _0x354ac4=_0x838f72[_0x17f483(0x235)](_0x17f483(0x20d));_0x354ac4&&(_0x354ac4[_0x17f483(0x1c9)][_0x17f483(0x1c1)](_0x3ac7e1[_0x17f483(0x219)]),_0x3ac7e1[_0x17f483(0x2a7)](_0x38c065,()=>_0x354ac4[_0x17f483(0x1b0)](),0x1f4));}else{let _0x11d581=document[_0x17f483(0x1f4)](_0x5d26e2[_0x17f483(0x1d4)]);_0x11d581[_0x17f483(0x2be)]=_0x17f483(0x1ec),_0x11d581[_0x17f483(0x215)]=()=>applyPreset(_0x11d581,_0x82ea60[_0x17f483(0x204)],_0x82ea60[_0x17f483(0x1d8)]),_0x11d581[_0x17f483(0x1af)]=_0x17f483(0x1c3)+_0x82ea60['name'],_0xe2cfc6['appendChild'](_0x11d581);}}),document[_0x36d0a2(0x235)](_0x5d26e2[_0x36d0a2(0x24c)])[_0x36d0a2(0x25c)](_0xe2cfc6);const _0xd34e40=document[_0x36d0a2(0x244)]();emotions['forEach'](_0x1213e7=>{const _0x2a050d=_0x36d0a2;let _0x1a7173=document[_0x2a050d(0x1f4)](_0x5d26e2['WkEWa']);_0x1a7173['className']=_0x5d26e2[_0x2a050d(0x2b1)],_0x1a7173[_0x2a050d(0x215)]=()=>applyPreset(_0x1a7173,_0x1213e7['s'],_0x1213e7['p']),_0x1a7173['innerHTML']=_0x2a050d(0x275)+_0x1213e7[_0x2a050d(0x207)]+_0x2a050d(0x25f)+_0x1213e7[_0x2a050d(0x273)],_0xd34e40[_0x2a050d(0x25c)](_0x1a7173);}),document[_0x36d0a2(0x235)](_0x36d0a2(0x2ab))[_0x36d0a2(0x25c)](_0xd34e40),lucide[_0x36d0a2(0x271)](),DOM[_0x36d0a2(0x204)]['addEventListener'](_0x5d26e2['XLfTd'],_0x2a7310=>updateVal(_0x36d0a2(0x204),_0x2a7310['target'][_0x36d0a2(0x1f9)])),DOM[_0x36d0a2(0x1d8)][_0x36d0a2(0x27a)](_0x5d26e2[_0x36d0a2(0x23c)],_0x1738bc=>updateVal(_0x36d0a2(0x1d8),_0x1738bc[_0x36d0a2(0x1fe)][_0x36d0a2(0x1f9)])),DOM[_0x36d0a2(0x2ae)][_0x36d0a2(0x27a)](_0x5d26e2['XLfTd'],updateCharCount),document[_0x36d0a2(0x235)](_0x5d26e2['fGjQd'])[_0x36d0a2(0x27a)](_0x5d26e2[_0x36d0a2(0x1be)],pasteText),document[_0x36d0a2(0x235)]('btn-clear')[_0x36d0a2(0x27a)](_0x5d26e2[_0x36d0a2(0x1be)],clearText),DOM[_0x36d0a2(0x22d)][_0x36d0a2(0x27a)]('click',generateAudio),DOM['audioPlayer']['addEventListener'](_0x5d26e2[_0x36d0a2(0x196)],()=>DOM[_0x36d0a2(0x269)][_0x36d0a2(0x1c9)]['add'](_0x36d0a2(0x268))),DOM[_0x36d0a2(0x2b7)][_0x36d0a2(0x27a)](_0x5d26e2['fqxRa'],()=>DOM[_0x36d0a2(0x269)][_0x36d0a2(0x1c9)][_0x36d0a2(0x1b0)]('playing')),DOM['audioPlayer'][_0x36d0a2(0x27a)](_0x5d26e2[_0x36d0a2(0x1d5)],()=>DOM[_0x36d0a2(0x269)][_0x36d0a2(0x1c9)]['remove'](_0x36d0a2(0x268))),_0x5d26e2[_0x36d0a2(0x262)](setTimeout,()=>{const _0x633aba=_0x36d0a2,_0x24f713=document['getElementById'](_0x5d26e2[_0x633aba(0x2aa)]);_0x24f713&&(_0x5d26e2[_0x633aba(0x258)]!==_0x633aba(0x293)?(_0x5bcbd8[_0x633aba(0x1c9)][_0x633aba(0x1c1)]('opacity-0'),_0x68492f(()=>_0x596723[_0x633aba(0x1b0)](),0x1f4)):(_0x24f713['classList'][_0x633aba(0x1c1)](_0x5d26e2[_0x633aba(0x26a)]),setTimeout(()=>_0x24f713[_0x633aba(0x1b0)](),0x1f4)));},0x258);}function selectVoice(_0x4add9b,_0x25b69a){const _0x22533d=_0x2c8da6,_0x107408={'kojUU':_0x22533d(0x1a8),'bmmyl':function(_0x4f151e,_0x3add7a){return _0x4f151e<_0x3add7a;},'RUFnH':'active-voice'};selectedVoiceId=_0x4add9b;const _0x36113f=document[_0x22533d(0x1f7)](_0x107408['kojUU']);for(let _0x2dde02=0x0;_0x107408['bmmyl'](_0x2dde02,_0x36113f['length']);_0x2dde02++)_0x36113f[_0x2dde02]['classList'][_0x22533d(0x1b0)]('active-voice');_0x25b69a[_0x22533d(0x1c9)][_0x22533d(0x1c1)](_0x107408[_0x22533d(0x294)]);}function applyPreset(_0x2196fe,_0x2fc5a3,_0x27065f){const _0x385451=_0x2c8da6,_0x715f46={'vfoGT':_0x385451(0x1b2),'nUysG':function(_0xc23402,_0x5c43a2){return _0xc23402<_0x5c43a2;},'hCXPV':_0x385451(0x200),'XGNhB':function(_0x468a59,_0x3063c1,_0x35a145){return _0x468a59(_0x3063c1,_0x35a145);},'svKLJ':_0x385451(0x204),'naDqS':_0x385451(0x1d8)},_0x4c6ad5=document[_0x385451(0x1f7)](_0x715f46[_0x385451(0x2d2)]);for(let _0x1204ef=0x0;_0x715f46[_0x385451(0x1e6)](_0x1204ef,_0x4c6ad5[_0x385451(0x22f)]);_0x1204ef++)_0x4c6ad5[_0x1204ef][_0x385451(0x1c9)][_0x385451(0x1b0)](_0x715f46['hCXPV']);_0x2196fe[_0x385451(0x1c9)][_0x385451(0x1c1)](_0x715f46[_0x385451(0x2c8)]),DOM[_0x385451(0x204)]['value']=_0x2fc5a3,DOM['pitch'][_0x385451(0x1f9)]=_0x27065f,_0x715f46[_0x385451(0x28c)](updateVal,_0x715f46[_0x385451(0x213)],_0x2fc5a3),_0x715f46[_0x385451(0x28c)](updateVal,_0x715f46[_0x385451(0x264)],_0x27065f),lucide[_0x385451(0x271)]();}const mmNums=['၀','၁','၂','၃','၄','၅','၆','၇','၈','၉'];function toMyanmarNum(_0x23f726){const _0x2d669d=_0x2c8da6;return _0x23f726[_0x2d669d(0x288)]()[_0x2d669d(0x1f1)](/[0-9]/g,_0x35ba9a=>mmNums[_0x35ba9a]);}function updateVal(_0x474b5f,_0x3833c8){const _0x3fe8b1=_0x2c8da6,_0x5d7d34={'kEPUS':function(_0x3f5fe9,_0x2896ca){return _0x3f5fe9>_0x2896ca;},'JEtHU':function(_0x25d7c8,_0x200701){return _0x25d7c8+_0x200701;},'SFVMx':function(_0x3b5f8d,_0x4482c4){return _0x3b5f8d+_0x4482c4;}};let _0x508ead=_0x5d7d34['kEPUS'](_0x3833c8,0x0)?_0x5d7d34[_0x3fe8b1(0x29a)]('+',_0x3833c8):_0x3833c8;document[_0x3fe8b1(0x235)](_0x5d7d34[_0x3fe8b1(0x2ac)](_0x474b5f,'-val'))[_0x3fe8b1(0x2c9)]=toMyanmarNum(_0x508ead);}function updateCharCount(){const _0x2964f1=_0x2c8da6,_0x5096ce={'nSEVp':function(_0x4d1976,_0x2c80d4){return _0x4d1976(_0x2c80d4);}};DOM[_0x2964f1(0x1eb)][_0x2964f1(0x2c9)]=_0x5096ce['nSEVp'](toMyanmarNum,DOM[_0x2964f1(0x2ae)][_0x2964f1(0x1f9)]['length']);}function _0x11ad(){const _0x10f1e0=['ပတ်စ်ဝေါ့ဒ်','opacity-0','အီး\x20','application/json','ရုပ်ရှင်','innerHTML','remove','4|1|0|2|3','.active-style','generate-btn','RcHoM','ပို့စ်','မန်း','ကိုမြင့်မြတ်','စတော့ပ်','ပေါင်းစပ်\x20၃၀','Nilar_40','အက်ရှင်','btnLoader','အင်စတော','oUUdz','2378862hOyKHj','လေးနက်သော','add','aXvJa','<i\x20data-lucide=\x22layers\x22\x20class=\x22w-3\x20h-3\x20text-slate-500\x22></i>\x20','qdXkr','လိုက်ခ်','ဒေါသထွက်သော','opacity-80','ကျားကြီး\x20၃','classList','အိုကေ','ဘက်','scrollIntoView','ပရိုဂျူဆာ','လင်းနစ်','OBQkD','ဖိုတို','MUQvP','စထရင်း','အိုင်အိုအက်စ်','WkEWa','fDGXD','dtNuo','လော့ဂ်အောက်','pitch','href','ended','အန်အင်စတော','တီးတိုးပြော','9adJXqi','ဘော့တ်','fSINg','တက်ဘလက်','ဗွီ\x20','ပရိုဖိုင်','pAZqN','ရိုက်တာ','အန်ဒရွိုက်','nUysG','မက်','Combo_50','SERIOUS','ဇာတ်သိမ်း','charCount','style-btn\x20border\x20border-white/10\x20bg-slate-900/40\x20text-[10px]\x20font-bold\x20p-2\x20rounded-lg\x20hover:border-pink-500/40\x20transition-colors\x20text-slate-300\x20flex\x20items-center\x20justify-center\x20gap-1.5','7735330NsNRpR','NARRATIVE','xFEsJ','regex','replace','တစ်တော့','ExhTc','createElement','readText','v10','querySelectorAll','44WMMAKV','value','NHvPe','ကျားကြီး\x20၂','vEWqr','forEach','target','ဘီ\x20','active-style','ယက်စ်','blob','မက်ဆေ့ချ်','speed','မဝတ်မှုံရွှေရည်','ဆာဗာ','icon','ပေါ့စ်','လော့ဂ်အင်','ချက်','coffee','ရှယ်ယာ','preloader','voice-btn\x20border\x20border-white/10\x20bg-slate-900/40\x20rounded-xl\x20p-2.5\x20flex\x20flex-col\x20items-center\x20transition-colors\x20hover:bg-slate-800\x20','ဂရု','ရမ်','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-[8px]\x20font-bold\x20text-pink-400\x20bg-pink-500/10\x20border\x20border-pink-500/20\x20px-1.5\x20py-0.5\x20rounded\x20font-num\x22>','ပေ့စ်','svKLJ','ဝိုင်ဖိုင်','onclick','FClmo','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-xl\x20mb-1\x22>','ပီ\x20','lITQd','hidden','ကင်မရာ','replacement','လင့်ခ်','pointer-events-none','ဖေ့စ်ဘွတ်ခ်','ပျော်ရွှင်သော','v13','NyoGyi_35','audio-container','ဒိလစ်','BlpgL','IyBGT','IgMYm','မစ္စတာ','eye-off','မရွှေမှုံရတီ','မစ်စ်','ဒါရိုက်တာ','generateBtn','MvMwn','length','zyAoL','အေအိုင်','btn-loader','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22name-text\x20font-bold\x20text-[11px]\x20text-slate-300\x20mb-1\x20transition-colors\x22>','ချိတ်ဆက်မှု\x20ပြတ်တောက်သွားပါသည်။\x20ဆာဗာ\x20အလုပ်များနေနိုင်ပါသည်။','getElementById','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','btnText','နိုး','သတင်းကြေညာ','flame','ဘော့စ်','XLfTd','တည်ငြိမ်သော','အကောင့်','ဘွိုင်း','အိတ်ချ်\x20','src','242476czmRap','အက်တာ','createDocumentFragment','ဂိမ်း','cloud-rain','ပေ့ချ်','5464949lciaik','EXCITING','209544uPtjqE','AvGrC','HVbhy','အပ်လုဒ်','အပ်ဒိတ်','ကုတ်','ဒေါင်းလုဒ်','လိုက်ဖ်','မိန်းကလေး','SFJxt','အန်\x20','gender','ဆေ့ဖ်','အော်ဒီယို','HBMbj','ဇာတ်ကြောင်းပြော','ကိုနေတိုး','pause','appendChild','မသင်ဇာဝင့်ကျော်','30kdGVDB','\x22\x20class=\x22w-3\x20h-3\x20text-violet-400\x22></i>\x20','ဗွိုက်စ်','book-open','nYnjz','Normal','naDqS','RKyqz','ဖုန်း','volume-x','playing','visualizer','OLkaG','ကတ်','PyhGs','ဖရီး','createObjectURL','ကျူ\x20','ဗွီအိုင်ပီ','createIcons','စီပီယူ','name','PROFESSIONAL','<i\x20data-lucide=\x22','TiBko','အေပီအိုင်','recap-grid','audioContainer','addEventListener','မအိန္ဒြာကျော်ဇင်','v11','SVMAD','HAPPY','button','eegST','အယ်လ်\x20','နီလာ\x20ချွဲသံ','ဟဲလို','bPiMm','အင်တာနက်','ဇက်\x20','v14','toString','အပိုင်း','POST','wtoOk','XGNhB','voices-grid','ပီစီ','မိုဘိုင်း','LJgky','ဂဲလ်','အာ\x20','TqTmA','RUFnH','click','-val','audio-player','အသံသေး\x20၅၀','ဗွီပီအန်','JEtHU','PbNqF','အိုင်\x20','mApNm','XQyWr','ပေါင်းစပ်\x20၁၅','map','390786lRjFCq','ဒရာမာ','မသက်မွန်မြင့်','IXgKI','FEAR','QEALL','NfMAX','ပေါင်းစပ်\x20၅၀','sWeUN','Pyhkz','emotions-grid','SFVMx','အက်ဒမင်','textInput','ပုံမှန်အသံ','ကား','dhaTa','WHISPER','အေ\x20','zap','FXoCB','သီချင်း','audioPlayer','ကိုစိုင်းစိုင်း','ဗီဒီယို','ကိုလူမင်း','DOMContentLoaded','ကျေးဇူးပြု၍\x20စာသားထည့်သွင်းပါ။','ပရို','className','JYUFt','စိတ်လှုပ်ရှားဖွယ်','RzhWr','wnidJ','ဝိုင်\x20','ယောကျ်ားလေး','စပွိုင်လာ','alert-circle','ရွဲ့ပြောသော','hCXPV','textContent','smile','ကောမန့်','BcQVa','download-link','စာသား\x20ကူးထည့်၍\x20မရပါ။\x20စာရိုက်မည့်အကွက်ကို\x20ဖိ၍\x20ကူးထည့်ပါ။','အက်စ်\x20','5713168qUvAkR','ANGRY','vfoGT','ghost','အင်တာနက်\x20သို့မဟုတ်\x20API\x20လင့်ခ်ကို\x20စစ်ဆေးပါ။','အပ်ဂရိတ်','Pitch_20','ဒီ\x20','NeXhS','ပလေး','smooth','ဆက်တင်','ဂျီပီယူ','VAZIj','အက်ထရက်စ်','flex','ပစ်ချာ','ကင်ဆယ်','NyoGyi_25','NyoGyi_45','split','text-input','ExSOD','rTRhW','80HqFjlo','ပရီမီယမ်','.active-voice','trim'];_0x11ad=function(){return _0x10f1e0;};return _0x11ad();}async function pasteText(){const _0xf78b6d=_0x2c8da6,_0x14a56a={'vEWqr':function(_0x328d7e){return _0x328d7e();},'FXoCB':function(_0x4ca0be,_0x2ded8b){return _0x4ca0be===_0x2ded8b;},'XQyWr':_0xf78b6d(0x253),'sataJ':_0xf78b6d(0x22e)};try{const _0x23a2ca=await navigator['clipboard'][_0xf78b6d(0x1f5)]();DOM['textInput'][_0xf78b6d(0x1f9)]=(DOM['textInput'][_0xf78b6d(0x1f9)]+_0x23a2ca)['substring'](0x0,0x2710),_0x14a56a[_0xf78b6d(0x1fc)](updateCharCount);}catch(_0x252bf4){_0x14a56a[_0xf78b6d(0x2b5)](_0x14a56a[_0xf78b6d(0x29e)],_0x14a56a['sataJ'])?_0x54475d+=_0x46acc4[_0x3e8523[_0x3da474]]||_0x3c6ff4[_0x5618a9]:alert(_0xf78b6d(0x2ce));}}function clearText(){const _0x1e1746=_0x2c8da6,_0x574a4a={'ymNwE':_0x1e1746(0x21a)};DOM['textInput'][_0x1e1746(0x1f9)]='',updateCharCount(),DOM[_0x1e1746(0x279)]['classList'][_0x1e1746(0x1c1)](_0x574a4a['ymNwE']);}async function generateAudio(){const _0x5e4ac0=_0x2c8da6,_0x11de2c={'zyAoL':function(_0x329442,_0x2d3958){return _0x329442>_0x2d3958;},'qdXkr':function(_0x1d8ee3,_0x148619){return _0x1d8ee3+_0x148619;},'zRKiG':_0x5e4ac0(0x296),'OlqnE':function(_0x2329dd,_0x2d6d85){return _0x2329dd(_0x2d6d85);},'aXvJa':function(_0x4923a0,_0x3c4fde){return _0x4923a0<_0x3c4fde;},'wnidJ':function(_0x5e96d4,_0x4b5595){return _0x5e96d4(_0x4b5595);},'HsFIy':_0x5e4ac0(0x2d4),'sWeUN':function(_0x27d49a,_0x462e42){return _0x27d49a(_0x462e42);},'BcQVa':function(_0x49fa0f,_0x3a1c25){return _0x49fa0f===_0x3a1c25;},'BlpgL':_0x5e4ac0(0x290),'TiBko':function(_0x277e0b,_0x3fcf4d){return _0x277e0b(_0x3fcf4d);},'IXgKI':_0x5e4ac0(0x2bc),'NHvPe':'hidden','rTRhW':_0x5e4ac0(0x19d),'mApNm':_0x5e4ac0(0x1c7),'PyhGs':function(_0x2e5f2b,_0x49d433){return _0x2e5f2b<_0x49d433;},'UfxfB':_0x5e4ac0(0x28a),'hJUSD':_0x5e4ac0(0x1ad),'qfnmc':_0x5e4ac0(0x2cd),'JEKsn':_0x5e4ac0(0x198),'IgMYm':'nearest','FClmo':function(_0x48a579,_0x3a59f1){return _0x48a579===_0x3a59f1;},'fSINg':_0x5e4ac0(0x29b),'OBQkD':'KFQRW','bPiMm':function(_0x3783c7,_0x380378){return _0x3783c7===_0x380378;},'ExSOD':_0x5e4ac0(0x1d6),'SVMAD':function(_0x1211c1,_0xbfc6cb){return _0x1211c1(_0xbfc6cb);},'ExhTc':'ချိတ်ဆက်မှု\x20ပြတ်တောက်သွားပါသည်။\x20ဆာဗာ\x20အလုပ်များနေနိုင်ပါသည်။','QEALL':_0x5e4ac0(0x1b1),'kMqsR':_0x5e4ac0(0x21e)};let _0x48635c=DOM['textInput']['value'];const _0x722add=DOM[_0x5e4ac0(0x204)][_0x5e4ac0(0x1f9)],_0x24d652=DOM[_0x5e4ac0(0x1d8)][_0x5e4ac0(0x1f9)];if(!_0x48635c[_0x5e4ac0(0x1a9)]()){if(_0x11de2c[_0x5e4ac0(0x2cc)](_0x11de2c[_0x5e4ac0(0x225)],_0x11de2c[_0x5e4ac0(0x225)])){_0x11de2c[_0x5e4ac0(0x276)](alert,_0x11de2c[_0x5e4ac0(0x2a4)]);return;}else{let _0x4974f3=_0x11de2c[_0x5e4ac0(0x230)](_0x347be2,0x0)?_0x11de2c[_0x5e4ac0(0x1c4)]('+',_0x31532a):_0x29f537;_0x4254ef[_0x5e4ac0(0x235)](_0x307ef9+_0x11de2c['zRKiG'])[_0x5e4ac0(0x2c9)]=_0x11de2c['OlqnE'](_0x3367d0,_0x4974f3);}}DOM[_0x5e4ac0(0x237)][_0x5e4ac0(0x1c9)][_0x5e4ac0(0x1c1)](_0x5e4ac0(0x21a)),DOM[_0x5e4ac0(0x1bc)][_0x5e4ac0(0x1c9)][_0x5e4ac0(0x1b0)](_0x11de2c['NHvPe']),DOM[_0x5e4ac0(0x1bc)][_0x5e4ac0(0x1c9)][_0x5e4ac0(0x1c1)](_0x11de2c[_0x5e4ac0(0x1a5)]),DOM['generateBtn'][_0x5e4ac0(0x1c9)]['add'](_0x11de2c[_0x5e4ac0(0x29d)],_0x5e4ac0(0x21e)),DOM['audioContainer'][_0x5e4ac0(0x1c9)][_0x5e4ac0(0x1c1)](_0x11de2c[_0x5e4ac0(0x1fa)]);let _0x4b475c=_0x48635c;_0x4b475c=_0x4b475c[_0x5e4ac0(0x1f1)](/\b[A-Z]{2,}\b/g,function(_0x1e0ecf){const _0x40b222=_0x5e4ac0;let _0x5e1834='';for(let _0x514345=0x0;_0x11de2c[_0x40b222(0x1c2)](_0x514345,_0x1e0ecf[_0x40b222(0x22f)]);_0x514345++){_0x5e1834+=engToMmMap[_0x1e0ecf[_0x514345]]||_0x1e0ecf[_0x514345];}return _0x5e1834;});for(let _0x3c41eb=0x0;_0x11de2c[_0x5e4ac0(0x26c)](_0x3c41eb,precompiledWordMap['length']);_0x3c41eb++){const _0x35583b=precompiledWordMap[_0x3c41eb];_0x4b475c=_0x4b475c[_0x5e4ac0(0x1f1)](_0x35583b[_0x5e4ac0(0x1f0)],_0x35583b[_0x5e4ac0(0x21c)]);}try{const _0x383a4c=await fetch(API_URL,{'method':_0x11de2c['UfxfB'],'headers':{'Content-Type':_0x11de2c['hJUSD']},'body':JSON['stringify']({'text':_0x4b475c,'voice':selectedVoiceId,'speed':_0x722add,'pitch':_0x24d652})});if(_0x383a4c['ok']){const _0x1e8e33=await _0x383a4c[_0x5e4ac0(0x202)](),_0x2c7489=URL[_0x5e4ac0(0x26e)](_0x1e8e33);DOM[_0x5e4ac0(0x2b7)][_0x5e4ac0(0x241)]=_0x2c7489,document['getElementById'](_0x11de2c['qfnmc'])[_0x5e4ac0(0x1d9)]=_0x2c7489,DOM[_0x5e4ac0(0x279)]['classList']['remove'](_0x5e4ac0(0x21a)),DOM[_0x5e4ac0(0x279)][_0x5e4ac0(0x1cc)]({'behavior':_0x11de2c['JEKsn'],'block':_0x11de2c[_0x5e4ac0(0x227)]});}else _0x11de2c[_0x5e4ac0(0x216)](_0x11de2c[_0x5e4ac0(0x1df)],_0x11de2c[_0x5e4ac0(0x1cf)])?_0x11de2c[_0x5e4ac0(0x2c2)](_0x11865b,_0x11de2c['HsFIy']):alert(_0x11de2c['HsFIy']);}catch(_0x14477a){_0x11de2c[_0x5e4ac0(0x284)](_0x11de2c[_0x5e4ac0(0x1a4)],'WBAZK')?_0x11de2c[_0x5e4ac0(0x2a9)](_0x26f9a5,_0x5e4ac0(0x234)):_0x11de2c[_0x5e4ac0(0x27d)](alert,_0x11de2c[_0x5e4ac0(0x1f3)]);}finally{const _0x4f28db=_0x11de2c[_0x5e4ac0(0x2a6)][_0x5e4ac0(0x1a2)]('|');let _0x101e00=0x0;while(!![]){switch(_0x4f28db[_0x101e00++]){case'0':DOM['btnText'][_0x5e4ac0(0x1c9)][_0x5e4ac0(0x1b0)](_0x11de2c[_0x5e4ac0(0x1fa)]);continue;case'1':DOM[_0x5e4ac0(0x1bc)][_0x5e4ac0(0x1c9)]['remove'](_0x11de2c[_0x5e4ac0(0x1a5)]);continue;case'2':DOM[_0x5e4ac0(0x237)][_0x5e4ac0(0x1c9)][_0x5e4ac0(0x1c1)](_0x11de2c[_0x5e4ac0(0x1a5)]);continue;case'3':DOM[_0x5e4ac0(0x22d)][_0x5e4ac0(0x1c9)][_0x5e4ac0(0x1b0)](_0x11de2c['mApNm'],_0x11de2c['kMqsR']);continue;case'4':DOM['btnLoader']['classList'][_0x5e4ac0(0x1c1)]('hidden');continue;}break;}}}document[_0x2c8da6(0x27a)](_0x2c8da6(0x2bb),()=>{const _0x195aab=_0x2c8da6,_0x407944={'RzhWr':function(_0x4e2982,_0x35c443){return _0x4e2982(_0x35c443);}};_0x407944[_0x195aab(0x2c1)](requestAnimationFrame,init);});
+</script>
+</body>
+</html>
