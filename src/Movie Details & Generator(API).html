@@ -1,0 +1,861 @@
+
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pwa Gyi AI Studio - Movie</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            font-family: 'Pyidaungsu', 'Myanmar Text', 'Noto Sans Myanmar', sans-serif;
+        }
+
+        body {
+            background-color: #030712; /* gray-950 */
+            color: #f3f4f6; /* gray-100 */
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        .animate-fade-in-up { animation: fadeInUp 0.4s ease-out forwards; }
+
+        .moving-gradient-bg {
+            background: linear-gradient(-45deg, #ff0055, #0066ff, #ffcc00, #ff0055);
+            background-size: 300% 300%;
+            animation: gradientBG 8s ease infinite;
+        }
+
+        .neon-text {
+            background: linear-gradient(-45deg, #ff3366, #33ccff, #ffcc00, #ff3366);
+            background-size: 300% 300%;
+            animation: gradientBG 8s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+            line-height: 1.5;
+            padding-bottom: 0.2em;
+        }
+
+        .neon-border::before {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            border-radius: inherit;
+            background: linear-gradient(-45deg, #ff0055, #0066ff, #ffcc00);
+            background-size: 300% 300%;
+            animation: gradientBG 8s ease infinite;
+            z-index: -1;
+            opacity: 0.5;
+            filter: blur(8px);
+        }
+
+        /* Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.4); }
+
+        .hide { display: none !important; }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- Background Decoration -->
+    <div class="fixed inset-0 moving-gradient-bg opacity-20 pointer-events-none z-0"></div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-[100] transition-all duration-300 transform -translate-y-20 opacity-0">
+        <div id="toast-content" class="flex items-center gap-3 px-6 py-4 rounded-2xl shadow-[0_0_20px_rgba(0,0,0,0.5)] border backdrop-blur-xl">
+            <i id="toast-icon" data-lucide="info" class="w-5 h-5"></i>
+            <span id="toast-message" class="text-sm font-medium"></span>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="relative z-10 bg-black/50 backdrop-blur-2xl sticky top-0 shadow-[0_4px_30px_rgba(0,0,0,0.5)] border-b border-white/5">
+        <div class="max-w-6xl mx-auto px-4 h-[76px] flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center p-[2px] shrink-0 moving-gradient-bg shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                    <div class="w-full h-full bg-black/90 backdrop-blur-md rounded-[14px] flex items-center justify-center">
+                        <span class="text-white font-black text-2xl tracking-tighter" style="text-shadow: 0 0 10px rgba(255,255,255,0.8);">PG</span>
+                    </div>
+                </div>
+                <h1 class="text-xl md:text-3xl font-black tracking-tight neon-text">
+                    Pwa Gyi AI Studio
+                </h1>
+            </div>
+            <div class="text-sm font-bold text-gray-400 flex items-center gap-2">
+                <i data-lucide="clapperboard" class="w-5 h-5 text-blue-400"></i> Movie Generator
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="relative z-10 max-w-6xl mx-auto px-4 py-8 pb-24 mt-2 animate-fade-in">
+        
+        <div class="text-center mb-8">
+            <h2 class="text-2xl md:text-3xl font-bold flex items-center justify-center gap-3 neon-text pb-1">
+                <i data-lucide="film" class="w-6 h-6 text-white drop-shadow-[0_0_8px_rgba(255,255,255,1)]"></i>
+                ရုပ်ရှင် အချက်အလက်များ
+            </h2>
+            <p class="text-gray-400 text-xs sm:text-sm mt-2">
+                Poster ပုံတင်ပါ (သို့) နာမည်ရိုက်ထည့်ပြီး ဇာတ်ကား အချက်အလက်များကို ရှာဖွေဖန်တီးနိုင်ပါသည်။
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <!-- Left Column: Inputs -->
+            <div class="space-y-4">
+                
+                <!-- Poster Upload Box -->
+                <div class="bg-black/60 backdrop-blur-xl border border-white/20 rounded-2xl p-4 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+                    <label class="text-sm font-bold text-white flex items-center gap-2 drop-shadow-[0_0_5px_rgba(255,255,255,0.5)] mb-3">
+                        <i data-lucide="image" class="w-4 h-4"></i> Movie Poster တင်ရန်
+                    </label>
+                    
+                    <div class="relative flex flex-col items-center justify-center min-h-[200px] border-2 border-dashed border-white/20 rounded-xl hover:bg-white/5 transition p-2">
+                        
+                        <!-- Upload Placeholder -->
+                        <label id="upload-placeholder" class="flex flex-col items-center justify-center w-full h-full cursor-pointer text-center p-6">
+                            <i data-lucide="upload-cloud" class="w-10 h-10 text-white/50 mb-3"></i>
+                            <span class="text-blue-400 font-bold mb-1">Poster ပုံ ရွေးချယ်ရန် နှိပ်ပါ</span>
+                            <span class="text-xs text-gray-500">JPG, PNG, WEBP</span>
+                            <input type="file" id="poster-upload" accept="image/*" class="hidden" />
+                        </label>
+
+                        <!-- Preview Area -->
+                        <div id="preview-area" class="relative w-full flex justify-center hide">
+                            <img id="poster-preview" src="" alt="Movie Poster" class="max-h-[250px] object-contain rounded-lg shadow-lg" />
+                            <button id="clear-poster-btn" class="absolute top-2 right-2 bg-red-500/80 text-white p-2 rounded-full hover:bg-red-600 transition shadow-lg">
+                                <i data-lucide="x" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manual Inputs -->
+                <div class="bg-black/60 backdrop-blur-xl border border-white/20 rounded-2xl p-5 shadow-[0_0_20px_rgba(0,0,0,0.5)] space-y-3">
+                    <label class="text-sm font-bold text-white flex items-center gap-2 drop-shadow-[0_0_5px_rgba(255,255,255,0.5)] mb-1">
+                        <i data-lucide="file-text" class="w-4 h-4"></i> အချက်အလက် (Manual Entry)
+                    </label>
+                    <input type="text" id="input-title" placeholder="ဇာတ်ကားနာမည် (ဥပမာ - Inception)" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors" />
+                    
+                    <div class="flex gap-3">
+                        <input type="text" id="input-year" placeholder="ခုနှစ် (Year)" class="w-1/3 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors" />
+                        <input type="text" id="input-genre" placeholder="အမျိုးအစား (Genre)" class="w-2/3 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors" />
+                    </div>
+                </div>
+
+                <!-- Fetch Buttons -->
+                <div class="flex gap-2">
+                    <button id="fetch-details-btn" class="flex-1 relative group moving-gradient-bg text-white font-bold py-3.5 rounded-xl shadow-[0_0_15px_rgba(255,255,255,0.3)] transition-all hover:scale-[1.02] disabled:opacity-50 disabled:hover:scale-100 flex items-center justify-center gap-2">
+                        <i data-lucide="sparkles" class="w-5 h-5 fetch-icon"></i>
+                        <span class="fetch-text">အချက်အလက် အသေးစိတ်ရှာမည်</span>
+                    </button>
+                    <button id="clear-all-btn" class="w-14 shrink-0 flex items-center justify-center bg-red-500/20 hover:bg-red-500/40 border border-red-500/50 text-red-100 rounded-xl transition-colors" title="Clear All">
+                        <i data-lucide="trash-2" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Column: Settings & Fetch Details Result -->
+            <div class="space-y-4">
+                
+                <!-- Details Card -->
+                <div class="bg-black/60 backdrop-blur-xl border border-white/20 rounded-2xl p-5 shadow-[0_0_20px_rgba(0,0,0,0.5)] min-h-[220px]">
+                    <label class="text-sm font-bold text-blue-400 flex items-center gap-2 mb-4">
+                        <i data-lucide="info" class="w-4 h-4"></i> ဇာတ်ကား အချက်အလက်များ
+                    </label>
+                    
+                    <div class="grid grid-cols-1 gap-3 text-sm">
+                        <div class="flex items-start gap-3 bg-white/5 p-2.5 rounded-lg border border-white/5">
+                            <i data-lucide="clapperboard" class="w-4 h-4 text-purple-400 mt-0.5 shrink-0"></i>
+                            <div class="flex-1 text-gray-200">
+                                <span class="text-gray-400 font-bold mr-2">Title:</span> 
+                                <span id="display-title">-</span> 
+                                <span class="text-gray-500 text-xs ml-1" id="display-year">(----)</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 bg-white/5 p-2.5 rounded-lg border border-white/5">
+                            <i data-lucide="star" class="w-4 h-4 text-yellow-400 mt-0.5 shrink-0"></i>
+                            <div class="flex-1 text-gray-200">
+                                <span class="text-gray-400 font-bold mr-2">Rating/Genre:</span> 
+                                <span id="display-rating-genre">- | -</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 bg-white/5 p-2.5 rounded-lg border border-white/5">
+                            <i data-lucide="users" class="w-4 h-4 text-green-400 mt-0.5 shrink-0"></i>
+                            <div class="flex-1 text-gray-200">
+                                <span class="text-gray-400 font-bold mr-2">Cast:</span> 
+                                <span id="display-cast">-</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 bg-white/5 p-2.5 rounded-lg border border-white/5">
+                            <i data-lucide="globe" class="w-4 h-4 text-blue-400 mt-0.5 shrink-0"></i>
+                            <div class="flex-1 text-gray-200">
+                                <span class="text-gray-400 font-bold mr-2">Dir/Country:</span> 
+                                <span id="display-dir-country">- (-)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Generator Options -->
+                <div class="bg-black/60 backdrop-blur-xl border border-white/20 rounded-2xl p-5 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+                    <label class="text-sm font-bold text-white flex items-center gap-2 mb-3 drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">
+                        <i data-lucide="activity" class="w-4 h-4"></i> ဖန်တီးမည့် အကြောင်းအရာ ရွေးချယ်ရန်
+                    </label>
+                    
+                    <!-- Content Types (Horizontal Scroll) -->
+                    <div id="content-types-container" class="flex overflow-x-auto gap-3 pb-2 custom-scrollbar snap-x">
+                        <!-- Buttons injected via JS -->
+                    </div>
+                    
+                    <!-- Duration Slider -->
+                    <div class="mt-4 space-y-3 p-4 bg-black/40 border border-white/10 rounded-xl">
+                        <div class="flex justify-between items-center">
+                            <label class="text-sm font-bold text-gray-300 flex items-center gap-2">
+                                <i data-lucide="clock" class="w-4 h-4 text-blue-400"></i> ကြာချိန် ရွေးချယ်ရန်
+                            </label>
+                            <span class="text-blue-400 font-bold bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-lg">
+                                <span id="duration-display">5</span> မိနစ်
+                            </span>
+                        </div>
+                        <div class="pt-2">
+                            <input type="range" id="duration-slider" min="1" max="30" step="1" value="5" class="w-full h-2.5 bg-white/20 rounded-lg appearance-none cursor-pointer accent-blue-500 hover:accent-blue-400 outline-none transition-all" />
+                        </div>
+                        <div class="flex justify-between text-[10px] text-gray-500 font-bold px-1">
+                            <span>1 Min</span>
+                            <span>15 Mins</span>
+                            <span>30 Mins</span>
+                        </div>
+                    </div>
+
+                    <!-- Generate Action -->
+                    <div class="flex gap-2 mt-4 relative z-10">
+                        <button id="generate-content-btn" class="flex-1 relative bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl shadow-[0_0_15px_rgba(59,130,246,0.4)] transition-all disabled:opacity-50 flex items-center justify-center gap-2 border border-blue-400/30">
+                            <i data-lucide="file-text" class="w-5 h-5 shrink-0 gen-icon"></i>
+                            <span class="gen-text truncate">အကြောင်းအရာ ဖန်တီးမည်</span>
+                        </button>
+
+                        <button id="cancel-generate-btn" class="w-14 shrink-0 flex items-center justify-center bg-red-500/20 hover:bg-red-500/40 border border-red-500/50 text-red-100 rounded-xl transition-colors shadow-[0_0_10px_rgba(239,68,68,0.3)] hide" title="ရပ်တန့်မည်">
+                            <i data-lucide="x-circle" class="w-6 h-6"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Generated Content Output Box -->
+        <div id="output-section" class="space-y-3 mt-6 animate-fade-in-up hide">
+            <label class="text-sm font-bold text-white flex items-center gap-2 drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-green-400"></i> <span id="output-title-label">Output</span> ရလဒ်များ
+            </label>
+            
+            <div class="neon-border bg-black/60 backdrop-blur-xl rounded-2xl p-4 shadow-[0_0_20px_rgba(0,0,0,0.5)] relative transition-all flex flex-col gap-4 min-h-[450px]">
+                
+                <!-- Generating State -->
+                <div id="generating-overlay" class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm rounded-2xl hide">
+                    <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-blue-500 mb-3"></i>
+                    <span id="generating-status" class="text-gray-300 font-bold">ဖန်တီးနေပါသည်...</span>
+                </div>
+
+                <!-- 3-Second Hook -->
+                <div id="hook-container" class="bg-white/5 border border-white/10 rounded-xl p-3 relative hover:bg-white/10 transition hide">
+                    <div class="text-[11px] text-yellow-400 font-bold mb-1.5 flex items-center gap-1">🔥 3-SECOND HOOK</div>
+                    <p id="out-hook" class="text-sm text-white pr-8 leading-relaxed font-medium"></p>
+                    <button onclick="copyToClipboard('out-hook')" class="absolute top-3 right-3 p-1.5 rounded bg-black/40 text-gray-400 hover:text-white border border-white/10">
+                        <i data-lucide="copy" class="w-4 h-4"></i>
+                    </button>
+                </div>
+                
+                <!-- Viral Caption -->
+                <div id="caption-container" class="bg-white/5 border border-white/10 rounded-xl p-3 relative hover:bg-white/10 transition hide">
+                    <div class="text-[11px] text-blue-400 font-bold mb-1.5 flex items-center gap-1">📝 VIRAL CAPTION</div>
+                    <p id="out-caption" class="text-sm text-white pr-8 leading-relaxed whitespace-pre-wrap font-medium"></p>
+                    <button onclick="copyToClipboard('out-caption')" class="absolute top-3 right-3 p-1.5 rounded bg-black/40 text-gray-400 hover:text-white border border-white/10">
+                        <i data-lucide="copy" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Hashtags -->
+                <div id="hashtags-container" class="bg-white/5 border border-white/10 rounded-xl p-3 relative hover:bg-white/10 transition hide">
+                    <div class="text-[11px] text-pink-400 font-bold mb-1.5 flex items-center gap-1">#️⃣ HASHTAGS</div>
+                    <p id="out-hashtags" class="text-sm text-white pr-8 font-medium"></p>
+                    <button onclick="copyToClipboard('out-hashtags')" class="absolute top-3 right-3 p-1.5 rounded bg-black/40 text-gray-400 hover:text-white border border-white/10">
+                        <i data-lucide="copy" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Main Content / Script -->
+                <div id="content-container" class="bg-white/5 border border-white/10 rounded-xl p-3 relative flex-1 flex flex-col hover:bg-white/10 transition hide min-h-[300px]">
+                    <div class="text-[11px] text-green-400 font-bold mb-1.5 flex items-center justify-between">
+                        <span class="flex items-center gap-1">🎙️ MAIN SCRIPT / CONTENT</span>
+                    </div>
+                    <textarea id="out-content" class="w-full flex-1 bg-transparent text-white resize-none outline-none text-[15px] font-medium leading-relaxed custom-scrollbar min-h-[200px] pr-8"></textarea>
+                    <button onclick="copyToClipboard('out-content', true)" class="absolute top-9 right-3 p-1.5 rounded bg-black/40 text-gray-400 hover:text-white border border-white/10">
+                        <i data-lucide="copy" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // --- CONSTANTS & CONFIG ---
+        const apiKey = ""; // Gemini API Key Injected Automatically
+
+        const MOVIE_CONTENT_TYPES = [
+            { id: 'recap', label: 'Movie Recap', desc: 'ဇာတ်လမ်းအစအဆုံး အကျဉ်းချုပ်' },
+            { id: 'review', label: 'Movie Review', desc: 'ဇာတ်ကား သုံးသပ်ချက်' },
+            { id: 'facts', label: 'Movie Facts', desc: 'လူမသိသေးသော အချက်များ' },
+            { id: 'mistakes', label: 'Movie Mistakes', desc: 'မှားယွင်းနေတဲ့ ပြကွက်များ' },
+            { id: 'ending', label: 'Ending Explained', desc: 'ဇာတ်သိမ်း ရှင်းလင်းချက်' },
+            { id: 'theory', label: 'Movie Theory', desc: 'ခန့်မှန်းချက်များ' },
+        ];
+
+        // --- STATE ---
+        let state = {
+            moviePosterBase64: null,
+            movieInfo: { title: '', year: '', genre: '', rating: '', country: '', actors: '', director: '' },
+            selectedContentType: 'recap',
+            recapDuration: 5,
+            isFetching: false,
+            isGenerating: false,
+            generateAbortController: null
+        };
+
+        // --- INITIALIZE ICONS ---
+        lucide.createIcons();
+
+        // --- DOM ELEMENTS ---
+        const DOMElements = {
+            // Toast
+            toast: document.getElementById('toast'),
+            toastContent: document.getElementById('toast-content'),
+            toastIcon: document.getElementById('toast-icon'),
+            toastMessage: document.getElementById('toast-message'),
+
+            // Upload & Inputs
+            posterUpload: document.getElementById('poster-upload'),
+            uploadPlaceholder: document.getElementById('upload-placeholder'),
+            previewArea: document.getElementById('preview-area'),
+            posterPreview: document.getElementById('poster-preview'),
+            clearPosterBtn: document.getElementById('clear-poster-btn'),
+            
+            inputTitle: document.getElementById('input-title'),
+            inputYear: document.getElementById('input-year'),
+            inputGenre: document.getElementById('input-genre'),
+
+            // Fetch Buttons
+            fetchDetailsBtn: document.getElementById('fetch-details-btn'),
+            clearAllBtn: document.getElementById('clear-all-btn'),
+
+            // Displays
+            displayTitle: document.getElementById('display-title'),
+            displayYear: document.getElementById('display-year'),
+            displayRatingGenre: document.getElementById('display-rating-genre'),
+            displayCast: document.getElementById('display-cast'),
+            displayDirCountry: document.getElementById('display-dir-country'),
+
+            // Generation Controls
+            contentTypesContainer: document.getElementById('content-types-container'),
+            durationSlider: document.getElementById('duration-slider'),
+            durationDisplay: document.getElementById('duration-display'),
+            generateContentBtn: document.getElementById('generate-content-btn'),
+            cancelGenerateBtn: document.getElementById('cancel-generate-btn'),
+
+            // Output
+            outputSection: document.getElementById('output-section'),
+            outputTitleLabel: document.getElementById('output-title-label'),
+            generatingOverlay: document.getElementById('generating-overlay'),
+            generatingStatus: document.getElementById('generating-status'),
+            
+            hookContainer: document.getElementById('hook-container'),
+            captionContainer: document.getElementById('caption-container'),
+            hashtagsContainer: document.getElementById('hashtags-container'),
+            contentContainer: document.getElementById('content-container'),
+            
+            outHook: document.getElementById('out-hook'),
+            outCaption: document.getElementById('out-caption'),
+            outHashtags: document.getElementById('out-hashtags'),
+            outContent: document.getElementById('out-content')
+        };
+
+        // --- UTILS ---
+        let toastTimeout;
+        function showToast(message, type = 'error') {
+            clearTimeout(toastTimeout);
+            
+            DOMElements.toastMessage.textContent = message;
+            
+            if (type === 'error') {
+                DOMElements.toastContent.className = "flex items-center gap-3 px-6 py-4 rounded-2xl shadow-[0_0_20px_rgba(0,0,0,0.5)] border backdrop-blur-xl bg-red-900/40 border-red-500/50 text-red-100 shadow-red-500/20";
+                DOMElements.toastIcon.setAttribute('data-lucide', 'info');
+                DOMElements.toastIcon.classList.replace('text-green-400', 'text-red-400');
+            } else {
+                DOMElements.toastContent.className = "flex items-center gap-3 px-6 py-4 rounded-2xl shadow-[0_0_20px_rgba(0,0,0,0.5)] border backdrop-blur-xl bg-green-900/40 border-green-500/50 text-green-100 shadow-green-500/20";
+                DOMElements.toastIcon.setAttribute('data-lucide', 'check-circle-2');
+                DOMElements.toastIcon.classList.replace('text-red-400', 'text-green-400');
+            }
+            lucide.createIcons();
+
+            DOMElements.toast.classList.remove('-translate-y-20', 'opacity-0');
+            DOMElements.toast.classList.add('translate-y-0', 'opacity-100');
+
+            toastTimeout = setTimeout(() => {
+                DOMElements.toast.classList.add('-translate-y-20', 'opacity-0');
+                DOMElements.toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 4000);
+        }
+
+        async function copyToClipboard(elementId, isTextarea = false) {
+            const el = document.getElementById(elementId);
+            const text = isTextarea ? el.value : el.innerText;
+            if (!text) return;
+            
+            try {
+                await navigator.clipboard.writeText(text);
+                showToast("Copy ကူးယူပြီးပါပြီ", "success");
+            } catch (err) {
+                // Fallback
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast("Copy ကူးယူပြီးပါပြီ", "success");
+                } catch (e) {
+                    showToast("Copy ကူး၍မရပါ", "error");
+                }
+                document.body.removeChild(textArea);
+            }
+        }
+
+        function extractBase64(dataUrl) {
+            return dataUrl.split(',')[1];
+        }
+
+        // --- RENDER FUNCTIONS ---
+        function renderContentTypes() {
+            DOMElements.contentTypesContainer.innerHTML = '';
+            MOVIE_CONTENT_TYPES.forEach(type => {
+                const btn = document.createElement('button');
+                const isSelected = state.selectedContentType === type.id;
+                
+                btn.className = `flex-shrink-0 w-[160px] p-3 rounded-xl border text-left snap-start transition-all ${
+                    isSelected 
+                        ? 'moving-gradient-bg border-white/30 shadow-[0_0_10px_rgba(255,255,255,0.3)]' 
+                        : 'bg-white/5 border-white/10 hover:bg-white/10'
+                }`;
+                
+                btn.innerHTML = `
+                    <div class="font-bold text-white text-sm truncate">${type.label}</div>
+                    <div class="text-[10px] text-gray-300 mt-1 truncate">${type.desc}</div>
+                `;
+                
+                btn.onclick = () => {
+                    state.selectedContentType = type.id;
+                    DOMElements.outputTitleLabel.innerText = type.label;
+                    renderContentTypes(); // Re-render to update classes
+                };
+                
+                DOMElements.contentTypesContainer.appendChild(btn);
+            });
+            DOMElements.outputTitleLabel.innerText = MOVIE_CONTENT_TYPES.find(t => t.id === state.selectedContentType).label;
+        }
+
+        function updateDetailsDisplay() {
+            DOMElements.displayTitle.innerText = state.movieInfo.title || '-';
+            DOMElements.displayYear.innerText = state.movieInfo.year ? `(${state.movieInfo.year})` : '(----)';
+            
+            const rating = state.movieInfo.rating || '-';
+            const genre = state.movieInfo.genre || '-';
+            DOMElements.displayRatingGenre.innerText = `${rating} | ${genre}`;
+            
+            DOMElements.displayCast.innerText = state.movieInfo.actors || '-';
+            
+            const dir = state.movieInfo.director || '-';
+            const country = state.movieInfo.country || '-';
+            DOMElements.displayDirCountry.innerText = `${dir} (${country})`;
+
+            // Sync inputs with state
+            DOMElements.inputTitle.value = state.movieInfo.title;
+            DOMElements.inputYear.value = state.movieInfo.year;
+            DOMElements.inputGenre.value = state.movieInfo.genre;
+
+            // Enable/Disable Generate Button
+            DOMElements.generateContentBtn.disabled = !state.movieInfo.title.trim() || state.isGenerating;
+        }
+
+        function setFetchLoading(isLoading) {
+            state.isFetching = isLoading;
+            const btn = DOMElements.fetchDetailsBtn;
+            if (isLoading) {
+                btn.disabled = true;
+                btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i><span>ရှာဖွေနေပါသည်...</span>`;
+            } else {
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="sparkles" class="w-5 h-5"></i><span>အချက်အလက် အသေးစိတ်ရှာမည်</span>`;
+            }
+            lucide.createIcons();
+        }
+
+        function setGenerateLoading(isLoading, progressText = "ဖန်တီးနေပါသည်...") {
+            state.isGenerating = isLoading;
+            const btn = DOMElements.generateContentBtn;
+            
+            if (isLoading) {
+                btn.disabled = true;
+                btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin shrink-0"></i><span class="truncate">${progressText}</span>`;
+                DOMElements.cancelGenerateBtn.classList.remove('hide');
+                
+                DOMElements.outputSection.classList.remove('hide');
+                DOMElements.generatingOverlay.classList.remove('hide');
+                DOMElements.generatingStatus.innerText = progressText;
+            } else {
+                btn.disabled = !state.movieInfo.title.trim();
+                btn.innerHTML = `<i data-lucide="file-text" class="w-5 h-5 shrink-0"></i><span class="truncate">အကြောင်းအရာ ဖန်တီးမည်</span>`;
+                DOMElements.cancelGenerateBtn.classList.add('hide');
+                
+                DOMElements.generatingOverlay.classList.add('hide');
+            }
+            lucide.createIcons();
+        }
+
+        function clearOutputs() {
+            DOMElements.outHook.innerText = '';
+            DOMElements.outCaption.innerText = '';
+            DOMElements.outHashtags.innerText = '';
+            DOMElements.outContent.value = '';
+            
+            DOMElements.hookContainer.classList.add('hide');
+            DOMElements.captionContainer.classList.add('hide');
+            DOMElements.hashtagsContainer.classList.add('hide');
+            DOMElements.contentContainer.classList.add('hide');
+            DOMElements.outputSection.classList.add('hide');
+        }
+
+        // --- EVENT LISTENERS ---
+
+        // Image Upload
+        DOMElements.posterUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const dataUrl = event.target.result;
+                state.moviePosterBase64 = extractBase64(dataUrl);
+                
+                DOMElements.posterPreview.src = dataUrl;
+                DOMElements.uploadPlaceholder.classList.add('hide');
+                DOMElements.previewArea.classList.remove('hide');
+                DOMElements.fetchDetailsBtn.disabled = false;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Clear Image
+        DOMElements.clearPosterBtn.addEventListener('click', () => {
+            state.moviePosterBase64 = null;
+            DOMElements.posterPreview.src = '';
+            DOMElements.previewArea.classList.add('hide');
+            DOMElements.uploadPlaceholder.classList.remove('hide');
+            DOMElements.posterUpload.value = '';
+            updateDetailsDisplay();
+        });
+
+        // Manual Inputs Update State
+        DOMElements.inputTitle.addEventListener('input', (e) => { state.movieInfo.title = e.target.value; updateDetailsDisplay(); });
+        DOMElements.inputYear.addEventListener('input', (e) => { state.movieInfo.year = e.target.value; updateDetailsDisplay(); });
+        DOMElements.inputGenre.addEventListener('input', (e) => { state.movieInfo.genre = e.target.value; updateDetailsDisplay(); });
+
+        // Duration Slider
+        DOMElements.durationSlider.addEventListener('input', (e) => {
+            state.recapDuration = parseInt(e.target.value);
+            DOMElements.durationDisplay.innerText = state.recapDuration;
+        });
+
+        // Clear All
+        DOMElements.clearAllBtn.addEventListener('click', () => {
+            DOMElements.clearPosterBtn.click();
+            state.movieInfo = { title: '', year: '', genre: '', rating: '', country: '', actors: '', director: '' };
+            updateDetailsDisplay();
+            clearOutputs();
+            showToast("ရှင်းလင်းပြီးပါပြီ", "success");
+        });
+
+        // --- API CALLS ---
+
+        // Fetch Movie Details API
+        DOMElements.fetchDetailsBtn.addEventListener('click', async () => {
+            if (!state.moviePosterBase64 && !state.movieInfo.title.trim()) {
+                showToast("Poster ပုံတင်ပါ သို့မဟုတ် ဇာတ်ကားနာမည် ထည့်သွင်းပေးပါ။", "error");
+                return;
+            }
+
+            setFetchLoading(true);
+            clearOutputs();
+
+            const model = 'gemini-2.5-flash-preview-09-2025';
+            let payload = {};
+
+            if (state.moviePosterBase64) {
+                payload = {
+                    systemInstruction: { parts: [{ text: "You are an expert movie database assistant. Extract highly accurate movie information from the poster. Return ONLY a valid JSON object." }] },
+                    contents: [{
+                        parts: [
+                            { text: "Examine this movie poster carefully. Provide details (title, year, genre, rating, country, actors, director). Return ONLY a valid JSON object." },
+                            { inlineData: { mimeType: "image/jpeg", data: state.moviePosterBase64 } }
+                        ]
+                    }]
+                };
+            } else {
+                payload = {
+                    systemInstruction: { parts: [{ text: "You are an expert movie database assistant. Provide exact details for the requested movie. Return ONLY a valid JSON object." }] },
+                    contents: [{ parts: [{ text: `Provide details for: Title: ${state.movieInfo.title}, Year: ${state.movieInfo.year || 'unknown'}, Genre: ${state.movieInfo.genre || 'unknown'}` }] }]
+                };
+            }
+
+            payload.generationConfig = {
+                responseMimeType: "application/json",
+                responseSchema: {
+                    type: "OBJECT",
+                    properties: {
+                        title: { type: "STRING" },
+                        year: { type: "STRING" },
+                        genre: { type: "STRING" },
+                        rating: { type: "STRING" },
+                        country: { type: "STRING" },
+                        actors: { type: "STRING" },
+                        director: { type: "STRING" }
+                    }
+                }
+            };
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+            try {
+                // Implementing exponential backoff logic conceptually
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error("API Error");
+                
+                const data = await response.json();
+                let textResult = data.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
+                textResult = textResult.replace(/^```[a-zA-Z]*\n/i, '').replace(/\n```$/i, '').trim();
+                
+                const parsed = JSON.parse(textResult);
+                
+                state.movieInfo = {
+                    title: parsed.title || state.movieInfo.title,
+                    year: parsed.year || state.movieInfo.year,
+                    genre: parsed.genre || state.movieInfo.genre,
+                    rating: parsed.rating || '',
+                    country: parsed.country || '',
+                    actors: parsed.actors || '',
+                    director: parsed.director || ''
+                };
+                
+                updateDetailsDisplay();
+                showToast("အချက်အလက် ရှာဖွေမှု အောင်မြင်ပါသည်။", "success");
+
+            } catch (error) {
+                console.error(error);
+                showToast("အချက်အလက် ရှာဖွေ၍မရပါ။ ကိုယ်တိုင်ရိုက်ထည့်ကြည့်ပါ။", "error");
+            } finally {
+                setFetchLoading(false);
+            }
+        });
+
+        // Generate Movie Content API (Chunked)
+        DOMElements.generateContentBtn.addEventListener('click', async () => {
+            if (!state.movieInfo.title.trim()) {
+                showToast("ဇာတ်ကားနာမည် လိုအပ်ပါသည်။", "error");
+                return;
+            }
+
+            state.generateAbortController = new AbortController();
+            clearOutputs();
+            
+            // 1 Chunk per ~6 mins
+            const totalChunks = Math.max(1, Math.ceil(state.recapDuration / 6)); 
+            let accumulatedContent = '';
+            
+            DOMElements.outputSection.classList.remove('hide');
+            setGenerateLoading(true, totalChunks > 1 ? `အပိုင်း (1/${totalChunks}) ဖန်တီးနေပါသည်...` : "စာသား ဖန်တီးနေပါသည်...");
+
+            let isFullySuccessful = true;
+
+            for (let currentChunk = 1; currentChunk <= totalChunks; currentChunk++) {
+                if (state.generateAbortController.signal.aborted) break;
+
+                if (totalChunks > 1) {
+                    setGenerateLoading(true, `အပိုင်း (${currentChunk}/${totalChunks}) ဖန်တီးနေပါသည်...`);
+                }
+
+                let narrativeFocus = "";
+                if (totalChunks === 1) {
+                    narrativeFocus = "Cover the entire story from beginning to end in the requested detail.";
+                } else if (currentChunk === 1) {
+                    narrativeFocus = "Focus ONLY on the very beginning (Act 1), setting the scene, character introductions, and the inciting incident. DO NOT write past the first major plot point. Expand every detail to make it extremely lengthy. DO NOT wrap up the story.";
+                } else if (currentChunk === totalChunks) {
+                    narrativeFocus = "Focus ONLY on the climax, the ending, and the final resolution (Act 3). Conclude the story in extreme detail. Do not rush the ending.";
+                } else {
+                    narrativeFocus = `Focus ONLY on the middle of the story (Act 2, Part ${currentChunk - 1} of ${totalChunks - 2}). Detail the rising action, obstacles, character development, and major twists. DO NOT introduce the final climax yet, and DO NOT wrap up the story.`;
+                }
+
+                const typePrompts = {
+                    recap: "Write a highly detailed movie recap.",
+                    review: "Write an in-depth movie review. Focus on deep critique.",
+                    facts: "Provide interesting behind-the-scenes facts.",
+                    mistakes: "Point out movie mistakes and continuity errors.",
+                    ending: "Explain the ending of the movie in depth.",
+                    theory: "Discuss popular fan theories."
+                };
+
+                const specificPrompt = typePrompts[state.selectedContentType] || typePrompts.recap;
+                const prompt = `
+                Content Type: ${state.selectedContentType}
+                Movie: '${state.movieInfo.title}' (${state.movieInfo.year})
+                
+                CRITICAL LENGTH REQUIREMENT:
+                - The user wants a total script that takes EXACTLY ${state.recapDuration} minutes to read aloud.
+                - You are writing PART ${currentChunk} out of ${totalChunks}.
+                - Narrative Focus: ${narrativeFocus}
+                
+                INSTRUCTIONS:
+                1. ${specificPrompt}
+                2. Output natively and strictly in conversational Burmese (Myanmar) language.
+                3. DO NOT use headings like "Part", "Chapter". Write continuous narrative paragraphs.
+                `;
+
+                const schemaProperties = {
+                    content: { type: "STRING" }
+                };
+
+                if (currentChunk === 1) {
+                    schemaProperties.hook = { type: "STRING", description: "3-Second Hook in Burmese" };
+                    schemaProperties.caption = { type: "STRING", description: "Viral Caption in Burmese" };
+                    schemaProperties.hashtags = { type: "STRING", description: "5 relevant Hashtags" };
+                }
+
+                const payload = {
+                    systemInstruction: { parts: [{ text: "You are a Burmese content creator. Output JSON strictly. NEVER output chapter headers." }] },
+                    contents: [{ parts: [{ text: prompt }] }],
+                    generationConfig: {
+                        responseMimeType: "application/json",
+                        responseSchema: {
+                            type: "OBJECT",
+                            properties: schemaProperties
+                        }
+                    }
+                };
+
+                try {
+                    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload),
+                        signal: state.generateAbortController.signal
+                    });
+
+                    if (!response.ok) throw new Error("API Error");
+                    const data = await response.json();
+                    let textResult = data.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
+                    
+                    textResult = textResult.replace(/^```[a-zA-Z]*\n/i, '').replace(/\n```$/i, '').trim();
+                    const parsed = JSON.parse(textResult);
+
+                    // Update UI for Chunk 1 items
+                    if (currentChunk === 1) {
+                        if (parsed.hook) {
+                            DOMElements.outHook.innerText = parsed.hook;
+                            DOMElements.hookContainer.classList.remove('hide');
+                        }
+                        if (parsed.caption) {
+                            DOMElements.outCaption.innerText = parsed.caption;
+                            DOMElements.captionContainer.classList.remove('hide');
+                        }
+                        if (parsed.hashtags) {
+                            DOMElements.outHashtags.innerText = parsed.hashtags;
+                            DOMElements.hashtagsContainer.classList.remove('hide');
+                        }
+                    }
+
+                    // Append Content
+                    let chunkContent = parsed.content || '';
+                    chunkContent = chunkContent.replace(/(အပိုင်း\s*[-|–|—|:]?\s*\d+|Part\s*[-|–|—|:]?\s*\d+|Chapter\s*[-|–|—|:]?\s*\d+)/gi, '').trim();
+
+                    accumulatedContent += (accumulatedContent ? "\n\n" : "") + chunkContent;
+                    
+                    DOMElements.outContent.value = accumulatedContent;
+                    DOMElements.contentContainer.classList.remove('hide');
+
+                } catch (error) {
+                    if (error.name === 'AbortError') {
+                        console.log("Generation Aborted");
+                    } else {
+                        console.error(error);
+                        isFullySuccessful = false;
+                    }
+                    break;
+                }
+            }
+
+            setGenerateLoading(false);
+
+            if (state.generateAbortController.signal.aborted) {
+                showToast("ဖန်တီးမှု ရပ်တန့်လိုက်ပါပြီ။", "error");
+            } else if (!isFullySuccessful && accumulatedContent.trim() === '') {
+                showToast("ဖန်တီးမှု မအောင်မြင်ပါ။ ထပ်မံကြိုးစားပါ။", "error");
+            } else {
+                showToast("ဖန်တီးမှု အောင်မြင်ပါသည်။", "success");
+            }
+        });
+
+        // Cancel Generation
+        DOMElements.cancelGenerateBtn.addEventListener('click', () => {
+            if (state.generateAbortController) {
+                state.generateAbortController.abort();
+            }
+        });
+
+        // --- INITIAL SETUP ---
+        renderContentTypes();
+        updateDetailsDisplay();
+
+    </script>
+</body>
+</html>
