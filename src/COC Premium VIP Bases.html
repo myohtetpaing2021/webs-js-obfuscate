@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoC Premium VIP Bases</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        coc: {
+                            dark: '#080c14',
+                            panel: '#0f172a',
+                            card: '#1e293b',
+                            gold: '#f59e0b',
+                            goldLight: '#fde047',
+                            accent: '#3b82f6'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'shimmer': 'shimmer 2s linear infinite',
+                    },
+                    keyframes: {
+                        glow: {
+                            '0%': { filter: 'drop-shadow(0 0 15px rgba(245, 158, 11, 0.4))' },
+                            '100%': { filter: 'drop-shadow(0 0 35px rgba(250, 204, 21, 0.8))' }
+                        },
+                        shimmer: {
+                            '0%': { transform: 'translateX(-100%)' },
+                            '100%': { transform: 'translateX(100%)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- React & ReactDOM (UMD build) -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel Standalone for JSX compilation -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        body { 
+            background-color: #080c14; 
+            color: #f8fafc; 
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; 
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+        .glass-panel { 
+            background: rgba(15, 23, 42, 0.85); 
+            backdrop-filter: blur(16px); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.65);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .btn-gold { 
+            background: linear-gradient(135deg, #fef08a 0%, #eab308 50%, #ca8a04 100%); 
+            color: #422006; 
+            font-weight: 800; 
+            text-shadow: 0 1px 0 rgba(255,255,255,0.4); 
+            box-shadow: 0 4px 14px rgba(234, 179, 8, 0.3); 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        .btn-gold:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(234, 179, 8, 0.45);
+        }
+        .btn-gold:active { 
+            transform: translateY(1px); 
+            box-shadow: 0 2px 6px rgba(234, 179, 8, 0.2); 
+        }
+        .toast-animation { 
+            animation: slideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+        }
+        @keyframes slideDown { 
+            from { transform: translateY(-100%) scale(0.9); opacity: 0; } 
+            to { transform: translateY(0) scale(1); opacity: 1; } 
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Premium interface layer */
+        :root {
+            color-scheme: dark;
+            --ink: #f8fafc;
+            --muted: #94a3b8;
+            --line: rgba(148, 163, 184, 0.16);
+            --panel: rgba(10, 16, 29, 0.76);
+            --panel-strong: rgba(15, 23, 42, 0.92);
+            --gold: #fbbf24;
+            --gold-soft: #fde68a;
+            --cyan: #67e8f9;
+        }
+        body {
+            background: radial-gradient(circle at 10% -10%, rgba(245, 158, 11, 0.13), transparent 28rem), radial-gradient(circle at 100% 0%, rgba(14, 165, 233, 0.10), transparent 24rem), linear-gradient(145deg, #070b13 0%, #0b1120 48%, #080c14 100%);
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.24;
+            background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+            background-size: 44px 44px;
+            mask-image: linear-gradient(to bottom, black, transparent 80%);
+        }
+        button, input, select, a { -webkit-tap-highlight-color: transparent; }
+        button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible { outline: 2px solid rgba(251, 191, 36, 0.9); outline-offset: 3px; }
+        .glass-panel { background: linear-gradient(145deg, rgba(18, 28, 49, 0.88), rgba(8, 14, 26, 0.80)); border-color: rgba(148, 163, 184, 0.15); box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255,255,255,0.04); }
+        .glass-card { background: linear-gradient(145deg, rgba(30, 41, 59, 0.78), rgba(15, 23, 42, 0.82)); border-color: rgba(148, 163, 184, 0.15); box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255,255,255,0.035); }
+        .glass-card:hover { border-color: rgba(251, 191, 36, 0.32); box-shadow: 0 20px 44px rgba(0,0,0,0.28), 0 0 0 1px rgba(251,191,36,0.04); }
+        .app-frame { position: relative; width: min(100%, 1180px); }
+        .topbar { margin: 14px 14px 0; border-radius: 22px; padding: 14px 18px; position: relative; overflow: hidden; }
+        .topbar::after { content: ''; position: absolute; width: 160px; height: 160px; right: -70px; top: -95px; border-radius: 999px; background: rgba(251,191,36,0.12); filter: blur(10px); pointer-events: none; }
+        .brand-mark { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid rgba(253, 230, 138, 0.65); border-radius: 14px; background: linear-gradient(145deg, #fde68a, #d97706); box-shadow: 0 10px 24px rgba(245, 158, 11, 0.23); }
+        .license-chip { background: rgba(15, 23, 42, 0.72); border: 1px solid rgba(148,163,184,0.16); }
+        .nav-shell { margin: 12px 14px 0; border: 1px solid var(--line); border-radius: 20px; padding: 8px; background: rgba(15, 23, 42, 0.68); box-shadow: 0 16px 35px rgba(0,0,0,0.16); }
+        .nav-scroller { padding: 2px; }
+        .nav-item-active { box-shadow: 0 8px 20px rgba(245,158,11,0.18), inset 0 1px 0 rgba(255,255,255,0.35); }
+        .search-shell { background: rgba(2, 6, 23, 0.52); border: 1px solid rgba(148,163,184,0.14); }
+        .content-shell { padding: 20px 14px 36px; }
+        .dashboard-intro { position: relative; overflow: hidden; border: 1px solid rgba(251,191,36,0.16); border-radius: 24px; padding: 20px; margin-bottom: 18px; background: linear-gradient(120deg, rgba(120,53,15,0.34), rgba(15,23,42,0.74) 48%, rgba(8,47,73,0.28)); box-shadow: 0 18px 42px rgba(0,0,0,0.18); }
+        .dashboard-intro::after { content: ''; position: absolute; right: -10px; bottom: -60px; width: 180px; height: 180px; border-radius: 999px; background: rgba(103,232,249,0.08); filter: blur(20px); }
+        .eyebrow { color: var(--gold-soft); font-size: 10px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; }
+        .stat-pill { min-width: 84px; padding: 10px 12px; border: 1px solid rgba(148,163,184,0.14); border-radius: 16px; background: rgba(2,6,23,0.30); }
+        .card-grid { gap: 18px; }
+        .layout-card { border-radius: 22px; transition: transform 240ms ease, border-color 240ms ease, box-shadow 240ms ease; }
+        .layout-card:hover { transform: translateY(-4px); }
+        .layout-card__media { border-bottom: 1px solid rgba(148,163,184,0.14); }
+        .layout-card__body { padding: 18px; }
+        .type-badge { background: rgba(2,6,23,0.72); border-color: rgba(253,230,138,0.28); box-shadow: 0 8px 22px rgba(0,0,0,0.24); }
+        .icon-action { transition: transform 180ms ease, background 180ms ease, color 180ms ease; }
+        .icon-action:hover { transform: translateY(-2px); }
+        .cc-row { border-color: rgba(148,163,184,0.13); background: rgba(2,6,23,0.52); }
+        .primary-action { min-height: 44px; border: 1px solid rgba(253,230,138,0.60); }
+        .empty-state { background: linear-gradient(145deg, rgba(15,23,42,0.82), rgba(8,14,26,0.90)); }
+        .activation-card { background: linear-gradient(145deg, rgba(21, 31, 52, 0.94), rgba(8, 13, 25, 0.90)); box-shadow: 0 30px 90px rgba(0,0,0,0.45), 0 0 0 1px rgba(251,191,36,0.08); }
+        .admin-banner { background: linear-gradient(120deg, rgba(127,29,29,0.28), rgba(15,23,42,0.78)); }
+        .admin-card { background: linear-gradient(145deg, rgba(18,28,49,0.88), rgba(8,14,26,0.86)); }
+        .field-label { color: #cbd5e1; letter-spacing: 0.05em; text-transform: uppercase; }
+        .field-control { background: rgba(2,6,23,0.68) !important; border-color: rgba(148,163,184,0.18) !important; min-height: 42px; }
+        .field-control::placeholder { color: #64748b; }
+        .field-control:focus { border-color: rgba(251,191,36,0.72) !important; box-shadow: 0 0 0 3px rgba(251,191,36,0.10); }
+        .code-row { background: rgba(2,6,23,0.56); border-color: rgba(148,163,184,0.14); }
+        @media (max-width: 640px) {
+            .topbar { margin: 8px 8px 0; padding: 12px; border-radius: 18px; }
+            .nav-shell { margin: 8px 8px 0; border-radius: 17px; }
+            .content-shell { padding: 16px 8px 30px; }
+            .dashboard-intro { padding: 16px; border-radius: 20px; }
+            .dashboard-intro .stats { width: 100%; }
+            .stat-pill { flex: 1; min-width: 0; }
+            .layout-card__body { padding: 15px; }
+        }
+        /* Signature polish pass */
+        html { scroll-behavior: smooth; }
+        #root { min-height: 100vh; }
+        body { letter-spacing: -0.01em; }
+        .app-frame { width: min(100%, 1320px); }
+        .topbar { border-color: rgba(253, 230, 138, 0.14); background: linear-gradient(115deg, rgba(19,29,51,0.94), rgba(8,14,26,0.86) 68%, rgba(41, 29, 8, 0.76)); box-shadow: 0 22px 60px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.06); }
+        .topbar::before { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(251,191,36,0.55), rgba(103,232,249,0.35), transparent); opacity: 0.8; }
+        .brand-mark::before { content: ''; position: absolute; inset: -6px; border-radius: 18px; border: 1px solid rgba(251,191,36,0.12); animation: ringPulse 2.8s ease-in-out infinite; }
+        .brand-mark::after { content: ''; position: absolute; width: 6px; height: 6px; top: 4px; right: 4px; border-radius: 999px; background: #67e8f9; box-shadow: 0 0 12px rgba(103,232,249,0.85); }
+        .status-chip { display: inline-flex; align-items: center; gap: 7px; color: #a7f3d0; font-size: 9px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; }
+        .status-dot { width: 6px; height: 6px; border-radius: 999px; background: #34d399; box-shadow: 0 0 10px rgba(52,211,153,0.82); }
+        .nav-shell { position: sticky; top: 10px; z-index: 30; backdrop-filter: blur(22px); }
+        .nav-item { border: 1px solid transparent; }
+        .nav-item:hover { border-color: rgba(148,163,184,0.12); }
+        .nav-item-active { border-color: rgba(253,230,138,0.44); }
+        .search-shell { transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease; }
+        .search-shell:focus { background: rgba(2,6,23,0.76); box-shadow: 0 0 0 4px rgba(103,232,249,0.06); }
+        .dashboard-intro { min-height: 184px; display: flex; align-items: center; }
+        .dashboard-intro::before { content: ''; position: absolute; inset: 0; opacity: 0.28; background: linear-gradient(115deg, transparent 0 35%, rgba(255,255,255,0.04) 35.2%, transparent 35.5% 55%, rgba(103,232,249,0.04) 55.2%, transparent 55.5%); pointer-events: none; }
+        .dashboard-intro h2 { background: linear-gradient(100deg, #fff7ed 0%, #fde68a 45%, #bae6fd 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .stat-pill { transition: transform 180ms ease, border-color 180ms ease, background 180ms ease; }
+        .stat-pill:hover { transform: translateY(-3px); border-color: rgba(253,230,138,0.32); background: rgba(2,6,23,0.52); }
+        .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; padding: 2px 4px 0; }
+        .section-heading h3 { font-size: 17px; line-height: 1.1; font-weight: 900; color: #f8fafc; }
+        .result-count { padding: 6px 10px; border: 1px solid rgba(148,163,184,0.15); border-radius: 999px; color: #94a3b8; background: rgba(2,6,23,0.32); font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+        .card-grid { align-items: stretch; }
+        .layout-card { min-width: 0; }
+        .layout-card__media { background: linear-gradient(145deg, #111827, #020617); }
+        .layout-card__media img { filter: saturate(0.88) contrast(1.04); }
+        .layout-card:hover .layout-card__media img { filter: saturate(1.08) contrast(1.06); }
+        .layout-card__body { background: linear-gradient(180deg, rgba(15,23,42,0.14), rgba(2,6,23,0.12)); }
+        .primary-action { position: relative; overflow: hidden; isolation: isolate; }
+        .primary-action::before { content: ''; position: absolute; inset: 0; width: 34%; transform: translateX(-140%) skewX(-18deg); background: rgba(255,255,255,0.30); filter: blur(5px); transition: transform 500ms ease; z-index: -1; }
+        .primary-action:hover::before { transform: translateX(430%) skewX(-18deg); }
+        .empty-state { border-color: rgba(103,232,249,0.13); }
+        .activation-card { border-color: rgba(253,230,138,0.20); }
+        .admin-banner { box-shadow: 0 18px 40px rgba(127,29,29,0.14), inset 0 1px 0 rgba(255,255,255,0.04); }
+        @keyframes ringPulse { 0%, 100% { transform: scale(0.96); opacity: 0.35; } 50% { transform: scale(1.08); opacity: 0.8; } }
+        @media (min-width: 1280px) { .content-shell { padding-left: 20px; padding-right: 20px; } }
+        .admin-shell { position: relative; }
+        .admin-overview { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+        .admin-stat { position: relative; overflow: hidden; padding: 14px; border: 1px solid rgba(148,163,184,0.14); border-radius: 18px; background: linear-gradient(145deg, rgba(18,28,49,0.78), rgba(2,6,23,0.48)); box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); }
+        .admin-stat::after { content: ''; position: absolute; width: 80px; height: 80px; right: -30px; bottom: -35px; border-radius: 999px; background: rgba(103,232,249,0.08); filter: blur(8px); }
+        .admin-stat__value { font-size: 22px; line-height: 1; font-weight: 900; color: #f8fafc; }
+        .admin-stat__label { margin-top: 7px; color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: 0.10em; text-transform: uppercase; }
+        .admin-stat__accent { color: #fde68a; }
+        .admin-card { border-color: rgba(148,163,184,0.16); }
+        .admin-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 18px; }
+        .admin-card-kicker { color: #67e8f9; font-size: 9px; font-weight: 900; letter-spacing: 0.16em; text-transform: uppercase; }
+        .admin-card-title { margin-top: 4px; font-size: 18px; line-height: 1.2; font-weight: 900; color: #f8fafc; }
+        .admin-helper { margin-top: 5px; color: #64748b; font-size: 11px; line-height: 1.5; }
+        .admin-cta { border: 1px solid rgba(251,191,36,0.28); background: rgba(120,53,15,0.22); color: #fde68a; }
+        .admin-cta:hover { border-color: rgba(253,230,138,0.62); background: rgba(146,64,14,0.32); }
+        .form-section-label { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 10px; font-weight: 900; letter-spacing: 0.10em; text-transform: uppercase; }
+        .form-section-label::before { content: ''; width: 5px; height: 5px; border-radius: 99px; background: #fbbf24; box-shadow: 0 0 8px rgba(251,191,36,0.65); }
+        .code-list { scrollbar-width: thin; scrollbar-color: rgba(148,163,184,0.28) transparent; }
+        .code-row { transition: border-color 180ms ease, background 180ms ease, transform 180ms ease; }
+        .code-row:hover { transform: translateX(2px); border-color: rgba(103,232,249,0.26); background: rgba(8,47,73,0.24); }
+        .code-row-used { opacity: 0.72; }
+        .code-status { display: inline-flex; align-items: center; gap: 5px; margin-top: 5px; padding: 3px 7px; border-radius: 999px; font-size: 9px; font-weight: 900; letter-spacing: 0.05em; text-transform: uppercase; }
+        .code-status-active { border: 1px solid rgba(52,211,153,0.24); background: rgba(6,78,59,0.22); color: #6ee7b7; }
+        .code-status-used { border: 1px solid rgba(248,113,113,0.22); background: rgba(127,29,29,0.22); color: #fca5a5; }
+        .code-meta { color: #64748b; font-size: 9px; margin-top: 6px; }
+        .admin-banner__status { display: inline-flex; align-items: center; gap: 6px; padding: 6px 9px; border: 1px solid rgba(52,211,153,0.2); border-radius: 999px; background: rgba(6,78,59,0.18); color: #86efac; font-size: 9px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
+        .admin-banner__status::before { content: ''; width: 6px; height: 6px; border-radius: 999px; background: #34d399; box-shadow: 0 0 10px rgba(52,211,153,0.8); }
+        .admin-copy-button { border: 1px solid rgba(148,163,184,0.18); background: rgba(15,23,42,0.72); color: #cbd5e1; }
+        .admin-copy-button:hover { border-color: rgba(103,232,249,0.42); background: rgba(8,47,73,0.36); color: #fff; }
+        .topbar__brand, .topbar__actions { min-width: 0; }
+        .topbar__brand > div:last-child { min-width: 0; }
+        .topbar__brand h1, .topbar__brand p { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .admin-banner { flex-wrap: wrap; gap: 12px; }
+        .admin-banner__actions { display: flex; align-items: center; gap: 10px; }
+        .admin-banner__actions button { white-space: nowrap; }
+        .content-shell { min-width: 0; }
+        .card-grid > * { min-width: 0; }
+        .layout-card__body { min-width: 0; }
+        @media (max-width: 768px) {
+            .admin-overview { grid-template-columns: 1fr; }
+            .admin-banner__status { display: none; }
+        }
+        @media (max-width: 640px) {
+            .topbar { position: relative; margin: 8px 8px 0; padding: 11px 12px; border-radius: 18px; }
+            .topbar__brand { gap: 10px; }
+            .topbar__brand h1 { max-width: 154px; font-size: 13px; }
+            .topbar__brand p { max-width: 154px; font-size: 9px; }
+            .status-chip { font-size: 7px; letter-spacing: 0.12em; }
+            .brand-mark { width: 40px; height: 40px; border-radius: 12px; font-size: 17px; }
+            .topbar__actions { gap: 5px; }
+            .license-chip { padding: 6px 8px; border-radius: 12px; }
+            .license-chip .text-\[10px\] { font-size: 8px; }
+            .license-chip .text-xs { font-size: 9px; white-space: nowrap; }
+            .nav-shell { top: 6px; margin: 8px 8px 0; padding: 6px; border-radius: 17px; }
+            .nav-scroller { gap: 4px; padding-bottom: 2px; }
+            .nav-item { min-height: 36px; padding: 8px 10px; font-size: 10px; }
+            .nav-item svg { width: 14px; height: 14px; }
+            .search-shell { min-height: 38px; font-size: 11px; }
+            .content-shell { padding: 14px 8px 28px; }
+            .dashboard-intro { min-height: 0; padding: 16px; border-radius: 20px; }
+            .dashboard-intro h2 { font-size: 22px; line-height: 1.12; }
+            .dashboard-intro p { font-size: 11px; line-height: 1.55; }
+            .dashboard-intro .stats { width: 100%; gap: 6px; }
+            .stat-pill { flex: 1; min-width: 0; padding: 9px 7px; border-radius: 13px; }
+            .stat-pill .text-lg { font-size: 16px; }
+            .stat-pill .text-\[10px\] { font-size: 8px; }
+            .section-heading { align-items: center; gap: 10px; }
+            .section-heading h3 { font-size: 14px; }
+            .section-heading h3 span { display: none; }
+            .result-count { padding: 5px 8px; font-size: 8px; }
+            .card-grid { gap: 12px; }
+            .layout-card { border-radius: 18px; }
+            .layout-card__body { padding: 14px; }
+            .layout-card__body .primary-action { min-height: 42px; font-size: 10px; }
+            .cc-row { padding: 9px; font-size: 10px; }
+            .admin-banner { align-items: flex-start; padding: 14px; }
+            .admin-banner > .flex.items-center.gap-3 { align-items: flex-start; }
+            .admin-banner__actions { width: 100%; justify-content: space-between; }
+            .admin-banner__actions button { flex: 1; justify-content: center; }
+            .admin-card { padding: 15px; border-radius: 18px; }
+            .admin-card-header { flex-direction: column; gap: 12px; }
+            .admin-card-header .admin-cta { align-self: stretch; justify-content: center; min-height: 40px; }
+            .admin-card-title { font-size: 16px; }
+            .admin-helper { font-size: 10px; }
+            .field-control { min-height: 44px; }
+            .code-row { align-items: flex-start; }
+        }
+        @media (max-width: 380px) {
+            .topbar__brand h1, .topbar__brand p { max-width: 124px; }
+            .topbar__actions .license-chip { display: none; }
+            .nav-item { padding-left: 8px; padding-right: 8px; }
+            .dashboard-intro h2 { font-size: 20px; }
+            .stat-pill .text-\[10px\] { letter-spacing: -0.04em; }
+        }
+        /* sme2.html-inspired visual language */
+        body { background-color: #020617; }
+        body::after { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: -1; background: radial-gradient(circle at 15% 15%, rgba(14,165,233,0.10), transparent 32%), radial-gradient(circle at 85% 75%, rgba(139,92,246,0.08), transparent 30%); }
+        .glass-panel { background: rgba(15,23,42,0.62); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.035); }
+        .glass-card { background: linear-gradient(145deg, rgba(30,41,59,0.42), rgba(15,23,42,0.48)); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        .glass-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent); opacity: 0; transition: opacity 240ms ease; }
+        .glass-card:hover::before { opacity: 1; }
+        .preloader-shell { background: #020617; }
+        .preloader-grid { position: absolute; inset: 0; opacity: 0.18; background-image: radial-gradient(#38bdf8 1px, transparent 1px); background-size: 40px 40px; transform: perspective(500px) rotateX(20deg); }
+        .preloader-orbit { position: absolute; inset: 0; border-radius: 999px; border: 2px solid transparent; border-top-color: #06b6d4; border-left-color: rgba(6,182,212,0.28); animation: preloaderSpin 2s linear infinite; box-shadow: 0 0 30px rgba(6,182,212,0.20); }
+        .preloader-orbit-inner { position: absolute; inset: 12px; border-radius: 999px; border: 2px solid transparent; border-right-color: rgba(139,92,246,0.55); border-bottom-color: #8b5cf6; animation: preloaderSpinReverse 3s linear infinite; }
+        .preloader-core { position: relative; z-index: 2; display: grid; place-items: center; width: 80px; height: 80px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.10); background: linear-gradient(135deg, #083344, #0f172a); box-shadow: 0 0 50px rgba(6,182,212,0.38); animation: preloaderPulse 2s ease-in-out infinite; }
+        .preloader-core::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: rgba(6,182,212,0.18); filter: blur(18px); animation: preloaderPulse 2s ease-in-out infinite; }
+        .preloader-progress { height: 4px; border: 1px solid rgba(255,255,255,0.08); background: rgba(30,41,59,0.62); box-shadow: inset 0 1px 3px rgba(0,0,0,0.35); }
+        .preloader-progress__fill { position: relative; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #06b6d4, #3b82f6, #8b5cf6); box-shadow: 0 0 20px rgba(6,182,212,0.75); transition: width 300ms ease; }
+        .preloader-progress__fill::after { content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 8px; background: rgba(255,255,255,0.50); filter: blur(2px); }
+        .preloader-title { font-family: Inter, system-ui, sans-serif; letter-spacing: 0.2em; }
+        .preloader-label { font-family: Inter, system-ui, sans-serif; letter-spacing: 0.4em; }
+        @keyframes preloaderSpin { to { transform: rotate(360deg); } }
+        @keyframes preloaderSpinReverse { to { transform: rotate(-360deg); } }
+        @keyframes preloaderPulse { 0%, 100% { transform: scale(0.98); opacity: 0.85; } 50% { transform: scale(1.04); opacity: 1; } }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+        }
+        button, a, input, select { touch-action: manipulation; }
+        .icon-action, .admin-copy-button, .pagination-button { min-width: 44px; min-height: 44px; }
+        .nav-item { min-height: 44px; }
+        .topbar__actions button, .admin-banner__actions button, .admin-cta { min-height: 44px; }
+        .pagination-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(148,163,184,0.12); }
+        .pagination-meta { color: #64748b; font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+        .pagination-controls { display: flex; align-items: center; gap: 6px; }
+        .pagination-pages { display: flex; align-items: center; gap: 4px; max-width: 210px; overflow-x: auto; padding: 2px; scrollbar-width: none; }
+        .pagination-pages::-webkit-scrollbar { display: none; }
+        .pagination-button { display: inline-flex; align-items: center; justify-content: center; padding: 0 11px; border: 1px solid rgba(148,163,184,0.16); border-radius: 11px; background: rgba(15,23,42,0.72); color: #94a3b8; font-size: 11px; font-weight: 900; transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease; }
+        .pagination-button:hover:not(:disabled) { transform: translateY(-2px); border-color: rgba(103,232,249,0.36); background: rgba(8,47,73,0.34); color: #fff; }
+        .pagination-button:disabled { cursor: not-allowed; opacity: 0.35; }
+        .pagination-button.is-current { border-color: rgba(103,232,249,0.48); background: rgba(8,145,178,0.20); color: #67e8f9; box-shadow: 0 0 14px rgba(6,182,212,0.12); }
+        .base-admin-list { display: grid; gap: 8px; max-height: 330px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(148,163,184,0.28) transparent; }
+        .base-admin-row { display: flex; align-items: center; gap: 12px; padding: 10px; border: 1px solid rgba(148,163,184,0.13); border-radius: 15px; background: rgba(2,6,23,0.52); transition: border-color 180ms ease, background 180ms ease, transform 180ms ease; }
+        .base-admin-row:hover { border-color: rgba(103,232,249,0.28); background: rgba(8,47,73,0.24); transform: translateX(2px); }
+        .base-admin-thumb { width: 54px; height: 42px; flex: 0 0 auto; border-radius: 10px; object-fit: cover; border: 1px solid rgba(148,163,184,0.18); background: #0f172a; }
+        .base-admin-meta { min-width: 0; flex: 1; }
+        .base-admin-meta h4 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #f8fafc; font-size: 11px; font-weight: 900; }
+        .base-admin-meta p { margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #64748b; font-size: 9px; }
+        .delete-base-button { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; border: 1px solid rgba(248,113,113,0.22); border-radius: 12px; background: rgba(127,29,29,0.16); color: #fca5a5; transition: background 180ms ease, border-color 180ms ease, transform 180ms ease; }
+        .delete-base-button:hover { border-color: rgba(248,113,113,0.56); background: rgba(127,29,29,0.36); color: #fff; transform: translateY(-2px); }
+        .confirm-modal { animation: fadeIn 180ms ease-out both; }
+        @media (max-width: 640px) {
+            .icon-action, .admin-copy-button, .pagination-button { min-width: 44px; min-height: 44px; }
+            .pagination-bar { align-items: stretch; flex-direction: column; }
+            .pagination-meta { text-align: center; }
+            .pagination-controls { justify-content: center; }
+            .pagination-pages { max-width: 180px; }
+        }
+        @media (max-width: 640px) {
+            .nav-scroller { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; overflow-x: visible; overflow-y: visible; padding-bottom: 0; }
+            .nav-item { width: 100%; min-width: 0; justify-content: center; gap: 5px; padding: 8px 5px; font-size: 9px; }
+            .nav-item span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+            .nav-item svg { flex: 0 0 auto; width: 13px; height: 13px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel" data-type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, collection, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase is optional: use local device storage when preview/mock credentials are present.
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'coc-vip-base-app';
+        let firebaseConfig = null;
+        let app = null;
+        let db = null;
+        let auth = null;
+        let firebaseEnabled = false;
+
+        try {
+            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                const parsedConfig = typeof __firebase_config === 'string' ? JSON.parse(__firebase_config) : __firebase_config;
+                if (parsedConfig?.apiKey && !String(parsedConfig.apiKey).startsWith('mock-')) {
+                    firebaseConfig = parsedConfig;
+                    app = initializeApp(firebaseConfig);
+                    db = getFirestore(app);
+                    auth = getAuth(app);
+                    firebaseEnabled = true;
+                }
+            }
+        } catch (error) {
+            console.warn('Firebase unavailable; local mode enabled.');
+            firebaseConfig = null;
+            app = null;
+            db = null;
+            auth = null;
+        }
+
+        const { useState, useEffect, useMemo, useCallback } = React;
+
+        const Icons = {
+            Heart: ({ filled, className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill={filled ? "#ef4444" : "none"} stroke={filled ? "#ef4444" : "currentColor"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+            ),
+            Star: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            ),
+            Shield: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            ),
+            Swords: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"></polyline><line x1="13" y1="19" x2="19" y2="13"></line><line x1="16" y1="16" x2="20" y2="20"></line><line x1="19" y1="21" x2="21" y2="19"></line><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"></polyline><line x1="5" y1="14" x2="9" y2="10"></line><line x1="4" y1="17" x2="7" y2="20"></line></svg>
+            ),
+            Settings: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            ),
+            ExternalLink: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            ),
+            Copy: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            ),
+            LogOut: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            ),
+            Maximize: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+            ),
+            X: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            ),
+            Search: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            ),
+            Trash: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"></path></svg>
+            )
+        };
+
+        // sme2-inspired radial preloading screen
+        const PreloaderScreen = ({ progress }) => {
+            return (
+                <div className="fixed inset-0 z-[100] preloader-shell flex flex-col items-center justify-center text-slate-100 overflow-hidden transition-all duration-1000 ease-out">
+                    <div className="preloader-grid"></div>
+                    <div className="absolute top-[-20%] left-[-10%] w-[55%] h-[55%] bg-cyan-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+                    <div className="absolute bottom-[-15%] right-[-10%] w-[55%] h-[55%] bg-violet-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+                    <div className="relative z-10 flex flex-col items-center px-6 text-center">
+                        <div className="relative w-40 h-40 flex items-center justify-center mb-10">
+                            <div className="preloader-orbit"></div>
+                            <div className="preloader-orbit-inner"></div>
+                            <div className="preloader-core">
+                                <Icons.Shield className="relative z-10 w-9 h-9 text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]" />
+                            </div>
+                        </div>
+
+                        <div className="w-64 space-y-4">
+                            <div className="text-center">
+                                <h1 className="preloader-title text-3xl font-black text-white mb-1">COC<span className="text-cyan-400">VIP</span></h1>
+                                <p className="preloader-label text-[9px] text-cyan-400/75 uppercase">Layout Engine Initializing</p>
+                            </div>
+
+                            <div className="preloader-progress w-full rounded-full overflow-hidden relative">
+                                <div className="preloader-progress__fill" style={{ width: `${progress}%` }}></div>
+                            </div>
+
+                            <div className="flex justify-between text-[10px] text-slate-400 font-medium tracking-wider">
+                                <span className="animate-pulse">MAPPING LAYOUTS...</span>
+                                <span className="text-cyan-400 font-bold">{progress}%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="absolute bottom-8 text-[9px] text-slate-600 tracking-[0.28em] uppercase">VIP Base Intelligence System</div>
+                </div>
+            );
+        };
+
+        const ToastManager = ({ toasts }) => {
+            return (
+                <div className="fixed top-4 left-0 right-0 z-50 flex flex-col items-center pointer-events-none gap-2 px-4">
+                    {toasts.map(t => (
+                        <div key={t.id} className={`toast-animation px-4 py-2.5 rounded-2xl shadow-2xl text-xs sm:text-sm font-bold flex items-center gap-2 border backdrop-blur-md ${t.type === 'error' ? 'bg-red-950/90 text-red-200 border-red-800/80' : 'bg-emerald-950/90 text-emerald-200 border-emerald-800/80'}`}>
+                            <span>{t.type === 'error' ? '❌' : '✅'}</span>
+                            <span>{t.message}</span>
+                        </div>
+                    ))}
+                </div>
+            );
+        };
+
+        function App() {
+            const [user, setUser] = useState(null);
+            const [profile, setProfile] = useState(null);
+            const [loading, setLoading] = useState(true);
+            const [loadProgress, setLoadProgress] = useState(15);
+            const [toasts, setToasts] = useState([]);
+            
+            const showToast = useCallback((message, type = 'success') => {
+                const id = Date.now();
+                setToasts(prev => [...prev, { id, message, type }]);
+                setTimeout(() => {
+                    setToasts(prev => prev.filter(t => t.id !== id));
+                }, 3500);
+            }, []);
+
+            // Smooth fake loading progress visualizer
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    setLoadProgress(prev => {
+                        if (prev >= 95) {
+                            clearInterval(interval);
+                            return 95;
+                        }
+                        return prev + Math.floor(Math.random() * 20) + 10;
+                    });
+                }, 150);
+                return () => clearInterval(interval);
+            }, []);
+
+            // Handle Device Auth & VIP License Checks
+            useEffect(() => {
+                const initAuth = async () => {
+                    try {
+                        let currentUser = auth?.currentUser || null;
+                        if (auth && !currentUser) {
+                            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                                const cred = await signInWithCustomToken(auth, __initial_auth_token);
+                                currentUser = cred.user;
+                            } else {
+                                const cred = await signInAnonymously(auth);
+                                currentUser = cred.user;
+                            }
+                        }
+
+                        if (currentUser) {
+                            setUser(currentUser);
+                        } else {
+                            let deviceId = localStorage.getItem('coc_device_id');
+                            if (!deviceId) {
+                                deviceId = 'dev_' + Math.random().toString(36).substring(2, 11);
+                                localStorage.setItem('coc_device_id', deviceId);
+                            }
+                            setUser({ uid: deviceId });
+                        }
+                    } catch (err) {
+                        console.warn('Authentication unavailable; using local device mode.');
+                        let deviceId = localStorage.getItem('coc_device_id');
+                        if (!deviceId) {
+                            deviceId = 'dev_' + Math.random().toString(36).substring(2, 11);
+                            localStorage.setItem('coc_device_id', deviceId);
+                        }
+                        setUser({ uid: deviceId });
+                    } finally {
+                        setLoadProgress(100);
+                        setTimeout(() => setLoading(false), 400);
+                    }
+                };
+                initAuth();
+            }, []);
+
+            // Listen to User VIP Profile changes
+            useEffect(() => {
+                if (!user) return;
+                
+                let unsubscribe = () => {};
+                try {
+                    const profileRef = doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'data');
+                    unsubscribe = onSnapshot(profileRef, (snap) => {
+                        if (snap.exists()) {
+                            setProfile(snap.data());
+                        } else {
+                            const localProfile = localStorage.getItem('coc_vip_profile_' + user.uid);
+                            if (localProfile) {
+                                setProfile(JSON.parse(localProfile));
+                            } else {
+                                setProfile({ vipExpiry: 0, isAdmin: false });
+                            }
+                        }
+                    }, () => {
+                        const localProfile = localStorage.getItem('coc_vip_profile_' + user.uid);
+                        if (localProfile) {
+                            setProfile(JSON.parse(localProfile));
+                        } else {
+                            setProfile({ vipExpiry: 0, isAdmin: false });
+                        }
+                    });
+                } catch (e) {
+                    const localProfile = localStorage.getItem('coc_vip_profile_' + user.uid);
+                    if (localProfile) setProfile(JSON.parse(localProfile));
+                }
+
+                return () => unsubscribe();
+            }, [user]);
+
+            const daysLeft = useMemo(() => {
+                if (!profile || !profile.vipExpiry) return 0;
+                const msLeft = profile.vipExpiry - Date.now();
+                return Math.max(0, Math.ceil(msLeft / (1000 * 60 * 60 * 24)));
+            }, [profile]);
+
+            const isVip = profile?.isAdmin || daysLeft > 0;
+
+            if (loading) {
+                return <PreloaderScreen progress={Math.min(100, loadProgress)} />;
+            }
+
+            return (
+                <div className="min-h-screen bg-coc-dark text-slate-100 selection:bg-yellow-500 selection:text-slate-950 font-sans">
+                    <ToastManager toasts={toasts} />
+                    {(!isVip) ? (
+                        <ActivationScreen user={user} showToast={showToast} setProfile={setProfile} />
+                    ) : (
+                        <MainApp user={user} profile={profile} setProfile={setProfile} showToast={showToast} daysLeft={daysLeft} />
+                    )}
+                </div>
+            );
+        }
+
+        function ActivationScreen({ user, showToast, setProfile }) {
+            const [code, setCode] = useState("");
+            const [isActivating, setIsActivating] = useState(false);
+
+            const handleActivate = async (e) => {
+                e.preventDefault();
+                const trimmedCode = code.trim().toUpperCase();
+                if (!trimmedCode) return;
+
+                setIsActivating(true);
+                try {
+                    // Secret Master Admin Code
+                    if (trimmedCode === "MASTER_ADMIN_777") {
+                        const adminProfile = { 
+                            isAdmin: true, 
+                            vipExpiry: Date.now() + (3650 * 24 * 60 * 60 * 1000)
+                        };
+                        
+                        try {
+                            const profileRef = doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'data');
+                            await setDoc(profileRef, adminProfile, { merge: true });
+                        } catch (e) { /* Local preview mode: profile is persisted below. */ }
+
+                        localStorage.setItem('coc_vip_profile_' + user.uid, JSON.stringify(adminProfile));
+                        setProfile(adminProfile);
+                        showToast("👑 Master Admin Mode Activated!");
+                        return;
+                    }
+
+                    // 1-Time Use & 1-Device Check
+                    let codeSnap = null;
+                    let codeRef = null;
+
+                    if (db) {
+                        try {
+                            codeRef = doc(db, 'artifacts', appId, 'public', 'data', 'invite_codes', trimmedCode);
+                            codeSnap = await getDoc(codeRef);
+                        } catch (e) {
+                            codeSnap = null;
+                        }
+                    }
+
+                    // Local fallback is checked both for offline-generated codes and Firebase errors.
+                    if (!codeSnap || !codeSnap.exists()) {
+                        let localCode = localStorage.getItem('coc_invite_code_' + trimmedCode);
+                        if (!localCode) {
+                            const localCodes = JSON.parse(localStorage.getItem('coc_admin_codes') || '[]');
+                            const localMatch = localCodes.find(item => item.id === trimmedCode);
+                            if (localMatch) localCode = JSON.stringify(localMatch);
+                        }
+
+                        if (localCode) {
+                            const parsed = JSON.parse(localCode);
+                            if (parsed.used && parsed.usedBy !== user.uid) {
+                                throw new Error("This invite code was already used on another device!");
+                            }
+                            codeSnap = { exists: () => true, data: () => parsed };
+                        }
+                    }
+
+                    if (!codeSnap || !codeSnap.exists()) {
+                        throw new Error("Invalid or Expired VIP Code!");
+                    }
+
+                    const codeData = codeSnap.data();
+                    if (codeData.used && codeData.usedBy !== user.uid) {
+                        throw new Error("Code bound to another device! Each code is for 1 device only.");
+                    }
+
+                    // Mark code as used on this device.
+                    const usedCode = {
+                        ...codeData,
+                        used: true,
+                        usedBy: user.uid,
+                        usedAt: Date.now()
+                    };
+                    try {
+                        if (db && codeRef) {
+                            await updateDoc(codeRef, usedCode);
+                        }
+                    } catch (e) {
+                        // Keep the local marker when Firestore is unavailable.
+                    }
+                    localStorage.setItem('coc_invite_code_' + trimmedCode, JSON.stringify(usedCode));
+                    const localCodesAfterUse = JSON.parse(localStorage.getItem('coc_admin_codes') || '[]');
+                    const updatedLocalCodes = localCodesAfterUse.map(item => item.id === trimmedCode ? { ...item, ...usedCode } : item);
+                    localStorage.setItem('coc_admin_codes', JSON.stringify(updatedLocalCodes));
+
+                    // Activate 30 Days VIP for User
+                    const expiry = Date.now() + (30 * 24 * 60 * 60 * 1000);
+                    const newProfile = { vipExpiry: expiry, isAdmin: false, codeUsed: trimmedCode };
+
+                    try {
+                        const profileRef = doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'data');
+                        await setDoc(profileRef, newProfile, { merge: true });
+                    } catch(e) {
+                        /* Local preview mode: profile is persisted below. */
+                    }
+
+                    localStorage.setItem('coc_vip_profile_' + user.uid, JSON.stringify(newProfile));
+                    setProfile(newProfile);
+                    showToast("🎉 VIP Access Activated for 30 Days!");
+
+                } catch (err) {
+                    console.error("Activation Error:", err);
+                    showToast(err.message || "Activation failed", "error");
+                } finally {
+                    setIsActivating(false);
+                }
+            };
+
+            return (
+                <div className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
+                    <div className="absolute w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+                    
+                    <div className="glass-panel activation-card p-6 sm:p-8 rounded-3xl w-full max-w-md text-center shadow-2xl border border-slate-700/60 relative overflow-hidden z-10">
+                        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-yellow-500 via-amber-300 to-yellow-600"></div>
+                        
+                        <div className="w-20 h-20 mx-auto bg-gradient-to-tr from-yellow-500 to-amber-300 rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-yellow-500/20">
+                            <Icons.Shield className="w-10 h-10 text-slate-950" />
+                        </div>
+
+                        <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-2 tracking-tight">CoC VIP Base Access</h1>
+                        <p className="text-slate-400 mb-6 text-xs sm:text-sm leading-relaxed">
+                            Enter your 1-Time VIP Invite Code below.<br/>
+                            <span className="text-yellow-400 font-semibold">1 Device Binding • 30 Days Unlimited Access</span>
+                        </p>
+
+                        <form onSubmit={handleActivate} className="space-y-4">
+                            <div className="relative">
+                                <input 
+                                    type="text" 
+                                    value={code}
+                                    onChange={(e) => setCode(e.target.value)}
+                                    placeholder="VIP-XXXXXX" 
+                                    className="w-full bg-slate-900/90 border-2 border-slate-700 rounded-2xl px-4 py-3.5 text-center text-lg sm:text-xl text-yellow-300 font-mono tracking-widest focus:outline-none focus:border-yellow-400 transition-all uppercase placeholder:text-slate-600 shadow-inner"
+                                />
+                            </div>
+                            <button 
+                                type="submit" 
+                                disabled={isActivating}
+                                className="w-full btn-gold py-3.5 rounded-2xl text-base sm:text-lg flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {isActivating ? (
+                                    <div className="w-6 h-6 border-2 border-amber-950 border-t-transparent rounded-full animate-spin"></div>
+                                ) : (
+                                    <span>Activate VIP Pass</span>
+                                )}
+                            </button>
+                        </form>
+
+                        <div className="mt-8 pt-5 border-t border-slate-800 flex flex-col gap-1 text-[11px] text-slate-500 font-mono">
+                            <span>Device Key: {user.uid.substring(0, 16)}...</span>
+                            <span>Contact Admin to get your 1-device invite code</span>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function MainApp({ user, profile, setProfile, showToast, daysLeft }) {
+            const [activeTab, setActiveTab] = useState('legend1');
+            const [bases, setBases] = useState([]);
+            const [favorites, setFavorites] = useState({});
+            const [searchQuery, setSearchQuery] = useState("");
+            const [previewImage, setPreviewImage] = useState(null);
+            const [cardDeleteTarget, setCardDeleteTarget] = useState(null);
+            const [isCardDeleting, setIsCardDeleting] = useState(false);
+
+            const handleLogout = async () => {
+                try {
+                    const profileRef = doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'data');
+                    await setDoc(profileRef, { isAdmin: false, vipExpiry: 0 }, { merge: true });
+                } catch (e) {
+                    /* Local preview mode: local session is cleared below. */
+                }
+                localStorage.removeItem('coc_vip_profile_' + user.uid);
+                setProfile({ vipExpiry: 0, isAdmin: false });
+                showToast("Logged out! Returned to Activation Screen.");
+            };
+
+            const defaultBases = [
+                {
+                    id: 'base_demo_1',
+                    type: 'legend1',
+                    imageUrl: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&auto=format&fit=crop&q=80',
+                    baseLink: 'https://link.clashofclans.com/en?action=OpenLayout&id=TH16%3AWB%3AAAAABgAAAAK12345678',
+                    ccTroops: '1 Ice Golem, 1 Rocket Balloon, 2 Super Minions',
+                    createdAt: Date.now()
+                },
+                {
+                    id: 'base_demo_2',
+                    type: 'legend2',
+                    imageUrl: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&auto=format&fit=crop&q=80',
+                    baseLink: 'https://link.clashofclans.com/en?action=OpenLayout&id=TH16%3AWB%3AAAAABgAAAAK87654321',
+                    ccTroops: '3 Ice Golems, 1 Super Barbarian',
+                    createdAt: Date.now() - 10000
+                },
+                {
+                    id: 'base_demo_3',
+                    type: 'war',
+                    imageUrl: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=800&auto=format&fit=crop&q=80',
+                    baseLink: 'https://link.clashofclans.com/en?action=OpenLayout&id=TH16%3AWB%3AAAAABgAAAAK99999999',
+                    ccTroops: '2 Lava Hounds, 1 Headhunter',
+                    createdAt: Date.now() - 20000
+                }
+            ];
+
+            useEffect(() => {
+                let unsubscribe = () => {};
+                try {
+                    const basesRef = collection(db, 'artifacts', appId, 'public', 'data', 'bases');
+                    unsubscribe = onSnapshot(basesRef, (snap) => {
+                        const loadedBases = [];
+                        snap.forEach(doc => {
+                            loadedBases.push({ id: doc.id, ...doc.data(), firestoreId: doc.id });
+                        });
+
+                        const storedLocal = JSON.parse(localStorage.getItem('coc_custom_bases') || '[]');
+                        const deletedDemoIds = JSON.parse(localStorage.getItem('coc_deleted_bases') || '[]');
+                        const visibleDefaultBases = defaultBases.filter(base => !deletedDemoIds.includes(base.id));
+                        const combined = [...loadedBases, ...storedLocal, ...visibleDefaultBases];
+                        
+                        const uniqueMap = new Map();
+                        combined.forEach(b => uniqueMap.set(b.id, b));
+                        const uniqueBases = Array.from(uniqueMap.values());
+                        
+                        uniqueBases.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                        setBases(uniqueBases);
+                    }, () => {
+                        const storedLocal = JSON.parse(localStorage.getItem('coc_custom_bases') || '[]');
+                        const deletedDemoIds = JSON.parse(localStorage.getItem('coc_deleted_bases') || '[]');
+                        setBases([...storedLocal, ...defaultBases.filter(base => !deletedDemoIds.includes(base.id))]);
+                    });
+                } catch(e) {
+                    let storedLocal = [];
+                    try {
+                        storedLocal = JSON.parse(localStorage.getItem('coc_custom_bases') || '[]');
+                        if (!Array.isArray(storedLocal)) storedLocal = [];
+                    } catch (storageError) {
+                        storedLocal = [];
+                    }
+                    const deletedDemoIds = JSON.parse(localStorage.getItem('coc_deleted_bases') || '[]');
+                    setBases([...storedLocal, ...defaultBases.filter(base => !deletedDemoIds.includes(base.id))]);
+                }
+
+                return () => unsubscribe();
+            }, []);
+
+            useEffect(() => {
+                if (!user) return;
+                
+                let unsubscribe = () => {};
+                try {
+                    const favsRef = collection(db, 'artifacts', appId, 'users', user.uid, 'favorites');
+                    unsubscribe = onSnapshot(favsRef, (snap) => {
+                        const favMap = {};
+                        snap.forEach(doc => {
+                            favMap[doc.id] = true;
+                        });
+                        setFavorites(favMap);
+                    }, () => {
+                        const localFavs = JSON.parse(localStorage.getItem('coc_favs_' + user.uid) || '{}');
+                        setFavorites(localFavs);
+                    });
+                } catch(e) {
+                    const localFavs = JSON.parse(localStorage.getItem('coc_favs_' + user.uid) || '{}');
+                    setFavorites(localFavs);
+                }
+
+                return () => unsubscribe();
+            }, [user]);
+
+            const handleCardDelete = async () => {
+                if (!cardDeleteTarget) return;
+                setIsCardDeleting(true);
+                const targetId = cardDeleteTarget.id;
+                const firestoreId = cardDeleteTarget.firestoreId || targetId;
+
+                try {
+                    if (db) {
+                        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'bases', firestoreId));
+                    }
+                } catch (error) {
+                    // Local removal below still completes the action in preview mode.
+                }
+
+                let storedLocal = [];
+                try {
+                    storedLocal = JSON.parse(localStorage.getItem('coc_custom_bases') || '[]');
+                    if (!Array.isArray(storedLocal)) storedLocal = [];
+                } catch (error) {
+                    storedLocal = [];
+                }
+                localStorage.setItem('coc_custom_bases', JSON.stringify(storedLocal.filter(base => base.id !== targetId)));
+                if (String(targetId).startsWith('base_demo_')) {
+                    const deletedDemoIds = JSON.parse(localStorage.getItem('coc_deleted_bases') || '[]');
+                    if (!deletedDemoIds.includes(targetId)) deletedDemoIds.push(targetId);
+                    localStorage.setItem('coc_deleted_bases', JSON.stringify(deletedDemoIds));
+                }
+                setBases(prev => prev.filter(base => base.id !== targetId));
+                setCardDeleteTarget(null);
+                setIsCardDeleting(false);
+                showToast("Base deleted successfully");
+            };
+
+            const toggleFavorite = async (baseId) => {
+                const isFav = !!favorites[baseId];
+                const newFavs = { ...favorites, [baseId]: !isFav };
+                setFavorites(newFavs);
+                localStorage.setItem('coc_favs_' + user.uid, JSON.stringify(newFavs));
+
+                try {
+                    const favRef = doc(db, 'artifacts', appId, 'users', user.uid, 'favorites', baseId);
+                    if (isFav) {
+                        await deleteDoc(favRef);
+                        showToast("Removed from Fav Album");
+                    } else {
+                        await setDoc(favRef, { savedAt: Date.now() });
+                        showToast("Added to Fav Album ❤️");
+                    }
+                } catch (err) {
+                    /* Local preview mode: favorite is already persisted locally. */
+                }
+            };
+
+            const filteredBases = useMemo(() => {
+                let list = bases;
+                if (activeTab === 'fav') {
+                    list = list.filter(b => favorites[b.id]);
+                } else if (activeTab !== 'admin') {
+                    list = list.filter(b => b.type === activeTab);
+                }
+
+                if (searchQuery.trim()) {
+                    const q = searchQuery.toLowerCase();
+                    list = list.filter(b => (b.ccTroops || "").toLowerCase().includes(q) || (b.type || "").toLowerCase().includes(q));
+                }
+
+                return list;
+            }, [bases, activeTab, favorites, searchQuery]);
+
+            const tabs = [
+                { id: 'legend1', label: 'Legend 1', icon: Icons.Shield },
+                { id: 'legend2', label: 'Legend 2', icon: Icons.Shield },
+                { id: 'legend3', label: 'Legend 3', icon: Icons.Shield },
+                { id: 'war', label: 'War Base', icon: Icons.Swords },
+                { id: 'cwl', label: 'CWL Base', icon: Icons.Star },
+                { id: 'fav', label: 'Fav Album', icon: Icons.Heart },
+                ...(profile?.isAdmin ? [{ id: 'admin', label: 'Admin Panel', icon: Icons.Settings }] : [])
+            ];
+
+            const activeTabData = tabs.find(tab => tab.id === activeTab) || tabs[0];
+            const favoriteCount = Object.keys(favorites).filter(k => favorites[k]).length;
+
+            return (
+                <div className="flex flex-col min-h-screen max-w-6xl mx-auto app-frame">
+                    {/* Top Header */}
+                    <header className="glass-panel topbar flex justify-between items-center shrink-0">
+                            <div className="topbar__brand flex items-center gap-3">
+                                <div className="brand-mark font-black text-slate-950 text-xl">
+                                VIP
+                            </div>
+                            <div>
+                                <h1 className="font-extrabold text-sm sm:text-base text-white leading-tight">CoC Premium Bases</h1>
+                                <p className="text-[11px] text-slate-400">Legend 1-3 • War • CWL Layouts</p>
+                                <div className="status-chip mt-1"><span className="status-dot"></span><span>Live layout library</span></div>
+                            </div>
+                        </div>
+
+                        <div className="topbar__actions flex items-center gap-2">
+                            {profile?.isAdmin ? (
+                                <div className="flex items-center gap-2">
+                                    <span className="bg-red-500/20 text-red-400 text-xs px-3 py-1 rounded-full font-bold border border-red-500/40">
+                                        👑 Admin
+                                    </span>
+                                    <button 
+                                        onClick={handleLogout}
+                                        className="bg-slate-800 hover:bg-slate-700 text-slate-300 p-2 rounded-xl border border-slate-700 transition-colors flex items-center gap-1 text-xs font-medium"
+                                        title="Logout Admin"
+                                    >
+                                        <Icons.LogOut className="w-4 h-4 text-red-400" />
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="flex items-center gap-2">
+                                    <div className="license-chip px-3 py-1.5 rounded-xl text-right">
+                                        <div className="text-[10px] text-slate-400 font-medium">VIP License</div>
+                                        <div className="text-xs font-bold text-yellow-400">{daysLeft} Days Remaining</div>
+                                    </div>
+                                    <button 
+                                        onClick={handleLogout}
+                                        className="bg-slate-800 hover:bg-slate-700 text-slate-300 p-2 rounded-xl border border-slate-700 transition-colors"
+                                        title="Logout Session"
+                                    >
+                                        <Icons.LogOut className="w-4 h-4 text-slate-400" />
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </header>
+
+                    {/* Navigation Bar */}
+                    <div className="nav-shell flex flex-col gap-2 shrink-0">
+                        <div className="nav-scroller overflow-x-auto no-scrollbar flex items-center gap-1.5">
+                            {tabs.map(tab => {
+                                const Icon = tab.icon;
+                                const isActive = activeTab === tab.id;
+                                return (
+                                    <button
+                                        key={tab.id}
+                                        onClick={() => setActiveTab(tab.id)}
+                                        className={`nav-item flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                                            isActive 
+                                                ? 'bg-gradient-to-r from-yellow-500 to-amber-400 text-slate-950 shadow-md shadow-yellow-500/20 nav-item-active' 
+                                                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                                        }`}
+                                    >
+                                        <Icon className={`w-4 h-4 ${isActive && tab.id === 'fav' ? 'fill-slate-950' : ''}`} filled={isActive && tab.id === 'fav'} />
+                                        <span>{tab.label}</span>
+                                        {tab.id === 'fav' && Object.keys(favorites).filter(k => favorites[k]).length > 0 && (
+                                            <span className={`ml-1 text-[10px] px-1.5 py-0.2 rounded-full ${isActive ? 'bg-slate-950 text-yellow-400' : 'bg-slate-800 text-slate-300'}`}>
+                                                {Object.keys(favorites).filter(k => favorites[k]).length}
+                                            </span>
+                                        )}
+                                    </button>
+                                );
+                            })}
+                        </div>
+
+                        {activeTab !== 'admin' && (
+                            <div className="relative">
+                                <Icons.Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                                <input 
+                                    type="text" 
+                                    placeholder="Search CC troops or layout keywords..." 
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="search-shell w-full rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-yellow-500/50"
+                                />
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Main Content */}
+                    <main className="flex-1 overflow-y-auto content-shell scroll-smooth">
+                        {activeTab !== 'admin' && (
+                            <section className="dashboard-intro">
+                                <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+                                    <div>
+                                        <div className="eyebrow mb-2">Curated battle intelligence</div>
+                                        <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white">Your next three-star starts here.</h2>
+                                        <p className="text-sm text-slate-400 mt-2 max-w-xl">Browse hand-picked layouts, save your strongest defenses, and jump directly into Clash of Clans when you’re ready.</p>
+                                    </div>
+                                    <div className="stats flex items-center gap-2 relative z-10">
+                                        <div className="stat-pill"><div className="text-[10px] uppercase tracking-wider text-slate-500">Showing</div><div className="text-lg font-black text-yellow-300">{filteredBases.length}</div><div className="text-[10px] text-slate-400">{activeTabData.label}</div></div>
+                                        <div className="stat-pill"><div className="text-[10px] uppercase tracking-wider text-slate-500">Saved</div><div className="text-lg font-black text-rose-300">{favoriteCount}</div><div className="text-[10px] text-slate-400">favorites</div></div>
+                                        <div className="stat-pill"><div className="text-[10px] uppercase tracking-wider text-slate-500">Access</div><div className="text-lg font-black text-cyan-300">{profile?.isAdmin ? '∞' : daysLeft}</div><div className="text-[10px] text-slate-400">days left</div></div>
+                                    </div>
+                                </div>
+                            </section>
+                        )}
+                        {activeTab === 'admin' ? (
+                            <AdminPanel showToast={showToast} user={user} bases={bases} setBases={setBases} setProfile={setProfile} />
+                        ) : (
+                            <div className="space-y-4">
+                                <div className="section-heading">
+                                    <div>
+                                        <div className="eyebrow mb-1">Layout collection</div>
+                                        <h3>{activeTabData.label} <span className="text-slate-500 font-medium">/ battle-ready picks</span></h3>
+                                    </div>
+                                    <span className="result-count">{filteredBases.length} layouts</span>
+                                </div>
+                                {filteredBases.length === 0 ? (
+                                    <div className="text-center py-20 glass-card empty-state rounded-3xl p-8 max-w-md mx-auto">
+                                        <div className="w-16 h-16 mx-auto mb-4 bg-slate-800/80 rounded-2xl flex items-center justify-center text-slate-500">
+                                            <Icons.Shield className="w-8 h-8" />
+                                        </div>
+                                        <h3 className="text-lg font-bold text-slate-300 mb-1">No Layouts Found</h3>
+                                        <p className="text-xs text-slate-500">
+                                            {activeTab === 'fav' ? 'You haven\'t saved any bases to your Fav Album yet.' : 'New bases will be uploaded soon by the admin.'}
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 card-grid">
+                                        {filteredBases.map(base => (
+                                            <BaseCard 
+                                                key={base.id} 
+                                                base={base} 
+                                                isFav={!!favorites[base.id]} 
+                                                onToggleFav={() => toggleFavorite(base.id)} 
+                                                showToast={showToast}
+                                                onOpenPreview={() => setPreviewImage(base.imageUrl)}
+                                                isAdmin={!!profile?.isAdmin}
+                                                onDeleteRequest={() => setCardDeleteTarget(base)}
+                                            />
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </main>
+
+                    {/* Image Lightbox Modal */}
+                    {previewImage && (
+                        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+                            <button 
+                                onClick={() => setPreviewImage(null)}
+                                className="absolute top-4 right-4 bg-slate-800/80 hover:bg-slate-700 text-white p-2.5 rounded-full border border-slate-700"
+                            >
+                                <Icons.X className="w-6 h-6" />
+                            </button>
+                            <img src={previewImage} alt="Base Preview" className="max-w-full max-h-[85vh] rounded-2xl shadow-2xl object-contain" />
+                        </div>
+                    )}
+                    {cardDeleteTarget && (
+                        <div className="confirm-modal fixed inset-0 z-[90] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md" role="dialog" aria-modal="true" aria-labelledby="card-delete-title">
+                            <div className="glass-panel w-full max-w-md rounded-2xl border border-rose-500/25 p-5 shadow-2xl">
+                                <div className="flex items-start gap-3">
+                                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-rose-400/25 bg-rose-500/15 text-rose-300"><Icons.Trash className="w-5 h-5" /></div>
+                                    <div>
+                                        <h3 id="card-delete-title" className="text-base font-black text-white">Delete this layout?</h3>
+                                        <p className="mt-1 text-xs leading-relaxed text-slate-400">This uploaded base will be removed from the collection and Admin Panel.</p>
+                                    </div>
+                                </div>
+                                <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                                    <button type="button" onClick={() => setCardDeleteTarget(null)} disabled={isCardDeleting} className="min-h-[44px] rounded-xl border border-slate-700 bg-slate-900/70 px-4 text-xs font-bold text-slate-300 transition-colors hover:bg-slate-800 hover:text-white">Cancel</button>
+                                    <button type="button" onClick={handleCardDelete} disabled={isCardDeleting} className="min-h-[44px] rounded-xl border border-rose-400/30 bg-rose-500/20 px-4 text-xs font-black text-rose-200 transition-colors hover:bg-rose-500/35 hover:text-white disabled:opacity-50">{isCardDeleting ? 'Deleting…' : 'Delete layout'}</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        function BaseCard({ base, isFav, onToggleFav, showToast, onOpenPreview, isAdmin, onDeleteRequest }) {
+            const getDisplayType = (type) => {
+                switch(type) {
+                    case 'legend1': return 'Legend 1 Base';
+                    case 'legend2': return 'Legend 2 Base';
+                    case 'legend3': return 'Legend 3 Base';
+                    case 'war': return 'War Base';
+                    case 'cwl': return 'CWL Base';
+                    default: return type.toUpperCase();
+                }
+            };
+
+            const handleCopyCC = () => {
+                if (!base.ccTroops) return;
+                const el = document.createElement('textarea');
+                el.value = base.ccTroops;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+                showToast("CC Troops copied to clipboard!");
+            };
+
+            const handleCopyAndOpen = () => {
+                if (base.baseLink) {
+                    const el = document.createElement('textarea');
+                    el.value = base.baseLink;
+                    document.body.appendChild(el);
+                    el.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(el);
+                    showToast("Opening Clash of Clans layout!");
+                }
+            };
+
+            return (
+                <div className="glass-card layout-card rounded-2xl overflow-hidden flex flex-col shadow-xl">
+                    <div className="relative aspect-video bg-slate-900 group overflow-hidden layout-card__media">
+                        <img 
+                            src={base.imageUrl} 
+                            alt="CoC Base Layout" 
+                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
+                            loading="lazy" 
+                            onError={(e) => { e.target.src = `https://placehold.co/600x350/1e293b/94a3b8?text=CoC+Base+Layout` }} 
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80"></div>
+                        
+                        <div className="absolute top-3 left-3">
+                            <span className="type-badge text-yellow-300 text-[11px] font-extrabold px-3 py-1 rounded-full border shadow-md">
+                                {getDisplayType(base.type)}
+                            </span>
+                        </div>
+
+                        <div className="absolute top-3 right-3 flex items-center gap-2">
+                            <button 
+                                onClick={onOpenPreview}
+                                className="icon-action p-2.5 rounded-full bg-slate-900/70 text-slate-300 backdrop-blur-md border border-slate-700/60 hover:text-white transition-all shadow-lg"
+                                title="Zoom Image"
+                            >
+                                <Icons.Maximize className="w-4 h-4" />
+                            </button>
+                            {isAdmin && onDeleteRequest && (
+                                <button
+                                    onClick={onDeleteRequest}
+                                    className="delete-base-button backdrop-blur-md shadow-lg"
+                                    title="Delete uploaded base"
+                                    aria-label="Delete uploaded base"
+                                >
+                                    <Icons.Trash className="w-4 h-4" />
+                                </button>
+                            )}
+                            <button 
+                                onClick={onToggleFav}
+                                className={`p-2.5 rounded-full backdrop-blur-md transition-all shadow-lg ${
+                                    isFav 
+                                        ? 'bg-red-500/20 text-red-500 border border-red-500/50 scale-105' 
+                                        : 'bg-slate-900/70 text-slate-400 border border-slate-700/60 hover:text-white'
+                                }`}
+                            >
+                                <Icons.Heart className="w-4 h-4" filled={isFav} />
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div className="layout-card__body flex flex-col flex-1 justify-between gap-3">
+                        <div>
+                            <div className="flex justify-between items-center mb-1">
+                                <span className="text-[11px] text-slate-400 font-semibold tracking-wider uppercase">
+                                    Recommended CC Troops:
+                                </span>
+                                <button onClick={handleCopyCC} className="text-[11px] text-yellow-400 hover:text-yellow-300 font-bold flex items-center gap-1">
+                                    <Icons.Copy className="w-3 h-3" />
+                                    <span>Copy CC</span>
+                                </button>
+                            </div>
+                            <div className="cc-row border rounded-xl p-2.5 text-xs font-bold text-amber-300 flex items-center gap-2">
+                                <span>🛡️</span>
+                                <span className="truncate">{base.ccTroops || "No specific CC troops defined."}</span>
+                            </div>
+                        </div>
+
+                        <a 
+                            href={base.baseLink || '#'} 
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={handleCopyAndOpen}
+                            className="btn-gold primary-action py-3 px-4 rounded-xl flex items-center justify-center gap-2 text-xs sm:text-sm text-slate-950 font-extrabold shadow-lg tracking-wide uppercase mt-1"
+                        >
+                            <Icons.ExternalLink className="w-4 h-4" />
+                            <span>Copy & Open Game Layout</span>
+                        </a>
+                    </div>
+                </div>
+            );
+        }
+
+        function AdminPanel({ showToast, user, bases, setBases, setProfile }) {
+            const [imageUrl, setImageUrl] = useState("");
+            const [baseLink, setBaseLink] = useState("");
+            const [ccTroops, setCcTroops] = useState("");
+            const [type, setType] = useState("legend1");
+            const [isSubmitting, setIsSubmitting] = useState(false);
+
+            const [generatedCodes, setGeneratedCodes] = useState([]);
+            const [loadingCodes, setLoadingCodes] = useState(false);
+            const [codePage, setCodePage] = useState(1);
+            const [deleteTarget, setDeleteTarget] = useState(null);
+            const [isDeleting, setIsDeleting] = useState(false);
+            const [codeDeleteTarget, setCodeDeleteTarget] = useState(null);
+            const [isCodeDeleting, setIsCodeDeleting] = useState(false);
+            const codePageSize = 5;
+
+            const handleLogoutAdmin = async () => {
+                try {
+                    const profileRef = doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'data');
+                    await setDoc(profileRef, { isAdmin: false, vipExpiry: 0 }, { merge: true });
+                } catch (e) {
+                    /* Local preview mode: local profile is cleared below. */
+                }
+                localStorage.removeItem('coc_vip_profile_' + user.uid);
+                setProfile({ vipExpiry: 0, isAdmin: false });
+                showToast("Admin logged out. Testing invitation codes active.");
+            };
+
+            useEffect(() => {
+                let unsubscribe = () => {};
+                try {
+                    const codesRef = collection(db, 'artifacts', appId, 'public', 'data', 'invite_codes');
+                    unsubscribe = onSnapshot(codesRef, (snap) => {
+                        const codes = [];
+                        snap.forEach(doc => {
+                            codes.push({ id: doc.id, ...doc.data() });
+                        });
+                        
+                        codes.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                        setGeneratedCodes(codes);
+                    }, () => {
+                        const localCodes = JSON.parse(localStorage.getItem('coc_admin_codes') || '[]');
+                        setGeneratedCodes(localCodes);
+                    });
+                } catch (e) {
+                    const localCodes = JSON.parse(localStorage.getItem('coc_admin_codes') || '[]');
+                    setGeneratedCodes(localCodes);
+                }
+
+                return () => unsubscribe();
+            }, []);
+
+            const codeTotalPages = Math.max(1, Math.ceil(generatedCodes.length / codePageSize));
+            const paginatedCodes = generatedCodes.slice((codePage - 1) * codePageSize, codePage * codePageSize);
+
+            useEffect(() => {
+                setCodePage(page => Math.min(page, codeTotalPages));
+            }, [codeTotalPages]);
+
+            const handleAddBase = async (e) => {
+                e.preventDefault();
+                const cleanImageUrl = imageUrl.trim();
+                const cleanBaseLink = baseLink.trim();
+                const cleanCcTroops = ccTroops.trim();
+
+                if (!cleanImageUrl || !cleanBaseLink || !cleanCcTroops) {
+                    showToast("Please complete all required fields", "error");
+                    return;
+                }
+
+                const isValidUrl = (value) => {
+                    try {
+                        const url = new URL(value);
+                        return url.protocol === 'http:' || url.protocol === 'https:';
+                    } catch (error) {
+                        return false;
+                    }
+                };
+
+                if (!isValidUrl(cleanImageUrl) || !isValidUrl(cleanBaseLink)) {
+                    showToast("Please enter valid http:// or https:// URLs", "error");
+                    return;
+                }
+
+                setIsSubmitting(true);
+                const newBase = {
+                    id: 'base_' + Date.now(),
+                    imageUrl: cleanImageUrl,
+                    baseLink: cleanBaseLink,
+                    ccTroops: cleanCcTroops,
+                    type,
+                    createdAt: Date.now(),
+                    addedBy: user.uid
+                };
+
+                const saveLocalBase = () => {
+                    let storedLocal = [];
+                    try {
+                        storedLocal = JSON.parse(localStorage.getItem('coc_custom_bases') || '[]');
+                        if (!Array.isArray(storedLocal)) storedLocal = [];
+                    } catch (error) {
+                        storedLocal = [];
+                    }
+                    const nextLocal = [newBase, ...storedLocal.filter(base => base.id !== newBase.id)];
+                    localStorage.setItem('coc_custom_bases', JSON.stringify(nextLocal));
+                    setBases(prev => [newBase, ...prev.filter(base => base.id !== newBase.id)]);
+                };
+
+                try {
+                    if (!db) {
+                        saveLocalBase();
+                        showToast("Base published locally!");
+                    } else {
+                        const basesRef = collection(db, 'artifacts', appId, 'public', 'data', 'bases');
+                        await addDoc(basesRef, newBase);
+                        showToast("New Base Published Successfully!");
+                    }
+                } catch (err) {
+                    saveLocalBase();
+                    showToast("Base published locally!");
+                } finally {
+                    setIsSubmitting(false);
+                    setImageUrl("");
+                    setBaseLink("");
+                    setCcTroops("");
+                }
+            };
+
+            const handleGenerateCode = async () => {
+                setLoadingCodes(true);
+                const newCode = 'VIP-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+                const codeObj = {
+                    used: false,
+                    usedBy: null,
+                    createdAt: Date.now(),
+                    createdBy: user.uid
+                };
+                const fullObj = { id: newCode, ...codeObj };
+
+                // Always keep a local copy so the same browser can activate the code
+                // even when Firebase is unavailable or not configured in preview mode.
+                const localCodes = JSON.parse(localStorage.getItem('coc_admin_codes') || '[]');
+                const nextLocalCodes = [fullObj, ...localCodes.filter(item => item.id !== newCode)];
+                localStorage.setItem('coc_admin_codes', JSON.stringify(nextLocalCodes));
+                localStorage.setItem('coc_invite_code_' + newCode, JSON.stringify(codeObj));
+                setGeneratedCodes(prev => [fullObj, ...prev.filter(item => item.id !== newCode)]);
+                setCodePage(1);
+
+                try {
+                    if (db) {
+                        const codeRef = doc(db, 'artifacts', appId, 'public', 'data', 'invite_codes', newCode);
+                        await setDoc(codeRef, codeObj);
+                        showToast(`Generated Code: ${newCode}`);
+                    } else {
+                        showToast(`Generated Local Code: ${newCode}`);
+                    }
+                } catch (err) {
+                    showToast(`Generated Local Code: ${newCode}`);
+                } finally {
+                    setLoadingCodes(false);
+                }
+            };
+
+            const copyToClipboard = (text) => {
+                const el = document.createElement('textarea');
+                el.value = text;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+                showToast(`Code copied: ${text}`);
+            };
+
+            const handleDeleteCode = async () => {
+                if (!codeDeleteTarget) return;
+                setIsCodeDeleting(true);
+                const codeId = codeDeleteTarget.id;
+
+                try {
+                    if (db) {
+                        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'invite_codes', codeId));
+                    }
+                } catch (error) {
+                    // Local cleanup below still completes the action in preview mode.
+                }
+
+                let localCodes = [];
+                try {
+                    localCodes = JSON.parse(localStorage.getItem('coc_admin_codes') || '[]');
+                    if (!Array.isArray(localCodes)) localCodes = [];
+                } catch (error) {
+                    localCodes = [];
+                }
+                localStorage.setItem('coc_admin_codes', JSON.stringify(localCodes.filter(code => code.id !== codeId)));
+                localStorage.removeItem('coc_invite_code_' + codeId);
+                setGeneratedCodes(prev => prev.filter(code => code.id !== codeId));
+                setCodeDeleteTarget(null);
+                setIsCodeDeleting(false);
+                showToast(`Invite code ${codeId} deleted`);
+            };
+
+            const handleDeleteBase = async () => {
+                if (!deleteTarget) return;
+                setIsDeleting(true);
+                const targetId = deleteTarget.id;
+                const firestoreId = deleteTarget.firestoreId || targetId;
+                try {
+                    if (db) {
+                        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'bases', firestoreId));
+                    }
+                } catch (error) {
+                    // Local removal below still completes the action in preview mode.
+                }
+
+                let storedLocal = [];
+                try {
+                    storedLocal = JSON.parse(localStorage.getItem('coc_custom_bases') || '[]');
+                    if (!Array.isArray(storedLocal)) storedLocal = [];
+                } catch (error) {
+                    storedLocal = [];
+                }
+                localStorage.setItem('coc_custom_bases', JSON.stringify(storedLocal.filter(base => base.id !== targetId)));
+                if (String(targetId).startsWith('base_demo_')) {
+                    const deletedDemoIds = JSON.parse(localStorage.getItem('coc_deleted_bases') || '[]');
+                    if (!deletedDemoIds.includes(targetId)) deletedDemoIds.push(targetId);
+                    localStorage.setItem('coc_deleted_bases', JSON.stringify(deletedDemoIds));
+                }
+                setBases(prev => prev.filter(base => base.id !== targetId));
+                setDeleteTarget(null);
+                setIsDeleting(false);
+                showToast("Base deleted successfully");
+            };
+
+            const activeCodeCount = generatedCodes.filter(code => !code.used).length;
+            const usedCodeCount = generatedCodes.filter(code => code.used).length;
+            const managedBases = bases.filter(base => base.addedBy === user.uid || String(base.id || '').startsWith('base_'));
+            const getBaseTypeLabel = (baseType) => ({ legend1: 'Legend 1 Base', legend2: 'Legend 2 Base', legend3: 'Legend 3 Base', war: 'War Base', cwl: 'CWL Base' }[baseType] || baseType || 'Base Layout');
+
+            return (
+                <div className="admin-shell grid grid-cols-1 md:grid-cols-2 gap-5 pb-12">
+                    <div className="col-span-1 md:col-span-2 glass-panel admin-banner p-4 rounded-2xl border border-red-500/30 flex justify-between items-center">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-red-500/20 border border-red-500/40 flex items-center justify-center text-xl">
+                                👑
+                            </div>
+                            <div>
+                                <div className="admin-card-kicker">Command center</div>
+                                <h3 className="text-base font-black text-white mt-1">Admin Control Panel</h3>
+                                <p className="text-xs text-slate-400 mt-1">Manage VIP access keys, publish layouts, and monitor access activity.</p>
+                            </div>
+                        </div>
+                        <div className="admin-banner__actions">
+                            <span className="admin-banner__status">System online</span>
+                            <button 
+                            onClick={handleLogoutAdmin}
+                            className="bg-red-500/20 hover:bg-red-500/30 border border-red-500/50 text-red-300 hover:text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2"
+                        >
+                            <Icons.LogOut className="w-4 h-4" />
+                            <span>Exit Admin</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="admin-overview col-span-1 md:col-span-2">
+                        <div className="admin-stat"><div className="admin-stat__value admin-stat__accent">{bases.length}</div><div className="admin-stat__label">Published bases</div></div>
+                        <div className="admin-stat"><div className="admin-stat__value text-emerald-300">{activeCodeCount}</div><div className="admin-stat__label">Active invite codes</div></div>
+                        <div className="admin-stat"><div className="admin-stat__value text-rose-300">{usedCodeCount}</div><div className="admin-stat__label">Redeemed codes</div></div>
+                    </div>
+
+                    <div className="glass-panel admin-card p-5 rounded-2xl border border-slate-800">
+                        <div className="admin-card-header">
+                            <div>
+                                <div className="admin-card-kicker">Content pipeline</div>
+                                <h2 className="admin-card-title flex items-center gap-2"><Icons.Shield className="w-5 h-5 text-yellow-400" />Upload New Base</h2>
+                                <p className="admin-helper">Publish a tested layout with its image, game deeplink, and defensive CC setup.</p>
+                            </div>
+                        </div>
+                        
+                        <form onSubmit={handleAddBase} className="space-y-3.5">
+                            <div>
+                                <div className="form-section-label">Base category</div>
+                                <select 
+                                    value={type} 
+                                    onChange={(e) => setType(e.target.value)}
+                                    className="field-control w-full border rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none font-semibold"
+                                >
+                                    <option value="legend1">Legend 1 Base</option>
+                                    <option value="legend2">Legend 2 Base</option>
+                                    <option value="legend3">Legend 3 Base</option>
+                                    <option value="war">War Base</option>
+                                    <option value="cwl">CWL Base</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <div className="form-section-label">Base image URL</div>
+                                <input 
+                                    type="text" 
+                                    inputMode="url"
+                                    value={imageUrl}
+                                    onChange={(e) => setImageUrl(e.target.value)}
+                                    placeholder="https://images.unsplash.com/..."
+                                    className="field-control w-full border rounded-xl px-3 py-2 text-xs text-white focus:outline-none"
+                                />
+                            </div>
+
+                            <div>
+                                <div className="form-section-label">CoC game deeplink</div>
+                                <input 
+                                    type="text" 
+                                    inputMode="url"
+                                    value={baseLink}
+                                    onChange={(e) => setBaseLink(e.target.value)}
+                                    placeholder="https://link.clashofclans.com/en?action=OpenLayout..."
+                                    className="field-control w-full border rounded-xl px-3 py-2 text-xs text-white focus:outline-none"
+                                />
+                            </div>
+
+                            <div>
+                                <div className="form-section-label">Clan Castle troops</div>
+                                <input 
+                                    type="text" 
+                                    value={ccTroops} 
+                                    onChange={(e) => setCcTroops(e.target.value)}
+                                    placeholder="e.g. 1 Ice Golem, 1 Rocket Balloon"
+                                    className="field-control w-full border rounded-xl px-3 py-2 text-xs text-white focus:outline-none"
+                                />
+                            </div>
+
+                            <button 
+                                type="submit" 
+                                disabled={isSubmitting}
+                                className="w-full btn-gold primary-action py-3 rounded-xl text-xs font-extrabold uppercase mt-2 flex justify-center items-center gap-2"
+                            >
+                                {isSubmitting ? "Publishing..." : "Publish Base to App"}
+                            </button>
+                        </form>
+                    </div>
+
+                    <div className="glass-panel admin-card p-5 rounded-2xl border border-slate-800 flex flex-col min-h-[480px]">
+                        <div className="admin-card-header">
+                            <div>
+                                <div className="admin-card-kicker">Access control</div>
+                                <h2 className="admin-card-title flex items-center gap-2"><Icons.Settings className="w-5 h-5 text-yellow-400" />Manage VIP Codes</h2>
+                                <p className="admin-helper">One-time codes are automatically bound to the first device that redeems them.</p>
+                            </div>
+                            <button 
+                                onClick={handleGenerateCode}
+                                disabled={loadingCodes}
+                                className="admin-cta px-3 py-2 rounded-xl text-xs font-black transition-all shadow-md flex items-center gap-2 whitespace-nowrap"
+                            >
+                                <span className="text-base leading-none">+</span>{loadingCodes ? 'Creating…' : 'Generate code'}
+                            </button>
+                        </div>
+
+                        <div className="code-list flex-1 overflow-y-auto pr-1 space-y-2">
+                            {generatedCodes.length === 0 ? (
+                                <p className="text-slate-500 text-xs text-center py-8">No invite codes generated yet.</p>
+                            ) : (
+                                paginatedCodes.map(c => (
+                                    <div key={c.id} className={`code-row border p-3 rounded-xl flex justify-between items-center gap-3 ${c.used ? 'code-row-used' : ''}`}>
+                                        <div className="min-w-0">
+                                            <div className="font-mono text-sm font-extrabold text-amber-300 tracking-wider truncate">{c.id}</div>
+                                            <div className={`code-status ${c.used ? 'code-status-used' : 'code-status-active'}`}>
+                                                <span>{c.used ? '●' : '●'}</span>
+                                                <span>{c.used ? 'Redeemed on device' : 'Active · one-time use'}</span>
+                                            </div>
+                                            <div className="code-meta">Created {c.createdAt ? new Date(c.createdAt).toLocaleDateString() : 'recently'}</div>
+                                        </div>
+
+                                        <div className="flex items-center gap-2 shrink-0">
+                                            {!c.used && (
+                                                <button 
+                                                    onClick={() => copyToClipboard(c.id)}
+                                                    className="admin-copy-button p-2.5 rounded-xl transition-colors"
+                                                    title="Copy invite code"
+                                                >
+                                                    <Icons.Copy className="w-4 h-4" />
+                                                </button>
+                                            )}
+                                            <button
+                                                type="button"
+                                                onClick={() => setCodeDeleteTarget(c)}
+                                                className="delete-base-button"
+                                                title="Delete invite code"
+                                                aria-label={`Delete invite code ${c.id}`}
+                                            >
+                                                <Icons.Trash className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                        {generatedCodes.length > 0 && (
+                            <div className="pagination-bar">
+                                <div className="pagination-meta">Page {codePage} of {codeTotalPages} · {generatedCodes.length} codes</div>
+                                <div className="pagination-controls">
+                                    <button
+                                        type="button"
+                                        className="pagination-button"
+                                        onClick={() => setCodePage(page => Math.max(1, page - 1))}
+                                        disabled={codePage === 1}
+                                        aria-label="Previous invite-code page"
+                                    >
+                                        <span aria-hidden="true">‹</span><span className="hidden sm:inline ml-1">Prev</span>
+                                    </button>
+                                    <div className="pagination-pages" aria-label="Invite-code pages">
+                                        {Array.from({ length: codeTotalPages }, (_, index) => index + 1).map(page => (
+                                            <button
+                                                key={page}
+                                                type="button"
+                                                className={`pagination-button ${codePage === page ? 'is-current' : ''}`}
+                                                onClick={() => setCodePage(page)}
+                                                aria-current={codePage === page ? 'page' : undefined}
+                                                aria-label={`Go to invite-code page ${page}`}
+                                            >
+                                                {page}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    <button
+                                        type="button"
+                                        className="pagination-button"
+                                        onClick={() => setCodePage(page => Math.min(codeTotalPages, page + 1))}
+                                        disabled={codePage === codeTotalPages}
+                                        aria-label="Next invite-code page"
+                                    >
+                                        <span className="hidden sm:inline mr-1">Next</span><span aria-hidden="true">›</span>
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                        {deleteTarget && (
+                            <div className="confirm-modal fixed inset-0 z-[90] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md" role="dialog" aria-modal="true" aria-labelledby="delete-base-title">
+                                <div className="glass-panel w-full max-w-md rounded-2xl border border-rose-500/25 p-5 shadow-2xl">
+                                    <div className="flex items-start gap-3">
+                                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-rose-400/25 bg-rose-500/15 text-rose-300"><Icons.Trash className="w-5 h-5" /></div>
+                                        <div>
+                                            <h3 id="delete-base-title" className="text-base font-black text-white">Delete this base?</h3>
+                                            <p className="mt-1 text-xs leading-relaxed text-slate-400">This will remove the uploaded layout from the dashboard. This action cannot be undone.</p>
+                                        </div>
+                                    </div>
+                                    <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                                        <button type="button" onClick={() => setDeleteTarget(null)} disabled={isDeleting} className="min-h-[44px] rounded-xl border border-slate-700 bg-slate-900/70 px-4 text-xs font-bold text-slate-300 transition-colors hover:bg-slate-800 hover:text-white">Cancel</button>
+                                        <button type="button" onClick={handleDeleteBase} disabled={isDeleting} className="min-h-[44px] rounded-xl border border-rose-400/30 bg-rose-500/20 px-4 text-xs font-black text-rose-200 transition-colors hover:bg-rose-500/35 hover:text-white disabled:opacity-50">{isDeleting ? 'Deleting…' : 'Delete base'}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        {codeDeleteTarget && (
+                            <div className="confirm-modal fixed inset-0 z-[91] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md" role="dialog" aria-modal="true" aria-labelledby="delete-code-title">
+                                <div className="glass-panel w-full max-w-md rounded-2xl border border-rose-500/25 p-5 shadow-2xl">
+                                    <div className="flex items-start gap-3">
+                                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-rose-400/25 bg-rose-500/15 text-rose-300"><Icons.Trash className="w-5 h-5" /></div>
+                                        <div className="min-w-0">
+                                            <h3 id="delete-code-title" className="text-base font-black text-white">Delete invite code?</h3>
+                                            <p className="mt-1 text-xs leading-relaxed text-slate-400">Code <span className="font-mono font-bold text-amber-300">{codeDeleteTarget.id}</span> will be removed and can no longer activate VIP access.</p>
+                                        </div>
+                                    </div>
+                                    <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                                        <button type="button" onClick={() => setCodeDeleteTarget(null)} disabled={isCodeDeleting} className="min-h-[44px] rounded-xl border border-slate-700 bg-slate-900/70 px-4 text-xs font-bold text-slate-300 transition-colors hover:bg-slate-800 hover:text-white">Cancel</button>
+                                        <button type="button" onClick={handleDeleteCode} disabled={isCodeDeleting} className="min-h-[44px] rounded-xl border border-rose-400/30 bg-rose-500/20 px-4 text-xs font-black text-rose-200 transition-colors hover:bg-rose-500/35 hover:text-white disabled:opacity-50">{isCodeDeleting ? 'Deleting…' : 'Delete code'}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+
+    </script>
+</body>
+</html>
