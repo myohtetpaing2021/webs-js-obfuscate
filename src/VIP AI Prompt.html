@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="my" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP AI Prompt & Photo Vault</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Padauk:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        vipGold: {
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04',
+                            glow: 'rgba(234, 179, 8, 0.25)'
+                        },
+                        darkBg: '#0b0f17',
+                        cardBg: '#131b29',
+                        borderBg: '#1e293b'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Padauk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0b0f17;
+            color: #f3f4f6;
+            font-family: 'Plus Jakarta Sans', 'Padauk', sans-serif;
+            min-height: 100vh;
+        }
+        .glass-panel {
+            background: rgba(19, 27, 41, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #fef08a 0%, #eab308 50%, #ca8a04 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-border-glow {
+            box-shadow: 0 0 20px rgba(234, 179, 8, 0.15);
+            border: 1px solid rgba(234, 179, 8, 0.4);
+        }
+        .code-block {
+            background: #070a0f;
+            border: 1px solid #1e293b;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f17;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ca8a04;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-yellow-500 selection:text-black pb-12">
+
+    <!-- Global Fullscreen Preloader Screen -->
+    <div id="app-preloader" class="fixed inset-0 z-[100] bg-[#0b0f17] flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
+        <div class="relative flex flex-col items-center gap-4 animate-fade-in">
+            <div class="w-20 h-20 rounded-3xl bg-gradient-to-tr from-yellow-600 via-amber-500 to-yellow-300 p-1 shadow-2xl shadow-yellow-500/30 animate-bounce">
+                <div class="w-full h-full bg-[#0b0f17] rounded-[22px] flex items-center justify-center">
+                    <i class="fa-solid fa-crown text-yellow-400 text-3xl animate-pulse"></i>
+                </div>
+            </div>
+            <div class="text-center">
+                <h2 class="text-xl font-bold gold-gradient-text tracking-wider">VIP PROMPT VAULT</h2>
+                <p class="text-xs text-gray-400 mt-1 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-circle-notch fa-spin text-yellow-400"></i>
+                    <span>အချက်အလက်များ ရယူနေပါသည်...</span>
+                </p>
+            </div>
+            <div class="w-48 h-1 bg-gray-800/80 rounded-full overflow-hidden mt-2">
+                <div class="h-full bg-gradient-to-r from-yellow-500 to-amber-400 rounded-full animate-pulse w-full"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <header class="sticky top-0 z-40 glass-panel border-b border-gray-800/80 mb-6">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('feed')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-yellow-600 via-amber-500 to-yellow-300 p-0.5 shadow-lg shadow-yellow-500/20">
+                    <div class="w-full h-full bg-darkBg rounded-[10px] flex items-center justify-center">
+                        <i class="fa-solid font-bold fa-crown text-yellow-400 text-lg"></i>
+                    </div>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-wide gold-gradient-text">VIP PROMPT VAULT</h1>
+                    <p class="text-[10px] text-gray-400 -mt-1 font-sans">Exclusive AI Prompts & Gallery</p>
+                </div>
+            </div>
+
+            <!-- Navigation Actions -->
+            <div class="flex items-center gap-2 sm:gap-4">
+                <!-- VIP Status Badge -->
+                <div id="vip-status-badge" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 text-xs font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
+                    <span id="vip-days-left">30 Days Left</span>
+                </div>
+
+                <!-- Feed Button -->
+                <button onclick="switchTab('feed')" id="nav-btn-feed" class="px-3.5 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-2 bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">
+                    <i class="fa-solid fa-fire"></i>
+                    <span class="hidden md:inline"> Feed</span>
+                </button>
+
+                <!-- Favorite Album Menu Button -->
+                <button onclick="switchTab('favorites')" id="nav-btn-favorites" class="px-3.5 py-2 rounded-xl text-sm font-medium text-gray-300 hover:bg-gray-800 transition-all flex items-center gap-2 relative">
+                    <i class="fa-solid fa-heart text-rose-500"></i>
+                    <span class="hidden md:inline"> Fav Album</span>
+                    <span id="fav-count-badge" class="ml-1 px-1.5 py-0.2 text-[11px] rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30">0</span>
+                </button>
+
+                <!-- Admin Button (Hidden for normal users, visible only when logged in as Admin) -->
+                <button onclick="openAdminPanel()" id="nav-btn-admin" class="hidden px-3.5 py-2 rounded-xl text-sm font-medium text-purple-400 hover:bg-purple-500/10 border border-purple-500/30 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span class="hidden md:inline"> Admin</span>
+                </button>
+
+                <!-- User VIP Logout Button -->
+                <button onclick="logoutUser()" id="btn-user-logout" class="hidden px-3 py-2 rounded-xl text-xs font-semibold text-rose-400 hover:bg-rose-500/10 border border-rose-500/30 transition-all flex items-center gap-1.5" title="Logout VIP Account">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span class="hidden sm:inline">Logout</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4">
+
+        <!-- Feed View -->
+        <section id="view-feed" class="animate-fade-in">
+            <!-- Filter Bar -->
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-800">
+                <div>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-sparkles text-yellow-400"></i> VIP Prompt Collection
+                    </h2>
+                    <p class="text-xs text-gray-400">စိစစ်ထားသော အရည်အသွေးမြင့် AI Prompts နှင့် Photos များ</p>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-gray-500 font-sans">Total Posts: <span id="total-posts-count" class="text-yellow-400 font-bold">0</span></span>
+                </div>
+            </div>
+
+            <!-- Feed Grid -->
+            <div id="posts-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Skeleton Loader Cards (Shows before data loads) -->
+                <div class="glass-panel p-5 rounded-2xl border border-gray-800 animate-pulse space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="h-4 bg-gray-800 rounded w-24"></div>
+                        <div class="h-3 bg-gray-800 rounded w-16"></div>
+                    </div>
+                    <div class="h-5 bg-gray-800 rounded w-3/4"></div>
+                    <div class="h-52 bg-gray-800/60 rounded-xl"></div>
+                    <div class="h-16 bg-gray-800/40 rounded-xl"></div>
+                </div>
+                <div class="glass-panel p-5 rounded-2xl border border-gray-800 animate-pulse space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="h-4 bg-gray-800 rounded w-24"></div>
+                        <div class="h-3 bg-gray-800 rounded w-16"></div>
+                    </div>
+                    <div class="h-5 bg-gray-800 rounded w-3/4"></div>
+                    <div class="h-52 bg-gray-800/60 rounded-xl"></div>
+                    <div class="h-16 bg-gray-800/40 rounded-xl"></div>
+                </div>
+            </div>
+
+            <!-- Empty Posts Placeholder -->
+            <div id="no-posts-msg" class="hidden text-center py-16 glass-panel rounded-2xl border border-gray-800">
+                <i class="fa-regular fa-folder-open text-5xl text-gray-600 mb-3"></i>
+                <p class="text-gray-400 text-sm">လက်ရှိတွင် Post များ မရှိသေးပါ။ Admin မုဒ်မှ တင်ပေးပါ။</p>
+            </div>
+        </section>
+
+        <!-- Favorite Album View -->
+        <section id="view-favorites" class="hidden animate-fade-in">
+            <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-800">
+                <div>
+                    <h2 class="text-xl font-bold text-rose-400 flex items-center gap-2">
+                        <i class="fa-solid fa-heart"></i> Saved Favorite Prompts
+                    </h2>
+                    <p class="text-xs text-gray-400">သင် သိမ်းဆည်းထားသော အကြိုက်ဆုံး Prompt များနှင့် ပုံများ</p>
+                </div>
+                <button onclick="switchTab('feed')" class="text-xs text-yellow-400 hover:underline">
+                    <i class="fa-solid fa-arrow-left"></i> Feed သို့ ပြန်သွားရန်
+                </button>
+            </div>
+
+            <!-- Favorites Grid -->
+            <div id="favorites-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+
+            <!-- Empty Favorites Placeholder -->
+            <div id="no-favs-msg" class="hidden text-center py-16 glass-panel rounded-2xl border border-gray-800">
+                <i class="fa-solid fa-heart-crack text-5xl text-gray-600 mb-3"></i>
+                <p class="text-gray-400 text-sm">မည်သည့် Post ကိုမျှ Favorite မလုပ်ရသေးပါ။</p>
+                <p class="text-xs text-gray-500 mt-1">Feed View ရှိ အသည်းပုံ (Heart) ခလုတ်ကို နှိပ်၍ သိမ်းဆည်းပါ။</p>
+            </div>
+        </section>
+
+        <section id="view-admin" class="hidden animate-fade-in">
+            <!-- Admin Header -->
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-800">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 rounded-xl bg-purple-500/20 text-purple-400 border border-purple-500/30">
+                        <i class="fa-solid fa-user-gear text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-white">Admin Dashboard</h2>
+                        <p class="text-xs text-gray-400">Photo & Prompt တင်ခြင်း၊ VIP Code ထုတ်ပေးခြင်းများ ပြုလုပ်ပါ</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button onclick="logoutAdmin()" class="px-4 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-semibold transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout Admin
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Left Column: Create Post Form (7 Cols) -->
+                <div class="lg:col-span-7 glass-panel p-6 rounded-2xl border border-gray-800">
+                    <h3 class="text-base font-bold text-yellow-400 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-plus-circle"></i> Post အသစ်ဖန်တီးပါ
+                    </h3>
+
+                    <form id="admin-post-form" onsubmit="handleCreatePost(event)" class="space-y-4">
+                        <!-- Post Title -->
+                        <div>
+                            <label class="block text-xs font-medium text-gray-300 mb-1">Post ခေါင်းစဉ် (Title)</label>
+                            <input type="text" id="post-title" required placeholder="ဥပမာ- Cyberpunk Cybernetic Samurai Girl" 
+                                class="w-full px-3.5 py-2.5 bg-darkBg border border-gray-800 rounded-xl text-sm text-white focus:outline-none focus:border-yellow-500 transition-all">
+                        </div>
+
+                        <!-- Tag/Category -->
+                        <div>
+                            <label class="block text-xs font-medium text-gray-300 mb-1">AI Model / Tag</label>
+                            <select id="post-tag" onchange="toggleCustomTagInput(this.value)" class="w-full px-3.5 py-2.5 bg-darkBg border border-gray-800 rounded-xl text-sm text-white focus:outline-none focus:border-yellow-500 transition-all">
+                                <option value="Midjourney v6">Midjourney v6</option>
+                                <option value="Stable Diffusion XL">Stable Diffusion XL</option>
+                                <option value="Flux.1 Modern">Flux.1 Modern</option>
+                                <option value="DALL-E 3">DALL-E 3</option>
+                                <option value="Niji Journey">Niji Journey v6</option>
+                                <option value="Custom">Custom / Any (စိတ်ကြိုက်)</option>
+                            </select>
+                            <input type="text" id="post-tag-custom" placeholder="စိတ်ကြိုက် Tag / Model အမည် ရေးပါ..." 
+                                class="hidden mt-2 w-full px-3.5 py-2.5 bg-darkBg border border-yellow-500/50 rounded-xl text-sm text-yellow-400 focus:outline-none focus:border-yellow-500 transition-all">
+                        </div>
+
+                        <!-- Photo Mode Selector (1, 3, or Custom) -->
+                        <div>
+                            <label class="block text-xs font-medium text-gray-300 mb-2">Photo ပုံအရေအတွက်</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button type="button" onclick="setPhotoCountMode(1)" id="btn-mode-1" class="py-2 px-3 rounded-xl border text-xs font-medium transition-all bg-yellow-500/20 text-yellow-400 border-yellow-500">
+                                    <i class="fa-solid fa-image"></i> 1 Photo
+                                </button>
+                                <button type="button" onclick="setPhotoCountMode(3)" id="btn-mode-3" class="py-2 px-3 rounded-xl border border-gray-800 text-xs font-medium text-gray-400 hover:bg-gray-800 transition-all">
+                                    <i class="fa-solid fa-images"></i> 3 Photos
+                                </button>
+                                <button type="button" onclick="setPhotoCountMode('custom')" id="btn-mode-custom" class="py-2 px-3 rounded-xl border border-gray-800 text-xs font-medium text-gray-400 hover:bg-gray-800 transition-all">
+                                    <i class="fa-solid fa-layer-group"></i> Custom
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Image URLs Inputs Dynamic Container -->
+                        <div id="image-inputs-container" class="space-y-2"></div>
+
+                        <!-- Add Custom Image URL Button -->
+                        <button type="button" id="btn-add-custom-url" onclick="addCustomImageUrlInput()" class="hidden text-xs text-yellow-400 hover:underline flex items-center gap-1 font-medium pt-1">
+                            <i class="fa-solid fa-plus"></i> တခြား Photo URL ထပ်ထည့်ရန်
+                        </button>
+
+                        <!-- Prompt Input -->
+                        <div>
+                            <label class="block text-xs font-medium text-gray-300 mb-1">AI Prompt Code</label>
+                            <textarea id="post-prompt" rows="4" required placeholder="Paste full prompt code here..." 
+                                class="w-full px-3.5 py-2.5 bg-darkBg border border-gray-800 rounded-xl text-xs font-mono text-emerald-400 focus:outline-none focus:border-yellow-500 transition-all resize-none"></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-yellow-500 to-amber-600 text-black font-bold text-sm hover:brightness-110 shadow-lg shadow-yellow-500/20 transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Publish VIP Post
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Right Column: Invite Code Generator & List (5 Cols) -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="glass-panel p-6 rounded-2xl border border-gray-800">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-base font-bold text-yellow-400 flex items-center gap-2">
+                                <i class="fa-solid fa-key"></i> VIP Invite Codes
+                            </h3>
+                            <button onclick="generateNewInviteCode()" class="px-3 py-1.5 rounded-xl bg-yellow-500 text-black text-xs font-bold hover:brightness-110 transition-all flex items-center gap-1.5 shadow-md">
+                                <i class="fa-solid fa-plus"></i> Generate Code
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-400 mb-4">
+                            Code တစ်ခုသည် <b>1-Time Use</b> နှင့် <b>1-Device Only</b> အဖြစ် ရက်ပေါင်း <b>30</b> သက်တမ်း အလုပ်လုပ်မည်ဖြစ်ပါသည်။
+                        </p>
+
+                        <!-- Generated Code Display Table -->
+                        <div class="max-h-80 overflow-y-auto pr-1">
+                            <table class="w-full text-left text-xs">
+                                <thead>
+                                    <tr class="border-b border-gray-800 text-gray-500">
+                                        <th class="pb-2 font-medium">CODE</th>
+                                        <th class="pb-2 font-medium">STATUS</th>
+                                        <th class="pb-2 font-medium text-right">ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="invite-codes-table-body" class="divide-y divide-gray-800/60"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-5 rounded-2xl border border-gray-800 text-xs space-y-2 text-gray-400">
+                        <div class="text-white font-semibold flex items-center gap-2">
+                            <i class="fa-solid fa-shield-halved text-yellow-400"></i> Code Security Rules
+                        </div>
+                        <ul class="list-disc list-inside space-y-1 text-gray-400">
+                            <li>1 Code = 30-Day Full VIP Activation</li>
+                            <li>1 Device သာ Bind လုပ်နိုင်သည် (အခြား Device သုံးမရ)</li>
+                            <li>တစ်ကြိမ် အသုံးပြုပြီးပါက `USED` ဟု ပြောင်းလဲပါမည်</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- VIP Activation Code Gate Modal (App Entrance) -->
+    <div id="vip-gate-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
+        <div class="glass-panel border-yellow-500/40 gold-border-glow rounded-3xl p-6 sm:p-8 max-w-md w-full animate-fade-in text-center relative overflow-hidden">
+            <div class="absolute -top-12 -right-12 w-32 h-32 bg-yellow-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-500 to-amber-600 p-0.5 mx-auto mb-4 shadow-xl shadow-yellow-500/20">
+                <div class="w-full h-full bg-darkBg rounded-[14px] flex items-center justify-center">
+                    <i class="fa-solid fa-lock-keyhole text-2xl text-yellow-400"></i>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-bold text-white mb-1">VIP Access Required</h2>
+            <p class="text-xs text-gray-400 mb-6">
+                VIP Prompt & Photo များကို အသုံးပြုရန် Invite Code ထည့်သွင်းပါ။ Activate ဖြစ်သည်နှင့် <span class="text-yellow-400 font-bold">30 ရက်</span> အပြည့် အသုံးပြုနိုင်မည်ဖြစ်ပါသည်။
+            </p>
+
+            <form id="invite-code-form" onsubmit="handleActivateInviteCode(event)" class="space-y-4">
+                <div>
+                    <input type="text" id="input-invite-code" required placeholder="VIP-XXXX-XXXX သို့မဟုတ် Admin Passcode" 
+                        class="w-full px-4 py-3.5 text-center tracking-widest text-base sm:text-lg font-mono font-bold bg-darkBg border border-yellow-500/40 rounded-2xl text-yellow-400 placeholder-gray-600 focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-500/20 transition-all">
+                </div>
+
+                <div class="text-[11px] text-gray-500 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-circle-info text-yellow-500"></i>
+                    <span>VIP Code သို့မဟုတ် Admin Passcode ထည့်သွင်းပါ</span>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-yellow-500 via-amber-500 to-yellow-600 text-black font-bold text-sm hover:brightness-110 shadow-lg shadow-yellow-500/25 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-bolt"></i> Activate / Login Access
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Password Prompt Modal -->
+    <div id="admin-auth-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="glass-panel rounded-2xl p-6 max-w-sm w-full border border-gray-800 text-center animate-fade-in relative">
+            <button onclick="closeAdminAuthModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <i class="fa-solid fa-user-shield text-3xl text-yellow-400 mb-3"></i>
+            <h3 class="text-lg font-bold text-white mb-1">Admin Access</h3>
+            <p class="text-xs text-gray-400 mb-4">Admin Passcode ကို ထည့်သွင်းပါ <br><span class="text-yellow-400 font-mono font-bold">(Passcode: admin8888)</span></p>
+
+            <form onsubmit="handleAdminLogin(event)" class="space-y-3">
+                <input type="password" id="admin-passcode-input" required placeholder="Enter passcode..." 
+                    class="w-full px-3.5 py-2.5 bg-darkBg border border-gray-800 rounded-xl text-sm text-center text-white focus:outline-none focus:border-yellow-500">
+                
+                <button type="submit" class="w-full py-2.5 bg-yellow-500 text-black font-bold text-xs rounded-xl hover:brightness-110">
+                    Login Admin
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lightbox Image Viewer Modal -->
+    <div id="lightbox-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-md cursor-pointer" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" class="max-w-full max-h-[90vh] rounded-2xl shadow-2xl object-contain" alt="Preview">
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-confirm-modal" class="hidden fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="glass-panel rounded-2xl p-6 max-w-sm w-full border border-gray-800 text-center animate-fade-in relative">
+            <i class="fa-solid fa-triangle-exclamation text-3xl text-red-500 mb-3"></i>
+            <h3 class="text-lg font-bold text-white mb-1">Delete Post?</h3>
+            <p class="text-xs text-gray-400 mb-5">ဤ Post ကို ဖျက်ရန် သေချာပါသလား? ဤလုပ်ဆောင်ချက်ကို ပြန်ပြင်၍ ရမည်မဟုတ်ပါ။</p>
+            <div class="flex items-center gap-3">
+                <button type="button" onclick="closeDeleteModal()" class="w-1/2 py-2.5 bg-gray-800 text-gray-300 font-semibold text-xs rounded-xl hover:bg-gray-700 transition-all">
+                    Cancel
+                </button>
+                <button type="button" onclick="confirmExecuteDelete()" class="w-1/2 py-2.5 bg-red-600 text-white font-bold text-xs rounded-xl hover:bg-red-500 shadow-lg shadow-red-600/30 transition-all">
+                    Delete Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, collection, doc, setDoc, getDocs, updateDoc, deleteDoc, onSnapshot 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase Configuration Setup
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'vip-prompt-vault-app';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' 
+            ? JSON.parse(__firebase_config) 
+            : {
+                apiKey: "demo-api-key",
+                authDomain: "demo-app.firebaseapp.com",
+                projectId: "demo-app",
+                storageBucket: "demo-app.appspot.com",
+                messagingSenderId: "123456789",
+                appId: "1:123456789:web:demo"
+              };
+
+        let app, db, auth, currentUser = null;
+
+        try {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+        } catch (e) {
+            console.error("Firebase init error:", e);
+        }
+
+        const postsCollection = () => collection(db, 'artifacts', appId, 'public', 'data', 'posts');
+        const inviteCodesCollection = () => collection(db, 'artifacts', appId, 'public', 'data', 'invite_codes');
+
+        // Application State
+        window.appState = {
+            isAdmin: false,
+            activeTab: 'feed',
+            photoMode: 1,
+            customUrlCount: 1,
+            posts: [],
+            favorites: JSON.parse(localStorage.getItem('vip_fav_posts') || '[]'),
+            inviteCodes: [],
+            deviceId: getOrCreateDeviceId(),
+            vipActivation: JSON.parse(localStorage.getItem('vip_activation_data') || 'null')
+        };
+
+        let vipTimerInterval = null;
+
+        function getOrCreateDeviceId() {
+            let id = localStorage.getItem('vip_device_id');
+            if (!id) {
+                id = 'DEV-' + Math.random().toString(36).substring(2, 9).toUpperCase() + '-' + Date.now().toString(36).toUpperCase();
+                localStorage.setItem('vip_device_id', id);
+            }
+            return id;
+        }
+
+        window.showToast = function(msg, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let bgBg = 'bg-gray-800 border-gray-700 text-white';
+            let icon = '<i class="fa-solid fa-circle-info text-yellow-400"></i>';
+
+            if (type === 'success') {
+                bgBg = 'bg-emerald-950/90 border-emerald-500/50 text-emerald-200';
+                icon = '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
+            } else if (type === 'error') {
+                bgBg = 'bg-rose-950/90 border-rose-500/50 text-rose-200';
+                icon = '<i class="fa-solid fa-circle-exclamation text-rose-400"></i>';
+            }
+
+            toast.className = `px-4 py-3 rounded-2xl border shadow-xl ${bgBg} text-xs font-semibold flex items-center gap-2.5 backdrop-blur-md pointer-events-auto transition-all animate-fade-in`;
+            toast.innerHTML = `${icon} <span>${escapeHTML(msg)}</span>`;
+
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-[-10px]');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        };
+
+        window.copyToClipboard = function(text, event) {
+            if (event) event.stopPropagation();
+            
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                document.execCommand('copy');
+                window.showToast('Prompt Code ကူးယူပြီးပါပြီ! (Copied)', 'success');
+            } catch (err) {
+                window.showToast('Copy လုပ်၍ မရပါ။', 'error');
+            }
+            document.body.removeChild(textarea);
+        };
+
+        window.copyPostPrompt = function(postId, event) {
+            if (event) event.stopPropagation();
+            const post = window.appState.posts.find(p => p.id === postId);
+            if (post && post.prompt) {
+                window.copyToClipboard(post.prompt, event);
+            }
+        };
+
+        async function initAuthAndData() {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                currentUser = auth.currentUser;
+                
+                checkVipStatus();
+                subscribePosts();
+                subscribeInviteCodes();
+            } catch (err) {
+                console.error("Auth error:", err);
+                hidePreloader();
+            }
+
+            // Fallback safety timeout (ensure preloader hides after max 3.5s)
+            setTimeout(hidePreloader, 3500);
+        }
+
+        function hidePreloader() {
+            const preloader = document.getElementById('app-preloader');
+            if (preloader && !preloader.classList.contains('hidden')) {
+                preloader.classList.add('opacity-0', 'pointer-events-none');
+                setTimeout(() => {
+                    preloader.classList.add('hidden');
+                }, 500);
+            }
+        }
+
+        function checkVipStatus() {
+            const adminBtn = document.getElementById('nav-btn-admin');
+            const userLogoutBtn = document.getElementById('btn-user-logout');
+
+            if (window.appState.isAdmin) {
+                document.getElementById('vip-gate-modal').classList.add('hidden');
+                if (vipTimerInterval) clearInterval(vipTimerInterval);
+                if (adminBtn) adminBtn.classList.remove('hidden');
+                if (userLogoutBtn) userLogoutBtn.classList.remove('hidden');
+                return;
+            } else {
+                if (adminBtn) adminBtn.classList.add('hidden');
+            }
+
+            const vip = window.appState.vipActivation;
+            const gateModal = document.getElementById('vip-gate-modal');
+            const badge = document.getElementById('vip-status-badge');
+
+            if (vip && vip.expiresAt && Date.now() < vip.expiresAt && vip.deviceId === window.appState.deviceId) {
+                gateModal.classList.add('hidden');
+                badge.classList.remove('hidden');
+                if (userLogoutBtn) userLogoutBtn.classList.remove('hidden');
+                
+                updateCountdownDisplay();
+                if (vipTimerInterval) clearInterval(vipTimerInterval);
+                vipTimerInterval = setInterval(updateCountdownDisplay, 1000);
+            } else {
+                gateModal.classList.remove('hidden');
+                badge.classList.add('hidden');
+                if (userLogoutBtn) userLogoutBtn.classList.add('hidden');
+                if (vipTimerInterval) clearInterval(vipTimerInterval);
+            }
+        }
+
+        window.logoutUser = function() {
+            localStorage.removeItem('vip_activation_data');
+            window.appState.vipActivation = null;
+            window.appState.isAdmin = false;
+
+            if (vipTimerInterval) clearInterval(vipTimerInterval);
+
+            switchTab('feed');
+            checkVipStatus();
+            window.showToast('VIP Account မှ ထွက်လိုက်ပါပြီ', 'info');
+        };
+
+        function updateCountdownDisplay() {
+            const vip = window.appState.vipActivation;
+            const badgeText = document.getElementById('vip-days-left');
+            if (!vip || !vip.expiresAt || !badgeText) return;
+
+            const diff = vip.expiresAt - Date.now();
+            if (diff <= 0) {
+                badgeText.innerText = 'Expired';
+                if (vipTimerInterval) clearInterval(vipTimerInterval);
+                checkVipStatus();
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            badgeText.innerText = `${days}d ${hours}h ${minutes}m ${seconds}s Left`;
+        }
+
+        window.handleActivateInviteCode = async function(e) {
+            e.preventDefault();
+            const input = document.getElementById('input-invite-code');
+            const rawValue = input.value.trim();
+            const rawCode = rawValue.toUpperCase();
+
+            if (!rawValue) return;
+
+            if (rawValue.toLowerCase() === 'admin8888' || rawValue.toLowerCase() === 'admin123') {
+                window.appState.isAdmin = true;
+                
+                document.getElementById('vip-gate-modal').classList.add('hidden');
+                document.getElementById('admin-auth-modal').classList.add('hidden');
+                
+                switchTab('admin');
+                renderPosts();
+                
+                window.showToast('Admin Passcode မှန်ကန်ပါသည်။ Admin Dashboard သို့ ဝင်ရောက်ပြီးပါပြီ!', 'success');
+                input.value = '';
+                return;
+            }
+
+            window.showToast('Code စစ်ဆေးနေပါသည်...', 'info');
+
+            try {
+                const snap = await getDocs(inviteCodesCollection());
+                let foundCodeDoc = null;
+                
+                snap.forEach(d => {
+                    const data = d.data();
+                    if (data.code === rawCode) {
+                        foundCodeDoc = { id: d.id, ...data };
+                    }
+                });
+
+                if (!foundCodeDoc) {
+                    window.showToast('Invite Code မမှန်ကန်ပါ။ ပြန်လည်စစ်ဆေးပါ။', 'error');
+                    return;
+                }
+
+                const currentDevId = window.appState.deviceId;
+
+                if (foundCodeDoc.isUsed && foundCodeDoc.usedByDevice !== currentDevId) {
+                    window.showToast('ဤ Invite Code သည် အခြား Device တွင် အသုံးပြုပြီးဖြစ်ပါသည်။ 1-Device သာ အသုံးပြုနိုင်ပါသည်။', 'error');
+                    return;
+                }
+
+                const now = Date.now();
+                const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
+                const expiresAt = now + thirtyDaysMs;
+
+                if (!foundCodeDoc.isUsed) {
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'invite_codes', foundCodeDoc.id), {
+                        isUsed: true,
+                        usedByDevice: currentDevId,
+                        activatedAt: now,
+                        expiresAt: expiresAt
+                    });
+                }
+
+                const vipData = {
+                    code: rawCode,
+                    deviceId: currentDevId,
+                    activatedAt: now,
+                    expiresAt: foundCodeDoc.expiresAt || expiresAt
+                };
+                localStorage.setItem('vip_activation_data', JSON.stringify(vipData));
+                window.appState.vipActivation = vipData;
+
+                window.showToast('VIP 30 ရက် အပြည့် Activate ဖြစ်သွားပါပြီ!', 'success');
+                checkVipStatus();
+                input.value = '';
+
+            } catch (err) {
+                console.error("Activation Error:", err);
+                window.showToast('Code Activate လုပ်ရာတွင် အမှားဖြစ်ပေါ်ခဲ့ပါသည်။', 'error');
+            }
+        };
+
+        function subscribePosts() {
+            onSnapshot(postsCollection(), (snapshot) => {
+                const postsList = [];
+                snapshot.forEach(d => postsList.push({ id: d.id, ...d.data() }));
+                
+                postsList.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                window.appState.posts = postsList;
+
+                renderPosts();
+                renderFavorites();
+                hidePreloader();
+            }, (error) => {
+                console.error("Posts snapshot error:", error);
+                hidePreloader();
+            });
+        }
+
+        function subscribeInviteCodes() {
+            onSnapshot(inviteCodesCollection(), (snapshot) => {
+                const codeList = [];
+                snapshot.forEach(d => codeList.push({ id: d.id, ...d.data() }));
+                codeList.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                window.appState.inviteCodes = codeList;
+                renderInviteCodesTable();
+            }, (error) => {
+                console.error("Codes snapshot error:", error);
+            });
+        }
+
+        window.removeSamplePosts = async function() {
+            try {
+                window.showToast('Sample posts များကို ဖျက်နေပါသည်...', 'info');
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'posts', 'post_sample_1'));
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'posts', 'post_sample_2'));
+                
+                const samplePosts = window.appState.posts.filter(p => 
+                    p.id === 'post_sample_1' || p.id === 'post_sample_2' || 
+                    p.title?.includes('Cyberpunk Futuristic Citygirl') || p.title?.includes('Ancient Golden Dragon')
+                );
+
+                for (const p of samplePosts) {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'posts', p.id));
+                }
+
+                window.showToast('Sample posts များကို ဖျက်ပြီးပါပြီ!', 'success');
+            } catch (e) {
+                console.error("Remove sample posts error:", e);
+                window.showToast('Sample posts ဖျက်ရာတွင် အမှားရှိပါသည်', 'error');
+            }
+        };
+
+        function renderPosts() {
+            const container = document.getElementById('posts-container');
+            const noPostsMsg = document.getElementById('no-posts-msg');
+            const countElem = document.getElementById('total-posts-count');
+
+            const posts = window.appState.posts;
+            countElem.innerText = posts.length;
+
+            if (posts.length === 0) {
+                container.innerHTML = '';
+                noPostsMsg.classList.remove('hidden');
+                return;
+            }
+
+            noPostsMsg.classList.add('hidden');
+            container.innerHTML = posts.map(post => createPostCardHTML(post)).join('');
+            updateFavBadge();
+        }
+
+        function renderFavorites() {
+            const container = document.getElementById('favorites-container');
+            const noFavsMsg = document.getElementById('no-favs-msg');
+            const favIds = window.appState.favorites;
+
+            const favPosts = window.appState.posts.filter(p => favIds.includes(p.id));
+
+            if (favPosts.length === 0) {
+                container.innerHTML = '';
+                noFavsMsg.classList.remove('hidden');
+                return;
+            }
+
+            noFavsMsg.classList.add('hidden');
+            container.innerHTML = favPosts.map(post => createPostCardHTML(post)).join('');
+        }
+
+        function createPostCardHTML(post) {
+            const isFav = window.appState.favorites.includes(post.id);
+            const photoList = post.photos || [];
+
+            let photoGridHTML = '';
+            if (photoList.length === 1) {
+                photoGridHTML = `
+                    <div class="overflow-hidden rounded-xl bg-darkBg border border-gray-800 h-64 group cursor-pointer" onclick="openLightbox('${escapeHTML(photoList[0])}')">
+                        <img src="${escapeHTML(photoList[0])}" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-300" loading="lazy" alt="Post Photo" onerror="this.src='https://placehold.co/800x600/1e293b/ca8a04?text=Photo+Unavailable'">
+                    </div>
+                `;
+            } else if (photoList.length === 3) {
+                photoGridHTML = `
+                    <div class="grid grid-cols-3 gap-2 h-52">
+                        ${photoList.map(img => `
+                            <div class="overflow-hidden rounded-xl bg-darkBg border border-gray-800 h-full group cursor-pointer" onclick="openLightbox('${escapeHTML(img)}')">
+                                <img src="${escapeHTML(img)}" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-300" loading="lazy" alt="Post Photo" onerror="this.src='https://placehold.co/400x400/1e293b/ca8a04?text=Photo'">
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                photoGridHTML = `
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-72 overflow-y-auto pr-1">
+                        ${photoList.map(img => `
+                            <div class="overflow-hidden rounded-xl bg-darkBg border border-gray-800 h-32 group cursor-pointer" onclick="openLightbox('${escapeHTML(img)}')">
+                                <img src="${escapeHTML(img)}" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-300" loading="lazy" alt="Post Photo" onerror="this.src='https://placehold.co/400x400/1e293b/ca8a04?text=Photo'">
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="glass-panel p-5 rounded-2xl border border-gray-800 hover:border-gray-700/80 transition-all flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase bg-yellow-500/10 text-yellow-400 border border-yellow-500/30">
+                                ${escapeHTML(post.tag || 'AI Prompt')}
+                            </span>
+                        </div>
+
+                        <h3 class="text-base font-bold text-white mb-3 line-clamp-1">${escapeHTML(post.title)}</h3>
+                        ${photoGridHTML}
+                    </div>
+
+                    <div>
+                        <div class="flex items-center justify-between text-xs text-gray-400 mb-1">
+                            <span class="font-mono text-[11px] text-gray-500"><i class="fa-solid fa-code"></i> AI Prompt</span>
+                            <span class="text-[10px] text-yellow-500/80 font-medium">Click block to copy</span>
+                        </div>
+                        <div onclick="copyPostPrompt('${post.id}', event)" 
+                            class="code-block p-3.5 rounded-xl cursor-pointer hover:border-yellow-500/50 transition-all relative group">
+                            <p class="text-xs text-emerald-400 font-mono line-clamp-3 select-none">${escapeHTML(post.prompt)}</p>
+                            <div class="absolute inset-0 bg-yellow-500/5 opacity-0 group-hover:opacity-100 transition-all rounded-xl flex items-center justify-end pr-3">
+                                <span class="px-2.5 py-1 rounded-lg bg-yellow-500 text-black text-[10px] font-bold shadow-md">
+                                    <i class="fa-solid fa-copy"></i> Click to Copy
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-2 border-t border-gray-800/80 text-xs">
+                        <button onclick="toggleFavorite('${post.id}', event)" class="flex items-center gap-2 px-3 py-1.5 rounded-xl transition-all ${isFav ? 'bg-rose-500/20 text-rose-400 border border-rose-500/40' : 'text-gray-400 hover:bg-gray-800'}">
+                            <i class="fa-${isFav ? 'solid text-rose-500' : 'regular'} fa-heart text-sm"></i>
+                            <span class="font-semibold">${isFav ? 'Saved in Fav' : 'Save Fav'}</span>
+                        </button>
+
+                        <div class="flex items-center gap-2">
+                            ${window.appState.isAdmin ? `
+                                <button onclick="promptDeletePost('${post.id}', event)" class="text-red-400 hover:text-red-300 p-2 rounded-xl hover:bg-red-500/10 transition-all" title="Delete Post">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="copyPostPrompt('${post.id}', event)" class="px-3 py-1.5 rounded-xl bg-gray-800 text-gray-200 hover:bg-yellow-500 hover:text-black font-semibold transition-all flex items-center gap-1.5">
+                                <i class="fa-solid fa-copy"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.toggleFavorite = function(postId, event) {
+            if (event) event.stopPropagation();
+            let favs = window.appState.favorites;
+
+            if (favs.includes(postId)) {
+                favs = favs.filter(id => id !== postId);
+                window.showToast('Favorite မှ ဖယ်ရှားလိုက်ပါပြီ', 'info');
+            } else {
+                favs.push(postId);
+                window.showToast('Favorite Album သို့ သိမ်းဆည်းပြီးပါပြီ!', 'success');
+            }
+
+            window.appState.favorites = favs;
+            localStorage.setItem('vip_fav_posts', JSON.stringify(favs));
+            
+            renderPosts();
+            renderFavorites();
+            updateFavBadge();
+        };
+
+        function updateFavBadge() {
+            const count = window.appState.favorites.length;
+            const badge = document.getElementById('fav-count-badge');
+            if (badge) badge.innerText = count;
+        }
+
+        window.setPhotoCountMode = function(mode) {
+            window.appState.photoMode = mode;
+
+            ['1', '3', 'custom'].forEach(m => {
+                const btn = document.getElementById(`btn-mode-${m}`);
+                if (btn) {
+                    if (m == mode) {
+                        btn.className = "py-2 px-3 rounded-xl border text-xs font-medium transition-all bg-yellow-500/20 text-yellow-400 border-yellow-500";
+                    } else {
+                        btn.className = "py-2 px-3 rounded-xl border border-gray-800 text-xs font-medium text-gray-400 hover:bg-gray-800 transition-all";
+                    }
+                }
+            });
+
+            const btnAddCustom = document.getElementById('btn-add-custom-url');
+            if (mode === 'custom') {
+                if (btnAddCustom) btnAddCustom.classList.remove('hidden');
+                window.appState.customUrlCount = 2;
+            } else {
+                if (btnAddCustom) btnAddCustom.classList.add('hidden');
+            }
+
+            renderImageInputs();
+        };
+
+        function renderImageInputs() {
+            const container = document.getElementById('image-inputs-container');
+            const mode = window.appState.photoMode;
+
+            let count = 1;
+            if (mode === 3) count = 3;
+            if (mode === 'custom') count = window.appState.customUrlCount;
+
+            let html = '';
+            for (let i = 0; i < count; i++) {
+                html += `
+                    <div>
+                        <label class="block text-[11px] text-gray-400 mb-1">Photo URL #${i+1}</label>
+                        <input type="url" name="photo_url_${i}" required placeholder="https://images.unsplash.com/photo-..." 
+                            class="photo-url-input w-full px-3 py-2 bg-darkBg border border-gray-800 rounded-xl text-xs text-white focus:outline-none focus:border-yellow-500">
+                    </div>
+                `;
+            }
+            if (container) container.innerHTML = html;
+        }
+
+        window.addCustomImageUrlInput = function() {
+            window.appState.customUrlCount++;
+            renderImageInputs();
+        };
+
+        window.toggleCustomTagInput = function(val) {
+            const customInp = document.getElementById('post-tag-custom');
+            if (val === 'Custom') {
+                customInp.classList.remove('hidden');
+                customInp.focus();
+            } else {
+                customInp.classList.add('hidden');
+            }
+        };
+
+        window.handleCreatePost = async function(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('post-title').value.trim();
+            const tagSelect = document.getElementById('post-tag').value;
+            let tag = tagSelect;
+
+            if (tagSelect === 'Custom') {
+                const customTag = document.getElementById('post-tag-custom').value.trim();
+                tag = customTag || 'Custom AI';
+            }
+
+            const prompt = document.getElementById('post-prompt').value.trim();
+
+            const photoInputs = document.querySelectorAll('.photo-url-input');
+            const photos = Array.from(photoInputs).map(inp => inp.value.trim()).filter(val => val !== '');
+
+            if (photos.length === 0) {
+                window.showToast('အနည်းဆုံး Photo URL တစ်ခု ထည့်သွင်းပေးပါ', 'error');
+                return;
+            }
+
+            const newPost = {
+                title,
+                tag,
+                photos,
+                prompt,
+                createdAt: Date.now()
+            };
+
+            try {
+                window.showToast('Post တင်နေပါသည်...', 'info');
+                const newDocRef = doc(postsCollection());
+                await setDoc(newDocRef, newPost);
+
+                window.showToast('Post အသစ် အောင်မြင်စွာ တင်ပြီးပါပြီ!', 'success');
+                document.getElementById('admin-post-form').reset();
+                document.getElementById('post-tag-custom').classList.add('hidden');
+                setPhotoCountMode(1);
+            } catch (err) {
+                console.error("Create Post Error:", err);
+                window.showToast('Post တင်ရာတွင် အမှားဖြစ်ပေါ်ခဲ့ပါသည်', 'error');
+            }
+        };
+
+        let targetPostIdToDelete = null;
+
+        window.promptDeletePost = function(postId, event) {
+            if (event) event.stopPropagation();
+            targetPostIdToDelete = postId;
+            document.getElementById('delete-confirm-modal').classList.remove('hidden');
+        };
+
+        window.closeDeleteModal = function() {
+            targetPostIdToDelete = null;
+            document.getElementById('delete-confirm-modal').classList.add('hidden');
+        };
+
+        window.confirmExecuteDelete = async function() {
+            if (!targetPostIdToDelete) return;
+            const postId = targetPostIdToDelete;
+            closeDeleteModal();
+
+            try {
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'posts', postId));
+                window.showToast('Post ဖျက်ပြီးပါပြီ', 'info');
+            } catch (e) {
+                console.error("Delete error:", e);
+                window.showToast('ဖျက်၍ မရပါ', 'error');
+            }
+        };
+
+        window.generateNewInviteCode = async function() {
+            const randomCode = 'VIP-' + Math.random().toString(36).substring(2, 6).toUpperCase() + '-' + Math.random().toString(36).substring(2, 6).toUpperCase();
+
+            const codeObj = {
+                code: randomCode,
+                isUsed: false,
+                usedByDevice: '',
+                createdAt: Date.now(),
+                durationDays: 30
+            };
+
+            try {
+                const newDoc = doc(inviteCodesCollection());
+                await setDoc(newDoc, codeObj);
+                window.showToast(`Code သစ်ဖန်တီးပြီး: ${randomCode}`, 'success');
+            } catch (e) {
+                console.error("Code gen error:", e);
+                window.showToast('Code ထုတ်ပေး၍ မရပါ', 'error');
+            }
+        };
+
+        function renderInviteCodesTable() {
+            const tbody = document.getElementById('invite-codes-table-body');
+            const codes = window.appState.inviteCodes;
+
+            if (!tbody) return;
+
+            if (codes.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="py-4 text-center text-gray-500">Invite Code မရှိသေးပါ။ Generate ခလုတ် နှိပ်ပါ။</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = codes.map(c => `
+                <tr class="hover:bg-gray-800/40">
+                    <td class="py-2.5 font-mono font-bold text-yellow-400">${escapeHTML(c.code)}</td>
+                    <td class="py-2.5">
+                        ${c.isUsed ? 
+                            `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">USED</span>` : 
+                            `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">ACTIVE</span>`
+                        }
+                    </td>
+                    <td class="py-2.5 text-right space-x-1">
+                        <button onclick="copyToClipboard('${escapeHTML(c.code)}')" class="px-2 py-1 rounded bg-gray-800 hover:bg-yellow-500 hover:text-black text-[10px]">
+                            Copy
+                        </button>
+                        <button onclick="deleteInviteCode('${c.id}')" class="px-2 py-1 rounded bg-red-500/10 hover:bg-red-500 text-red-400 hover:text-white text-[10px]">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        window.deleteInviteCode = async function(id) {
+            try {
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'invite_codes', id));
+                window.showToast('Code ဖျက်လိုက်ပါပြီ', 'info');
+            } catch(e) {}
+        };
+
+        window.switchTab = function(tab) {
+            window.appState.activeTab = tab;
+
+            document.getElementById('view-feed').classList.add('hidden');
+            document.getElementById('view-favorites').classList.add('hidden');
+            document.getElementById('view-admin').classList.add('hidden');
+
+            document.getElementById(`view-${tab}`).classList.remove('hidden');
+
+            ['feed', 'favorites', 'admin'].forEach(t => {
+                const btn = document.getElementById(`nav-btn-${t}`);
+                if (btn) {
+                    if (t === tab) {
+                        btn.className = "px-3.5 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-2 bg-yellow-500/20 text-yellow-400 border border-yellow-500/30";
+                    } else {
+                        btn.className = "px-3.5 py-2 rounded-xl text-sm font-medium text-gray-300 hover:bg-gray-800 transition-all flex items-center gap-2";
+                    }
+                }
+            });
+
+            if (tab === 'favorites') renderFavorites();
+        };
+
+        window.openAdminPanel = function() {
+            if (window.appState.isAdmin) {
+                switchTab('admin');
+            } else {
+                openAdminAuthModal();
+            }
+        };
+
+        window.openAdminAuthModal = function() {
+            document.getElementById('admin-auth-modal').classList.remove('hidden');
+        };
+
+        window.closeAdminAuthModal = function() {
+            document.getElementById('admin-auth-modal').classList.add('hidden');
+        };
+
+        window.handleAdminLogin = function(e) {
+            e.preventDefault();
+            const passInput = document.getElementById('admin-passcode-input');
+            const pass = passInput.value.trim();
+            if (pass === 'admin8888' || pass === 'admin123') {
+                window.appState.isAdmin = true;
+                closeAdminAuthModal();
+                document.getElementById('vip-gate-modal').classList.add('hidden');
+                switchTab('admin');
+                renderPosts();
+                window.showToast('Admin Mode သို့ ဝင်ရောက်ပြီးပါပြီ', 'success');
+                passInput.value = '';
+            } else {
+                window.showToast('Admin Passcode မှားယွင်းနေပါသည် (Passcode: admin8888)', 'error');
+            }
+        };
+
+        window.logoutAdmin = function() {
+            window.appState.isAdmin = false;
+            switchTab('feed');
+            checkVipStatus();
+            renderPosts();
+            window.showToast('Admin Mode မှ ထွက်လိုက်ပါပြီ', 'info');
+        };
+
+        window.openLightbox = function(imgUrl) {
+            const modal = document.getElementById('lightbox-modal');
+            const img = document.getElementById('lightbox-img');
+            img.src = imgUrl;
+            modal.classList.remove('hidden');
+        };
+
+        window.closeLightbox = function() {
+            document.getElementById('lightbox-modal').classList.add('hidden');
+        };
+
+        function formatDate(timestamp) {
+            if (!timestamp) return 'Just now';
+            const d = new Date(timestamp);
+            return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+
+        window.onload = function() {
+            setPhotoCountMode(1);
+            initAuthAndData();
+        };
+    </script>
+</body>
+</html>
