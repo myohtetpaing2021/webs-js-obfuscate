@@ -1,0 +1,1070 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoC VIP Base Layouts — Premium Collection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <script>
+/* obfuscated */
+var _0x45acd1=_0x28d6;(function(_0x53cf82,_0x167f28){var _0x5194ed=_0x28d6,_0x4763bf=_0x53cf82();while(!![]){try{var _0x15b308=-parseInt(_0x5194ed(0x1a0))/0x1*(-parseInt(_0x5194ed(0x18e))/0x2)+parseInt(_0x5194ed(0x19b))/0x3+-parseInt(_0x5194ed(0x18b))/0x4*(-parseInt(_0x5194ed(0x18f))/0x5)+-parseInt(_0x5194ed(0x193))/0x6+-parseInt(_0x5194ed(0x195))/0x7*(parseInt(_0x5194ed(0x190))/0x8)+-parseInt(_0x5194ed(0x19e))/0x9+parseInt(_0x5194ed(0x18d))/0xa;if(_0x15b308===_0x167f28)break;else _0x4763bf['push'](_0x4763bf['shift']());}catch(_0x5a7b1d){_0x4763bf['push'](_0x4763bf['shift']());}}}(_0x1e91,0x43302),tailwind[_0x45acd1(0x192)]={'theme':{'extend':{'fontFamily':{'sans':[_0x45acd1(0x188),_0x45acd1(0x19c),_0x45acd1(0x198)],'mono':[_0x45acd1(0x196),_0x45acd1(0x1a3)]},'colors':{'obsidian':'#05070a','midnight':_0x45acd1(0x199),'void':_0x45acd1(0x19f),'slate':{0x352:'#151e2e',0x384:'#0f172a',0x3b6:'#020617'},'gold':{0x32:'#fffbeb',0x64:_0x45acd1(0x197),0xc8:_0x45acd1(0x1a1),0x12c:_0x45acd1(0x19d),0x190:_0x45acd1(0x18c),0x1f4:_0x45acd1(0x191),0x258:_0x45acd1(0x18a),0x2bc:'#b45309',0x320:_0x45acd1(0x194),0x384:_0x45acd1(0x189)},'cyan':{0x190:'#22d3ee',0x1f4:_0x45acd1(0x19a),0x258:_0x45acd1(0x1a2)}}}}});function _0x28d6(_0xdfd924,_0x168c5c){_0xdfd924=_0xdfd924-0x188;var _0x1e9168=_0x1e91();var _0x28d654=_0x1e9168[_0xdfd924];return _0x28d654;}function _0x1e91(){var _0x5889e1=['Inter','#78350f','#d97706','16ACYDol','#fbbf24','5449180BEojhg','506746TpCKQw','443240zwKsTT','317872BvpoDw','#f59e0b','config','676194DdsvIZ','#92400e','77lbvrXa','JetBrains\x20Mono','#fef3c7','sans-serif','#0a0f1a','#06b6d4','84753heEuwE','system-ui','#fcd34d','3205431ToWdhy','#0e1420','1YJlQrr','#fde68a','#0891b2','monospace'];_0x1e91=function(){return _0x5889e1;};return _0x1e91();}
+</script>
+
+    <style>
+        * { scrollbar-width: thin; scrollbar-color: rgba(245,158,11,0.3) transparent; }
+        *::-webkit-scrollbar { width: 4px; }
+        *::-webkit-scrollbar-track { background: transparent; }
+        *::-webkit-scrollbar-thumb { background: rgba(245,158,11,0.3); border-radius: 4px; }
+
+        body { background-color: #05070a; font-family: 'Inter', system-ui, sans-serif; overflow-x: hidden; }
+
+        .bg-noise { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); }
+
+        .glass-panel {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.6) 0%, rgba(5, 7, 10, 0.8) 100%);
+            backdrop-filter: blur(20px) saturate(1.2);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card {
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.6) 100%);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(245, 158, 11, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(245, 158, 11, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+            color: #000;
+            font-weight: 800;
+            letter-spacing: 0.025em;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gold::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .btn-gold:hover::before { transform: translateX(100%); }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(245, 158, 11, 0.3); }
+        .btn-gold:active { transform: translateY(0) scale(0.98); }
+
+        .preloader-shell { background: #05070a; }
+        .preloader-ring { position: absolute; border-radius: 50%; border: 2px solid transparent; }
+        .preloader-ring-outer { width: 120px; height: 120px; border-top-color: #f59e0b; border-right-color: rgba(245, 158, 11, 0.3); animation: spin 2s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+        .preloader-ring-mid { width: 90px; height: 90px; border-bottom-color: #06b6d4; border-left-color: rgba(6, 182, 212, 0.3); animation: spin 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite reverse; }
+        .preloader-ring-inner { width: 60px; height: 60px; border-top-color: #f59e0b; border-bottom-color: #06b6d4; animation: spin 1s linear infinite; }
+        .preloader-core { width: 30px; height: 30px; background: radial-gradient(circle, rgba(245,158,11,0.8) 0%, rgba(6,182,212,0.4) 50%, transparent 70%); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.7; } }
+
+        .toast-enter { animation: toastSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes toastSlide { from { transform: translateY(-30px) scale(0.9); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+
+        .tab-active { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #000; box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3); }
+        .tab-inactive { background: rgba(15, 23, 42, 0.6); color: #64748b; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .tab-inactive:hover { background: rgba(30, 41, 59, 0.8); color: #94a3b8; border-color: rgba(255, 255, 255, 0.1); }
+
+        .image-shine { position: relative; overflow: hidden; }
+        .image-shine::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(to right, transparent 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%);
+            transform: rotate(30deg) translateX(-100%); transition: transform 0.8s ease;
+        }
+        .glass-card:hover .image-shine::after { transform: rotate(30deg) translateX(100%); }
+
+        .countdown-glow { text-shadow: 0 0 20px rgba(245, 158, 11, 0.3); }
+        .modal-enter { animation: modalFade 0.3s ease forwards; }
+        @keyframes modalFade { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        .stagger-in { animation: staggerFade 0.5s ease forwards; opacity: 0; }
+        @keyframes staggerFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .vip-badge { background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 0 20px rgba(245, 158, 11, 0.3); }
+        .admin-badge { background: linear-gradient(135deg, #06b6d4, #0891b2); box-shadow: 0 0 20px rgba(6, 182, 212, 0.3); }
+
+        .input-luxury { background: rgba(5, 7, 10, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s ease; }
+        .input-luxury:focus { border-color: rgba(245, 158, 11, 0.4); box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05); outline: none; }
+        .input-luxury::placeholder { color: #334155; }
+
+        .skeleton { background: linear-gradient(90deg, rgba(30,41,59,0.4) 25%, rgba(51,65,85,0.4) 50%, rgba(30,41,59,0.4) 75%); background-size: 200% 100%; animation: skeleton 1.5s ease-in-out infinite; }
+        @keyframes skeleton { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        .gradient-text { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .gradient-text-cyan { background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+        .floating-orbs { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.15; animation: float 20s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(30px, -30px) scale(1.1); } 66% { transform: translate(-20px, 20px) scale(0.9); } }
+
+        .heart-beat { transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .heart-beat:active { transform: scale(1.3); }
+
+        .category-tag { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); backdrop-filter: blur(8px); }
+        .delete-btn { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); transition: all 0.3s ease; }
+        .delete-btn:hover { background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.4); box-shadow: 0 0 20px rgba(239, 68, 68, 0.2); }
+
+        .copy-link-btn { position: relative; overflow: hidden; transition: all 0.3s ease; }
+        .copy-link-btn::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transform: translateX(-100%); }
+        .copy-link-btn:hover::after { animation: shimmer 1s ease forwards; }
+        @keyframes shimmer { to { transform: translateX(100%); } }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo, useCallback, useRef } = React;
+
+        const apiFetch = async (action, data = {}, method = 'POST') => {
+            try {
+                const options = { method, headers: { 'Content-Type': 'application/json' } };
+                if (method === 'POST') options.body = JSON.stringify(data);
+                const query = method === 'GET' ? `?action=${action}&${new URLSearchParams(data).toString()}` : `?action=${action}`;
+                const res = await fetch(`https://shayshayblack11.serv00.net/Base/api.php${query}`, options);
+                return await res.json();
+            } catch (e) {
+                console.error('API Error:', e);
+                return { success: false, error: 'Network or Server Error' };
+            }
+        };
+
+        const Icons = {
+            Heart: ({ filled, className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill={filled ? "#ef4444" : "none"} stroke={filled ? "#ef4444" : "currentColor"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+            ),
+            Star: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+            ),
+            Shield: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+            ),
+            Swords: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"></polyline>
+                    <line x1="13" y1="19" x2="19" y2="13"></line>
+                    <line x1="16" y1="16" x2="20" y2="20"></line>
+                    <line x1="19" y1="21" x2="21" y2="19"></line>
+                    <polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"></polyline>
+                    <line x1="5" y1="14" x2="9" y2="10"></line>
+                    <line x1="4" y1="17" x2="7" y2="20"></line>
+                </svg>
+            ),
+            Settings: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+            ),
+            Trash: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                    <path d="M10 11v6"></path>
+                    <path d="M14 11v6"></path>
+                    <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"></path>
+                </svg>
+            ),
+            Logout: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+            ),
+            Crown: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/>
+                </svg>
+            ),
+            Clock: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+            ),
+            Eye: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+            ),
+            Copy: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+            ),
+            X: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            ),
+            AlertTriangle: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+            ),
+            Plus: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+            ),
+            Key: ({ className }) => (
+                <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+                </svg>
+            )
+        };
+
+        const FloatingOrbs = () => (
+            <div className="floating-orbs">
+                <div className="orb w-96 h-96 bg-amber-500 top-[-10%] left-[-10%]" style={{animationDelay: '0s'}}></div>
+                <div className="orb w-80 h-80 bg-cyan-500 top-[40%] right-[-5%]" style={{animationDelay: '-7s'}}></div>
+                <div className="orb w-64 h-64 bg-amber-600 bottom-[-10%] left-[30%]" style={{animationDelay: '-14s'}}></div>
+            </div>
+        );
+
+        const SMARTLINK_URL = 'https://www.effectivecpmnetwork.com/rm31m0xygd?key=494d6cb6a106f1a8c005d18c369a16a7';
+
+        const SmartLinkAd = () => (
+            <a
+                href={SMARTLINK_URL}
+                target="_blank"
+                rel="sponsored noopener noreferrer"
+                aria-label="Sponsored offer"
+                className="group block glass-panel rounded-3xl p-4 sm:p-5 border border-cyan-500/20 hover:border-amber-500/40 transition-all duration-300 shadow-lg"
+            >
+                <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-3 min-w-0">
+                        <div className="w-10 h-10 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0">
+                            <span className="text-cyan-300 text-lg font-black">↗</span>
+                        </div>
+                        <div className="min-w-0">
+                            <p className="text-[10px] text-cyan-400 font-mono tracking-[0.2em] uppercase">Sponsored</p>
+                            <p className="text-sm text-white font-semibold truncate">Explore today’s featured offer</p>
+                        </div>
+                    </div>
+                    <span className="shrink-0 px-4 py-2 rounded-xl bg-amber-500 text-slate-950 text-xs font-black group-hover:bg-amber-400 transition-colors">OPEN</span>
+                </div>
+            </a>
+        );
+
+        const PreloaderScreen = ({ progress }) => (
+
+            <div className="fixed inset-0 z-[100] preloader-shell flex flex-col items-center justify-center text-slate-100 overflow-hidden">
+                <div className="relative w-40 h-40 flex items-center justify-center mb-10">
+                    <div className="preloader-ring preloader-ring-outer"></div>
+                    <div className="preloader-ring preloader-ring-mid"></div>
+                    <div className="preloader-ring preloader-ring-inner"></div>
+                    <div className="preloader-core"></div>
+                </div>
+                <div className="w-72 space-y-4 text-center">
+                    <h1 className="text-3xl font-black tracking-tight">
+                        <span className="text-white">COC</span> <span className="gradient-text">VIP</span>
+                    </h1>
+                    <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-amber-400 via-amber-500 to-cyan-400 rounded-full transition-all duration-500 ease-out" style={{ width: `${progress}%` }}></div>
+                    </div>
+                    <div className="flex items-center justify-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></div>
+                        <span className="text-[10px] text-slate-500 font-mono tracking-[0.2em] uppercase">Initializing Secure Connection</span>
+                    </div>
+                </div>
+            </div>
+        );
+
+        const ToastManager = ({ toasts }) => (
+            <div className="fixed top-6 left-0 right-0 z-[300] flex flex-col items-center pointer-events-none gap-3 px-4">
+                {toasts.map(t => (
+                    <div key={t.id} className={`toast-enter px-5 py-3 rounded-2xl shadow-2xl text-xs sm:text-sm font-semibold flex items-center gap-3 border backdrop-blur-xl ${t.type === 'error' ? 'bg-red-950/80 text-red-200 border-red-800/50' : 'bg-emerald-950/80 text-emerald-200 border-emerald-800/50'}`}>
+                        <span className="text-base">{t.type === 'error' ? '⚠️' : '✨'}</span>
+                        <span>{t.message}</span>
+                    </div>
+                ))}
+            </div>
+        );
+
+        function ImageModal({ imageUrl, onClose }) {
+            if (!imageUrl) return null;
+            return (
+                <div className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 modal-enter" onClick={onClose}>
+                    <button onClick={onClose} className="absolute top-6 right-6 bg-slate-800/80 hover:bg-slate-700 text-white px-5 py-2.5 rounded-2xl z-10 border border-slate-600 font-semibold text-xs shadow-2xl transition-all hover:scale-105 flex items-center gap-2">
+                        <Icons.X className="w-4 h-4" /> Close
+                    </button>
+                    <img src={imageUrl} alt="Full Screen Base Layout" className="max-w-full max-h-[90vh] object-contain rounded-2xl shadow-2xl" referrerPolicy="no-referrer" onClick={(e) => e.stopPropagation()} />
+                </div>
+            );
+        }
+
+        function LogoutModal({ isOpen, onClose, onConfirm }) {
+            if (!isOpen) return null;
+            return (
+                <div className="fixed inset-0 z-[250] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 modal-enter">
+                    <div className="glass-panel p-8 rounded-3xl max-w-sm w-full border border-slate-700/50 text-center space-y-5 shadow-2xl">
+                        <div className="w-16 h-16 bg-red-500/10 border border-red-500/30 rounded-2xl flex items-center justify-center mx-auto text-red-400">
+                            <Icons.Logout className="w-8 h-8" />
+                        </div>
+                        <div className="space-y-2">
+                            <h3 className="text-xl font-bold text-white">Session ကိုထွက်ရန် သေချာပါသလား?</h3>
+                            <p className="text-xs text-slate-400 leading-relaxed">
+                                Logout ပြုလုပ်ပါက ဤ Device မှ VIP Access ကို ပိတ်လိုက်မည်ဖြစ်ပြီး ပြန်လည်ဝင်ရန် Activation Code လိုအပ်မည်ဖြစ်ပါသည်။
+                            </p>
+                        </div>
+                        <div className="flex gap-3 pt-2">
+                            <button onClick={onClose} className="flex-1 py-3.5 bg-slate-800/80 text-slate-300 rounded-2xl text-xs font-bold hover:bg-slate-700 transition-all border border-slate-700/50">မထွက်တော့ပါ</button>
+                            <button onClick={onConfirm} className="flex-1 py-3.5 bg-red-600 text-white rounded-2xl text-xs font-bold hover:bg-red-500 transition-all shadow-lg shadow-red-600/20">Logout ပြုလုပ်မည်</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function DeleteModal({ isOpen, onClose, onConfirm, isDeleting }) {
+            if (!isOpen) return null;
+            return (
+                <div className="fixed inset-0 z-[250] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 modal-enter">
+                    <div className="glass-panel p-8 rounded-3xl max-w-sm w-full border border-slate-700/50 text-center space-y-5 shadow-2xl">
+                        <div className="w-16 h-16 bg-red-500/10 border border-red-500/30 rounded-2xl flex items-center justify-center mx-auto text-red-400">
+                            <Icons.AlertTriangle className="w-8 h-8" />
+                        </div>
+                        <div className="space-y-2">
+                            <h3 className="text-xl font-bold text-white">ဖျက်ရန် သေချာပါသလား?</h3>
+                            <p className="text-xs text-slate-400 leading-relaxed">
+                                ဤ Base Layout ကို ဖျက်လိုက်ပါက Database ထဲမှ အပြီးတိုင် ပျက်ပြယ်သွားမည်ဖြစ်ပြီး ပြန်လည်ရယူနိုင်မည် မဟုတ်ပါ။
+                            </p>
+                        </div>
+                        <div className="flex gap-3 pt-2">
+                            <button onClick={onClose} disabled={isDeleting} className="flex-1 py-3.5 bg-slate-800/80 text-slate-300 rounded-2xl text-xs font-bold hover:bg-slate-700 transition-all border border-slate-700/50 disabled:opacity-50">မဖျက်တော့ပါ</button>
+                            <button onClick={onConfirm} disabled={isDeleting} className="flex-1 py-3.5 bg-red-600 text-white rounded-2xl text-xs font-bold hover:bg-red-500 transition-all shadow-lg shadow-red-600/20 flex items-center justify-center gap-2 disabled:opacity-50">
+                                {isDeleting ? (<><div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>ဖျက်နေသည်...</>) : (<>ဖျက်မည်</>)}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function App() {
+            const [user, setUser] = useState(null);
+            const [profile, setProfile] = useState(null);
+            const [loading, setLoading] = useState(true);
+            const [loadProgress, setLoadProgress] = useState(30);
+            const [toasts, setToasts] = useState([]);
+            const [clock, setClock] = useState(Date.now());
+
+            const showToast = useCallback((message, type = 'success') => {
+                const id = Date.now();
+                setToasts(prev => [...prev, { id, message, type }]);
+                setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 4000);
+            }, []);
+
+            useEffect(() => {
+                const interval = setInterval(() => setClock(Date.now()), 1000);
+                return () => clearInterval(interval);
+            }, []);
+
+            const initUser = async () => {
+                let deviceId = localStorage.getItem('coc_device_id');
+                if (!deviceId) {
+                    deviceId = 'dev_' + Math.random().toString(36).substring(2, 11);
+                    localStorage.setItem('coc_device_id', deviceId);
+                }
+                setUser({ uid: deviceId });
+                setLoadProgress(50);
+
+                try {
+                    const res = await apiFetch('init_user', { uid: deviceId });
+                    console.log('init_user response:', res);
+
+                    if (res.success && res.profile) {
+                        setProfile(res.profile);
+                        console.log('Profile loaded:', res.profile);
+                    } else {
+                        console.log('No existing profile found, showing activation screen');
+                    }
+                } catch (err) {
+                    console.error('init_user failed:', err);
+                }
+
+                setLoadProgress(100);
+                setTimeout(() => setLoading(false), 500);
+            };
+
+            useEffect(() => {
+                initUser();
+            }, []);
+
+            const handleLogoutSystem = async () => {
+                if (user?.uid) {
+                    try { await apiFetch('logout', { uid: user.uid }); } catch(e) {}
+                }
+                localStorage.removeItem('coc_device_id');
+                setProfile(null);
+
+                const newDeviceId = 'dev_' + Math.random().toString(36).substring(2, 11);
+                localStorage.setItem('coc_device_id', newDeviceId);
+                setUser({ uid: newDeviceId });
+
+                showToast("Logged out successfully 👋");
+            };
+
+            const daysLeft = useMemo(() => {
+                if (!profile || !profile.vipExpiry) return 0;
+                const msLeft = profile.vipExpiry - clock;
+                return Math.max(0, Math.ceil(msLeft / (1000 * 60 * 60 * 24)));
+            }, [profile, clock]);
+
+            const remainingTime = useMemo(() => {
+                if (!profile || !profile.vipExpiry) return 'Expired';
+                const msLeft = Math.max(0, profile.vipExpiry - clock);
+                const totalSeconds = Math.floor(msLeft / 1000);
+                const days = Math.floor(totalSeconds / 86400);
+                const hours = Math.floor((totalSeconds % 86400) / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+                return `${days}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
+            }, [profile, clock]);
+
+            // CRITICAL FIX: Explicit boolean check for admin
+            const isVip = useMemo(() => {
+                const isAdmin = profile && (profile.isAdmin === true || profile.isAdmin === 1 || profile.isAdmin === '1');
+                const hasTime = daysLeft > 0;
+                console.log('VIP Check - isAdmin:', isAdmin, 'daysLeft:', daysLeft, 'isVip:', isAdmin || hasTime);
+                return isAdmin || hasTime;
+            }, [profile, daysLeft]);
+
+            if (loading) return <PreloaderScreen progress={loadProgress} />;
+
+            return (
+                <div className="min-h-screen bg-obsidian text-slate-100 font-sans relative">
+                    <FloatingOrbs />
+                    <div className="bg-noise"></div>
+                    <ToastManager toasts={toasts} />
+                    {!isVip ? (
+                        <ActivationScreen user={user} showToast={showToast} setProfile={setProfile} />
+                    ) : (
+                        <MainApp 
+                            user={user} 
+                            profile={profile} 
+                            setProfile={setProfile} 
+                            showToast={showToast} 
+                            daysLeft={daysLeft} 
+                            remainingTime={remainingTime}
+                            onLogout={handleLogoutSystem}
+                        />
+                    )}
+                </div>
+            );
+        }
+
+        function ActivationScreen({ user, showToast, setProfile }) {
+            const [code, setCode] = useState("");
+            const [isActivating, setIsActivating] = useState(false);
+            const inputRef = useRef(null);
+
+            useEffect(() => {
+                inputRef.current?.focus();
+            }, []);
+
+            const handleActivate = async (e) => {
+                e.preventDefault();
+                const trimmedCode = code.trim().toUpperCase();
+                if (!trimmedCode) return;
+
+                setIsActivating(true);
+                try {
+                    const res = await apiFetch('activate_code', { uid: user.uid, code: trimmedCode });
+                    console.log('activate_code response:', res);
+
+                    if (res.success && res.profile) {
+                        setProfile(res.profile);
+                        const isAdmin = res.profile.isAdmin === true || res.profile.isAdmin === 1 || res.profile.isAdmin === '1';
+                        showToast(isAdmin ? "👑 Master Admin Access Granted!" : "🎉 VIP Access Activated!");
+                    } else {
+                        showToast(res.error || "Activation failed", "error");
+                    }
+                } catch (err) {
+                    console.error('Activation error:', err);
+                    showToast("Network error during activation", "error");
+                }
+                setIsActivating(false);
+            };
+
+            return (
+                <div className="min-h-screen flex flex-col items-center justify-center p-4 relative z-10">
+                    <div className="glass-panel p-8 sm:p-10 rounded-[2rem] w-full max-w-md text-center shadow-2xl border border-slate-700/30 space-y-6">
+                        <div className="space-y-4">
+                            <div className="w-20 h-20 mx-auto bg-gradient-to-br from-amber-500/20 to-amber-600/5 border border-amber-500/30 rounded-3xl flex items-center justify-center shadow-lg shadow-amber-500/10">
+                                <Icons.Key className="w-10 h-10 text-amber-400" />
+                            </div>
+                            <div>
+                                <h1 className="text-3xl font-black text-white tracking-tight mb-1">CoC <span className="gradient-text">VIP</span></h1>
+                                <p className="text-slate-400 text-sm font-medium">Premium Base Layout Collection</p>
+                            </div>
+                        </div>
+
+                        <form onSubmit={handleActivate} className="space-y-4">
+                            <div className="relative">
+                                <input 
+                                    ref={inputRef}
+                                    type="text" 
+                                    value={code}
+                                    onChange={(e) => setCode(e.target.value.toUpperCase())}
+                                    placeholder="VIP-XXXXXX" 
+                                    className="w-full input-luxury rounded-2xl px-5 py-4 text-center text-lg text-amber-300 font-mono font-semibold tracking-wider"
+                                    maxLength={300}
+                                />
+                                <div className="absolute inset-0 rounded-2xl pointer-events-none border border-amber-500/10"></div>
+                            </div>
+                            <button 
+                                type="submit" 
+                                disabled={isActivating || !code.trim()} 
+                                className="w-full btn-gold py-4 rounded-2xl text-sm font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {isActivating ? (
+                                    <span className="flex items-center justify-center gap-2">
+                                        <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin"></div>
+                                        Verifying...
+                                    </span>
+                                ) : (
+                                    'Activate Access'
+                                )}
+                            </button>
+                        </form>
+
+                        <div className="pt-4 border-t border-slate-800/50">
+                            <div className="text-[10px] text-slate-600 font-mono tracking-wider uppercase">Device ID</div>
+                            <div className="text-[11px] text-slate-500 font-mono mt-1">{user?.uid}</div>
+                        </div>
+                    </div>
+
+                    <div className="w-full max-w-md mt-6">
+                        <SmartLinkAd />
+                    </div>
+
+                    <div className="mt-8 text-center space-y-1">
+                        <p className="text-[10px] text-slate-600 tracking-[0.3em] uppercase">Secured by Myo Htet Paing</p>
+
+                        <p className="text-[10px] text-slate-700">Premium Content. Authorized Access Only.</p>
+                    </div>
+                </div>
+            );
+        }
+
+        function MainApp({ user, profile, setProfile, showToast, daysLeft, remainingTime, onLogout }) {
+            const [activeTab, setActiveTab] = useState('legend1');
+            const [bases, setBases] = useState([]);
+            const [favorites, setFavorites] = useState({});
+            const [selectedImage, setSelectedImage] = useState(null);
+            const [showLogoutModal, setShowLogoutModal] = useState(false);
+            const [deleteTargetId, setDeleteTargetId] = useState(null);
+            const [isDeletingBase, setIsDeletingBase] = useState(false);
+            const [isLoadingBases, setIsLoadingBases] = useState(true);
+
+            const fetchBases = async () => {
+                setIsLoadingBases(true);
+                try {
+                    const res = await apiFetch('get_bases', {}, 'GET');
+                    if (res.success) setBases(res.bases || []);
+                } catch (e) { console.error('fetchBases error:', e); }
+                setIsLoadingBases(false);
+            };
+
+            const fetchFavorites = async () => {
+                try {
+                    const res = await apiFetch('get_favorites', { uid: user.uid }, 'GET');
+                    if (res.success) setFavorites(res.favorites || {});
+                } catch (e) { console.error('fetchFavorites error:', e); }
+            };
+
+            useEffect(() => {
+                fetchBases();
+                fetchFavorites();
+            }, []);
+
+            const toggleFavorite = async (baseId) => {
+                try {
+                    const res = await apiFetch('toggle_favorite', { uid: user.uid, baseId });
+                    if (res.success) {
+                        setFavorites(prev => ({ ...prev, [baseId]: res.isFav }));
+                        showToast(res.isFav ? "Saved to Favorites ❤️" : "Removed from Favorites");
+                    }
+                } catch (e) { console.error('toggleFavorite error:', e); }
+            };
+
+            const confirmDeleteBase = async () => {
+                if (!deleteTargetId) return;
+                setIsDeletingBase(true);
+                try {
+                    const res = await apiFetch('delete_base', { id: deleteTargetId });
+                    if (res.success) {
+                        setBases(prev => prev.filter(b => b.id !== deleteTargetId));
+                        showToast("Base Layout ကို အောင်မြင်စွာ ဖျက်လိုက်ပါပြီ 🗑️");
+                        setDeleteTargetId(null);
+                    } else {
+                        showToast(res.error || "Deletion failed", "error");
+                    }
+                } catch (e) {
+                    console.error('deleteBase error:', e);
+                    showToast("Network error during deletion", "error");
+                }
+                setIsDeletingBase(false);
+            };
+
+            const filteredBases = useMemo(() => {
+                if (activeTab === 'fav') return bases.filter(b => favorites[b.id]);
+                if (activeTab !== 'admin') return bases.filter(b => b.type === activeTab);
+                return bases;
+            }, [bases, activeTab, favorites]);
+
+            const isAdmin = profile && (profile.isAdmin === true || profile.isAdmin === 1 || profile.isAdmin === '1');
+
+            const tabs = [
+                { id: 'legend1', label: 'Legend I', icon: Icons.Shield },
+                { id: 'legend2', label: 'Legend II', icon: Icons.Shield },
+                { id: 'legend3', label: 'Legend III', icon: Icons.Shield },
+                { id: 'war', label: 'War Base', icon: Icons.Swords },
+                { id: 'cwl', label: 'CWL Base', icon: Icons.Star },
+                { id: 'fav', label: 'Favorites', icon: Icons.Heart },
+                ...(isAdmin ? [{ id: 'admin', label: 'Admin Panel', icon: Icons.Settings }] : [])
+            ];
+
+            return (
+                <div className="flex flex-col min-h-screen max-w-6xl mx-auto p-4 sm:p-6 space-y-6 relative z-10">
+                    {/* Header */}
+                    <header className="glass-panel rounded-3xl p-5 flex justify-between items-center border border-slate-800/50">
+                        <div className="flex items-center gap-4">
+                            <div className="vip-badge w-12 h-12 rounded-2xl flex items-center justify-center">
+                                <span className="font-black text-slate-950 text-sm">VIP</span>
+                            </div>
+                            <div>
+                                <h1 className="font-black text-white text-lg sm:text-xl tracking-tight">CoC Base Layouts</h1>
+                                <p className="text-[11px] text-slate-500 font-medium tracking-wide">Premium Collection — Myo Htet Paing</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <div className="text-right hidden sm:block">
+                                <div className="flex items-center gap-1.5 justify-end">
+                                    {isAdmin ? (
+                                        <span className="text-xs font-bold gradient-text-cyan flex items-center gap-1">
+                                            <Icons.Crown className="w-3.5 h-3.5" />
+                                            Admin
+                                        </span>
+                                    ) : (
+                                        <span className="text-xs font-bold text-amber-400">{daysLeft} Days Left</span>
+                                    )}
+                                </div>
+                                <div className="countdown-glow text-[10px] text-amber-500/80 font-mono mt-0.5">{remainingTime}</div>
+                            </div>
+                            <button 
+                                onClick={() => setShowLogoutModal(true)} 
+                                className="p-3 bg-slate-800/50 text-red-400 border border-red-900/30 hover:bg-red-950/30 hover:border-red-800/50 rounded-2xl transition-all duration-300" 
+                                title="Logout Session"
+                            >
+                                <Icons.Logout className="w-4 h-4" />
+                            </button>
+                        </div>
+                    </header>
+
+                    {/* Mobile Timer */}
+                    <div className="sm:hidden glass-panel rounded-2xl p-3 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            <Icons.Clock className="w-3.5 h-3.5 text-amber-500" />
+                            <span className="text-xs text-slate-400">Remaining</span>
+                        </div>
+                        <span className="countdown-glow text-xs text-amber-400 font-mono font-semibold">{remainingTime}</span>
+                    </div>
+
+                    {/* SmartLink Sponsored Ad */}
+                    <SmartLinkAd />
+
+                    {/* Navigation */}
+                    <nav className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+
+                        {tabs.map(tab => {
+                            const Icon = tab.icon;
+                            const isActive = activeTab === tab.id;
+                            return (
+                                <button 
+                                    key={tab.id} 
+                                    onClick={() => setActiveTab(tab.id)} 
+                                    className={`px-5 py-3 rounded-2xl text-xs font-bold flex items-center gap-2 whitespace-nowrap transition-all duration-300 ${isActive ? 'tab-active' : 'tab-inactive'}`}
+                                >
+                                    <Icon className="w-3.5 h-3.5" filled={tab.id === 'fav' && isActive} />
+                                    <span>{tab.label}</span>
+                                </button>
+                            );
+                        })}
+                    </nav>
+
+                    {/* Content */}
+                    <main className="flex-1">
+                        {activeTab === 'admin' ? (
+                            <AdminPanel fetchBases={fetchBases} showToast={showToast} />
+                        ) : isLoadingBases ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                                {[1,2,3,4,5,6].map(i => (
+                                    <div key={i} className="glass-card rounded-2xl overflow-hidden border border-slate-800/50">
+                                        <div className="skeleton w-full h-56 sm:h-64"></div>
+                                        <div className="p-4 space-y-3">
+                                            <div className="skeleton h-4 w-20 rounded"></div>
+                                            <div className="skeleton h-3 w-full rounded"></div>
+                                            <div className="skeleton h-10 w-full rounded-xl"></div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                                {filteredBases.length === 0 ? (
+                                    <div className="col-span-full flex flex-col items-center justify-center py-20 text-slate-500">
+                                        <div className="w-16 h-16 bg-slate-800/50 rounded-2xl flex items-center justify-center mb-4">
+                                            <Icons.Shield className="w-8 h-8 text-slate-600" />
+                                        </div>
+                                        <p className="text-sm font-medium">No layouts found in this category.</p>
+                                        <p className="text-xs text-slate-600 mt-1">Check back later for new additions.</p>
+                                    </div>
+                                ) : (
+                                    filteredBases.map((base, index) => (
+                                        <BaseCard 
+                                            key={base.id} 
+                                            base={base} 
+                                            isFav={!!favorites[base.id]} 
+                                            onToggleFav={() => toggleFavorite(base.id)} 
+                                            isAdmin={isAdmin}
+                                            onDelete={() => setDeleteTargetId(base.id)}
+                                            onImageClick={(url) => setSelectedImage(url)}
+                                            index={index}
+                                        />
+                                    ))
+                                )}
+                            </div>
+                        )}
+                    </main>
+
+                    {/* Footer */}
+                    <footer className="text-center py-6 text-[10px] text-slate-700 tracking-wider uppercase">
+                        CoC VIP Base Layouts — Premium Access Required
+                    </footer>
+
+                    {/* Modals */}
+                    <ImageModal imageUrl={selectedImage} onClose={() => setSelectedImage(null)} />
+                    <LogoutModal 
+                        isOpen={showLogoutModal} 
+                        onClose={() => setShowLogoutModal(false)} 
+                        onConfirm={() => {
+                            setShowLogoutModal(false);
+                            onLogout();
+                        }} 
+                    />
+                    <DeleteModal 
+                        isOpen={!!deleteTargetId} 
+                        onClose={() => setDeleteTargetId(null)} 
+                        onConfirm={confirmDeleteBase}
+                        isDeleting={isDeletingBase}
+                    />
+                </div>
+            );
+        }
+
+        function AdminPanel({ fetchBases, showToast }) {
+            const [type, setType] = useState('legend1');
+            const [imageUrl, setImageUrl] = useState('');
+            const [baseLink, setBaseLink] = useState('');
+            const [ccTroops, setCcTroops] = useState('');
+            const [codes, setCodes] = useState([]);
+            const [isAdding, setIsAdding] = useState(false);
+
+            const loadCodes = async () => {
+                try {
+                    const res = await apiFetch('get_codes', {}, 'GET');
+                    if (res.success) setCodes(res.codes || []);
+                } catch (e) { console.error('loadCodes error:', e); }
+            };
+
+            useEffect(() => { loadCodes(); }, []);
+
+            const handleAddBase = async (e) => {
+                e.preventDefault();
+                if (!imageUrl || !baseLink) return showToast("Image URL and Base Link are required!", "error");
+
+                setIsAdding(true);
+                try {
+                    const res = await apiFetch('add_base', { type, imageUrl, baseLink, ccTroops });
+                    if (res.success) {
+                        showToast("New Base Added Successfully!");
+                        setImageUrl(''); setBaseLink(''); setCcTroops('');
+                        fetchBases();
+                    } else {
+                        showToast(res.error || "Failed to add base", "error");
+                    }
+                } catch (e) {
+                    console.error('addBase error:', e);
+                    showToast("Network error", "error");
+                }
+                setIsAdding(false);
+            };
+
+            const handleGenerateCode = async () => {
+                try {
+                    const res = await apiFetch('generate_code');
+                    if (res.success) {
+                        showToast(`Code Generated: ${res.code.id}`);
+                        loadCodes();
+                    } else {
+                        showToast(res.error || "Failed to generate code", "error");
+                    }
+                } catch (e) {
+                    console.error('generateCode error:', e);
+                    showToast("Network error", "error");
+                }
+            };
+
+            const copyCode = (codeId) => {
+                navigator.clipboard.writeText(codeId).then(() => {
+                    showToast("Code copied to clipboard!");
+                }).catch(() => {
+                    showToast("Failed to copy", "error");
+                });
+            };
+
+            return (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                    {/* Add Base Form */}
+                    <div className="glass-panel p-6 rounded-3xl border border-slate-800/50 space-y-5">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-amber-500/10 border border-amber-500/20 rounded-xl flex items-center justify-center">
+                                <Icons.Plus className="w-5 h-5 text-amber-400" />
+                            </div>
+                            <div>
+                                <h3 className="text-base font-bold text-white">Add New Base Layout</h3>
+                                <p className="text-[11px] text-slate-500">Publish to the collection</p>
+                            </div>
+                        </div>
+
+                        <form onSubmit={handleAddBase} className="space-y-4">
+                            <div>
+                                <label className="text-[11px] text-slate-400 mb-1.5 block font-medium uppercase tracking-wider">Category</label>
+                                <select 
+                                    value={type} 
+                                    onChange={e => setType(e.target.value)} 
+                                    className="w-full input-luxury p-3 rounded-xl text-xs text-white appearance-none cursor-pointer"
+                                >
+                                    <option value="legend1">Legend I</option>
+                                    <option value="legend2">Legend II</option>
+                                    <option value="legend3">Legend III</option>
+                                    <option value="war">War Base</option>
+                                    <option value="cwl">CWL Base</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="text-[11px] text-slate-400 mb-1.5 block font-medium uppercase tracking-wider">Image Direct Link</label>
+                                <input 
+                                    type="text" 
+                                    placeholder="https://i.imgur.com/..." 
+                                    value={imageUrl} 
+                                    onChange={e => setImageUrl(e.target.value)} 
+                                    className="w-full input-luxury p-3 rounded-xl text-xs text-white" 
+                                />
+                            </div>
+                            <div>
+                                <label className="text-[11px] text-slate-400 mb-1.5 block font-medium uppercase tracking-wider">CoC In-game Copy Link</label>
+                                <input 
+                                    type="text" 
+                                    placeholder="https://link.clashofclans.com/..." 
+                                    value={baseLink} 
+                                    onChange={e => setBaseLink(e.target.value)} 
+                                    className="w-full input-luxury p-3 rounded-xl text-xs text-white" 
+                                />
+                            </div>
+                            <div>
+                                <label className="text-[11px] text-slate-400 mb-1.5 block font-medium uppercase tracking-wider">Recommended CC Troops</label>
+                                <input 
+                                    type="text" 
+                                    placeholder="e.g. 1 Super Minion, 2 Headhunters" 
+                                    value={ccTroops} 
+                                    onChange={e => setCcTroops(e.target.value)} 
+                                    className="w-full input-luxury p-3 rounded-xl text-xs text-white" 
+                                />
+                            </div>
+                            <button 
+                                type="submit" 
+                                disabled={isAdding}
+                                className="btn-gold py-3.5 px-4 rounded-xl text-xs font-bold w-full mt-2 disabled:opacity-50"
+                            >
+                                {isAdding ? (
+                                    <span className="flex items-center justify-center gap-2">
+                                        <div className="w-3 h-3 border-2 border-black/30 border-t-black rounded-full animate-spin"></div>
+                                        Publishing...
+                                    </span>
+                                ) : (
+                                    'Publish Base Layout'
+                                )}
+                            </button>
+                        </form>
+                    </div>
+
+                    {/* Codes Manager */}
+                    <div className="glass-panel p-6 rounded-3xl border border-slate-800/50 space-y-5">
+                        <div className="flex justify-between items-center">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-cyan-500/10 border border-cyan-500/20 rounded-xl flex items-center justify-center">
+                                    <Icons.Key className="w-5 h-5 text-cyan-400" />
+                                </div>
+                                <div>
+                                    <h3 className="text-base font-bold text-white">VIP Codes</h3>
+                                    <p className="text-[11px] text-slate-500">Manage activation codes</p>
+                                </div>
+                            </div>
+                            <button 
+                                onClick={handleGenerateCode} 
+                                className="btn-gold px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5"
+                            >
+                                <Icons.Plus className="w-3.5 h-3.5" />
+                                Generate
+                            </button>
+                        </div>
+
+                        <div className="space-y-2 max-h-[400px] overflow-y-auto pr-1">
+                            {codes.length === 0 ? (
+                                <div className="text-center py-8 text-slate-600 text-xs">No codes generated yet.</div>
+                            ) : (
+                                codes.map(c => (
+                                    <div key={c.id} className="flex justify-between items-center p-3.5 bg-slate-900/40 rounded-xl text-xs border border-slate-800/50 hover:border-slate-700/50 transition-all group">
+                                        <div className="flex items-center gap-3">
+                                            <button 
+                                                onClick={() => copyCode(c.id)}
+                                                className="p-1.5 bg-slate-800/50 rounded-lg text-slate-500 hover:text-amber-400 hover:bg-amber-500/10 transition-all"
+                                                title="Copy code"
+                                            >
+                                                <Icons.Copy className="w-3.5 h-3.5" />
+                                            </button>
+                                            <div>
+                                                <div className="font-mono text-amber-300 font-bold tracking-wider">{c.id}</div>
+                                                <div className="text-[10px] text-slate-600">{new Date(c.createdAt).toLocaleDateString()}</div>
+                                            </div>
+                                        </div>
+                                        <span className={`px-3 py-1 rounded-full text-[10px] font-bold border ${c.used ? 'bg-red-950/30 text-red-400 border-red-800/30' : 'bg-emerald-950/30 text-emerald-400 border-emerald-800/30'}`}>
+                                            {c.used ? `Used` : 'Active'}
+                                        </span>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function BaseCard({ base, isFav, onToggleFav, isAdmin, onDelete, onImageClick, index }) {
+            const fallbackImage = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'><rect width='600' height='400' fill='%231e293b'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23f59e0b' font-size='20' font-family='sans-serif'>Invalid Image Link</text></svg>";
+            const [imgLoaded, setImgLoaded] = useState(false);
+
+            return (
+                <div 
+                    className="glass-card rounded-2xl overflow-hidden flex flex-col border border-slate-800/50 hover:border-slate-700/50 transition-all stagger-in"
+                    style={{animationDelay: `${index * 0.05}s`}}
+                >
+                    <div 
+                        onClick={() => onImageClick(base.imageUrl)}
+                        className="relative w-full h-56 sm:h-64 bg-slate-950 overflow-hidden cursor-pointer group flex items-center justify-center image-shine"
+                    >
+                        {!imgLoaded && <div className="skeleton absolute inset-0 z-10"></div>}
+                        <img 
+                            src={base.imageUrl || fallbackImage} 
+                            alt="Base Layout" 
+                            className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
+                            referrerPolicy="no-referrer"
+                            onLoad={() => setImgLoaded(true)}
+                            onError={(e) => {
+                                e.target.onerror = null; 
+                                e.target.src = fallbackImage;
+                                setImgLoaded(true);
+                            }}
+                        />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <span className="bg-slate-900/90 text-amber-400 text-xs px-4 py-2 rounded-xl backdrop-blur-md border border-amber-500/30 font-bold shadow-lg flex items-center gap-2">
+                                <Icons.Eye className="w-3.5 h-3.5" />
+                                View Full Screen
+                            </span>
+                        </div>
+                        <button 
+                            onClick={(e) => { e.stopPropagation(); onToggleFav(); }} 
+                            className="absolute top-3 right-3 p-2.5 bg-slate-900/80 backdrop-blur-md rounded-full border border-slate-700/60 shadow-lg z-10 hover:bg-slate-800 transition-all heart-beat"
+                        >
+                            <Icons.Heart filled={isFav} className="w-4 h-4" />
+                        </button>
+                    </div>
+
+                    <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                        <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                                <span className="category-tag text-[10px] uppercase font-bold text-amber-400 px-2.5 py-1 rounded-lg">{base.type}</span>
+                            </div>
+                            <p className="text-xs text-slate-400 leading-relaxed">
+                                <span className="text-slate-500 font-semibold">CC Troops:</span> {base.ccTroops || 'Any / Not specified'}
+                            </p>
+                        </div>
+                        <div className="flex gap-2.5">
+                            <a 
+                                href={base.baseLink} 
+                                target="_blank" 
+                                rel="noreferrer" 
+                                className="btn-gold copy-link-btn text-center py-3 flex-1 rounded-xl text-xs font-bold shadow-md"
+                            >
+                                Copy Base Link
+                            </a>
+                            {isAdmin && (
+                                <button 
+                                    onClick={onDelete} 
+                                    className="delete-btn p-3 rounded-xl hover:scale-105 transition-transform"
+                                    title="Delete Layout"
+                                >
+                                    <Icons.Trash className="w-4 h-4 text-red-400" />
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"71e03a4d3f5e43339e70bc5e8b919da6","r":1}' crossorigin="anonymous"></script>
+</body>
+</html>
