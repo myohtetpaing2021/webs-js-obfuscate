@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="my" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ComfyUI အသံပြောင်းစနစ် Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { 
+                extend: { 
+                    colors: { 
+                        gold: {
+                            50: '#fffbeb',
+                            300: '#fde047',
+                            400: '#f3d9b1',
+                            500: '#e5c396',
+                            600: '#d8a868',
+                        },
+                        darkBg: '#090a0f',
+                        darkCard: '#12141c',
+                        darkBorder: '#222634',
+                        accentCyan: '#06b6d4'
+                    },
+                    animation: {
+                        'spin-slow': 'spin 8s linear infinite',
+                        'pulse-glow': 'pulseGlow 2s infinite ease-in-out',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 15px rgba(6, 182, 212, 0.2)' },
+                            '50%': { boxShadow: '0 0 25px rgba(6, 182, 212, 0.5)' },
+                        }
+                    }
+                } 
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&display=swap');
+
+        body {
+            font-family: 'Padauk', sans-serif;
+            background-color: #090a0f;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 10% 80%, rgba(229, 195, 150, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 90% 90%, rgba(168, 85, 247, 0.05) 0%, transparent 50%);
+            background-attachment: fixed;
+            color: #f1f5f9;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .glass-panel {
+            background: rgba(18, 20, 28, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        .glass-card {
+            background: rgba(26, 29, 41, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(6, 182, 212, 0.4);
+            background: rgba(30, 34, 48, 0.8);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #222634; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
+
+        .bouncy-btn {
+            position: relative;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .bouncy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -4px rgba(6, 182, 212, 0.3);
+        }
+        .bouncy-btn:active { transform: scale(0.96); }
+
+        .active-btn {
+            border-color: #06b6d4 !important; 
+            color: #06b6d4 !important; 
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.3), inset 0 0 10px rgba(6, 182, 212, 0.1) !important; 
+            background: rgba(6, 182, 212, 0.1) !important;
+        }
+
+        .style-btn.active-btn {
+            border-color: #e5c396 !important; 
+            color: #e5c396 !important; 
+            box-shadow: 0 0 15px rgba(229, 195, 150, 0.3), inset 0 0 10px rgba(229, 195, 150, 0.1) !important; 
+            background: rgba(229, 195, 150, 0.1) !important;
+        }
+
+        .play-icon-wrapper { position: relative; z-index: 2; }
+        .active-btn.voice-btn .play-icon-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 2px solid #06b6d4;
+            animation: ripple-wave 1.5s infinite ease-out;
+        }
+        @keyframes ripple-wave {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+
+        /* Modern Range Sliders */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 8px;
+            border-radius: 6px;
+            background: #181b26;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+        }
+        .slider-fill {
+            position: absolute;
+            top: 0; left: 0; height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #e5c396); 
+            border-radius: 6px;
+            pointer-events: none; 
+        }
+        .slider-input {
+            position: absolute;
+            top: -6px; left: 0; width: 100%; height: 20px;
+            -webkit-appearance: none; appearance: none;
+            background: transparent; outline: none; margin: 0; z-index: 2; cursor: pointer;
+        }
+        .slider-input::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 20px; height: 20px; border-radius: 50%;
+            background: #090a0f; border: 2px solid #e5c396;
+            box-shadow: 0 0 10px rgba(229, 195, 150, 0.5);
+            cursor: grab; transition: transform 0.1s ease;
+        }
+        .slider-input::-webkit-slider-thumb:active { transform: scale(1.2); cursor: grabbing; }
+
+        .solid-control-btn {
+            transition: all 0.2s ease;
+            border: 1px solid #222634;
+            background-color: #12141c;
+            color: #94a3b8;
+        }
+        .solid-control-btn:hover {
+            border-color: #06b6d4;
+            color: #06b6d4;
+            background-color: #181b26;
+        }
+
+        /* COMBO COMFY LOGO */
+        .logo-container {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px dashed rgba(6, 182, 212, 0.4);
+            border-top-color: #e5c396;
+            border-right-color: #06b6d4;
+            animation: spin 12s linear infinite; 
+        }
+        .logo-inner {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            border-radius: 50%;
+            width: 90px;
+            height: 90px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #0d0f17;
+            border: 1px solid rgba(229, 195, 150, 0.3);
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        .visualizer-container {
+            display: flex; align-items: center; justify-content: center;
+            height: 50px; gap: 4px; background: rgba(0,0,0,0.4); 
+            border-radius: 12px; padding: 6px; border: 1px solid rgba(255,255,255,0.05);
+        }
+        .wave-bar-new {
+            width: 4px; background: #222634; border-radius: 2px; height: 6px;
+            transition: all 0.1s ease; flex-grow: 1; max-width: 6px;
+        }
+        .visualizer-active .wave-bar-new {
+            background: linear-gradient(to top, #06b6d4, #e5c396); 
+            animation: wave-animation 0.5s infinite ease-in-out alternate;
+        }
+        @keyframes wave-animation {
+            0% { height: 15%; opacity: 0.5; }
+            100% { height: 95%; opacity: 1; }
+        }
+        
+        /* Sequential Animation Delay for Visualizer */
+        .wave-bar-new:nth-child(2n) { animation-delay: 0.15s; }
+        .wave-bar-new:nth-child(3n) { animation-delay: 0.3s; }
+        .wave-bar-new:nth-child(4n) { animation-delay: 0.45s; }
+    </style>
+</head>
+<body class="min-h-screen p-3 sm:p-6 flex flex-col items-center justify-start">
+
+    <!-- Header / Branding -->
+    <div class="text-center my-6 w-full max-w-3xl relative z-10 flex flex-col items-center">
+        
+        <div class="logo-container mb-4">
+            <div class="logo-ring"></div>
+            <div class="logo-inner">
+                <div class="font-['Orbitron'] text-[13px] font-bold text-[#06b6d4] tracking-widest leading-none">M4K</div>
+                <div class="font-['Orbitron'] text-[18px] font-black text-[#e5c396] tracking-wider my-1 leading-none">TTS</div>
+                <div class="font-['Padauk'] text-[11px] text-slate-400">PRO</div>
+            </div>
+        </div>
+
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/40 border border-cyan-500/30 text-cyan-400 text-xs font-mono mb-3 uppercase tracking-widest">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span> ComfyUI Neural Workflow
+        </div>
+
+        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-2 flex items-center justify-center flex-wrap gap-x-3 gap-y-1">
+            <span class="text-[#e5c396] font-['Orbitron']">ComfyUI</span>
+            <span class="text-white font-bold">အသံပြောင်းစနစ်</span>
+            <span class="text-[#06b6d4] font-['Orbitron']">Pro</span>
+        </h1>
+        <p class="text-slate-400 text-xs sm:text-sm max-w-md">အဆင့်မြင့် မြန်မာ AI အသံများ ထုတ်ယူနိုင်သော မီဒီယာ ပလက်ဖောင်း</p>
+    </div>
+
+    <!-- Main Container -->
+    <div class="w-full max-w-3xl glass-panel rounded-3xl p-4 sm:p-8 relative z-10 mb-10">
+
+        <!-- Switch Bar -->
+        <div class="mb-6 p-1.5 bg-[#0d0f17] rounded-2xl border border-[#222634] flex">
+            <button id="btn-ai-voice" onclick="switchMode('tts')" class="w-full bouncy-btn bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black py-3 px-4 rounded-xl text-sm transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+                AI မြန်မာအသံများ ထုတ်ယူမည်
+            </button>
+        </div>
+
+        <!-- Transcription Section (Hidden by Default) -->
+        <div id="transcribe-section" class="hidden flex-col gap-5 mb-6">
+            
+            <!-- Gemini API Key Container -->
+            <div class="glass-card p-4 rounded-2xl border border-[#222634]">
+                <label class="block text-xs font-bold text-slate-300 mb-2 flex items-center justify-between">
+                    <span class="text-gold-400 flex items-center gap-1.5">⚡ Gemini API Keys (၁၀ ခုထိ)</span>
+                    <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-cyan-400 hover:underline text-[11px]">👉 Key ရယူရန်</a>
+                </label>
+                <div class="flex gap-2 mb-2">
+                    <input type="text" id="api-key-input" placeholder="AIzaSy..." class="flex-1 bg-[#090a0f] border border-[#222634] rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500">
+                    <button onclick="addApiKey()" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs transition-all">
+                        + Add Key
+                    </button>
+                </div>
+                <div id="api-status-msg" class="text-xs font-bold text-emerald-400 mb-2 hidden">✓ Key သိမ်းဆည်းပြီးပါပြီ</div>
+                <div id="api-keys-list" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <!-- Groq API Key Container -->
+            <div class="glass-card p-4 rounded-2xl border border-[#222634]">
+                <label class="block text-xs font-bold text-slate-300 mb-2 flex items-center justify-between">
+                    <span class="text-emerald-400 flex items-center gap-1.5">🎙️ Groq API Keys (အသံဖမ်းရန်)</span>
+                    <a href="https://console.groq.com/keys" target="_blank" class="text-emerald-400 hover:underline text-[11px]">👉 Key ရယူရန်</a>
+                </label>
+                <div class="flex gap-2 mb-2">
+                    <input type="text" id="groq-api-key-input" placeholder="gsk_..." class="flex-1 bg-[#090a0f] border border-[#222634] rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+                    <button onclick="addGroqApiKey()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs transition-all">
+                        + Add Key
+                    </button>
+                </div>
+                <div id="groq-api-keys-list" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <!-- Language & Model Selectors -->
+            <div class="flex gap-3">
+                <div class="flex-1 relative">
+                    <select id="groq-lang-select" onchange="updateGroqLang(this.value)" class="w-full bg-[#12141c] border border-[#222634] text-slate-200 font-bold py-2.5 px-3 rounded-xl text-xs focus:border-emerald-500 focus:outline-none appearance-none">
+                        <option value="">Auto Language</option>
+                        <option value="en">English</option>
+                        <option value="zh">Chinese</option>
+                        <option value="hi">Hindi</option>
+                        <option value="vi">Vietnamese</option>
+                        <option value="th">Thai</option>
+                        <option value="ko">Korean</option>
+                        <option value="ja">Japanese</option>
+                        <option value="es">Spanish</option>
+                        <option value="fr">French</option>
+                        <option value="de">German</option>
+                        <option value="my">Myanmar</option>
+                    </select>
+                </div>
+
+                <div class="flex-1 relative">
+                    <select id="groq-model-select" onchange="updateGroqModel(this.value)" class="w-full bg-[#12141c] border border-[#222634] text-slate-200 font-bold py-2.5 px-3 rounded-xl text-xs focus:border-cyan-500 focus:outline-none appearance-none">
+                        <option value="whisper-large-v3-turbo">Whisper Turbo (အမြန်)</option>
+                        <option value="whisper-large-v3">Whisper V3 (မူလ)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- AI Model Options -->
+            <div class="flex gap-2">
+                <button id="model-2-5-flash" onclick="selectModel('gemini-2.5-flash')" class="flex-1 glass-card border border-[#222634] text-slate-400 py-2 rounded-xl font-bold text-xs">2.5 Flash</button>
+                <button id="model-3-1-lite" onclick="selectModel('gemini-3.1-flash-lite')" class="flex-1 glass-card border border-[#222634] text-slate-400 py-2 rounded-xl font-bold text-xs">3.1 Lite</button>
+                <button id="model-3-5-flash" onclick="selectModel('gemini-3.5-flash')" class="flex-1 glass-card border border-cyan-500/50 text-cyan-400 py-2 rounded-xl font-bold text-xs active-btn">3.5 Flash (Pro)</button>
+            </div>
+
+            <!-- Upload Box -->
+            <div class="border-2 border-dashed border-[#222634] hover:border-cyan-500/50 bg-[#0d0f17] rounded-2xl p-6 text-center transition-colors relative group" id="upload-box">
+                <input type="file" id="audio-upload" accept=".mp3, .wav, .m4a, audio/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="handleFileSelect(event)">
+                <div class="text-cyan-400 mb-2 group-hover:scale-110 transition-transform">
+                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                </div>
+                <p class="text-xs font-bold text-slate-300">အသံဖိုင်တင်ပါ (MP3 / Audio Max 25MB)</p>
+                
+                <div id="file-info-container" class="hidden mt-3 flex-col items-center gap-2 relative z-20">
+                    <p id="file-name-display" class="text-xs font-mono text-cyan-300 bg-cyan-950/60 px-3 py-1 rounded-full border border-cyan-800/50"></p>
+                    <button type="button" onclick="clearAudioFile(event)" class="text-rose-400 hover:text-rose-300 text-xs underline">
+                        ✕ ဖိုင်ပြန်ဖြုတ်မည်
+                    </button>
+                </div>
+            </div>
+
+            <button id="btn-start-translate" onclick="startTranslation()" class="w-full bouncy-btn bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black py-3.5 rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.4)] text-sm">
+                အသံမှ စာသားသို့ ဘာသာပြန်မည်
+            </button>
+
+            <!-- Output Box -->
+            <div class="mt-2 hidden flex-col gap-2" id="output-container">
+                <textarea id="translated-output" class="w-full bg-[#090a0f] text-slate-100 border border-[#222634] rounded-2xl p-4 text-sm focus:outline-none focus:border-cyan-500 custom-scrollbar leading-relaxed" placeholder="ဘာသာပြန်ထားသော စာသားများ..." style="min-height: 150px;"></textarea>
+                <div class="flex justify-end gap-2">
+                    <button onclick="copyTranslatedText()" class="bouncy-btn bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-cyan-500/30 text-xs font-bold py-2 px-4 rounded-xl">ကူးယူမည်</button>
+                    <button onclick="clearTranslatedText()" class="bouncy-btn bg-slate-800 hover:bg-slate-700 text-rose-400 border border-rose-500/30 text-xs font-bold py-2 px-4 rounded-xl">ဖျက်မည်</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- VOICE SELECTION GRID -->
+        <div class="mb-6">
+            <h2 class="text-gold-400 text-xs font-bold uppercase tracking-widest mb-3 flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-gold-400"></span> အသံ ရွေးချယ်ရန်
+            </h2>
+            <div id="voices-grid" class="grid grid-cols-2 sm:grid-cols-2 gap-2.5 max-h-[260px] overflow-y-auto custom-scrollbar pr-1"></div>
+        </div>
+
+        <!-- STYLES / RECAP GRID -->
+        <div class="mb-6">
+            <h2 class="text-cyan-400 text-xs font-bold uppercase tracking-widest mb-3 flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span> အသံစတိုင်နှင့် ပေါင်းစပ်မှုများ
+            </h2>
+            <div id="recap-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-36 overflow-y-auto custom-scrollbar pr-1"></div>
+        </div>
+
+        <!-- EMOTIONS GRID -->
+        <div class="mb-6">
+            <h2 class="text-purple-400 text-xs font-bold uppercase tracking-widest mb-3 flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span> စကားပြော စိတ်ခံစားမှု
+            </h2>
+            <div id="emotions-grid" class="grid grid-cols-3 sm:grid-cols-4 gap-2"></div>
+        </div>
+
+        <!-- SLIDERS SECTION -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <!-- Speed Slider -->
+            <div class="glass-card p-4 rounded-2xl border border-[#222634]">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">အမြန်နှုန်း (Speed)</span>
+                    <span id="speed-val" class="font-mono text-xs font-bold text-slate-950 bg-gold-400 px-2 py-0.5 rounded-md">+၀</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="changeVal('speed', -5)" class="solid-control-btn w-8 h-8 rounded-lg font-bold text-sm flex items-center justify-center">-</button>
+                    <div class="slider-container flex-1">
+                        <div class="slider-fill" id="speed-fill" style="width: 50%;"></div>
+                        <input type="range" id="speed" min="-100" max="100" value="0" class="slider-input" oninput="updateSlider('speed', this.value)">
+                    </div>
+                    <button onclick="changeVal('speed', 5)" class="solid-control-btn w-8 h-8 rounded-lg font-bold text-sm flex items-center justify-center">+</button>
+                </div>
+            </div>
+
+            <!-- Pitch Slider -->
+            <div class="glass-card p-4 rounded-2xl border border-[#222634]">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">အသံ အတက်/အကျ (Pitch)</span>
+                    <span id="pitch-val" class="font-mono text-xs font-bold text-slate-950 bg-cyan-400 px-2 py-0.5 rounded-md">+၀</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="changeVal('pitch', -5)" class="solid-control-btn w-8 h-8 rounded-lg font-bold text-sm flex items-center justify-center">-</button>
+                    <div class="slider-container flex-1">
+                        <div class="slider-fill" id="pitch-fill" style="width: 50%;"></div>
+                        <input type="range" id="pitch" min="-100" max="100" value="0" class="slider-input" oninput="updateSlider('pitch', this.value)">
+                    </div>
+                    <button onclick="changeVal('pitch', 5)" class="solid-control-btn w-8 h-8 rounded-lg font-bold text-sm flex items-center justify-center">+</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TEXT INPUT SECTION -->
+        <div class="mb-6">
+            <div class="flex justify-between items-center mb-2">
+                <h2 class="text-slate-300 text-xs font-bold uppercase tracking-wider">စာသားထည့်သွင်းပါ</h2>
+                <div class="flex gap-2">
+                    <button onclick="pasteText()" class="text-xs bg-slate-800 hover:bg-slate-700 text-cyan-400 px-3 py-1 rounded-lg border border-cyan-500/20 font-bold transition-all">ကူးထည့်မည်</button>
+                    <button onclick="clearText()" class="text-xs bg-slate-800 hover:bg-slate-700 text-rose-400 px-3 py-1 rounded-lg border border-rose-500/20 font-bold transition-all">ဖျက်မည်</button>
+                </div>
+            </div>
+            
+            <textarea id="text-input" rows="4" maxlength="3000" oninput="updateCharCount()" class="w-full bg-[#090a0f] text-slate-100 border border-[#222634] rounded-2xl p-4 focus:outline-none focus:border-gold-400 text-sm leading-relaxed custom-scrollbar transition-all" placeholder="ဤနေရာတွင် မြန်မာစာများ ရိုက်ထည့်ပါ သို့မဟုတ် ကူးထည့်ပါ..."></textarea>
+            
+            <div class="text-right text-xs font-mono text-slate-500 mt-1">
+                <span id="char-count" class="text-gold-400">၀</span> / ၃၀၀၀
+            </div>
+        </div>
+
+        <!-- GENERATE BUTTON -->
+        <button id="generate-btn" onclick="generateAudio()" class="bouncy-btn w-full bg-gradient-to-r from-gold-500 via-gold-400 to-amber-500 hover:from-gold-400 hover:to-amber-400 text-slate-950 font-black py-4 px-4 rounded-2xl shadow-[0_0_25px_rgba(229,195,150,0.3)] flex justify-center items-center text-base tracking-wider uppercase">
+            အသံထုတ်ယူမည်
+        </button>
+
+        <!-- AUDIO PLAYER CONTAINER -->
+        <div id="audio-container" class="mt-8 hidden">
+            <div class="glass-card border border-cyan-500/30 rounded-3xl p-5 relative overflow-hidden">
+                
+                <p class="text-center text-xs font-bold text-cyan-400 mb-3 tracking-widest uppercase">AUDIO PLAYER NODE</p>
+                
+                <div id="visualizer" class="visualizer-container mb-4">
+                    <div class="wave-bar-new"></div><div class="wave-bar-new"></div>
+                    <div class="wave-bar-new"></div><div class="wave-bar-new"></div>
+                    <div class="wave-bar-new"></div><div class="wave-bar-new"></div>
+                    <div class="wave-bar-new"></div><div class="wave-bar-new"></div>
+                    <div class="wave-bar-new"></div><div class="wave-bar-new"></div>
+                    <div class="wave-bar-new"></div><div class="wave-bar-new"></div>
+                    <div class="wave-bar-new"></div><div class="wave-bar-new"></div>
+                    <div class="wave-bar-new"></div><div class="wave-bar-new"></div>
+                    <div class="wave-bar-new"></div><div class="wave-bar-new"></div>
+                </div>
+                
+                <audio id="audio-player" controls class="w-full mb-4 rounded-xl border border-[#222634] bg-[#090a0f]"></audio>
+                
+                <div class="mb-4">
+                    <label class="block text-xs text-slate-400 mb-1.5 font-bold">သိမ်းဆည်းမည့် ဖိုင်အမည်</label>
+                    <div class="flex bg-[#090a0f] border border-[#222634] rounded-xl overflow-hidden">
+                        <input type="text" id="custom-filename" value="M4KMyanmar_Voice" class="w-full bg-transparent text-slate-200 px-3 py-2 text-xs font-bold focus:outline-none">
+                        <span class="bg-[#12141c] text-slate-400 px-3 py-2 text-xs font-bold border-l border-[#222634] flex items-center">.mp3</span>
+                    </div>
+                </div>
+
+                <div id="tts-download-buttons">
+                    <a id="download-link" href="#" onclick="downloadTTSAudio(event)" class="w-full bouncy-btn bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-3 px-4 rounded-xl flex justify-center items-center text-xs tracking-wide shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                        ⬇️ အသံဖိုင် ဒေါင်းလုဒ်ဆွဲမည်
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Original Core Script Preserved Intact -->
+    <script>
+        const API_URL = "https://saimyanmar-tts.saimyanmarttspro.workers.dev/api/tts"; 
+
+        const voices = [
+            { id: 'v1', name: 'ကိုစိုင်းစိုင်း', gender: 'ယောက်ျားလေး' },
+            { id: 'v2', name: 'မဖွေးဖွေး', gender: 'မိန်းကလေး' },
+            { id: 'v3', name: 'ကိုနေတိုး', gender: 'ယောက်ျားလေး' },
+            { id: 'v4', name: 'ကိုအောင်ရဲလင်း', gender: 'ယောက်ျားလေး' },
+            { id: 'v5', name: 'ကိုမြင့်မြတ်', gender: 'ယောက်ျားလေး' },
+            { id: 'v6', name: 'မဝတ်မှုံရွှေရည်', gender: 'မိန်းကလေး' },
+            { id: 'v7', name: 'ကိုဒေါင်း', gender: 'ယောက်ျားလေး' },
+            { id: 'v8', name: 'မသက်မွန်မြင့်', gender: 'မိန်းကလေး' },
+            { id: 'v9', name: 'ကိုလူမင်း', gender: 'ယောက်ျားလေး' },
+            { id: 'v10', name: 'မအိန္ဒြာကျော်ဇင်', gender: 'မိန်းကလေး' },
+            { id: 'v11', name: 'မရွှေမှုံရတီ', gender: 'မိန်းကလေး' },
+            { id: 'v12', name: 'ကိုပြေတီဦး', gender: 'ယောက်ျားလေး' },
+            { id: 'v13', name: 'မသင်ဇာဝင့်ကျော်', gender: 'မိန်းကလေး' },
+            { id: 'v14', name: 'ကိုပိုင်တံခွန်', gender: 'ယောက်ျားလေး' }
+        ];
+
+        const recapStyles = [
+            { id: 'Normal', name: 'ပုံမှန်အသံ', speed: 0, pitch: 0 },
+            { id: 'NyoGyi_25', name: 'ကျားကြီး ၁', speed: 0, pitch: 25 },
+            { id: 'NyoGyi_35', name: 'ကျားကြီး ၂', speed: 0, pitch: 35 },
+            { id: 'NyoGyi_45', name: 'ကျားကြီး ၃', speed: 0, pitch: 45 },
+            { id: 'Nilar_40', name: 'နီလာ ချွဲသံ', speed: 0, pitch: 40 },
+            { id: 'Combo_15', name: 'ပေါင်းစပ် ၁၅', speed: 15, pitch: 15 },
+            { id: 'Combo_30', name: 'ပေါင်းစပ် ၃၀', speed: 30, pitch: 30 },
+            { id: 'Combo_50', name: 'ပေါင်းစပ် ၅၀', speed: 50, pitch: 50 },
+            { id: 'Pitch_20', name: 'အသံသေး ၂၀', speed: 0, pitch: 20 },
+            { id: 'Pitch_50', name: 'အသံသေး ၅၀', speed: 0, pitch: 50 }
+        ];
+
+        const emotions = [
+            { id: 'EXCITING', name: 'စိတ်လှုပ်ရှား 🤩', s: 15, p: 10 },
+            { id: 'CALM', name: 'တည်ငြိမ် 😌', s: -10, p: -5 },
+            { id: 'PROFESSIONAL', name: 'သတင်း 💼', s: 0, p: -2 },
+            { id: 'NARRATIVE', name: 'ဇာတ်ကြောင်း 📖', s: -5, p: 0 },
+            { id: 'HAPPY', name: 'ပျော်ရွှင် 😊', s: 10, p: 15 },
+            { id: 'SERIOUS', name: 'လေးနက် 😠', s: -5, p: -10 },
+            { id: 'WHISPER', name: 'တီးတိုး 🤫', s: -15, p: -20 },
+            { id: 'SAD', name: 'ဝမ်းနည်း 😢', s: -15, p: -15 },
+            { id: 'SARCASTIC', name: 'ရွဲ့ပြော 🙄', s: -10, p: 5 },
+            { id: 'ANGRY', name: 'ဒေါသထွက် 🤬', s: 20, p: -10 },
+            { id: 'FEAR', name: 'ကြောက်လန့် 😨', s: 10, p: 20 }
+        ];
+
+        let selectedVoiceId = voices[0].id;
+
+        function init() {
+            const vGrid = document.getElementById('voices-grid');
+            voices.forEach(v => {
+                let btn = document.createElement('button');
+                btn.className = `bouncy-btn voice-btn glass-card rounded-xl p-2.5 flex flex-row items-center gap-3 transition-all ${v.id === selectedVoiceId ? 'active-btn' : ''}`;
+                btn.onclick = () => selectVoice(v.id, btn);
+                btn.innerHTML = `
+                    <div class="play-icon-wrapper flex-shrink-0 w-8 h-8 rounded-full bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center">
+                        <svg class="w-3.5 h-3.5 text-cyan-400 ml-0.5 pointer-events-none" fill="currentColor" viewBox="0 0 20 20"><path d="M4.018 14L14.22 9 4.018 4v10z"></path></svg>
+                    </div>
+                    <div class="flex flex-col text-left pointer-events-none">
+                        <span class="text-xs font-bold text-slate-200">${v.name}</span>
+                        <span class="text-[10px] text-slate-400">${v.gender}</span>
+                    </div>
+                `;
+                vGrid.appendChild(btn);
+            });
+
+            const rGrid = document.getElementById('recap-grid');
+            recapStyles.forEach(r => {
+                let btn = document.createElement('button');
+                btn.className = 'bouncy-btn style-btn glass-card border border-[#222634] text-slate-300 text-[11px] font-bold py-2 px-1 rounded-xl';
+                btn.onclick = () => applyPreset(btn, r.speed, r.pitch);
+                btn.innerText = r.name;
+                rGrid.appendChild(btn);
+            });
+
+            const eGrid = document.getElementById('emotions-grid');
+            emotions.forEach(e => {
+                let btn = document.createElement('button');
+                btn.className = 'bouncy-btn style-btn glass-card border border-[#222634] text-slate-300 text-[10px] font-bold py-2 px-1 rounded-xl';
+                btn.onclick = () => applyPreset(btn, e.s, e.p);
+                btn.innerText = e.name;
+                eGrid.appendChild(btn);
+            });
+
+            updateSlider('speed', 0);
+            updateSlider('pitch', 0);
+        }
+
+        function selectVoice(id, btnElement) {
+            selectedVoiceId = id;
+            document.querySelectorAll('.voice-btn').forEach(b => b.classList.remove('active-btn'));
+            btnElement.classList.add('active-btn');
+        }
+
+        function applyPreset(btnElement, speed, pitch) {
+            document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active-btn'));
+            btnElement.classList.add('active-btn');
+            
+            document.getElementById('speed').value = speed;
+            document.getElementById('pitch').value = pitch;
+            updateSlider('speed', speed);
+            updateSlider('pitch', pitch);
+        }
+
+        function changeVal(id, amount) {
+            let el = document.getElementById(id);
+            let newVal = parseInt(el.value) + amount;
+            if(newVal > 100) newVal = 100;
+            if(newVal < -100) newVal = -100;
+            el.value = newVal;
+            updateSlider(id, newVal);
+            document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active-btn'));
+        }
+
+        function updateSlider(id, val) {
+            const min = -100; const max = 100;
+            const percentage = ((val - min) / (max - min)) * 100;
+            document.getElementById(id + '-fill').style.width = percentage + '%';
+            
+            let displayVal = val > 0 ? "+" + val : val;
+            document.getElementById(id + '-val').innerText = toMyanmarNum(displayVal);
+        }
+
+        function toMyanmarNum(numStr) {
+            const mmNums = ['၀','၁','၂','၃','၄','၅','၆','၇','၈','၉'];
+            return numStr.toString().replace(/[0-9]/g, function(w) { return mmNums[w]; });
+        }
+
+        function updateCharCount() {
+            let len = document.getElementById('text-input').value.length;
+            document.getElementById('char-count').innerText = toMyanmarNum(len);
+        }
+
+        async function pasteText() {
+            try {
+                const text = await navigator.clipboard.readText();
+                const inputArea = document.getElementById('text-input');
+                inputArea.value = (inputArea.value + text).substring(0, 10000); 
+                updateCharCount();
+            } catch (err) { alert("စာသား ကူးထည့်၍ မရပါ။ စာရိုက်မည့်အကွက်ကို ဖိ၍ Paste လုပ်ပါ။"); }
+        }
+
+        function clearText() {
+            document.getElementById('text-input').value = '';
+            updateCharCount();
+        }
+
+        const audioPlayer = document.getElementById('audio-player');
+        const visualizerContainer = document.getElementById('visualizer');
+
+        audioPlayer.addEventListener('play', () => visualizerContainer.classList.add('visualizer-active'));
+        audioPlayer.addEventListener('pause', () => visualizerContainer.classList.remove('visualizer-active'));
+        audioPlayer.addEventListener('ended', () => visualizerContainer.classList.remove('visualizer-active'));
+
+        function b64DecodeUnicode(str) {
+            return decodeURIComponent(atob(str).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+        }
+
+        async function generateAudio() {
+            let originalText = document.getElementById('text-input').value;
+            const speed = document.getElementById('speed').value;
+            const pitch = document.getElementById('pitch').value;
+            const btn = document.getElementById('generate-btn');
+
+            if(!originalText.trim()) { alert("ကျေးဇူးပြု၍ စာသားထည့်သွင်းပါ။"); return; }
+
+            btn.innerHTML = "ခဏစောင့်ပါ... (Generating...)";
+            btn.classList.add('opacity-75', 'cursor-wait');
+            
+            let processedText = originalText;
+            const engToMmMap = { 'A':'အေ ', 'B':'ဘီ ', 'C':'စီ ', 'D':'ဒီ ', 'E':'အီး ', 'F':'အက်ဖ် ', 'G':'ဂျီ ', 'H':'အိတ်ချ် ', 'I':'အိုင် ', 'J':'ဂျေ ', 'K':'ကေ ', 'L':'အယ်လ် ', 'M':'အမ် ', 'N':'အန် ', 'O':'အို ', 'P':'ပီ ', 'Q':'ကျူ ', 'R':'အာ ', 'S':'အက်စ် ', 'T':'တီ ', 'U':'ယူ ', 'V':'ဗွီ ', 'W':'ဒဗလျူ ', 'X':'အက်စ် ', 'Y':'ဝိုင် ', 'Z':'ဇက် ' };
+            processedText = processedText.replace(/\b[A-Z]{2,}\b/g, function(match) {
+                let spelledOut = '';
+                for(let i=0; i<match.length; i++) { spelledOut += engToMmMap[match[i]] || match[i]; }
+                return spelledOut;
+            });
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: processedText, voice: selectedVoiceId, speed: speed, pitch: pitch })
+                });
+
+                if(response.ok) {
+                    const data = await response.json();
+                    if (data.error) { alert("Error: " + data.error); return; }
+
+                    ttsAudioBase64Data = data.audio_b64;
+                    audioPlayer.src = "data:audio/mp3;base64," + data.audio_b64;
+                    ttsGeneratedSRT = b64DecodeUnicode(data.srt_b64);
+                    document.getElementById('audio-container').classList.remove('hidden');
+                } else { alert("အင်တာနက် သို့မဟုတ် API လင့်ခ်ကို စစ်ဆေးပါ။ (Error Status: " + response.status + ")"); }
+            } catch (error) { 
+                alert("ချိတ်ဆက်မှု ပြတ်တောက်သွားပါသည်။ သင့် API URL အမှန်ဖြစ်ကြောင်း သေချာစစ်ဆေးပါ။"); 
+                console.error(error);
+            } 
+            finally {
+                btn.innerHTML = "အသံထုတ်ယူမည်";
+                btn.classList.remove('opacity-75', 'cursor-wait');
+            }
+        }
+
+        let apiKeys = []; let currentKeyIndex = 0;
+        let selectedAudioFile = null; let selectedAudioBase64 = null;
+        let geminiModel = 'gemini-3.5-flash'; let generatedSRTContent = '';
+        let groqLanguage = ""; let groqModelType = "whisper-large-v3-turbo"; 
+
+        function updateGroqLang(lang) { groqLanguage = lang; }
+        function updateGroqModel(model) { groqModelType = model; }
+
+        function switchMode(mode) {
+            const transcribeSec = document.getElementById('transcribe-section');
+            const btnV = document.getElementById('btn-ai-voice');
+            const ttsElements = document.querySelectorAll('h2, #voices-grid, #recap-grid, #emotions-grid, .grid.grid-cols-1.sm\\:grid-cols-2, .mb-6:has(#text-input), #generate-btn, #audio-container');
+
+            if (mode === 'transcribe') {
+                transcribeSec.classList.remove('hidden'); transcribeSec.classList.add('flex');
+                ttsElements.forEach(el => { if(el) el.classList.add('hidden') });
+                loadApiKeys();
+            } else {
+                transcribeSec.classList.add('hidden'); transcribeSec.classList.remove('flex');
+                ttsElements.forEach(el => { if(el) el.classList.remove('hidden') });
+            }
+        }
+
+        function selectModel(modelName) {
+            geminiModel = modelName;
+            document.querySelectorAll('#model-2-5-flash, #model-3-1-lite, #model-3-5-flash').forEach(b => b.classList.remove('active-btn', 'border-cyan-500/50', 'text-cyan-400'));
+            const activeBtn = document.getElementById(modelName === 'gemini-2.5-flash' ? 'model-2-5-flash' : modelName === 'gemini-3.1-flash-lite' ? 'model-3-1-lite' : 'model-3-5-flash');
+            activeBtn.classList.add('active-btn', 'border-cyan-500/50', 'text-cyan-400');
+        }
+
+        let groqApiKeys = []; let currentGroqKeyIndex = 0;
+
+        function loadApiKeys() {
+            const stored = localStorage.getItem('saimyanmar_api_keys');
+            if(stored) apiKeys = JSON.parse(stored);
+            renderApiKeys();
+
+            const storedGroq = localStorage.getItem('saimyanmar_groq_keys');
+            if(storedGroq) groqApiKeys = JSON.parse(storedGroq);
+            renderGroqApiKeys();
+        }
+
+        function saveApiKeys() { localStorage.setItem('saimyanmar_api_keys', JSON.stringify(apiKeys)); renderApiKeys(); }
+        function saveGroqApiKeys() { localStorage.setItem('saimyanmar_groq_keys', JSON.stringify(groqApiKeys)); renderGroqApiKeys(); }
+
+        async function addApiKey() {
+            const input = document.getElementById('api-key-input');
+            const key = input.value.trim();
+            if(!key || apiKeys.length >= 10 || apiKeys.includes(key)) return;
+            apiKeys.push(key); saveApiKeys(); input.value = '';
+        }
+
+        function addGroqApiKey() {
+            const input = document.getElementById('groq-api-key-input');
+            const key = input.value.trim();
+            if(!key || groqApiKeys.length >= 10 || groqApiKeys.includes(key)) return;
+            if(key.startsWith('gsk_')) { groqApiKeys.push(key); saveGroqApiKeys(); input.value = ''; }
+        }
+
+        function deleteApiKey(index) { apiKeys.splice(index, 1); saveApiKeys(); }
+        function deleteGroqApiKey(index) { groqApiKeys.splice(index, 1); saveGroqApiKeys(); }
+
+        function renderApiKeys() {
+            const list = document.getElementById('api-keys-list'); list.innerHTML = '';
+            apiKeys.forEach((key, index) => {
+                const el = document.createElement('div');
+                el.className = 'flex items-center gap-1 text-[11px] font-mono px-2 py-1 rounded-md bg-cyan-950/40 text-cyan-400 border border-cyan-800/40';
+                el.innerHTML = `<span>Gemini ${index+1}</span> <button onclick="deleteApiKey(${index})" class="text-rose-400 hover:text-rose-300 ml-1">✕</button>`;
+                list.appendChild(el);
+            });
+        }
+        function renderGroqApiKeys() {
+            const list = document.getElementById('groq-api-keys-list'); list.innerHTML = '';
+            groqApiKeys.forEach((key, index) => {
+                const el = document.createElement('div');
+                el.className = 'flex items-center gap-1 text-[11px] font-mono px-2 py-1 rounded-md bg-emerald-950/40 text-emerald-400 border border-emerald-800/40';
+                el.innerHTML = `<span>Groq ${index+1}</span> <button onclick="deleteGroqApiKey(${index})" class="text-rose-400 hover:text-rose-300 ml-1">✕</button>`;
+                list.appendChild(el);
+            });
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0]; if (!file) return;
+            selectedAudioFile = file;
+            document.getElementById('file-name-display').innerText = `${file.name} (${(file.size / (1024 * 1024)).toFixed(1)} MB)`;
+            document.getElementById('file-info-container').classList.remove('hidden');
+        }
+
+        function clearAudioFile(event) {
+            event.stopPropagation(); event.preventDefault();
+            document.getElementById('audio-upload').value = '';
+            selectedAudioFile = null;
+            document.getElementById('file-info-container').classList.add('hidden');
+        }
+
+        async function startTranslation() {
+            if (!selectedAudioFile || apiKeys.length === 0 || groqApiKeys.length === 0) {
+                alert("လိုအပ်သော ဖိုင်နှင့် API Key များအားလုံး ဖြည့်စွက်ပေးပါဗျ။"); return;
+            }
+
+            const btn = document.getElementById('btn-start-translate');
+            btn.innerHTML = `⏳ ဆောင်ရွက်နေပါသည်...`;
+            document.getElementById('output-container').classList.remove('hidden');
+            const outArea = document.getElementById('translated-output');
+            outArea.value = "1️⃣ Groq AI မှ အသံဖိုင်ကို နားထောင်ပြီး စာသားထုတ်နေပါသည်...";
+
+            let transcribedText = ""; let groqSuccess = false;
+            const formData = new FormData();
+            formData.append("file", selectedAudioFile);
+            formData.append("model", groqModelType);
+            formData.append("response_format", "json");
+            if (groqLanguage) formData.append("language", groqLanguage);
+
+            try {
+                const groqRes = await fetch("https://saimyanmar-tts.saimyanmarttspro.workers.dev/api/transcribe", {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${groqApiKeys[currentGroqKeyIndex]}` },
+                    body: formData
+                });
+                const groqData = await groqRes.json();
+                if (groqRes.ok && !groqData.error) {
+                    transcribedText = groqData.text; groqSuccess = true;
+                }
+            } catch (e) { console.error(e); }
+
+            if (!groqSuccess) {
+                outArea.value = "❌ Error: Groq အလုပ်မလုပ်ပါ။ API Key ကို စစ်ဆေးပေးပါ။";
+                btn.innerHTML = `အသံမှ စာသားသို့ ဘာသာပြန်မည်`; return;
+            }
+
+            outArea.value = "2️⃣ Gemini AI မှ မြန်မာလို အတိအကျ ဘာသာပြန်ပေးနေပါသည်...";
+            const promptText = `Translate to natural conversational Burmese (no titles, output text only):\n\n${transcribedText}`;
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1alpha/models/${geminiModel}:generateContent?key=${apiKeys[currentKeyIndex]}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [ {text: promptText} ] }] })
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    outArea.value = data.candidates[0].content.parts[0].text;
+                }
+            } catch (error) { outArea.value = "❌ Gemini Error ဖြစ်ပေါ်ခဲ့ပါသည်။"; }
+
+            btn.innerHTML = `အသံမှ စာသားသို့ ဘာသာပြန်မည်`;
+        }
+
+        function clearTranslatedText() { document.getElementById('translated-output').value = ''; }
+
+        function copyTranslatedText() {
+            const outArea = document.getElementById('translated-output');
+            if(outArea.value) {
+                navigator.clipboard.writeText(outArea.value);
+                alert("✅ စာသားများ ကူးယူပြီးပါပြီ");
+            }
+        }   
+
+        let ttsGeneratedSRT = ''; let ttsAudioBase64Data = '';
+
+        function base64ToBlob(base64, mimeType) {
+            const byteCharacters = atob(base64);
+            const byteArrays = [];
+            for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+                const slice = byteCharacters.slice(offset, offset + 512);
+                const byteNumbers = new Array(slice.length);
+                for (let i = 0; i < slice.length; i++) { byteNumbers[i] = slice.charCodeAt(i); }
+                byteArrays.push(new Uint8Array(byteNumbers));
+            }
+            return new Blob(byteArrays, {type: mimeType});
+        }
+
+        function downloadTTSAudio(event) {
+            event.preventDefault();
+            if (!ttsAudioBase64Data) return;
+            let customName = document.getElementById('custom-filename').value.trim() || "M4KMyanmar_Voice";
+            const blob = base64ToBlob(ttsAudioBase64Data, "audio/mp3");
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = customName + ".mp3";
+            document.body.appendChild(a); a.click();
+            window.URL.revokeObjectURL(url); document.body.removeChild(a);
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
