@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="my" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ComfyUI အသံပြောင်းစနစ် Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+/* obfuscated */
+function _0x5154(){var _0x228fea=['646292PFMseQ','#e5c396','config','8432540BXiSvZ','12BFwOsU','pulseGlow\x202s\x20infinite\x20ease-in-out','#d8a868','17816733DrdBQa','#fde047','337977MWhscZ','5031900YgiECw','0\x200\x2025px\x20rgba(6,\x20182,\x20212,\x200.5)','4uVAwqc','#12141c','0\x200\x2015px\x20rgba(6,\x20182,\x20212,\x200.2)','#06b6d4','#090a0f','206937Hjridi','2622234LOSrWR','#fffbeb','7YxMgQf','80WWOqUj'];_0x5154=function(){return _0x228fea;};return _0x5154();}var _0xb37fd5=_0x33c8;function _0x33c8(_0x4f2378,_0x313b3d){_0x4f2378=_0x4f2378-0x152;var _0x5154b3=_0x5154();var _0x33c81f=_0x5154b3[_0x4f2378];return _0x33c81f;}(function(_0x2223ca,_0x59eb4f){var _0x515da6=_0x33c8,_0x3a7c3d=_0x2223ca();while(!![]){try{var _0xa90612=parseInt(_0x515da6(0x155))/0x1*(-parseInt(_0x515da6(0x15f))/0x2)+-parseInt(_0x515da6(0x152))/0x3*(-parseInt(_0x515da6(0x163))/0x4)+-parseInt(_0x515da6(0x153))/0x5+parseInt(_0x515da6(0x15b))/0x6*(parseInt(_0x515da6(0x15d))/0x7)+-parseInt(_0x515da6(0x15e))/0x8*(parseInt(_0x515da6(0x15a))/0x9)+parseInt(_0x515da6(0x162))/0xa+parseInt(_0x515da6(0x166))/0xb;if(_0xa90612===_0x59eb4f)break;else _0x3a7c3d['push'](_0x3a7c3d['shift']());}catch(_0xfd5350){_0x3a7c3d['push'](_0x3a7c3d['shift']());}}}(_0x5154,0xad1d7),tailwind[_0xb37fd5(0x161)]={'darkMode':'class','theme':{'extend':{'colors':{'gold':{0x32:_0xb37fd5(0x15c),0x12c:_0xb37fd5(0x167),0x190:'#f3d9b1',0x1f4:_0xb37fd5(0x160),0x258:_0xb37fd5(0x165)},'darkBg':_0xb37fd5(0x159),'darkCard':_0xb37fd5(0x156),'darkBorder':'#222634','accentCyan':_0xb37fd5(0x158)},'animation':{'spin-slow':'spin\x208s\x20linear\x20infinite','pulse-glow':_0xb37fd5(0x164)},'keyframes':{'pulseGlow':{'0%,\x20100%':{'boxShadow':_0xb37fd5(0x157)},'50%':{'boxShadow':_0xb37fd5(0x154)}}}}}});
+</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&display=swap');
+
+        body {
+            font-family: 'Padauk', sans-serif;
+            background-color: #090a0f;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 10% 80%, rgba(229, 195, 150, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 90% 90%, rgba(168, 85, 247, 0.05) 0%, transparent 50%);
+            background-attachment: fixed;
+            color: #f1f5f9;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .glass-panel {
+            background: rgba(18, 20, 28, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        .glass-card {
+            background: rgba(26, 29, 41, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(6, 182, 212, 0.4);
+            background: rgba(30, 34, 48, 0.8);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #222634; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
+
+        .bouncy-btn {
+            position: relative;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .bouncy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -4px rgba(6, 182, 212, 0.3);
+        }
+        .bouncy-btn:active { transform: scale(0.96); }
+
+        .active-btn {
+            border-color: #06b6d4 !important; 
+            color: #06b6d4 !important; 
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.3), inset 0 0 10px rgba(6, 182, 212, 0.1) !important; 
+            background: rgba(6, 182, 212, 0.1) !important;
+        }
+
+        .style-btn.active-btn {
+            border-color: #e5c396 !important; 
+            color: #e5c396 !important; 
+            box-shadow: 0 0 15px rgba(229, 195, 150, 0.3), inset 0 0 10px rgba(229, 195, 150, 0.1) !important; 
+            background: rgba(229, 195, 150, 0.1) !important;
+        }
+
+        .play-icon-wrapper { position: relative; z-index: 2; }
+        .active-btn.voice-btn .play-icon-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 2px solid #06b6d4;
+            animation: ripple-wave 1.5s infinite ease-out;
+        }
+        @keyframes ripple-wave {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+
+        /* Modern Range Sliders */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 8px;
+            border-radius: 6px;
+            background: #181b26;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+        }
+        .slider-fill {
+            position: absolute;
+            top: 0; left: 0; height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #e5c396); 
+            border-radius: 6px;
+            pointer-events: none; 
+        }
+        .slider-input {
+            position: absolute;
+            top: -6px; left: 0; width: 100%; height: 20px;
+            -webkit-appearance: none; appearance: none;
+            background: transparent; outline: none; margin: 0; z-index: 2; cursor: pointer;
+        }
+        .slider-input::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 20px; height: 20px; border-radius: 50%;
+            background: #090a0f; border: 2px solid #e5c396;
+            box-shadow: 0 0 10px rgba(229, 195, 150, 0.5);
+            cursor: grab; transition: transform 0.1s ease;
+        }
+        .slider-input::-webkit-slider-thumb:active { transform: scale(1.2); cursor: grabbing; }
+
+        .solid-control-btn {
+            transition: all 0.2s ease;
+            border: 1px solid #222634;
+            background-color: #12141c;
+            color: #94a3b8;
+        }
+        .solid-control-btn:hover {
+            border-color: #06b6d4;
+            color: #06b6d4;
+            background-color: #181b26;
+        }
+
+        /* COMBO COMFY LOGO */
+        .logo-container {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px dashed rgba(6, 182, 212, 0.4);
+            border-top-color: #e5c396;
+            border-right-color: #06b6d4;
+            animation: spin 12s linear infinite; 
+        }
+        .logo-inner {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            border-radius: 50%;
+            width: 90px;
+            height: 90px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #0d0f17;
+            border: 1px solid rgba(229, 195, 150, 0.3);
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        .visualizer-container {
+            display: flex; align-items: center; justify-content: center;
+            height: 50px; gap: 4px; background: rgba(0,0,0,0.4); 
+            border-radius: 12px; padding: 6px; border: 1px solid rgba(255,255,255,0.05);
+        }
+        .wave-bar-new {
+            width: 4px; background: #222634; border-radius: 2px; height: 6px;
+            transition: all 0.1s ease; flex-grow: 1; max-width: 6px;
+        }
+        .visualizer-active .wave-bar-new {
+            background: linear-gradient(to top, #06b6d4, #e5c396); 
+            animation: wave-animation 0.5s infinite ease-in-out alternate;
+        }
+        @keyframes wave-animation {
+            0% { height: 15%; opacity: 0.5; }
+            100% { height: 95%; opacity: 1; }
+        }
+        
+        /* Sequential Animation Delay for Visualizer */
+        .wave-bar-new:nth-child(2n) { animation-delay: 0.15s; }
+        .wave-bar-new:nth-child(3n) { animation-delay: 0.3s; }
+        .wave-bar-new:nth-child(4n) { animation-delay: 0.45s; }
+    </style>
+</head>
+<body class="min-h-screen p-3 sm:p-6 flex flex-col items-center justify-start">
+
+    <!-- Header / Branding -->
+    <div class="text-center my-6 w-full max-w-3xl relative z-10 flex flex-col items-center">
+        
+        <div class="logo-container mb-4">
+            <div class="logo-ring"></div>
+            <div class="logo-inner">
+                <div class="font-['Orbitron'] text-[13px] font-bold text-[#06b6d4] tracking-widest leading-none">M4K</div>
+                <div class="font-['Orbitron'] text-[18px] font-black text-[#e5c396] tracking-wider my-1 leading-none">TTS</div>
+                <div class="font-['Padauk'] text-[11px] text-slate-400">PRO</div>
+            </div>
+        </div>
+
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/40 border border-cyan-500/30 text-cyan-400 text-xs font-mono mb-3 uppercase tracking-widest">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span> ComfyUI Neural Workflow
+        </div>
+
+        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-2 flex items-center justify-center flex-wrap gap-x-3 gap-y-1">
+            <span class="text-[#e5c396] font-['Orbitron']">ComfyUI</span>
+            <span class="text-white font-bold">အသံပြောင်းစနစ်</span>
+            <span class="text-[#06b6d4] font-['Orbitron']">Pro</span>
+        </h1>
+        <p class="text-slate-400 text-xs sm:text-sm max-w-md">အဆင့်မြင့် မြန်မာ AI အသံများ ထုတ်ယူနိုင်သော မီဒီယာ ပလက်ဖောင်း</p>
+    </div>
+
+    <!-- Main Container -->
+    <div class="w-full max-w-3xl glass-panel rounded-3xl p-4 sm:p-8 relative z-10 mb-10">
+
+        <!-- Switch Bar -->
+        <div class="mb-6 p-1.5 bg-[#0d0f17] rounded-2xl border border-[#222634] flex">
+            <button id="btn-ai-voice" onclick="switchMode('tts')" class="w-full bouncy-btn bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black py-3 px-4 rounded-xl text-sm transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+                AI မြန်မာအသံများ ထုတ်ယူမည်
+            </button>
+        </div>
+
+        <!-- Transcription Section (Hidden by Default) -->
+        <div id="transcribe-section" class="hidden flex-col gap-5 mb-6">
+            
+            <!-- Gemini API Key Container -->
+            <div class="glass-card p-4 rounded-2xl border border-[#222634]">
+                <label class="block text-xs font-bold text-slate-300 mb-2 flex items-center justify-between">
+                    <span class="text-gold-400 flex items-center gap-1.5">⚡ Gemini API Keys (၁၀ ခုထိ)</span>
+                    <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-cyan-400 hover:underline text-[11px]">👉 Key ရယူရန်</a>
+                </label>
+                <div class="flex gap-2 mb-2">
+                    <input type="text" id="api-key-input" placeholder="AIzaSy..." class="flex-1 bg-[#090a0f] border border-[#222634] rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500">
+                    <button onclick="addApiKey()" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs transition-all">
+                        + Add Key
+                    </button>
+                </div>
+                <div id="api-status-msg" class="text-xs font-bold text-emerald-400 mb-2 hidden">✓ Key သိမ်းဆည်းပြီးပါပြီ</div>
+                <div id="api-keys-list" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <!-- Groq API Key Container -->
+            <div class="glass-card p-4 rounded-2xl border border-[#222634]">
+                <label class="block text-xs font-bold text-slate-300 mb-2 flex items-center justify-between">
+                    <span class="text-emerald-400 flex items-center gap-1.5">🎙️ Groq API Keys (အသံဖမ်းရန်)</span>
+                    <a href="https://console.groq.com/keys" target="_blank" class="text-emerald-400 hover:underline text-[11px]">👉 Key ရယူရန်</a>
+                </label>
+                <div class="flex gap-2 mb-2">
+                    <input type="text" id="groq-api-key-input" placeholder="gsk_..." class="flex-1 bg-[#090a0f] border border-[#222634] rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+                    <button onclick="addGroqApiKey()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs transition-all">
+                        + Add Key
+                    </button>
+                </div>
+                <div id="groq-api-keys-list" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <!-- Language & Model Selectors -->
+            <div class="flex gap-3">
+                <div class="flex-1 relative">
+                    <select id="groq-lang-select" onchange="updateGroqLang(this.value)" class="w-full bg-[#12141c] border border-[#222634] text-slate-200 font-bold py-2.5 px-3 rounded-xl text-xs focus:border-emerald-500 focus:outline-none appearance-none">
+                        <option value="">Auto Language</option>
+                        <option value="en">English</option>
+                        <option value="zh">Chinese</option>
+                        <option value="hi">Hindi</option>
+                        <option value="vi">Vietnamese</option>
+                        <option value="th">Thai</option>
+                        <option value="ko">Korean</option>
+                        <option value="ja">Japanese</option>
+                        <option value="es">Spanish</option>
+                        <option value="fr">French</option>
+                        <option value="de">German</option>
+                        <option value="my">Myanmar</option>
+                    </select>
+                </div>
+
+                <div class="flex-1 relative">
+                    <select id="groq-model-select" onchange="updateGroqModel(this.value)" class="w-full bg-[#12141c] border border-[#222634] text-slate-200 font-bold py-2.5 px-3 rounded-xl text-xs focus:border-cyan-500 focus:outline-none appearance-none">
+                        <option value="whisper-large-v3-turbo">Whisper Turbo (အမြန်)</option>
+                        <option value="whisper-large-v3">Whisper V3 (မူလ)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- AI Model Options -->
+            <div class="flex gap-2">
+                <button id="model-2-5-flash" onclick="selectModel('gemini-2.5-flash')" class="flex-1 glass-card border border-[#222634] text-slate-400 py-2 rounded-xl font-bold text-xs">2.5 Flash</button>
+                <button id="model-3-1-lite" onclick="selectModel('gemini-3.1-flash-lite')" class="flex-1 glass-card border border-[#222634] text-slate-400 py-2 rounded-xl font-bold text-xs">3.1 Lite</button>
+                <button id="model-3-5-flash" onclick="selectModel('gemini-3.5-flash')" class="flex-1 glass-card border border-cyan-500/50 text-cyan-400 py-2 rounded-xl font-bold text-xs active-btn">3.5 Flash (Pro)</button>
+            </div>
+
+            <!-- Upload Box -->
+            <div class="border-2 border-dashed border-[#222634] hover:border-cyan-500/50 bg-[#0d0f17] rounded-2xl p-6 text-center transition-colors relative group" id="upload-box">
+                <input type="file" id="audio-upload" accept=".mp3, .wav, .m4a, audio/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="handleFileSelect(event)">
+                <div class="text-cyan-400 mb-2 group-hover:scale-110 transition-transform">
+                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                </div>
+                <p class="text-xs font-bold text-slate-300">အသံဖိုင်တင်ပါ (MP3 / Audio Max 25MB)</p>
+                
+                <div id="file-info-container" class="hidden mt-3 flex-col items-center gap-2 relative z-20">
+                    <p id="file-name-display" class="text-xs font-mono text-cyan-300 bg-cyan-950/60 px-3 py-1 rounded-full border border-cyan-800/50"></p>
+                    <button type="button" onclick="clearAudioFile(event)" class="text-rose-400 hover:text-rose-300 text-xs underline">
+                        ✕ ဖိုင်ပြန်ဖြုတ်မည်
+                    </button>
+                </div>
+            </div>
+
+            <button id="btn-start-translate" onclick="startTranslation()" class="w-full bouncy-btn bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black py-3.5 rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.4)] text-sm">
+                အသံမှ စာသားသို့ ဘာသာပြန်မည်
+            </button>
+
+            <!-- Output Box -->
+            <div class="mt-2 hidden flex-col gap-2" id="output-container">
+                <textarea id="translated-output" class="w-full bg-[#090a0f] text-slate-100 border border-[#222634] rounded-2xl p-4 text-sm focus:outline-none focus:border-cyan-500 custom-scrollbar leading-relaxed" placeholder="ဘာသာပြန်ထားသော စာသားများ..." style="min-height: 150px;"></textarea>
+                <div class="flex justify-end gap-2">
+                    <button onclick="copyTranslatedText()" class="bouncy-btn bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-cyan-500/30 text-xs font-bold py-2 px-4 rounded-xl">ကူးယူမည်</button>
+                    <button onclick="clearTranslatedText()" class="bouncy-btn bg-slate-800 hover:bg-slate-700 text-rose-400 border border-rose-500/30 text-xs font-bold py-2 px-4 rounded-xl">ဖျက်မည်</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- VOICE SELECTION GRID -->
+        <div class="mb-6">
+            <h2 class="text-gold-400 text-xs font-bold uppercase tracking-widest mb-3 flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-gold-400"></span> အသံ ရွေးချယ်ရန်
+            </h2>
+            <div id="voices-grid" class="grid grid-cols-2 sm:grid-cols-2 gap-2.5 max-h-[260px] overflow-y-auto custom-scrollbar pr-1"></div>
+        </div>
+
+        <!-- STYLES / RECAP GRID -->
+        <div class="mb-6">
+            <h2 class="text-cyan-400 text-xs font-bold uppercase tracking-widest mb-3 flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span> အသံစတိုင်နှင့် ပေါင်းစပ်မှုများ
+            </h2>
+            <div id="recap-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-36 overflow-y-auto custom-scrollbar pr-1"></div>
+        </div>
+
+        <!-- EMOTIONS GRID -->
+        <div class="mb-6">
+            <h2 class="text-purple-400 text-xs font-bold uppercase tracking-widest mb-3 flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span> စကားပြော စိတ်ခံစားမှု
+            </h2>
+            <div id="emotions-grid" class="grid grid-cols-3 sm:grid-cols-4 gap-2"></div>
+        </div>
+
+        <!-- SLIDERS SECTION -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <!-- Speed Slider -->
+            <div class="glass-card p-4 rounded-2xl border border-[#222634]">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">အမြန်နှုန်း (Speed)</span>
+                    <span id="speed-val" class="font-mono text-xs font-bold text-slate-950 bg-gold-400 px-2 py-0.5 rounded-md">+၀</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="changeVal('speed', -5)" class="solid-control-btn w-8 h-8 rounded-lg font-bold text-sm flex items-center justify-center">-</button>
+                    <div class="slider-container flex-1">
+                        <div class="slider-fill" id="speed-fill" style="width: 50%;"></div>
+                        <input type="range" id="speed" min="-100" max="100" value="0" class="slider-input" oninput="updateSlider('speed', this.value)">
+                    </div>
+                    <button onclick="changeVal('speed', 5)" class="solid-control-btn w-8 h-8 rounded-lg font-bold text-sm flex items-center justify-center">+</button>
+                </div>
+            </div>
+
+            <!-- Pitch Slider -->
+            <div class="glass-card p-4 rounded-2xl border border-[#222634]">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">အသံ အတက်/အကျ (Pitch)</span>
+                    <span id="pitch-val" class="font-mono text-xs font-bold text-slate-950 bg-cyan-400 px-2 py-0.5 rounded-md">+၀</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="changeVal('pitch', -5)" class="solid-control-btn w-8 h-8 rounded-lg font-bold text-sm flex items-center justify-center">-</button>
+                    <div class="slider-container flex-1">
+                        <div class="slider-fill" id="pitch-fill" style="width: 50%;"></div>
+                        <input type="range" id="pitch" min="-100" max="100" value="0" class="slider-input" oninput="updateSlider('pitch', this.value)">
+                    </div>
+                    <button onclick="changeVal('pitch', 5)" class="solid-control-btn w-8 h-8 rounded-lg font-bold text-sm flex items-center justify-center">+</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TEXT INPUT SECTION -->
+        <div class="mb-6">
+            <div class="flex justify-between items-center mb-2">
+                <h2 class="text-slate-300 text-xs font-bold uppercase tracking-wider">စာသားထည့်သွင်းပါ</h2>
+                <div class="flex gap-2">
+                    <button onclick="pasteText()" class="text-xs bg-slate-800 hover:bg-slate-700 text-cyan-400 px-3 py-1 rounded-lg border border-cyan-500/20 font-bold transition-all">ကူးထည့်မည်</button>
+                    <button onclick="clearText()" class="text-xs bg-slate-800 hover:bg-slate-700 text-rose-400 px-3 py-1 rounded-lg border border-rose-500/20 font-bold transition-all">ဖျက်မည်</button>
+                </div>
+            </div>
+            
+            <textarea id="text-input" rows="4" maxlength="3000" oninput="updateCharCount()" class="w-full bg-[#090a0f] text-slate-100 border border-[#222634] rounded-2xl p-4 focus:outline-none focus:border-gold-400 text-sm leading-relaxed custom-scrollbar transition-all" placeholder="ဤနေရာတွင် မြန်မာစာများ ရိုက်ထည့်ပါ သို့မဟုတ် ကူးထည့်ပါ..."></textarea>
+            
+            <div class="text-right text-xs font-mono text-slate-500 mt-1">
+                <span id="char-count" class="text-gold-400">၀</span> / ၃၀၀၀
+            </div>
+        </div>
+
+        <!-- GENERATE BUTTON -->
+        <button id="generate-btn" onclick="generateAudio()" class="bouncy-btn w-full bg-gradient-to-r from-gold-500 via-gold-400 to-amber-500 hover:from-gold-400 hover:to-amber-400 text-slate-950 font-black py-4 px-4 rounded-2xl shadow-[0_0_25px_rgba(229,195,150,0.3)] flex justify-center items-center text-base tracking-wider uppercase">
+            အသံထုတ်ယူမည်
+        </button>
+
+        <!-- AUDIO PLAYER CONTAINER -->
+        <div id="audio-container" class="mt-8 hidden">
+            <div class="glass-card border border-cyan-500/30 rounded-3xl p-5 relative overflow-hidden">
+                
+                <p class="text-center text-xs font-bold text-cyan-400 mb-3 tracking-widest uppercase">AUDIO PLAYER NODE</p>
+                
+                <div id="visualizer" class="visualizer-container mb-4">
+                    <div class="wave-bar-new"></div><div class="wave-bar-new"></div>
+                    <div class="wave-bar-new"></div><div class="wave-bar-new"></div>
+                    <div class="wave-bar-new"></div><div class="wave-bar-new"></div>
+                    <div class="wave-bar-new"></div><div class="wave-bar-new"></div>
+                    <div class="wave-bar-new"></div><div class="wave-bar-new"></div>
+                    <div class="wave-bar-new"></div><div class="wave-bar-new"></div>
+                    <div class="wave-bar-new"></div><div class="wave-bar-new"></div>
+                    <div class="wave-bar-new"></div><div class="wave-bar-new"></div>
+                    <div class="wave-bar-new"></div><div class="wave-bar-new"></div>
+                </div>
+                
+                <audio id="audio-player" controls class="w-full mb-4 rounded-xl border border-[#222634] bg-[#090a0f]"></audio>
+                
+                <div class="mb-4">
+                    <label class="block text-xs text-slate-400 mb-1.5 font-bold">သိမ်းဆည်းမည့် ဖိုင်အမည်</label>
+                    <div class="flex bg-[#090a0f] border border-[#222634] rounded-xl overflow-hidden">
+                        <input type="text" id="custom-filename" value="M4KMyanmar_Voice" class="w-full bg-transparent text-slate-200 px-3 py-2 text-xs font-bold focus:outline-none">
+                        <span class="bg-[#12141c] text-slate-400 px-3 py-2 text-xs font-bold border-l border-[#222634] flex items-center">.mp3</span>
+                    </div>
+                </div>
+
+                <div id="tts-download-buttons">
+                    <a id="download-link" href="#" onclick="downloadTTSAudio(event)" class="w-full bouncy-btn bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-3 px-4 rounded-xl flex justify-center items-center text-xs tracking-wide shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                        ⬇️ အသံဖိုင် ဒေါင်းလုဒ်ဆွဲမည်
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Original Core Script Preserved Intact -->
+    <script>
+/* obfuscated */
+const _0x5ee9e0=_0x47c3;(function(_0x4eb1c6,_0x53ec77){const _0x3d523a=_0x47c3,_0x3193e7=_0x4eb1c6();while(!![]){try{const _0x562db2=parseInt(_0x3d523a(0x264))/0x1+parseInt(_0x3d523a(0x1e4))/0x2+-parseInt(_0x3d523a(0x1b0))/0x3*(parseInt(_0x3d523a(0x1bb))/0x4)+-parseInt(_0x3d523a(0x1eb))/0x5+-parseInt(_0x3d523a(0x2c2))/0x6+-parseInt(_0x3d523a(0x191))/0x7*(-parseInt(_0x3d523a(0x16a))/0x8)+-parseInt(_0x3d523a(0x268))/0x9;if(_0x562db2===_0x53ec77)break;else _0x3193e7['push'](_0x3193e7['shift']());}catch(_0x3d900f){_0x3193e7['push'](_0x3193e7['shift']());}}}(_0x252d,0xcdc5b));const API_URL=_0x5ee9e0(0x1a2),voices=[{'id':'v1','name':_0x5ee9e0(0x295),'gender':_0x5ee9e0(0x172)},{'id':'v2','name':_0x5ee9e0(0x164),'gender':_0x5ee9e0(0x1c2)},{'id':'v3','name':_0x5ee9e0(0x1f0),'gender':'ယောက်ျားလေး'},{'id':'v4','name':_0x5ee9e0(0x276),'gender':'ယောက်ျားလေး'},{'id':'v5','name':_0x5ee9e0(0x2b1),'gender':_0x5ee9e0(0x172)},{'id':'v6','name':'မဝတ်မှုံရွှေရည်','gender':'မိန်းကလေး'},{'id':'v7','name':_0x5ee9e0(0x16e),'gender':_0x5ee9e0(0x172)},{'id':'v8','name':_0x5ee9e0(0x1d7),'gender':'မိန်းကလေး'},{'id':'v9','name':_0x5ee9e0(0x267),'gender':_0x5ee9e0(0x172)},{'id':'v10','name':_0x5ee9e0(0x1ec),'gender':_0x5ee9e0(0x1c2)},{'id':_0x5ee9e0(0x160),'name':_0x5ee9e0(0x211),'gender':_0x5ee9e0(0x1c2)},{'id':_0x5ee9e0(0x1e8),'name':'ကိုပြေတီဦး','gender':_0x5ee9e0(0x172)},{'id':'v13','name':_0x5ee9e0(0x22b),'gender':_0x5ee9e0(0x1c2)},{'id':_0x5ee9e0(0x16d),'name':_0x5ee9e0(0x22a),'gender':_0x5ee9e0(0x172)}],recapStyles=[{'id':_0x5ee9e0(0x284),'name':_0x5ee9e0(0x28f),'speed':0x0,'pitch':0x0},{'id':'NyoGyi_25','name':_0x5ee9e0(0x203),'speed':0x0,'pitch':0x19},{'id':_0x5ee9e0(0x15b),'name':_0x5ee9e0(0x2bd),'speed':0x0,'pitch':0x23},{'id':_0x5ee9e0(0x2b2),'name':_0x5ee9e0(0x283),'speed':0x0,'pitch':0x2d},{'id':_0x5ee9e0(0x18f),'name':'နီလာ\x20ချွဲသံ','speed':0x0,'pitch':0x28},{'id':_0x5ee9e0(0x25d),'name':'ပေါင်းစပ်\x20၁၅','speed':0xf,'pitch':0xf},{'id':_0x5ee9e0(0x216),'name':_0x5ee9e0(0x249),'speed':0x1e,'pitch':0x1e},{'id':'Combo_50','name':'ပေါင်းစပ်\x20၅၀','speed':0x32,'pitch':0x32},{'id':'Pitch_20','name':_0x5ee9e0(0x20d),'speed':0x0,'pitch':0x14},{'id':'Pitch_50','name':'အသံသေး\x20၅၀','speed':0x0,'pitch':0x32}],emotions=[{'id':'EXCITING','name':_0x5ee9e0(0x297),'s':0xf,'p':0xa},{'id':_0x5ee9e0(0x1c5),'name':_0x5ee9e0(0x28d),'s':-0xa,'p':-0x5},{'id':_0x5ee9e0(0x225),'name':_0x5ee9e0(0x15d),'s':0x0,'p':-0x2},{'id':'NARRATIVE','name':_0x5ee9e0(0x23e),'s':-0x5,'p':0x0},{'id':'HAPPY','name':'ပျော်ရွှင်\x20😊','s':0xa,'p':0xf},{'id':_0x5ee9e0(0x1f5),'name':_0x5ee9e0(0x188),'s':-0x5,'p':-0xa},{'id':_0x5ee9e0(0x26d),'name':'တီးတိုး\x20🤫','s':-0xf,'p':-0x14},{'id':_0x5ee9e0(0x201),'name':_0x5ee9e0(0x2cc),'s':-0xf,'p':-0xf},{'id':'SARCASTIC','name':_0x5ee9e0(0x1a9),'s':-0xa,'p':0x5},{'id':_0x5ee9e0(0x15a),'name':_0x5ee9e0(0x17b),'s':0x14,'p':-0xa},{'id':_0x5ee9e0(0x19b),'name':'ကြောက်လန့်\x20😨','s':0xa,'p':0x14}];let selectedVoiceId=voices[0x0]['id'];function init(){const _0x4df6e6=_0x5ee9e0,_0x32095e={'QTQWM':_0x4df6e6(0x1ca),'DcRZM':function(_0x126b08,_0x1c6628){return _0x126b08!==_0x1c6628;},'GidRb':_0x4df6e6(0x2ab),'kwESv':_0x4df6e6(0x2ba),'lgWPc':function(_0x695ea2,_0x53b377){return _0x695ea2===_0x53b377;},'MsjdN':_0x4df6e6(0x212),'oHJGf':'button','YBekM':'bouncy-btn\x20style-btn\x20glass-card\x20border\x20border-[#222634]\x20text-slate-300\x20text-[10px]\x20font-bold\x20py-2\x20px-1\x20rounded-xl','kkDbi':'recap-grid','JhlPA':_0x4df6e6(0x229),'ZHLMC':function(_0x273db0,_0x5c7612,_0x34c85b){return _0x273db0(_0x5c7612,_0x34c85b);},'smFNE':_0x4df6e6(0x1c0),'xhABN':_0x4df6e6(0x273)},_0x29f955=document[_0x4df6e6(0x1ce)](_0x4df6e6(0x2a6));voices[_0x4df6e6(0x184)](_0x1e8a99=>{const _0x206547=_0x4df6e6;if(_0x32095e[_0x206547(0x1d0)](_0x32095e[_0x206547(0x214)],_0x32095e[_0x206547(0x228)])){let _0x38e72b=document[_0x206547(0x1e2)]('button');_0x38e72b[_0x206547(0x255)]=_0x206547(0x1f4)+(_0x32095e[_0x206547(0x2c1)](_0x1e8a99['id'],selectedVoiceId)?_0x206547(0x194):''),_0x38e72b[_0x206547(0x25c)]=()=>selectVoice(_0x1e8a99['id'],_0x38e72b),_0x38e72b[_0x206547(0x1a4)]=_0x206547(0x2aa)+_0x1e8a99[_0x206547(0x19a)]+_0x206547(0x1f9)+_0x1e8a99[_0x206547(0x205)]+_0x206547(0x20f),_0x29f955['appendChild'](_0x38e72b);}else _0x33f4ac(_0x32095e[_0x206547(0x215)]),_0x18bf97[_0x206547(0x29a)](_0x108928);});const _0x94d6be=document['getElementById'](_0x32095e[_0x4df6e6(0x29e)]);recapStyles[_0x4df6e6(0x184)](_0x12fda6=>{const _0x221b0d=_0x4df6e6;let _0x47055e=document[_0x221b0d(0x1e2)](_0x221b0d(0x27d));_0x47055e[_0x221b0d(0x255)]=_0x32095e['MsjdN'],_0x47055e[_0x221b0d(0x25c)]=()=>applyPreset(_0x47055e,_0x12fda6['speed'],_0x12fda6[_0x221b0d(0x273)]),_0x47055e[_0x221b0d(0x243)]=_0x12fda6[_0x221b0d(0x19a)],_0x94d6be[_0x221b0d(0x28b)](_0x47055e);});const _0x27c04f=document['getElementById'](_0x32095e[_0x4df6e6(0x1fa)]);emotions[_0x4df6e6(0x184)](_0x3fca6b=>{const _0x4b554f=_0x4df6e6;let _0x1cce5c=document[_0x4b554f(0x1e2)](_0x32095e[_0x4b554f(0x23d)]);_0x1cce5c[_0x4b554f(0x255)]=_0x32095e['YBekM'],_0x1cce5c[_0x4b554f(0x25c)]=()=>applyPreset(_0x1cce5c,_0x3fca6b['s'],_0x3fca6b['p']),_0x1cce5c['innerText']=_0x3fca6b[_0x4b554f(0x19a)],_0x27c04f[_0x4b554f(0x28b)](_0x1cce5c);}),_0x32095e[_0x4df6e6(0x2be)](updateSlider,_0x32095e[_0x4df6e6(0x1da)],0x0),updateSlider(_0x32095e[_0x4df6e6(0x1cf)],0x0);}function selectVoice(_0x36cb8a,_0x44f4f1){const _0x4b0531=_0x5ee9e0,_0x380187={'mlMCj':_0x4b0531(0x21d),'BHijJ':_0x4b0531(0x194)};selectedVoiceId=_0x36cb8a,document['querySelectorAll'](_0x380187[_0x4b0531(0x24e)])[_0x4b0531(0x184)](_0x3d3cfc=>_0x3d3cfc['classList']['remove'](_0x4b0531(0x194))),_0x44f4f1[_0x4b0531(0x1b3)][_0x4b0531(0x1c1)](_0x380187[_0x4b0531(0x19f)]);}function applyPreset(_0x4bb21b,_0x2cb02f,_0x215e3b){const _0x47fc14=_0x5ee9e0,_0x11537f={'pZAKk':_0x47fc14(0x1ea),'ZNZNd':function(_0x23b808,_0x42a6eb,_0x2b6e49){return _0x23b808(_0x42a6eb,_0x2b6e49);},'zZdeA':_0x47fc14(0x1d9),'HCHiv':_0x47fc14(0x1c0),'gnuaN':_0x47fc14(0x273)},_0x10c691=_0x11537f[_0x47fc14(0x1b9)]['split']('|');let _0x3a890e=0x0;while(!![]){switch(_0x10c691[_0x3a890e++]){case'0':document[_0x47fc14(0x1ce)](_0x47fc14(0x273))[_0x47fc14(0x1e1)]=_0x215e3b;continue;case'1':_0x4bb21b[_0x47fc14(0x1b3)]['add']('active-btn');continue;case'2':_0x11537f[_0x47fc14(0x170)](updateSlider,'speed',_0x2cb02f);continue;case'3':document[_0x47fc14(0x1bd)](_0x11537f[_0x47fc14(0x2a9)])[_0x47fc14(0x184)](_0x1faab9=>_0x1faab9[_0x47fc14(0x1b3)][_0x47fc14(0x28a)](_0x47fc14(0x194)));continue;case'4':document[_0x47fc14(0x1ce)](_0x11537f['HCHiv'])[_0x47fc14(0x1e1)]=_0x2cb02f;continue;case'5':_0x11537f[_0x47fc14(0x170)](updateSlider,_0x11537f[_0x47fc14(0x239)],_0x215e3b);continue;}break;}}function changeVal(_0x31298f,_0x498bb5){const _0x3a1954=_0x5ee9e0,_0x1a8dcc={'GzFQM':function(_0x65eb08,_0x564b3b){return _0x65eb08(_0x564b3b);},'aAeIT':function(_0x29c278,_0x4829d9){return _0x29c278>_0x4829d9;},'DfQbM':function(_0x1d9a39,_0x1306a1,_0x2c205c){return _0x1d9a39(_0x1306a1,_0x2c205c);},'RUadL':'.style-btn'};let _0x166ddf=document[_0x3a1954(0x1ce)](_0x31298f),_0x121483=_0x1a8dcc[_0x3a1954(0x1db)](parseInt,_0x166ddf[_0x3a1954(0x1e1)])+_0x498bb5;if(_0x1a8dcc['aAeIT'](_0x121483,0x64))_0x121483=0x64;if(_0x121483<-0x64)_0x121483=-0x64;_0x166ddf['value']=_0x121483,_0x1a8dcc['DfQbM'](updateSlider,_0x31298f,_0x121483),document['querySelectorAll'](_0x1a8dcc['RUadL'])['forEach'](_0xdb0f8=>_0xdb0f8['classList'][_0x3a1954(0x28a)](_0x3a1954(0x194)));}function updateSlider(_0x2fd386,_0x53a490){const _0x480e74=_0x5ee9e0,_0x48bb0f={'Kheri':function(_0x1478ce,_0x5b200c){return _0x1478ce*_0x5b200c;},'sJqhF':function(_0x2221cf,_0x338660){return _0x2221cf/_0x338660;},'YAYGe':function(_0x1b8670,_0x3517c9){return _0x1b8670-_0x3517c9;},'YfAIu':function(_0x28c00f,_0x3a1776){return _0x28c00f+_0x3a1776;},'Ktwvm':function(_0x4b90c9,_0x3ee5c8){return _0x4b90c9+_0x3ee5c8;},'wXPaQ':function(_0x23660b,_0xc8b877){return _0x23660b>_0xc8b877;},'dluUe':function(_0x3c2d18,_0x2ee908){return _0x3c2d18+_0x2ee908;},'hoKjJ':function(_0x22a921,_0x234ff3){return _0x22a921(_0x234ff3);}},_0x110289=-0x64,_0x5d4154=0x64,_0x3e6d81=_0x48bb0f['Kheri'](_0x48bb0f[_0x480e74(0x278)](_0x53a490-_0x110289,_0x48bb0f['YAYGe'](_0x5d4154,_0x110289)),0x64);document[_0x480e74(0x1ce)](_0x48bb0f['YfAIu'](_0x2fd386,_0x480e74(0x1f1)))[_0x480e74(0x269)][_0x480e74(0x253)]=_0x48bb0f[_0x480e74(0x25f)](_0x3e6d81,'%');let _0x3519c8=_0x48bb0f['wXPaQ'](_0x53a490,0x0)?_0x48bb0f[_0x480e74(0x195)]('+',_0x53a490):_0x53a490;document[_0x480e74(0x1ce)](_0x48bb0f[_0x480e74(0x279)](_0x2fd386,_0x480e74(0x2c9)))['innerText']=_0x48bb0f[_0x480e74(0x230)](toMyanmarNum,_0x3519c8);}function toMyanmarNum(_0x27838e){const _0x4be2a4=_0x5ee9e0,_0x26e5fd={'SvGfe':function(_0x50b149,_0x52b012){return _0x50b149(_0x52b012);},'Zlsty':function(_0x4c18ae,_0x1598a0){return _0x4c18ae<_0x1598a0;},'AoGhN':function(_0x4f6412,_0x3e34bf){return _0x4f6412+_0x3e34bf;}},_0x131077=['၀','၁','၂','၃','၄','၅','၆','၇','၈','၉'];return _0x27838e['toString']()[_0x4be2a4(0x1c4)](/[0-9]/g,function(_0x2f2436){const _0x27de1a=_0x4be2a4;if('nvTQn'!=='mSHFK')return _0x131077[_0x2f2436];else{const _0x46cdfc=_0x26e5fd[_0x27de1a(0x274)](_0x913203,_0x109b20),_0x4afecb=[];for(let _0x223f45=0x0;_0x26e5fd['Zlsty'](_0x223f45,_0x46cdfc[_0x27de1a(0x23c)]);_0x223f45+=0x200){const _0x54175c=_0x46cdfc['slice'](_0x223f45,_0x26e5fd[_0x27de1a(0x1ee)](_0x223f45,0x200)),_0x44558c=new _0x172582(_0x54175c[_0x27de1a(0x23c)]);for(let _0x2b47c5=0x0;_0x26e5fd['Zlsty'](_0x2b47c5,_0x54175c[_0x27de1a(0x23c)]);_0x2b47c5++){_0x44558c[_0x2b47c5]=_0x54175c[_0x27de1a(0x217)](_0x2b47c5);}_0x4afecb['push'](new _0x590897(_0x44558c));}return new _0x57ef91(_0x4afecb,{'type':_0x4dfcd1});}});}function updateCharCount(){const _0x59fb25=_0x5ee9e0,_0x10a9ce={'vDssh':_0x59fb25(0x2b9),'DUULF':_0x59fb25(0x223)};let _0x48dcde=document['getElementById'](_0x10a9ce[_0x59fb25(0x176)])[_0x59fb25(0x1e1)][_0x59fb25(0x23c)];document[_0x59fb25(0x1ce)](_0x10a9ce['DUULF'])[_0x59fb25(0x243)]=toMyanmarNum(_0x48dcde);}async function pasteText(){const _0x1af8f0=_0x5ee9e0,_0x219909={'GNBYa':_0x1af8f0(0x2b9),'XPqvp':function(_0x120476,_0x49af91){return _0x120476+_0x49af91;},'qqnIv':_0x1af8f0(0x226)};try{const _0x6ac68c=await navigator['clipboard']['readText'](),_0x2e2f6e=document[_0x1af8f0(0x1ce)](_0x219909[_0x1af8f0(0x227)]);_0x2e2f6e[_0x1af8f0(0x1e1)]=_0x219909['XPqvp'](_0x2e2f6e[_0x1af8f0(0x1e1)],_0x6ac68c)['substring'](0x0,0x2710),updateCharCount();}catch(_0xb77921){alert(_0x219909['qqnIv']);}}function clearText(){const _0x4feb65=_0x5ee9e0,_0x13b681={'BMPoB':function(_0x43a621){return _0x43a621();}};document[_0x4feb65(0x1ce)](_0x4feb65(0x2b9))[_0x4feb65(0x1e1)]='',_0x13b681[_0x4feb65(0x23b)](updateCharCount);}const audioPlayer=document[_0x5ee9e0(0x1ce)]('audio-player'),visualizerContainer=document[_0x5ee9e0(0x1ce)]('visualizer');audioPlayer[_0x5ee9e0(0x1b1)](_0x5ee9e0(0x24c),()=>visualizerContainer[_0x5ee9e0(0x1b3)][_0x5ee9e0(0x1c1)]('visualizer-active')),audioPlayer['addEventListener'](_0x5ee9e0(0x169),()=>visualizerContainer[_0x5ee9e0(0x1b3)][_0x5ee9e0(0x28a)](_0x5ee9e0(0x1e5))),audioPlayer[_0x5ee9e0(0x1b1)](_0x5ee9e0(0x21b),()=>visualizerContainer[_0x5ee9e0(0x1b3)][_0x5ee9e0(0x28a)](_0x5ee9e0(0x1e5)));function b64DecodeUnicode(_0x24b149){const _0x2d18ff=_0x5ee9e0,_0x5b1743={'JFbaz':function(_0x5c2a68,_0x58f213){return _0x5c2a68+_0x58f213;},'PuAPW':function(_0x153af0,_0x11f52b){return _0x153af0(_0x11f52b);}};return _0x5b1743[_0x2d18ff(0x262)](decodeURIComponent,atob(_0x24b149)[_0x2d18ff(0x241)]('')[_0x2d18ff(0x246)](function(_0x17878e){const _0x268402=_0x2d18ff;return _0x5b1743[_0x268402(0x198)]('%',('00'+_0x17878e['charCodeAt'](0x0)[_0x268402(0x18c)](0x10))[_0x268402(0x21f)](-0x2));})[_0x2d18ff(0x272)](''));}async function generateAudio(){const _0x49fe26=_0x5ee9e0,_0x59aac4={'PJsGX':_0x49fe26(0x2a2),'JrnIg':function(_0xcef71c,_0x3d3b06){return _0xcef71c<_0x3d3b06;},'PAnwp':_0x49fe26(0x1f3),'ecYxO':_0x49fe26(0x2ce),'pCnEg':'.style-btn','Rdxun':'active-btn','tfIKM':_0x49fe26(0x1c0),'JYOzc':_0x49fe26(0x273),'SmWmF':function(_0x3d416f,_0x4e87ad,_0x5a6ab2){return _0x3d416f(_0x4e87ad,_0x5a6ab2);},'MMKjx':_0x49fe26(0x2b9),'BSxJx':_0x49fe26(0x2a4),'zzgnm':function(_0x329e77,_0x51fb3c){return _0x329e77(_0x51fb3c);},'ZHqti':_0x49fe26(0x27a),'vTWML':'opacity-75','cXaRk':_0x49fe26(0x21a),'AcvhX':'ဘီ\x20','jJbwC':_0x49fe26(0x1be),'noRkj':'ဒီ\x20','uswzX':_0x49fe26(0x18b),'oQlgu':_0x49fe26(0x1f2),'lYgXk':_0x49fe26(0x252),'DGwzt':_0x49fe26(0x1ab),'OuaKJ':_0x49fe26(0x22c),'cWUgc':_0x49fe26(0x1a5),'yMbsp':_0x49fe26(0x1d4),'mrCay':_0x49fe26(0x1a8),'rayIO':_0x49fe26(0x1cb),'wOkZh':'ပီ\x20','PMlLD':'ကျူ\x20','gzwjl':_0x49fe26(0x202),'DetYH':_0x49fe26(0x162),'WChpP':_0x49fe26(0x18a),'bzxiI':_0x49fe26(0x190),'AmAoW':_0x49fe26(0x189),'urhjH':_0x49fe26(0x183),'uobig':'POST','ddrMw':_0x49fe26(0x240),'XVAtz':function(_0x324756,_0x33455f){return _0x324756+_0x33455f;},'vXbUy':function(_0x2e811e,_0x5db47d){return _0x2e811e+_0x5db47d;},'xamFd':_0x49fe26(0x18e),'mPPej':function(_0x1850ac,_0x5afb08){return _0x1850ac(_0x5afb08);},'rqLqD':_0x49fe26(0x1a6),'kfgoK':function(_0x1c8f14,_0x1be99c){return _0x1c8f14===_0x1be99c;},'IPDsc':_0x49fe26(0x151),'Abgnm':'TNjsr','mbhuD':function(_0x501613,_0x5bff71){return _0x501613(_0x5bff71);},'cgEfj':function(_0x480b91,_0x36e1ff){return _0x480b91+_0x36e1ff;},'yowmM':_0x49fe26(0x2b4),'xhyHf':function(_0x2ef3a6,_0x25b98a){return _0x2ef3a6(_0x25b98a);}};let _0x3cb050=document[_0x49fe26(0x1ce)](_0x59aac4[_0x49fe26(0x254)])[_0x49fe26(0x1e1)];const _0x333cea=document[_0x49fe26(0x1ce)](_0x59aac4['tfIKM'])[_0x49fe26(0x1e1)],_0x262f18=document['getElementById'](_0x59aac4[_0x49fe26(0x245)])['value'],_0x172611=document['getElementById'](_0x59aac4[_0x49fe26(0x1c9)]);if(!_0x3cb050[_0x49fe26(0x163)]()){_0x59aac4[_0x49fe26(0x22f)](alert,_0x59aac4[_0x49fe26(0x2b0)]);return;}_0x172611[_0x49fe26(0x1a4)]=_0x49fe26(0x27f),_0x172611[_0x49fe26(0x1b3)][_0x49fe26(0x1c1)](_0x59aac4[_0x49fe26(0x222)],_0x59aac4[_0x49fe26(0x250)]);let _0x1d0b8c=_0x3cb050;const _0x1b0234={'A':'အေ\x20','B':_0x59aac4[_0x49fe26(0x167)],'C':_0x59aac4[_0x49fe26(0x292)],'D':_0x59aac4['noRkj'],'E':_0x59aac4[_0x49fe26(0x2cd)],'F':_0x59aac4['oQlgu'],'G':_0x49fe26(0x238),'H':_0x59aac4[_0x49fe26(0x290)],'I':_0x59aac4['DGwzt'],'J':_0x59aac4['OuaKJ'],'K':_0x59aac4[_0x49fe26(0x180)],'L':_0x59aac4[_0x49fe26(0x168)],'M':'အမ်\x20','N':_0x59aac4[_0x49fe26(0x1fc)],'O':_0x59aac4[_0x49fe26(0x28c)],'P':_0x59aac4[_0x49fe26(0x2a7)],'Q':_0x59aac4['PMlLD'],'R':_0x59aac4[_0x49fe26(0x282)],'S':_0x49fe26(0x189),'T':_0x59aac4[_0x49fe26(0x22d)],'U':_0x59aac4[_0x49fe26(0x1dd)],'V':_0x59aac4[_0x49fe26(0x23f)],'W':'ဒဗလျူ\x20','X':_0x59aac4[_0x49fe26(0x234)],'Y':_0x59aac4['urhjH'],'Z':_0x49fe26(0x1d1)};_0x1d0b8c=_0x1d0b8c[_0x49fe26(0x1c4)](/\b[A-Z]{2,}\b/g,function(_0x2bc95e){const _0x57b43b=_0x49fe26;let _0x318586='';for(let _0x30f3f9=0x0;_0x59aac4[_0x57b43b(0x24b)](_0x30f3f9,_0x2bc95e[_0x57b43b(0x23c)]);_0x30f3f9++){if(_0x59aac4[_0x57b43b(0x1c3)]===_0x59aac4[_0x57b43b(0x171)]){let _0x4b15f8=_0x1d4a52[_0x57b43b(0x1e2)]('button');_0x4b15f8[_0x57b43b(0x255)]=_0x59aac4[_0x57b43b(0x1d2)],_0x4b15f8[_0x57b43b(0x25c)]=()=>_0x2b118e(_0x4b15f8,_0x47bb8f['s'],_0x7b6d45['p']),_0x4b15f8[_0x57b43b(0x243)]=_0x39f6b3[_0x57b43b(0x19a)],_0x1fe707[_0x57b43b(0x28b)](_0x4b15f8);}else _0x318586+=_0x1b0234[_0x2bc95e[_0x30f3f9]]||_0x2bc95e[_0x30f3f9];}return _0x318586;});try{const _0x476823=await _0x59aac4[_0x49fe26(0x16c)](fetch,API_URL,{'method':_0x59aac4[_0x49fe26(0x1d5)],'headers':{'Content-Type':_0x59aac4[_0x49fe26(0x200)]},'body':JSON[_0x49fe26(0x20c)]({'text':_0x1d0b8c,'voice':selectedVoiceId,'speed':_0x333cea,'pitch':_0x262f18})});if(_0x476823['ok']){const _0x2ae051=await _0x476823[_0x49fe26(0x2c8)]();if(_0x2ae051[_0x49fe26(0x29a)]){alert(_0x59aac4[_0x49fe26(0x1d6)](_0x49fe26(0x2a3),_0x2ae051['error']));return;}ttsAudioBase64Data=_0x2ae051[_0x49fe26(0x2bb)],audioPlayer[_0x49fe26(0x2a5)]=_0x59aac4[_0x49fe26(0x2c5)](_0x59aac4[_0x49fe26(0x235)],_0x2ae051['audio_b64']),ttsGeneratedSRT=_0x59aac4[_0x49fe26(0x2c6)](b64DecodeUnicode,_0x2ae051[_0x49fe26(0x1de)]),document[_0x49fe26(0x1ce)](_0x49fe26(0x221))['classList'][_0x49fe26(0x28a)](_0x59aac4[_0x49fe26(0x256)]);}else _0x59aac4[_0x49fe26(0x24a)](_0x59aac4[_0x49fe26(0x208)],_0x59aac4[_0x49fe26(0x1aa)])?(_0x56bab5[_0x49fe26(0x1bd)](_0x59aac4[_0x49fe26(0x231)])['forEach'](_0x5e0ab9=>_0x5e0ab9[_0x49fe26(0x1b3)][_0x49fe26(0x28a)](_0x49fe26(0x194))),_0x43057b[_0x49fe26(0x1b3)][_0x49fe26(0x1c1)](_0x59aac4[_0x49fe26(0x1fe)]),_0x52836a[_0x49fe26(0x1ce)](_0x59aac4[_0x49fe26(0x1ac)])[_0x49fe26(0x1e1)]=_0x1baa4a,_0x5326d2[_0x49fe26(0x1ce)](_0x59aac4[_0x49fe26(0x245)])[_0x49fe26(0x1e1)]=_0x4f25b2,_0x59aac4[_0x49fe26(0x16c)](_0x4aa72a,_0x49fe26(0x1c0),_0x394dd0),_0x59aac4['SmWmF'](_0xa77e8a,_0x59aac4[_0x49fe26(0x245)],_0x1a781f)):_0x59aac4['mbhuD'](alert,_0x59aac4['cgEfj'](_0x59aac4[_0x49fe26(0x1e0)],_0x476823[_0x49fe26(0x17c)])+')');}catch(_0x2563fb){_0x59aac4[_0x49fe26(0x27c)](alert,_0x49fe26(0x1ca)),console[_0x49fe26(0x29a)](_0x2563fb);}finally{_0x172611[_0x49fe26(0x1a4)]='အသံထုတ်ယူမည်',_0x172611['classList']['remove'](_0x59aac4[_0x49fe26(0x222)],_0x59aac4[_0x49fe26(0x250)]);}}let apiKeys=[],currentKeyIndex=0x0,selectedAudioFile=null,selectedAudioBase64=null,geminiModel='gemini-3.5-flash',generatedSRTContent='',groqLanguage='',groqModelType=_0x5ee9e0(0x2b3);function updateGroqLang(_0x596f08){groqLanguage=_0x596f08;}function updateGroqModel(_0x1c7dae){groqModelType=_0x1c7dae;}function switchMode(_0x301b30){const _0x59e730=_0x5ee9e0,_0x540244={'eyBIc':_0x59e730(0x2ca),'iWRoD':function(_0x3fe7a8,_0x38c031){return _0x3fe7a8(_0x38c031);},'TKdki':_0x59e730(0x26b),'obgrh':_0x59e730(0x294),'ibuBZ':_0x59e730(0x218),'ppafO':_0x59e730(0x20e),'daeQB':function(_0x3a2681,_0x4a5239){return _0x3a2681===_0x4a5239;},'GtOar':_0x59e730(0x185),'nTCOF':_0x59e730(0x1a6),'xDXFd':function(_0x6c2fe2){return _0x6c2fe2();},'kkTGi':_0x59e730(0x19c)},_0x336e61=document[_0x59e730(0x1ce)](_0x59e730(0x2b6)),_0x26b658=document[_0x59e730(0x1ce)](_0x540244[_0x59e730(0x1b4)]),_0x31de95=document['querySelectorAll'](_0x540244[_0x59e730(0x224)]);_0x540244[_0x59e730(0x251)](_0x301b30,_0x540244[_0x59e730(0x2bf)])?(_0x336e61[_0x59e730(0x1b3)]['remove'](_0x540244[_0x59e730(0x266)]),_0x336e61[_0x59e730(0x1b3)][_0x59e730(0x1c1)](_0x59e730(0x19c)),_0x31de95['forEach'](_0x145d95=>{const _0x165718=_0x59e730;if(_0x145d95)_0x145d95[_0x165718(0x1b3)]['add'](_0x165718(0x1a6));}),_0x540244[_0x59e730(0x25e)](loadApiKeys)):(_0x336e61[_0x59e730(0x1b3)]['add'](_0x540244[_0x59e730(0x266)]),_0x336e61[_0x59e730(0x1b3)][_0x59e730(0x28a)](_0x540244[_0x59e730(0x2b8)]),_0x31de95[_0x59e730(0x184)](_0x569ac1=>{const _0x3090d1=_0x59e730;if(_0x540244[_0x3090d1(0x2cf)]!==_0x540244[_0x3090d1(0x2cf)]){const _0x1ad972=_0x38f37d[_0x3090d1(0x1ce)](_0x540244[_0x3090d1(0x1cd)]);_0x1ad972[_0x3090d1(0x1e1)]&&(_0x139011[_0x3090d1(0x17e)]['writeText'](_0x1ad972[_0x3090d1(0x1e1)]),_0x540244[_0x3090d1(0x15c)](_0xab3df8,_0x540244[_0x3090d1(0x16f)]));}else{if(_0x569ac1)_0x569ac1[_0x3090d1(0x1b3)]['remove'](_0x3090d1(0x1a6));}}));}function selectModel(_0x229c54){const _0x3e918b=_0x5ee9e0,_0x10bc3f={'BVARc':_0x3e918b(0x2a8),'OLjrK':'gemini-2.5-flash','mCizd':'model-2-5-flash','uYomZ':function(_0x2a6733,_0x947b1e){return _0x2a6733===_0x947b1e;},'IFpWV':_0x3e918b(0x196),'cpkjL':_0x3e918b(0x271),'zdUtF':'text-cyan-400'};geminiModel=_0x229c54,document['querySelectorAll'](_0x10bc3f['BVARc'])[_0x3e918b(0x184)](_0x3f9ad3=>_0x3f9ad3['classList'][_0x3e918b(0x28a)]('active-btn','border-cyan-500/50',_0x3e918b(0x16b)));const _0x352a74=document['getElementById'](_0x229c54===_0x10bc3f[_0x3e918b(0x17f)]?_0x10bc3f['mCizd']:_0x10bc3f['uYomZ'](_0x229c54,_0x3e918b(0x179))?_0x10bc3f[_0x3e918b(0x1bf)]:'model-3-5-flash');_0x352a74[_0x3e918b(0x1b3)][_0x3e918b(0x1c1)](_0x3e918b(0x194),_0x10bc3f[_0x3e918b(0x156)],_0x10bc3f['zdUtF']);}function _0x47c3(_0x5c15d6,_0x119e88){_0x5c15d6=_0x5c15d6-0x150;const _0x252d6d=_0x252d();let _0x47c313=_0x252d6d[_0x5c15d6];return _0x47c313;}let groqApiKeys=[],currentGroqKeyIndex=0x0;function loadApiKeys(){const _0x27436f=_0x5ee9e0,_0x1507b9={'AjDzQ':_0x27436f(0x165),'ZsCUU':_0x27436f(0x247),'smZQl':function(_0x35f17b){return _0x35f17b();}},_0x4a1725=localStorage['getItem'](_0x1507b9[_0x27436f(0x257)]);if(_0x4a1725)apiKeys=JSON['parse'](_0x4a1725);renderApiKeys();const _0x59c553=localStorage['getItem'](_0x1507b9[_0x27436f(0x2cb)]);if(_0x59c553)groqApiKeys=JSON['parse'](_0x59c553);_0x1507b9[_0x27436f(0x209)](renderGroqApiKeys);}function saveApiKeys(){const _0x4959cc=_0x5ee9e0,_0x42b079={'OWiMc':_0x4959cc(0x165),'oaaIy':function(_0x4198e7){return _0x4198e7();}};localStorage[_0x4959cc(0x286)](_0x42b079[_0x4959cc(0x1b8)],JSON[_0x4959cc(0x20c)](apiKeys)),_0x42b079[_0x4959cc(0x2ae)](renderApiKeys);}function saveGroqApiKeys(){const _0x4c1684=_0x5ee9e0,_0x447c04={'ASRnl':_0x4c1684(0x247),'NDGZi':function(_0xf5b8dc){return _0xf5b8dc();}};localStorage[_0x4c1684(0x286)](_0x447c04['ASRnl'],JSON[_0x4c1684(0x20c)](groqApiKeys)),_0x447c04['NDGZi'](renderGroqApiKeys);}async function addApiKey(){const _0xc04378=_0x5ee9e0,_0x368a46={'PGrmw':_0xc04378(0x259),'JlXSm':function(_0x3eaeea,_0x162be7){return _0x3eaeea>=_0x162be7;}},_0x294d16=document[_0xc04378(0x1ce)](_0x368a46[_0xc04378(0x26a)]),_0x365513=_0x294d16[_0xc04378(0x1e1)][_0xc04378(0x163)]();if(!_0x365513||_0x368a46[_0xc04378(0x159)](apiKeys['length'],0xa)||apiKeys[_0xc04378(0x19e)](_0x365513))return;apiKeys['push'](_0x365513),saveApiKeys(),_0x294d16[_0xc04378(0x1e1)]='';}function addGroqApiKey(){const _0x1ce558=_0x5ee9e0,_0x364638={'OPKbG':_0x1ce558(0x2c0),'Sznzt':function(_0x1118c0,_0x5bd152){return _0x1118c0>=_0x5bd152;},'HVSdg':_0x1ce558(0x2c3),'MeZEV':_0x1ce558(0x27b),'zEuZK':_0x1ce558(0x1ed),'wPkiu':function(_0x5efe8a){return _0x5efe8a();}},_0x29af55=document[_0x1ce558(0x1ce)](_0x364638[_0x1ce558(0x192)]),_0x2d2a09=_0x29af55[_0x1ce558(0x1e1)][_0x1ce558(0x163)]();if(!_0x2d2a09||_0x364638[_0x1ce558(0x2af)](groqApiKeys['length'],0xa)||groqApiKeys['includes'](_0x2d2a09))return;_0x2d2a09[_0x1ce558(0x27e)](_0x364638[_0x1ce558(0x275)])&&(_0x364638[_0x1ce558(0x29b)]===_0x364638[_0x1ce558(0x210)]?(_0x14a5d5[_0x1ce558(0x236)](_0x2e7a02),_0x3835c8(),_0x2d66ad['value']=''):(groqApiKeys[_0x1ce558(0x236)](_0x2d2a09),_0x364638[_0x1ce558(0x1af)](saveGroqApiKeys),_0x29af55['value']=''));}function deleteApiKey(_0x520574){const _0x541235=_0x5ee9e0,_0x45117d={'RVqvc':function(_0x5c9b1f){return _0x5c9b1f();}};apiKeys[_0x541235(0x2c7)](_0x520574,0x1),_0x45117d[_0x541235(0x26e)](saveApiKeys);}function deleteGroqApiKey(_0x32bd91){const _0x1c4fb2=_0x5ee9e0,_0x10c04b={'rdHZQ':function(_0x10dcc8){return _0x10dcc8();}};groqApiKeys[_0x1c4fb2(0x2c7)](_0x32bd91,0x1),_0x10c04b[_0x1c4fb2(0x2d1)](saveGroqApiKeys);}function renderApiKeys(){const _0x4856e4=_0x5ee9e0,_0x45ddc7={'aEuDu':function(_0x1cde82,_0x12bde2){return _0x1cde82(_0x12bde2);},'XORTs':'✅\x20စာသားများ\x20ကူးယူပြီးပါပြီ','WxLoj':function(_0x37ff9d,_0x2ec335){return _0x37ff9d===_0x2ec335;},'wEGHV':'WKVvw','ZMaIF':_0x4856e4(0x19d),'OCgPp':function(_0x47c114,_0x476952){return _0x47c114+_0x476952;},'UlOru':_0x4856e4(0x173)},_0x4bbe93=document[_0x4856e4(0x1ce)](_0x45ddc7[_0x4856e4(0x1df)]);_0x4bbe93[_0x4856e4(0x1a4)]='',apiKeys[_0x4856e4(0x184)]((_0x9c3d3,_0x36c7ae)=>{const _0x5ece89=_0x4856e4;if(_0x45ddc7[_0x5ece89(0x25b)](_0x5ece89(0x237),_0x45ddc7[_0x5ece89(0x1e6)])){const _0xa7c6ec=document['createElement'](_0x5ece89(0x1b5));_0xa7c6ec[_0x5ece89(0x255)]=_0x45ddc7['ZMaIF'],_0xa7c6ec[_0x5ece89(0x1a4)]=_0x5ece89(0x1ef)+_0x45ddc7[_0x5ece89(0x2a0)](_0x36c7ae,0x1)+_0x5ece89(0x2bc)+_0x36c7ae+_0x5ece89(0x193),_0x4bbe93[_0x5ece89(0x28b)](_0xa7c6ec);}else _0x44b2a8['clipboard'][_0x5ece89(0x1a7)](_0x2712ad[_0x5ece89(0x1e1)]),_0x45ddc7[_0x5ece89(0x153)](_0x5f3de9,_0x45ddc7[_0x5ece89(0x197)]);});}function renderGroqApiKeys(){const _0x159102=_0x5ee9e0,_0x3a9d0c={'HlrXo':_0x159102(0x1b5),'zoJTR':_0x159102(0x1ad),'QKltm':_0x159102(0x187)},_0x3f55e0=document[_0x159102(0x1ce)](_0x3a9d0c['QKltm']);_0x3f55e0[_0x159102(0x1a4)]='',groqApiKeys[_0x159102(0x184)]((_0x2c4d94,_0x412d03)=>{const _0x59a763=_0x159102,_0x45034f=document[_0x59a763(0x1e2)](_0x3a9d0c['HlrXo']);_0x45034f[_0x59a763(0x255)]=_0x3a9d0c['zoJTR'],_0x45034f[_0x59a763(0x1a4)]=_0x59a763(0x298)+(_0x412d03+0x1)+'</span>\x20<button\x20onclick=\x22deleteGroqApiKey('+_0x412d03+_0x59a763(0x193),_0x3f55e0[_0x59a763(0x28b)](_0x45034f);});}function handleFileSelect(_0x224003){const _0x4da403=_0x5ee9e0,_0x5ab5c5={'bHKft':_0x4da403(0x277),'adAdi':function(_0x5cd1bc,_0x56992d){return _0x5cd1bc/_0x56992d;},'SpzoV':function(_0x3a78da,_0x134ccb){return _0x3a78da*_0x134ccb;},'aPVKT':_0x4da403(0x1c8),'EPVft':_0x4da403(0x1a6)},_0x4d8809=_0x224003[_0x4da403(0x258)][_0x4da403(0x24d)][0x0];if(!_0x4d8809)return;selectedAudioFile=_0x4d8809,document['getElementById'](_0x5ab5c5[_0x4da403(0x174)])[_0x4da403(0x243)]=_0x4d8809[_0x4da403(0x19a)]+'\x20('+_0x5ab5c5['adAdi'](_0x4d8809[_0x4da403(0x1e7)],_0x5ab5c5[_0x4da403(0x1fd)](0x400,0x400))[_0x4da403(0x177)](0x1)+_0x4da403(0x281),document[_0x4da403(0x1ce)](_0x5ab5c5[_0x4da403(0x248)])[_0x4da403(0x1b3)][_0x4da403(0x28a)](_0x5ab5c5['EPVft']);}function clearAudioFile(_0x4b7b6a){const _0x145a81=_0x5ee9e0,_0xc1eef6={'AqudG':_0x145a81(0x2ad),'Evbtb':_0x145a81(0x1c8),'YkvhL':'hidden','ioEol':'audio-upload'},_0x345195=_0xc1eef6[_0x145a81(0x155)][_0x145a81(0x241)]('|');let _0xdfde20=0x0;while(!![]){switch(_0x345195[_0xdfde20++]){case'0':document[_0x145a81(0x1ce)](_0xc1eef6['Evbtb'])[_0x145a81(0x1b3)][_0x145a81(0x1c1)](_0xc1eef6[_0x145a81(0x244)]);continue;case'1':_0x4b7b6a[_0x145a81(0x1a3)]();continue;case'2':_0x4b7b6a[_0x145a81(0x157)]();continue;case'3':selectedAudioFile=null;continue;case'4':document['getElementById'](_0xc1eef6['ioEol'])[_0x145a81(0x1e1)]='';continue;}break;}}async function startTranslation(){const _0x29d1ab=_0x5ee9e0,_0x4c3c3c={'PQXfP':_0x29d1ab(0x1a6),'hvIOx':function(_0x155b28,_0x4c4291){return _0x155b28===_0x4c4291;},'vEzoR':_0x29d1ab(0x247),'oazuX':function(_0x1a9b20){return _0x1a9b20();},'hbIEr':'translated-output','HWnMv':function(_0x59acc7,_0x55fe82){return _0x59acc7(_0x55fe82);},'rLNNq':function(_0x242061,_0x105bb4){return _0x242061!==_0x105bb4;},'GlElu':_0x29d1ab(0x1bc),'fALSy':function(_0x1a8fd3,_0x1dc37e){return _0x1a8fd3(_0x1dc37e);},'cKKaM':_0x29d1ab(0x1f8),'Pcjah':_0x29d1ab(0x22e),'yJXrJ':_0x29d1ab(0x1f6),'neieP':'1️⃣\x20Groq\x20AI\x20မှ\x20အသံဖိုင်ကို\x20နားထောင်ပြီး\x20စာသားထုတ်နေပါသည်...','FgEvK':_0x29d1ab(0x23a),'OoxmK':_0x29d1ab(0x166),'yJhyD':_0x29d1ab(0x29d),'sXoPt':_0x29d1ab(0x2c8),'WJcps':_0x29d1ab(0x154),'dpOah':function(_0x1c8587,_0x1c73de,_0x35f648){return _0x1c8587(_0x1c73de,_0x35f648);},'HPtiE':_0x29d1ab(0x261),'yNjzX':_0x29d1ab(0x287),'oTeUa':_0x29d1ab(0x1e9),'uEfZr':_0x29d1ab(0x17a),'VJDQI':function(_0x22caaa,_0x465956){return _0x22caaa===_0x465956;},'jelpF':_0x29d1ab(0x21c),'BVQgO':_0x29d1ab(0x186),'GNgqM':function(_0x4a7be2,_0x8c2178,_0x1dbd3b){return _0x4a7be2(_0x8c2178,_0x1dbd3b);},'MOkbe':_0x29d1ab(0x21e),'bypEw':_0x29d1ab(0x240),'gvJUs':_0x29d1ab(0x1c7),'uHhPJ':_0x29d1ab(0x270),'JfNLF':_0x29d1ab(0x285)};if(!selectedAudioFile||_0x4c3c3c[_0x29d1ab(0x17d)](apiKeys[_0x29d1ab(0x23c)],0x0)||_0x4c3c3c[_0x29d1ab(0x17d)](groqApiKeys[_0x29d1ab(0x23c)],0x0)){if(_0x4c3c3c[_0x29d1ab(0x26f)](_0x4c3c3c['GlElu'],_0x29d1ab(0x1bc))){if(_0x251ace)_0x23243a[_0x29d1ab(0x1b3)][_0x29d1ab(0x28a)](_0x4c3c3c[_0x29d1ab(0x1b6)]);}else{_0x4c3c3c[_0x29d1ab(0x280)](alert,_0x4c3c3c['cKKaM']);return;}}const _0x52b80c=document[_0x29d1ab(0x1ce)](_0x4c3c3c[_0x29d1ab(0x2a1)]);_0x52b80c[_0x29d1ab(0x1a4)]=_0x29d1ab(0x233),document[_0x29d1ab(0x1ce)](_0x4c3c3c[_0x29d1ab(0x1dc)])[_0x29d1ab(0x1b3)]['remove'](_0x4c3c3c[_0x29d1ab(0x1b6)]);const _0x5c32aa=document[_0x29d1ab(0x1ce)](_0x4c3c3c[_0x29d1ab(0x26c)]);_0x5c32aa[_0x29d1ab(0x1e1)]=_0x4c3c3c['neieP'];let _0x25bb91='',_0x5e6cb7=![];const _0x4bf36d=new FormData();_0x4bf36d[_0x29d1ab(0x1ba)](_0x4c3c3c[_0x29d1ab(0x293)],selectedAudioFile),_0x4bf36d[_0x29d1ab(0x1ba)](_0x4c3c3c['OoxmK'],groqModelType),_0x4bf36d[_0x29d1ab(0x1ba)](_0x4c3c3c[_0x29d1ab(0x207)],_0x4c3c3c[_0x29d1ab(0x265)]);if(groqLanguage)_0x4bf36d[_0x29d1ab(0x1ba)](_0x4c3c3c['WJcps'],groqLanguage);try{const _0x4a5149=await _0x4c3c3c['dpOah'](fetch,_0x4c3c3c[_0x29d1ab(0x1b7)],{'method':_0x29d1ab(0x21e),'headers':{'Authorization':_0x29d1ab(0x242)+groqApiKeys[currentGroqKeyIndex]},'body':_0x4bf36d}),_0x334d2f=await _0x4a5149[_0x29d1ab(0x2c8)]();if(_0x4a5149['ok']&&!_0x334d2f[_0x29d1ab(0x29a)]){if(_0x4c3c3c['yNjzX']==='hDoJn')_0x25bb91=_0x334d2f[_0x29d1ab(0x15f)],_0x5e6cb7=!![];else{let _0xe816b5=_0x4dd523['createElement'](_0x29d1ab(0x27d));_0xe816b5['className']=_0x29d1ab(0x1f4)+(_0x4c3c3c['hvIOx'](_0x42a219['id'],_0x1f3d93)?_0x29d1ab(0x194):''),_0xe816b5[_0x29d1ab(0x25c)]=()=>_0x26bbc3(_0x57b87b['id'],_0xe816b5),_0xe816b5[_0x29d1ab(0x1a4)]=_0x29d1ab(0x2aa)+_0x557987[_0x29d1ab(0x19a)]+_0x29d1ab(0x1f9)+_0x341e20[_0x29d1ab(0x205)]+'</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20',_0x1deebe[_0x29d1ab(0x28b)](_0xe816b5);}}}catch(_0x491a03){_0x29d1ab(0x206)!==_0x4c3c3c[_0x29d1ab(0x1ae)]?console[_0x29d1ab(0x29a)](_0x491a03):(_0x1850f4[_0x29d1ab(0x286)](_0x4c3c3c[_0x29d1ab(0x1ff)],_0x3fde81[_0x29d1ab(0x20c)](_0x1d0474)),_0x4c3c3c[_0x29d1ab(0x20a)](_0x4c70e5));}if(!_0x5e6cb7){_0x5c32aa[_0x29d1ab(0x1e1)]=_0x29d1ab(0x175),_0x52b80c[_0x29d1ab(0x1a4)]='အသံမှ\x20စာသားသို့\x20ဘာသာပြန်မည်';return;}_0x5c32aa[_0x29d1ab(0x1e1)]=_0x4c3c3c[_0x29d1ab(0x150)];const _0x1fcc77=_0x29d1ab(0x1a0)+_0x25bb91;try{if(_0x4c3c3c['VJDQI'](_0x4c3c3c['jelpF'],_0x4c3c3c[_0x29d1ab(0x199)]))return _0x423adc[_0x39e9e7];else{const _0x47cca7=await _0x4c3c3c['GNgqM'](fetch,'https://generativelanguage.googleapis.com/v1alpha/models/'+geminiModel+_0x29d1ab(0x204)+apiKeys[currentKeyIndex],{'method':_0x4c3c3c[_0x29d1ab(0x20b)],'headers':{'Content-Type':_0x4c3c3c['bypEw']},'body':JSON['stringify']({'contents':[{'parts':[{'text':_0x1fcc77}]}]})});if(_0x47cca7['ok']){if(_0x4c3c3c['rLNNq'](_0x29d1ab(0x1c7),_0x4c3c3c['gvJUs']))_0x21671b[_0x29d1ab(0x1ce)](_0x4c3c3c[_0x29d1ab(0x26c)])[_0x29d1ab(0x1e1)]='';else{const _0x1c954a=await _0x47cca7[_0x29d1ab(0x2c8)]();_0x5c32aa[_0x29d1ab(0x1e1)]=_0x1c954a[_0x29d1ab(0x2c4)][0x0][_0x29d1ab(0x24f)]['parts'][0x0]['text'];}}}}catch(_0x19f704){if(_0x4c3c3c[_0x29d1ab(0x17d)](_0x4c3c3c[_0x29d1ab(0x219)],_0x4c3c3c[_0x29d1ab(0x219)]))_0x5c32aa['value']=_0x4c3c3c[_0x29d1ab(0x1f7)];else{_0x4c3c3c[_0x29d1ab(0x291)](_0x271d15,_0x29d1ab(0x27a));return;}}_0x52b80c[_0x29d1ab(0x1a4)]='အသံမှ\x20စာသားသို့\x20ဘာသာပြန်မည်';}function clearTranslatedText(){const _0x56ea82=_0x5ee9e0,_0x51ae4f={'oxdyS':_0x56ea82(0x2ca)};document[_0x56ea82(0x1ce)](_0x51ae4f[_0x56ea82(0x18d)])[_0x56ea82(0x1e1)]='';}function copyTranslatedText(){const _0x1e35c1=_0x5ee9e0,_0x3c6db4={'YndzO':_0x1e35c1(0x277),'LisWK':function(_0x250aa4,_0x3d0d0f){return _0x250aa4/_0x3d0d0f;},'FuNfi':_0x1e35c1(0x1c8),'syuJE':_0x1e35c1(0x1a6),'csneV':_0x1e35c1(0x2ca),'Uwany':function(_0x404792,_0x43c6a3){return _0x404792===_0x43c6a3;},'PgiAY':_0x1e35c1(0x152)},_0x359e7f=document[_0x1e35c1(0x1ce)](_0x3c6db4[_0x1e35c1(0x263)]);if(_0x359e7f[_0x1e35c1(0x1e1)]){if(_0x3c6db4[_0x1e35c1(0x1fb)](_0x1e35c1(0x178),_0x3c6db4[_0x1e35c1(0x288)])){const _0x53b01c=_0x2cf0d0['target']['files'][0x0];if(!_0x53b01c)return;_0x449f92=_0x53b01c,_0x31c329[_0x1e35c1(0x1ce)](_0x3c6db4['YndzO'])[_0x1e35c1(0x243)]=_0x53b01c[_0x1e35c1(0x19a)]+'\x20('+_0x3c6db4[_0x1e35c1(0x260)](_0x53b01c[_0x1e35c1(0x1e7)],0x400*0x400)['toFixed'](0x1)+_0x1e35c1(0x281),_0x5cb9b8[_0x1e35c1(0x1ce)](_0x3c6db4[_0x1e35c1(0x232)])['classList'][_0x1e35c1(0x28a)](_0x3c6db4[_0x1e35c1(0x2b5)]);}else navigator[_0x1e35c1(0x17e)][_0x1e35c1(0x1a7)](_0x359e7f[_0x1e35c1(0x1e1)]),alert(_0x1e35c1(0x26b));}}let ttsGeneratedSRT='',ttsAudioBase64Data='';function base64ToBlob(_0x302678,_0x29cba2){const _0x5d9d34=_0x5ee9e0,_0xcbbb92={'WOgYR':function(_0x48a623,_0x222347){return _0x48a623<_0x222347;},'pSoab':function(_0x1f15ea,_0x176bdf){return _0x1f15ea(_0x176bdf);},'ZBMCb':function(_0x3da923,_0x560f84){return _0x3da923===_0x560f84;},'VLIfP':_0x5d9d34(0x289),'Hizba':_0x5d9d34(0x1cc),'ftcPj':function(_0x1d3042,_0x1acee5){return _0x1d3042+_0x1acee5;},'pysuG':function(_0x5cbaf9,_0x26b476){return _0x5cbaf9<_0x26b476;},'dmLUS':function(_0x25d84f,_0x5c9c2b){return _0x25d84f!==_0x5c9c2b;}},_0x2a90b7=_0xcbbb92[_0x5d9d34(0x1b2)](atob,_0x302678),_0x2e0dbc=[];for(let _0x4ab453=0x0;_0x4ab453<_0x2a90b7['length'];_0x4ab453+=0x200){if(_0xcbbb92[_0x5d9d34(0x29c)](_0xcbbb92[_0x5d9d34(0x220)],_0xcbbb92[_0x5d9d34(0x299)])){let _0xd9729a='';for(let _0x1faf38=0x0;_0xcbbb92[_0x5d9d34(0x1c6)](_0x1faf38,_0x4ecb08[_0x5d9d34(0x23c)]);_0x1faf38++){_0xd9729a+=_0x40df81[_0x2f1ca2[_0x1faf38]]||_0x226745[_0x1faf38];}return _0xd9729a;}else{const _0x198401=_0x2a90b7[_0x5d9d34(0x21f)](_0x4ab453,_0xcbbb92[_0x5d9d34(0x2d0)](_0x4ab453,0x200)),_0x2dc322=new Array(_0x198401[_0x5d9d34(0x23c)]);for(let _0x58a5f3=0x0;_0xcbbb92[_0x5d9d34(0x213)](_0x58a5f3,_0x198401[_0x5d9d34(0x23c)]);_0x58a5f3++){if(_0xcbbb92['dmLUS']('jcAsm',_0x5d9d34(0x2ac)))_0x2dc322[_0x58a5f3]=_0x198401[_0x5d9d34(0x217)](_0x58a5f3);else{const _0x412df8=['၀','၁','၂','၃','၄','၅','၆','၇','၈','၉'];return _0x4b7b9b[_0x5d9d34(0x18c)]()[_0x5d9d34(0x1c4)](/[0-9]/g,function(_0x4d70fc){return _0x412df8[_0x4d70fc];});}}_0x2e0dbc[_0x5d9d34(0x236)](new Uint8Array(_0x2dc322));}}return new Blob(_0x2e0dbc,{'type':_0x29cba2});}function downloadTTSAudio(_0x399210){const _0x5b2f5b=_0x5ee9e0,_0x467c0f={'jlNAe':_0x5b2f5b(0x1a1),'fgLuW':function(_0x3b4537,_0x2f6999,_0x56d584){return _0x3b4537(_0x2f6999,_0x56d584);},'bfbXP':_0x5b2f5b(0x182),'UzvmB':function(_0x5057e2,_0x1120bc){return _0x5057e2+_0x1120bc;},'RMBXK':_0x5b2f5b(0x1d8)};_0x399210['preventDefault']();if(!ttsAudioBase64Data)return;let _0x35760f=document[_0x5b2f5b(0x1ce)](_0x467c0f[_0x5b2f5b(0x28e)])['value'][_0x5b2f5b(0x163)]()||'M4KMyanmar_Voice';const _0x3cde80=_0x467c0f[_0x5b2f5b(0x296)](base64ToBlob,ttsAudioBase64Data,_0x467c0f[_0x5b2f5b(0x181)]),_0x1af7d1=URL[_0x5b2f5b(0x2b7)](_0x3cde80),_0x45e312=document['createElement']('a');_0x45e312[_0x5b2f5b(0x25a)]=_0x1af7d1,_0x45e312['download']=_0x467c0f['UzvmB'](_0x35760f,_0x467c0f[_0x5b2f5b(0x15e)]),document[_0x5b2f5b(0x29f)][_0x5b2f5b(0x28b)](_0x45e312),_0x45e312[_0x5b2f5b(0x1d3)](),window[_0x5b2f5b(0x158)][_0x5b2f5b(0x1e3)](_0x1af7d1),document[_0x5b2f5b(0x29f)]['removeChild'](_0x45e312);}function _0x252d(){const _0x45bd7a=['IFpWV','speed','add','မိန်းကလေး','PAnwp','replace','CALM','WOgYR','vueTY','file-info-container','BSxJx','ချိတ်ဆက်မှု\x20ပြတ်တောက်သွားပါသည်။\x20သင့်\x20API\x20URL\x20အမှန်ဖြစ်ကြောင်း\x20သေချာစစ်ဆေးပါ။','အို\x20','trBkB','eyBIc','getElementById','xhABN','DcRZM','ဇက်\x20','PJsGX','click','အယ်လ်\x20','uobig','XVAtz','မသက်မွန်မြင့်','.mp3','.style-btn','smFNE','GzFQM','yJXrJ','WChpP','srt_b64','UlOru','yowmM','value','createElement','revokeObjectURL','2442764pYOZMR','visualizer-active','wEGHV','size','v12','wiXVz','3|1|4|0|2|5','4772470vGqleX','မအိန္ဒြာကျော်ဇင်','vBGsh','AoGhN','<span>Gemini\x20','ကိုနေတိုး','-fill','အက်ဖ်\x20','XwAFe','bouncy-btn\x20voice-btn\x20glass-card\x20rounded-xl\x20p-2.5\x20flex\x20flex-row\x20items-center\x20gap-3\x20transition-all\x20','SERIOUS','output-container','JfNLF','လိုအပ်သော\x20ဖိုင်နှင့်\x20API\x20Key\x20များအားလုံး\x20ဖြည့်စွက်ပေးပါဗျ။','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-[10px]\x20text-slate-400\x22>','JhlPA','Uwany','mrCay','SpzoV','Rdxun','vEzoR','ddrMw','SAD','အာ\x20','ကျားကြီး\x20၁',':generateContent?key=','gender','ykEub','yJhyD','IPDsc','smZQl','oazuX','MOkbe','stringify','အသံသေး\x20၂၀','h2,\x20#voices-grid,\x20#recap-grid,\x20#emotions-grid,\x20.grid.grid-cols-1.sm\x5c:grid-cols-2,\x20.mb-6:has(#text-input),\x20#generate-btn,\x20#audio-container','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','zEuZK','မရွှေမှုံရတီ','bouncy-btn\x20style-btn\x20glass-card\x20border\x20border-[#222634]\x20text-slate-300\x20text-[11px]\x20font-bold\x20py-2\x20px-1\x20rounded-xl','pysuG','GidRb','QTQWM','Combo_30','charCodeAt','btn-ai-voice','uHhPJ','cursor-wait','ended','xbilF','.voice-btn','POST','slice','VLIfP','audio-container','vTWML','char-count','ppafO','PROFESSIONAL','စာသား\x20ကူးထည့်၍\x20မရပါ။\x20စာရိုက်မည့်အကွက်ကို\x20ဖိ၍\x20Paste\x20လုပ်ပါ။','GNBYa','kwESv','emotions-grid','ကိုပိုင်တံခွန်','မသင်ဇာဝင့်ကျော်','ဂျေ\x20','DetYH','btn-start-translate','zzgnm','hoKjJ','pCnEg','FuNfi','⏳\x20ဆောင်ရွက်နေပါသည်...','AmAoW','xamFd','push','WKVvw','ဂျီ\x20','gnuaN','file','BMPoB','length','oHJGf','ဇာတ်ကြောင်း\x20📖','bzxiI','application/json','split','Bearer\x20','innerText','YkvhL','JYOzc','map','saimyanmar_groq_keys','aPVKT','ပေါင်းစပ်\x20၃၀','kfgoK','JrnIg','play','files','mlMCj','content','cXaRk','daeQB','အိတ်ချ်\x20','width','MMKjx','className','rqLqD','AjDzQ','target','api-key-input','href','WxLoj','onclick','Combo_15','xDXFd','Ktwvm','LisWK','https://saimyanmar-tts.saimyanmarttspro.workers.dev/api/transcribe','PuAPW','csneV','1485800zPDxYJ','sXoPt','nTCOF','ကိုလူမင်း','10897236wwKJbo','style','PGrmw','✅\x20စာသားများ\x20ကူးယူပြီးပါပြီ','hbIEr','WHISPER','RVqvc','rLNNq','GmsGs','border-cyan-500/50','join','pitch','SvGfe','HVSdg','ကိုအောင်ရဲလင်း','file-name-display','sJqhF','dluUe','ကျေးဇူးပြု၍\x20စာသားထည့်သွင်းပါ။','XCIth','xhyHf','button','startsWith','ခဏစောင့်ပါ...\x20(Generating...)','fALSy','\x20MB)','gzwjl','ကျားကြီး\x20၃','Normal','❌\x20Gemini\x20Error\x20ဖြစ်ပေါ်ခဲ့ပါသည်။','setItem','hDoJn','PgiAY','GKlsb','remove','appendChild','rayIO','တည်ငြိမ်\x20😌','jlNAe','ပုံမှန်အသံ','lYgXk','HWnMv','jJbwC','FgEvK','lpnYy','ကိုစိုင်းစိုင်း','fgLuW','စိတ်လှုပ်ရှား\x20🤩','<span>Groq\x20','Hizba','error','MeZEV','ZBMCb','response_format','kkDbi','body','OCgPp','Pcjah','bouncy-btn\x20style-btn\x20glass-card\x20border\x20border-[#222634]\x20text-slate-300\x20text-[10px]\x20font-bold\x20py-2\x20px-1\x20rounded-xl','Error:\x20','generate-btn','src','voices-grid','wOkZh','#model-2-5-flash,\x20#model-3-1-lite,\x20#model-3-5-flash','zZdeA','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22play-icon-wrapper\x20flex-shrink-0\x20w-8\x20h-8\x20rounded-full\x20bg-cyan-500/20\x20border\x20border-cyan-500/40\x20flex\x20items-center\x20justify-center\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<svg\x20class=\x22w-3.5\x20h-3.5\x20text-cyan-400\x20ml-0.5\x20pointer-events-none\x22\x20fill=\x22currentColor\x22\x20viewBox=\x220\x200\x2020\x2020\x22><path\x20d=\x22M4.018\x2014L14.22\x209\x204.018\x204v10z\x22></path></svg>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20flex-col\x20text-left\x20pointer-events-none\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-xs\x20font-bold\x20text-slate-200\x22>','PAFYj','ulIUw','1|2|4|3|0','oaaIy','Sznzt','ZHqti','ကိုမြင့်မြတ်','NyoGyi_45','whisper-large-v3-turbo','အင်တာနက်\x20သို့မဟုတ်\x20API\x20လင့်ခ်ကို\x20စစ်ဆေးပါ။\x20(Error\x20Status:\x20','syuJE','transcribe-section','createObjectURL','kkTGi','text-input','wXqfu','audio_b64','</span>\x20<button\x20onclick=\x22deleteApiKey(','ကျားကြီး\x20၂','ZHLMC','GtOar','groq-api-key-input','lgWPc','4706880OlOyGV','gsk_','candidates','vXbUy','mPPej','splice','json','-val','translated-output','ZsCUU','ဝမ်းနည်း\x20😢','uswzX','IHpKQ','obgrh','ftcPj','rdHZQ','uEfZr','IiYRG','yJJbx','aEuDu','language','AqudG','cpkjL','preventDefault','URL','JlXSm','ANGRY','NyoGyi_35','iWRoD','သတင်း\x20💼','RMBXK','text','v11','onload','တီ\x20','trim','မဖွေးဖွေး','saimyanmar_api_keys','model','AcvhX','yMbsp','pause','10329056srjbdz','text-cyan-400','SmWmF','v14','ကိုဒေါင်း','TKdki','ZNZNd','ecYxO','ယောက်ျားလေး','api-keys-list','bHKft','❌\x20Error:\x20Groq\x20အလုပ်မလုပ်ပါ။\x20API\x20Key\x20ကို\x20စစ်ဆေးပေးပါ။','vDssh','toFixed','Eoyky','gemini-3.1-flash-lite','2️⃣\x20Gemini\x20AI\x20မှ\x20မြန်မာလို\x20အတိအကျ\x20ဘာသာပြန်ပေးနေပါသည်...','ဒေါသထွက်\x20🤬','status','hvIOx','clipboard','OLjrK','cWUgc','bfbXP','audio/mp3','ဝိုင်\x20','forEach','transcribe','ZBhPr','groq-api-keys-list','လေးနက်\x20😠','အက်စ်\x20','ယူ\x20','အီး\x20','toString','oxdyS','data:audio/mp3;base64,','Nilar_40','ဗွီ\x20','7tfBeiz','OPKbG',')\x22\x20class=\x22text-rose-400\x20hover:text-rose-300\x20ml-1\x22>✕</button>','active-btn','YfAIu','model-3-1-lite','XORTs','JFbaz','BVQgO','name','FEAR','flex','flex\x20items-center\x20gap-1\x20text-[11px]\x20font-mono\x20px-2\x20py-1\x20rounded-md\x20bg-cyan-950/40\x20text-cyan-400\x20border\x20border-cyan-800/40','includes','BHijJ','Translate\x20to\x20natural\x20conversational\x20Burmese\x20(no\x20titles,\x20output\x20text\x20only):\x0a\x0a','custom-filename','https://saimyanmar-tts.saimyanmarttspro.workers.dev/api/tts','stopPropagation','innerHTML','ကေ\x20','hidden','writeText','အန်\x20','ရွဲ့ပြော\x20🙄','Abgnm','အိုင်\x20','tfIKM','flex\x20items-center\x20gap-1\x20text-[11px]\x20font-mono\x20px-2\x20py-1\x20rounded-md\x20bg-emerald-950/40\x20text-emerald-400\x20border\x20border-emerald-800/40','oTeUa','wPkiu','159JIavyc','addEventListener','pSoab','classList','ibuBZ','div','PQXfP','HPtiE','OWiMc','pZAKk','append','15524nJGoqp','QcpPY','querySelectorAll','စီ\x20'];_0x252d=function(){return _0x45bd7a;};return _0x252d();}window[_0x5ee9e0(0x161)]=init;
+</script>
+</body>
+</html>
