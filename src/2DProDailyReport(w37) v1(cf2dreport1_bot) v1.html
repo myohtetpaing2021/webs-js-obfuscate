@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="my" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2D Report Pro — Luxury Edition</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Myanmar:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            100: '#F4EBD9',
+                            200: '#EAD9B8',
+                            300: '#DFC493',
+                            400: '#D4B47A',
+                            500: '#C9A86A',
+                            600: '#A8854D',
+                            700: '#7A5F35',
+                            800: '#4E3D22',
+                            900: '#2A2113',
+                        },
+                        noir: {
+                            950: '#060606',
+                            900: '#0A0A0A',
+                            850: '#0E0E0E',
+                            800: '#121212',
+                            750: '#161616',
+                            700: '#1C1C1C',
+                            600: '#242424',
+                            500: '#2E2E2E',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans Myanmar', 'sans-serif'],
+                        display: ['Cormorant Garamond', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Myanmar', sans-serif;
+            background-color: #060606;
+            color: #EDE7DA;
+            background-image:
+                radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201,168,106,0.07), transparent 70%),
+                radial-gradient(ellipse 60% 40% at 90% 110%, rgba(201,168,106,0.04), transparent 70%);
+        }
+
+        /* Thin luxury scrollbars */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: #0E0E0E; }
+        ::-webkit-scrollbar-thumb { background: #3A3328; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #C9A86A; }
+
+        /* Gold text gradient */
+        .gold-text {
+            background: linear-gradient(120deg, #F4EBD9 0%, #D4B47A 45%, #A8854D 70%, #EAD9B8 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Luxury glass panel */
+        .lux-panel {
+            background: linear-gradient(160deg, rgba(26,26,26,0.85), rgba(12,12,12,0.9));
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(201,168,106,0.14);
+            position: relative;
+        }
+        .lux-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(140deg, rgba(212,180,122,0.35), transparent 30%, transparent 70%, rgba(212,180,122,0.18));
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        /* Gold button */
+        .btn-gold {
+            background: linear-gradient(135deg, #D4B47A 0%, #C9A86A 40%, #A8854D 100%);
+            color: #0A0A0A;
+            box-shadow: 0 4px 20px rgba(201,168,106,0.28), inset 0 1px 0 rgba(255,255,255,0.25);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-gold:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 28px rgba(201,168,106,0.42), inset 0 1px 0 rgba(255,255,255,0.35);
+            filter: brightness(1.06);
+        }
+        .btn-gold:active { transform: translateY(0); }
+
+        .btn-outline {
+            border: 1px solid rgba(201,168,106,0.35);
+            color: #D4B47A;
+            background: rgba(201,168,106,0.05);
+            transition: all 0.25s ease;
+        }
+        .btn-outline:hover {
+            background: rgba(201,168,106,0.14);
+            border-color: rgba(201,168,106,0.6);
+        }
+
+        /* Stat card shine */
+        .stat-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -80%;
+            width: 60%; height: 100%;
+            background: linear-gradient(105deg, transparent, rgba(212,180,122,0.06), transparent);
+            animation: shine 6s ease-in-out infinite;
+        }
+        @keyframes shine {
+            0%, 60% { left: -80%; }
+            100% { left: 140%; }
+        }
+
+        .number-cell {
+            transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: default;
+        }
+        .number-cell:hover {
+            transform: scale(1.1);
+            z-index: 10;
+            box-shadow: 0 4px 18px rgba(201,168,106,0.25);
+        }
+
+        /* Gold top hairline for header */
+        .header-rule {
+            background: linear-gradient(90deg, transparent, rgba(212,180,122,0.55), transparent);
+            height: 1px;
+        }
+
+        /* Template chip */
+        .chip {
+            border: 1px solid rgba(201,168,106,0.2);
+            background: rgba(20,20,20,0.7);
+            color: #B8AD97;
+            transition: all 0.2s ease;
+        }
+        .chip:hover {
+            border-color: rgba(201,168,106,0.6);
+            color: #EAD9B8;
+            background: rgba(201,168,106,0.1);
+            transform: translateY(-1px);
+        }
+
+        textarea:focus, input:focus {
+            box-shadow: 0 0 0 1px rgba(201,168,106,0.45), 0 0 24px rgba(201,168,106,0.08);
+            border-color: rgba(201,168,106,0.5) !important;
+        }
+
+
+        /* Custom Alert Modal */
+        .modal-backdrop {
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(6px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+        .modal-backdrop.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-card {
+            transform: translateY(16px) scale(0.96);
+            opacity: 0;
+            transition: all 0.28s cubic-bezier(0.34, 1.4, 0.64, 1);
+        }
+        .modal-backdrop.show .modal-card {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .toast-gold {
+            background: linear-gradient(150deg, #1C1C1C, #0E0E0E);
+            border: 1px solid rgba(201,168,106,0.4);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.7), 0 0 30px rgba(201,168,106,0.1);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- ═══════════ HEADER ═══════════ -->
+    <header class="sticky top-0 z-30" style="background: rgba(6,6,6,0.85); backdrop-filter: blur(16px);">
+        <div class="header-rule absolute bottom-0 left-0 right-0"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between">
+
+            <!-- Brand -->
+            <div class="flex items-center gap-4">
+                <div class="relative">
+                    <div class="w-11 h-11 rounded-2xl flex items-center justify-center"
+                         style="background: linear-gradient(140deg, #D4B47A, #A8854D); box-shadow: 0 4px 18px rgba(201,168,106,0.4), inset 0 1px 0 rgba(255,255,255,0.3);">
+                        <i class="fa-solid fa-chess-rook text-noir-950 text-lg"></i>
+                    </div>
+                    <div class="absolute -inset-[3px] rounded-2xl pointer-events-none" style="border: 1px solid rgba(212,180,122,0.3);"></div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-3">
+                        <h1 class="font-display text-2xl font-bold tracking-wide gold-text">2D Report Pro</h1>
+                        <span class="text-[10px] font-sans font-semibold tracking-[0.15em] uppercase px-2.5 py-1 rounded-full"
+                              style="color: #D4B47A; border: 1px solid rgba(201,168,106,0.35); background: rgba(201,168,106,0.07);">Luxury v3.0</span>
+                    </div>
+                    <p class="text-[11px] tracking-[0.2em] uppercase mt-0.5" style="color: #6E6759;">Yangon Time Sales Calculator & Breakdown</p>
+                </div>
+            </div>
+
+            <!-- Right cluster -->
+            <div class="flex items-center gap-5">
+                <div class="hidden md:flex flex-col items-end">
+                    <span id="liveClock" class="font-mono text-sm font-semibold tracking-widest" style="color: #D4B47A;">--:--:--</span>
+                    <span id="currentDateStr" class="text-[10px] tracking-widest uppercase" style="color: #5C564A;">Asia / Yangon</span>
+                </div>
+                <button id="resetSessionBtn" class="btn-outline px-4 py-2 rounded-xl text-xs font-medium flex items-center gap-2" title="Reset Today's Saved Totals">
+                    <i class="fa-solid fa-rotate-right text-[11px]"></i>
+                    <span>ယနေ့စာရင်းရှင်းမည်</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+
+        <!-- ═══════════ MAIN GRID ═══════════ -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <!-- ── LEFT : INPUT ── -->
+            <div class="lg:col-span-5 flex flex-col gap-4">
+
+                <div class="lux-panel rounded-2xl p-5 sm:p-6 flex flex-col h-full shadow-2xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <label class="text-sm font-semibold flex items-center gap-2.5" style="color: #EAD9B8;">
+                            <span class="w-7 h-7 rounded-lg flex items-center justify-center" style="background: rgba(201,168,106,0.12); border: 1px solid rgba(201,168,106,0.3);">
+                                <i class="fa-solid fa-pen-nib text-[12px]" style="color: #D4B47A;"></i>
+                            </span>
+                            2D စာရင်း ထည့်သွင်းရန်
+                        </label>
+                        <button id="clearInputBtn" class="text-[11px] flex items-center gap-1.5 transition-colors" style="color: #6E6759;" onmouseover="this.style.color='#EAD9B8'" onmouseout="this.style.color='#6E6759'">
+                            <i class="fa-solid fa-trash-can text-[10px]"></i> ရှင်းမည်
+                        </button>
+                    </div>
+
+                    <!-- Template chips -->
+                    <div class="flex flex-wrap gap-1.5 mb-4">
+                        <button onclick="insertTemplate('3581 ခွေ 1000')" class="chip text-[11px] px-2.5 py-1.5 rounded-lg">ခွေ</button>
+                        <button onclick="insertTemplate('5 ဘရိတ် 1000')" class="chip text-[11px] px-2.5 py-1.5 rounded-lg">ဘရိတ်</button>
+                        <button onclick="insertTemplate('7 ပတ် 1000')" class="chip text-[11px] px-2.5 py-1.5 rounded-lg">ပတ်သီး</button>
+                        <button onclick="insertTemplate('3 ထိပ် 1000')" class="chip text-[11px] px-2.5 py-1.5 rounded-lg">ထိပ်</button>
+                        <button onclick="insertTemplate('5 နောက် 1000')" class="chip text-[11px] px-2.5 py-1.5 rounded-lg">နောက်</button>
+                        <button onclick="insertTemplate('35 45 R 1000')" class="chip text-[11px] px-2.5 py-1.5 rounded-lg">R အလည်</button>
+                        <button onclick="insertTemplate('35 - 1000R500')" class="chip text-[11px] px-2.5 py-1.5 rounded-lg">1000R500</button>
+                        <button onclick="insertTemplate('ပါဝါ 1000')" class="chip text-[11px] px-2.5 py-1.5 rounded-lg">ပါဝါ</button>
+                        <button onclick="insertTemplate('နက္ခတ် 1000')" class="chip text-[11px] px-2.5 py-1.5 rounded-lg">နက္ခတ်</button>
+                        <button onclick="insertTemplate('ညီအစ်ကို 1000')" class="chip text-[11px] px-2.5 py-1.5 rounded-lg">ညီအစ်ကို</button>
+                        <button onclick="insertTemplate('အပူး 1000')" class="chip text-[11px] px-2.5 py-1.5 rounded-lg">အပူး</button>
+                    </div>
+
+                    <textarea id="inputText" rows="11"
+                        class="w-full rounded-xl p-4 text-[13px] font-mono outline-none resize-none leading-relaxed transition-shadow"
+                        style="background: rgba(8,8,8,0.85); border: 1px solid #2A2A2A; color: #EAD9B8;"
+                        placeholder="စာရင်းများ ရိုက်ထည့်ပါ...
+
+ဥပမာ —
+3581 ခွေ 1000
+35 45 47 R 1000
+35 - 1000R500
+5 ဘရိတ် 1000
+7 ပတ် 1000
+w37 (ပေါက်ဂဏန်းစစ်ရန်)"></textarea>
+
+                    <div class="mt-5 grid grid-cols-2 gap-3">
+                        <button id="calculateBtn" class="btn-gold w-full py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-calculator"></i>
+                            <span>တွက်ချက်မည်</span>
+                        </button>
+                        <button id="addAccumulatedBtn" class="btn-outline w-full py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2" title="Add to today's cumulative total">
+                            <i class="fa-solid fa-layer-group"></i>
+                            <span>ယနေ့စုစုပေါင်းသို့</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Win Checker -->
+                <div class="lux-panel rounded-2xl p-5 shadow-2xl">
+                    <label class="text-xs font-semibold flex items-center gap-2.5 mb-3" style="color: #D4B47A;">
+                        <span class="w-6 h-6 rounded-md flex items-center justify-center" style="background: rgba(201,168,106,0.12); border: 1px solid rgba(201,168,106,0.3);">
+                            <i class="fa-solid fa-trophy text-[10px]" style="color: #D4B47A;"></i>
+                        </span>
+                        ပေါက်ဂဏန်း တိုက်ရိုက် စစ်ဆေးရန်
+                    </label>
+                    <div class="flex gap-2.5">
+                        <input type="text" id="winNumInput" maxlength="2" placeholder="ဥပမာ — 37"
+                            class="w-full rounded-xl px-4 py-2.5 text-center font-mono font-bold text-lg outline-none transition-shadow"
+                            style="background: rgba(8,8,8,0.85); border: 1px solid #2A2A2A; color: #EAD9B8;">
+                        <button id="checkWinBtn" class="btn-gold px-5 py-2.5 font-bold text-xs rounded-xl shrink-0 flex items-center gap-1.5">
+                            <i class="fa-solid fa-magnifying-glass"></i> စစ်မည်
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── RIGHT : RESULTS ── -->
+            <div class="lg:col-span-7 flex flex-col gap-4">
+
+                <!-- Stat cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div class="lux-panel stat-card p-4 rounded-2xl" style="border-left: 3px solid #D4B47A;">
+                        <p class="text-[10px] font-semibold tracking-[0.15em] uppercase" style="color: #6E6759;">ယခုတွက်ချက်မှု စုစုပေါင်း</p>
+                        <p id="statCurrentTotal" class="font-mono text-xl font-bold mt-1.5" style="color: #F4EBD9;">0 <span class="text-[11px] font-normal" style="color: #6E6759;">Ks</span></p>
+                    </div>
+                    <div class="lux-panel stat-card p-4 rounded-2xl" style="border-left: 3px solid #4A4A4A;">
+                        <p class="text-[10px] font-semibold tracking-[0.15em] uppercase" style="color: #6E6759;">ယခင် စုစုပေါင်း</p>
+                        <p id="statPreviousTotal" class="font-mono text-xl font-bold mt-1.5" style="color: #B8AD97;">0 <span class="text-[11px] font-normal" style="color: #6E6759;">Ks</span></p>
+                    </div>
+                    <div class="lux-panel stat-card p-4 rounded-2xl" style="border-left: 3px solid #C9A86A; background: linear-gradient(160deg, rgba(201,168,106,0.1), rgba(12,12,12,0.9));">
+                        <p class="text-[10px] font-semibold tracking-[0.15em] uppercase" style="color: #D4B47A;">ယနေ့ ပေါင်းစည်း စုစုပေါင်း</p>
+                        <p id="statCombinedTotal" class="font-mono text-2xl font-black mt-1.5 gold-text">0 <span class="text-[11px] font-normal" style="color: #6E6759; -webkit-text-fill-color: #6E6759;">Ks</span></p>
+                    </div>
+                </div>
+
+                <!-- Report output -->
+                <div class="lux-panel rounded-2xl p-5 sm:p-6 flex flex-col flex-1 shadow-2xl">
+                    <div class="flex items-center justify-between mb-4 pb-3" style="border-bottom: 1px solid rgba(201,168,106,0.12);">
+                        <h2 class="text-sm font-semibold flex items-center gap-2.5" style="color: #EAD9B8;">
+                            <span class="w-7 h-7 rounded-lg flex items-center justify-center" style="background: rgba(201,168,106,0.12); border: 1px solid rgba(201,168,106,0.3);">
+                                <i class="fa-solid fa-scroll text-[12px]" style="color: #D4B47A;"></i>
+                            </span>
+                            တွက်ချက်မှု ရလဒ် စာရင်း
+                        </h2>
+                        <button id="copyReportBtn" class="btn-gold px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2">
+                            <i class="fa-regular fa-copy text-[11px]"></i>
+                            <span>Copy Report</span>
+                        </button>
+                    </div>
+
+                    <div id="outputDisplay"
+                        class="rounded-xl p-4 text-xs font-mono min-h-[220px] max-h-[350px] overflow-y-auto leading-relaxed space-y-1"
+                        style="background: rgba(8,8,8,0.85); border: 1px solid #1E1E1E; color: #CFC6B2;">
+                        <div class="text-center py-12" style="color: #4A453C;">
+                            <i class="fa-solid fa-chess-board text-3xl mb-3 opacity-60 block"></i>
+                            <span class="text-[11px] tracking-widest uppercase">စာရင်းများ ရိုက်ထည့်ပြီး "တွက်ချက်မည်" ကို နှိပ်ပါ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════ MATRIX ═══════════ -->
+        <div class="lux-panel rounded-2xl p-5 sm:p-6 shadow-2xl space-y-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4" style="border-bottom: 1px solid rgba(201,168,106,0.12);">
+                <div>
+                    <h2 class="font-display text-xl font-bold gold-text flex items-center gap-3">
+                        <i class="fa-solid fa-table-cells text-base" style="color: #D4B47A; -webkit-text-fill-color: #D4B47A;"></i>
+                        00 – 99 ဂဏန်းအလိုက် ပမာဏများ
+                    </h2>
+                    <p class="text-[11px] mt-1 tracking-wide" style="color: #6E6759;">ယနေ့ လက်ခံရရှိထားသော ဂဏန်းတစ်ခုစီ၏ စုစုပေါင်းထိုးကြေး Matrix Grid</p>
+                </div>
+                <div class="flex items-center gap-3 text-[11px]" style="color: #6E6759;">
+                    <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full inline-block" style="background: #101010; border: 1px solid #2A2A2A;"></span> 0</span>
+                    <span class="flex items-center gap-1.5 ml-2"><span class="w-3 h-3 rounded-full inline-block" style="background: rgba(201,168,106,0.25); border: 1px solid rgba(201,168,106,0.5);"></span> ရှိ</span>
+                    <span class="flex items-center gap-1.5 ml-2"><span class="w-3 h-3 rounded-full inline-block" style="background: linear-gradient(135deg, #D4B47A, #A8854D); border: 1px solid #EAD9B8;"></span> အများဆုံး</span>
+                </div>
+            </div>
+
+            <div id="topBetsContainer" class="flex flex-wrap gap-2 py-1">
+                <span class="text-[11px] py-1" style="color: #4A453C;">အများဆုံး ထိုးထားသော ဂဏန်းများ — မရှိသေးပါ။</span>
+            </div>
+
+            <div id="matrixGrid" class="grid grid-cols-5 sm:grid-cols-10 gap-1.5 pt-1"></div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-6 text-center">
+        <div class="header-rule max-w-md mx-auto mb-4"></div>
+        <p class="font-display text-sm tracking-[0.3em] uppercase" style="color: #4A453C;">2D Report Pro — Luxury Edition</p>
+    </footer>
+
+
+    <!-- ═══════════ CUSTOM ALERT MODAL ═══════════ -->
+    <div id="alertModal" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="modal-card lux-panel rounded-2xl w-full max-w-sm p-6 sm:p-7 shadow-2xl text-center">
+            <div class="mx-auto w-14 h-14 rounded-2xl flex items-center justify-center mb-4"
+                 style="background: linear-gradient(140deg, rgba(212,180,122,0.2), rgba(168,133,77,0.1)); border: 1px solid rgba(201,168,106,0.4);">
+                <i class="fa-solid fa-triangle-exclamation text-xl" style="color: #D4B47A;"></i>
+            </div>
+            <h3 class="font-display text-xl font-bold gold-text mb-2">စာရင်းများ ရှင်းလင်းမည်လား?</h3>
+            <p class="text-xs leading-relaxed mb-6" style="color: #8A8578;">
+                ယနေ့ သိမ်းဆည်းထားသော စာရင်းအဟောင်းများ အားလုံးကို<br>အပြီးအပိုင် ရှင်းလင်းပါမယ်။
+            </p>
+            <div class="grid grid-cols-2 gap-3">
+                <button id="modalCancelBtn" class="btn-outline py-2.5 rounded-xl text-xs font-bold">
+                    မရှင်းတော့ဘူး
+                </button>
+                <button id="modalConfirmBtn" class="btn-gold py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-check text-[10px]"></i> ရှင်းလင်းမည်
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast-gold fixed bottom-6 right-6 px-5 py-3.5 rounded-2xl flex items-center gap-3 translate-y-24 opacity-0 transition-all duration-300 z-50">
+        <span class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: rgba(201,168,106,0.15); border: 1px solid rgba(201,168,106,0.4);">
+            <i class="fa-solid fa-circle-check text-sm" style="color: #D4B47A;"></i>
+        </span>
+        <span id="toastMsg" class="text-xs font-semibold" style="color: #EAD9B8;">Notification</span>
+    </div>
+
+    <script>
+        const AppState = {
+            todayStr: '',
+            currentTotal: 0,
+            previousTotal: 0,
+            combinedTotal: 0,
+            numbersMap: {},
+            currentParsedMap: {},
+            rawOutputText: ''
+        };
+
+        const SET_NUMBERS = {
+            'ပါဝါ': ['05','50','16','61','27','72','38','83','49','94'],
+            'Power': ['05','50','16','61','27','72','38','83','49','94'],
+            'နက္ခတ်': ['07','70','18','81','24','42','35','53','69','96'],
+            'NatKhat': ['07','70','18','81','24','42','35','53','69','96'],
+            'ညီအစ်ကို': ['01','10','12','21','23','32','34','43','45','54','56','65','67','76','78','87','89','98','90','09'],
+            'Brother': ['01','10','12','21','23','32','34','43','45','54','56','65','67','76','78','87','89','98','90','09'],
+            'အပူး': ['00','11','22','33','44','55','66','77','88','99'],
+            'စုံပူး': ['00','22','44','66','88'],
+            'မပူး': ['11','33','55','77','99']
+        };
+
+        function parseAmount(str) { if (!str) return 0; return parseInt(str.replace(/,/g, ''), 10) || 0; }
+        function formatMoney(num) { return new Intl.NumberFormat('en-US').format(num || 0); }
+
+        function getYangonDateString() {
+            const now = new Date();
+            const formatter = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Yangon', year: 'numeric', month: '2-digit', day: '2-digit' });
+            const parts = formatter.formatToParts(now);
+            return `${parts.find(p => p.type === 'year').value}-${parts.find(p => p.type === 'month').value}-${parts.find(p => p.type === 'day').value}`;
+        }
+        function getYangonFormattedTimeString() { return new Date().toLocaleString("en-US", { timeZone: "Asia/Yangon" }); }
+
+        function parseLineLogic(line) {
+            try {
+                let numberBets = {};
+                for (const [key, nums] of Object.entries(SET_NUMBERS)) {
+                    const regex = new RegExp(`^(${key})\s*[-]?\s*([\d,]+)$`, 'i');
+                    const match = line.match(regex);
+                    if (match) {
+                        const amount = parseAmount(match[2]);
+                        nums.forEach(n => { numberBets[n] = (numberBets[n] || 0) + amount; });
+                        return { description: key, calculation: `${nums.length} x ${amount}`, totalAmt: nums.length * amount, numberBets };
+                    }
+                }
+                let match = line.match(/^([\d\/\.\,\s]+)\s*(B|b|ဘရိတ်)\s*[-]?\s*([\d,]+)$/i);
+                if (match) {
+                    const brakes = match[1].split(/[\/\.\,\s]/).filter(s => s.trim() !== '');
+                    const amount = parseAmount(match[3]);
+                    let totalCount = 0;
+                    brakes.forEach(bStr => {
+                        const b = parseInt(bStr, 10);
+                        for (let i = 0; i <= 99; i++) {
+                            const numStr = i.toString().padStart(2, '0');
+                            if ((parseInt(numStr[0], 10) + parseInt(numStr[1], 10)) % 10 === b) {
+                                numberBets[numStr] = (numberBets[numStr] || 0) + amount; totalCount++;
+                            }
+                        }
+                    });
+                    return { description: `${match[1]} Brake`, calculation: `${totalCount} x ${amount}`, totalAmt: totalCount * amount, numberBets };
+                }
+                match = line.match(/^(\d)\s*(P|p|ပတ်)\s*[-]?\s*([\d,]+)$/i);
+                if (match) {
+                    const digit = match[1]; const amount = parseAmount(match[3]); let totalCount = 0;
+                    for (let i = 0; i <= 99; i++) {
+                        const numStr = i.toString().padStart(2, '0');
+                        if (numStr.includes(digit)) { numberBets[numStr] = (numberBets[numStr] || 0) + amount; totalCount++; }
+                    }
+                    return { description: `${digit} Round`, calculation: `${totalCount} x ${amount}`, totalAmt: totalCount * amount, numberBets };
+                }
+                match = line.match(/^(\d)\s*(ထိပ်|နောက်|Head|Tail)\s*[-]?\s*([\d,]+)$/i);
+                if (match) {
+                    const digit = match[1];
+                    const isHead = (match[2] === 'ထိပ်' || match[2].toLowerCase() === 'head');
+                    const amount = parseAmount(match[3]);
+                    for (let i = 0; i < 9 + 1; i++) {
+                        const numStr = isHead ? `${digit}${i}` : `${i}${digit}`;
+                        numberBets[numStr] = (numberBets[numStr] || 0) + amount;
+                    }
+                    return { description: `${digit} ${isHead ? 'Head' : 'Tail'}`, calculation: `10 x ${amount}`, totalAmt: 10 * amount, numberBets };
+                }
+                match = line.match(/^(\d+)\s*(အပူး)?(ခွေ|Khway)\s*[-]?\s*([\d,]+)$/i);
+                if (match) {
+                    const digits = match[1].split(''); const amount = parseAmount(match[4]);
+                    digits.forEach(d1 => digits.forEach(d2 => { const numStr = `${d1}${d2}`; numberBets[numStr] = (numberBets[numStr] || 0) + amount; }));
+                    const count = digits.length * digits.length;
+                    return { description: `${match[1]} Khway`, calculation: `${count} x ${amount}`, totalAmt: count * amount, numberBets };
+                }
+                match = line.match(/^([\d\s\.\,]+)\s+R\s*[-]?\s*([\d,]+)$/i);
+                if (match) {
+                    const nums = match[1].split(/[\s\.\,]+/).filter(n => n.trim().length === 2 && !isNaN(n));
+                    if (nums.length > 0) {
+                        const amount = parseAmount(match[2]); let totalCount = 0; let descList = [];
+                        nums.forEach(n => {
+                            if (n[0] !== n[1]) {
+                                const rev = `${n[1]}${n[0]}`;
+                                numberBets[n] = (numberBets[n] || 0) + amount;
+                                numberBets[rev] = (numberBets[rev] || 0) + amount;
+                                totalCount += 2; descList.push(n + "+R");
+                            } else { numberBets[n] = (numberBets[n] || 0) + amount; totalCount += 1; descList.push(n); }
+                        });
+                        return { description: descList.join(', '), calculation: `${totalCount} x ${amount}`, totalAmt: totalCount * amount, numberBets };
+                    }
+                }
+                match = line.match(/^(\d{2})\s*[-]\s*([\d,]+)[R]([\d,]+)$/i);
+                if (match) {
+                    let num = match[1]; let directAmt = parseAmount(match[2]); let reverseAmt = parseAmount(match[3]);
+                    let t = directAmt; let d = num; let c = `${directAmt}`;
+                    numberBets[num] = (numberBets[num] || 0) + directAmt;
+                    if (num[0] !== num[1]) {
+                        const rev = `${num[1]}${num[0]}`;
+                        numberBets[rev] = (numberBets[rev] || 0) + reverseAmt;
+                        t += reverseAmt; d += ' + R'; c += ` + ${reverseAmt}`;
+                    }
+                    return { description: d, calculation: c, totalAmt: t, numberBets };
+                }
+                match = line.match(/^([\d\/\.\,\s]+)\s*[-]\s*([\d,]+)$/);
+                if (match) {
+                    const nums = match[1].split(/[\/\.\,\s]/).filter(n => n.trim().length === 2 && !isNaN(n));
+                    const amount = parseAmount(match[2]);
+                    if (nums.length > 0) {
+                        nums.forEach(n => { numberBets[n] = (numberBets[n] || 0) + amount; });
+                        return { description: nums.join(', '), calculation: `${nums.length} x ${amount}`, totalAmt: nums.length * amount, numberBets };
+                    }
+                }
+            } catch (e) { console.error("Parse line error:", e); return null; }
+            return null;
+        }
+
+        function calculateTotal(inputText, previousTotal = 0) {
+            const lines = inputText.split(/\n/);
+            let currentTotal = 0, validLineCount = 0;
+            let currentNumbersMap = {};
+            let htmlLines = [], rawLines = [];
+
+            lines.forEach((line) => {
+                line = line.trim();
+                if (!line) return;
+                const winMatch = line.match(/^[wW]\s*(\d{2})$/);
+                if (winMatch) {
+                    const winNum = winMatch[1];
+                    const playedAmt = (AppState.numbersMap[winNum] || 0) + (currentNumbersMap[winNum] || 0);
+                    const winAmt = playedAmt * 80;
+                    let htmlWin = `<div class="p-3.5 rounded-xl my-2" style="background: rgba(201,168,106,0.08); border: 1px solid rgba(201,168,106,0.35);">`;
+                    htmlWin += `<div class="font-bold text-sm" style="color: #D4B47A;">🎯 2D Win Check (ပေါက်ဂဏန်း စစ်ဆေးချက်)</div>`;
+                    htmlWin += `<div class="text-xs mt-1.5" style="color: #CFC6B2;">(2D: <b>${winNum}</b>) ထိုးကြေး: <b>${formatMoney(playedAmt)}</b> MMK | ပေါက်ငွေ: <b class="font-mono" style="color: #EAD9B8;">${formatMoney(winAmt)}</b> MMK</div>`;
+                    if (playedAmt === 0) htmlWin += `<div class="text-[11px] italic mt-1" style="color: #8A8578;">❌ (ယနေ့ အဆိုပါဂဏန်း ထိုးထားခြင်း မရှိပါ)</div>`;
+                    htmlWin += `</div>`;
+                    htmlLines.push(htmlWin);
+                    return;
+                }
+                let cleanLine = line.split(/T\s*=/i)[0].trim();
+                let result = parseLineLogic(cleanLine);
+                if (result) {
+                    currentTotal += result.totalAmt; validLineCount++;
+                    for (const [num, amt] of Object.entries(result.numberBets)) currentNumbersMap[num] = (currentNumbersMap[num] || 0) + amt;
+                    htmlLines.push(`
+                        <div class="py-1.5" style="border-bottom: 1px solid #171717;">
+                            <span class="font-semibold" style="color: #D4B47A;">✓ ${result.description}</span>
+                            <div class="text-[11px] pl-4 mt-0.5" style="color: #6E6759;">└ <code style="color: #B8AD97;">${result.calculation}</code> = <span class="font-medium font-mono" style="color: #F4EBD9;">${formatMoney(result.totalAmt)}</span> Ks</div>
+                        </div>`);
+                    rawLines.push(`✅ ${result.description}\n   └ ${result.calculation} = ${formatMoney(result.totalAmt)}`);
+                }
+            });
+
+            if (validLineCount === 0 && htmlLines.length === 0) {
+                return { success: false,
+                    html: `<div class="p-3.5 rounded-xl" style="background: rgba(190,60,60,0.08); border: 1px solid rgba(190,60,60,0.3); color: #D98C8C;">⚠️ တွက်ချက်လို့ရတဲ့ စာရင်းမတွေ့ပါ။ Format များကို ပြန်လည်စစ်ဆေးပါ။</div>`,
+                    rawText: "⚠️ တွက်ချက်လို့ရတဲ့ စာရင်းမတွေ့ပါ။", currentTotal: 0, numbersMap: {} };
+            }
+
+            const nowTime = getYangonFormattedTimeString();
+            let summaryHtml = `<div class="mt-4 pt-3.5 space-y-1.5" style="border-top: 1px solid rgba(201,168,106,0.25);">`;
+            let rawText = "🎰 2D Pro Calculator Results\n\n" + rawLines.join("\n") + "\n\n--------------------------------\n";
+
+            if (previousTotal > 0) {
+                const combinedTotal = previousTotal + currentTotal;
+                summaryHtml += `<div style="color: #8A8578;">📋 Current Items: <b style="color: #EAD9B8;">${validLineCount}</b></div>`;
+                summaryHtml += `<div style="color: #CFC6B2;">💵 Current Total: <b class="font-mono" style="color: #D4B47A;">${formatMoney(currentTotal)} Ks</b></div>`;
+                summaryHtml += `<div class="mt-2" style="color: #8A8578;">⏮️ Previous Total: <span class="font-mono" style="color: #B8AD97;">${formatMoney(previousTotal)} Ks</span></div>`;
+                summaryHtml += `<div class="font-bold font-mono text-sm mt-1 gold-text">💰 COMBINED TOTAL: ${formatMoney(combinedTotal)} Ks</div>`;
+                rawText += `📋 Current Items: ${validLineCount}\n💵 Current Total: ${formatMoney(currentTotal)} Ks\n\n⏮️ Previous Total: ${formatMoney(previousTotal)} Ks\n💰 COMBINED TOTAL: ${formatMoney(combinedTotal)} Ks`;
+            } else {
+                summaryHtml += `<div style="color: #8A8578;">📋 Items: <b style="color: #EAD9B8;">${validLineCount}</b></div>`;
+                summaryHtml += `<div class="font-bold font-mono text-sm mt-1 gold-text">💰 GRAND TOTAL: ${formatMoney(currentTotal)} Ks</div>`;
+                rawText += `📋 Items: ${validLineCount}\n💰 GRAND TOTAL: ${formatMoney(currentTotal)} Ks`;
+            }
+            summaryHtml += `<div class="text-[10px] mt-2" style="color: #4A453C;">⏰ ${nowTime}</div></div>`;
+            rawText += `\n\n⏰ ${nowTime}`;
+
+            return { success: true, html: htmlLines.join('') + summaryHtml, rawText, currentTotal, numbersMap: currentNumbersMap };
+        }
+
+        function loadSavedSession() {
+            AppState.todayStr = getYangonDateString();
+            document.getElementById('currentDateStr').innerText = `Date: ${AppState.todayStr} · Asia/Yangon`;
+            const raw = localStorage.getItem(`2d_calc_${AppState.todayStr}`);
+            if (raw) {
+                try {
+                    const parsed = JSON.parse(raw);
+                    AppState.previousTotal = parsed.lastTotal || 0;
+                    AppState.numbersMap = parsed.numbersMap || {};
+                } catch(e) { console.error(e); }
+            }
+            updateUI();
+        }
+
+        function saveSession() {
+            localStorage.setItem(`2d_calc_${AppState.todayStr}`, JSON.stringify({
+                lastTotal: AppState.combinedTotal, dateString: AppState.todayStr, numbersMap: AppState.numbersMap
+            }));
+        }
+
+        function updateUI() {
+            document.getElementById('statCurrentTotal').innerHTML = `${formatMoney(AppState.currentTotal)} <span class="text-[11px] font-normal" style="color: #6E6759;">Ks</span>`;
+            document.getElementById('statPreviousTotal').innerHTML = `${formatMoney(AppState.previousTotal)} <span class="text-[11px] font-normal" style="color: #6E6759;">Ks</span>`;
+            document.getElementById('statCombinedTotal').innerHTML = `${formatMoney(AppState.combinedTotal || AppState.previousTotal)} <span class="text-[11px] font-normal" style="color: #6E6759; -webkit-text-fill-color: #6E6759;">Ks</span>`;
+            renderMatrixGrid();
+            renderTopBets();
+        }
+
+        function renderMatrixGrid() {
+            const gridEl = document.getElementById('matrixGrid');
+            gridEl.innerHTML = '';
+            const combinedMap = { ...AppState.numbersMap };
+            for (const [num, amt] of Object.entries(AppState.currentParsedMap)) combinedMap[num] = (combinedMap[num] || 0) + amt;
+            const maxBet = Math.max(...Object.values(combinedMap), 1);
+
+            for (let i = 0; i <= 99; i++) {
+                const numStr = i.toString().padStart(2, '0');
+                const amt = combinedMap[numStr] || 0;
+                let cellStyle = "background: rgba(10,10,10,0.6); border: 1px solid #1A1A1A; color: #4A453C;";
+                if (amt > 0) {
+                    const ratio = amt / maxBet;
+                    if (ratio > 0.7) {
+                        cellStyle = "background: linear-gradient(135deg, rgba(212,180,122,0.9), rgba(168,133,77,0.9)); border: 1px solid #EAD9B8; color: #0A0A0A;";
+                    } else if (ratio > 0.3) {
+                        cellStyle = "background: rgba(201,168,106,0.22); border: 1px solid rgba(201,168,106,0.55); color: #EAD9B8;";
+                    } else {
+                        cellStyle = "background: rgba(30,26,18,0.8); border: 1px solid rgba(201,168,106,0.2); color: #CFC6B2;";
+                    }
+                }
+                const cell = document.createElement('div');
+                cell.className = 'number-cell p-1.5 rounded-lg flex flex-col items-center justify-center text-center';
+                cell.setAttribute('style', cellStyle);
+                cell.innerHTML = `
+                    <span class="text-xs font-mono font-bold">${numStr}</span>
+                    <span class="text-[9px] font-mono" style="color: ${amt > 0 ? 'inherit' : '#333'}; opacity: ${amt > 0 ? (amt / maxBet > 0.7 ? '1' : '0.85') : '1'};">${amt > 0 ? formatMoney(amt) : '·'}</span>`;
+                cell.title = `Number: ${numStr} | Total: ${formatMoney(amt)} Ks`;
+                gridEl.appendChild(cell);
+            }
+        }
+
+        function renderTopBets() {
+            const container = document.getElementById('topBetsContainer');
+            const combinedMap = { ...AppState.numbersMap };
+            for (const [num, amt] of Object.entries(AppState.currentParsedMap)) combinedMap[num] = (combinedMap[num] || 0) + amt;
+            const sorted = Object.entries(combinedMap).filter(([_, amt]) => amt > 0).sort((a, b) => b[1] - a[1]).slice(0, 8);
+            if (sorted.length === 0) {
+                container.innerHTML = `<span class="text-[11px] py-1" style="color: #4A453C;">အများဆုံး ထိုးထားသော ဂဏန်းများ — မရှိသေးပါ။</span>`;
+                return;
+            }
+            container.innerHTML = sorted.map(([num, amt], index) => `
+                <div class="px-3 py-1.5 rounded-xl flex items-center gap-2 text-xs"
+                     style="background: rgba(20,18,12,0.85); border: 1px solid rgba(201,168,106,0.28);">
+                    <span class="text-[10px] font-black" style="color: #A8854D;">#${index + 1}</span>
+                    <span class="font-mono font-bold" style="color: #EAD9B8;">${num}</span>
+                    <span class="text-[11px] font-mono" style="color: #B8AD97;">(${formatMoney(amt)})</span>
+                </div>`).join('');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => toast.classList.add('translate-y-24', 'opacity-0'), 3000);
+        }
+
+        function insertTemplate(text) {
+            const textarea = document.getElementById('inputText');
+            const start = textarea.selectionStart, end = textarea.selectionEnd;
+            const currentVal = textarea.value;
+            textarea.value = currentVal.trim() === '' ? text : currentVal.substring(0, start) + "\n" + text + currentVal.substring(end);
+            textarea.focus();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSavedSession();
+            setInterval(() => {
+                document.getElementById('liveClock').innerText = new Date().toLocaleTimeString('en-US', { timeZone: 'Asia/Yangon' });
+            }, 1000);
+
+            document.getElementById('calculateBtn').addEventListener('click', () => {
+                const res = calculateTotal(document.getElementById('inputText').value, AppState.previousTotal);
+                AppState.currentTotal = res.currentTotal;
+                AppState.combinedTotal = AppState.previousTotal + res.currentTotal;
+                AppState.currentParsedMap = res.numbersMap;
+                AppState.rawOutputText = res.rawText;
+                document.getElementById('outputDisplay').innerHTML = res.html;
+                updateUI();
+                showToast("တွက်ချက်မှု ပြီးစီးပါပြီ");
+            });
+
+            document.getElementById('addAccumulatedBtn').addEventListener('click', () => {
+                const res = calculateTotal(document.getElementById('inputText').value, AppState.previousTotal);
+                if (!res.success) { showToast("ပေါင်းစည်းရန် စာရင်း မှန်ကန်မှုမရှိပါ"); return; }
+                for (const [num, amt] of Object.entries(res.numbersMap)) AppState.numbersMap[num] = (AppState.numbersMap[num] || 0) + amt;
+                AppState.previousTotal += res.currentTotal;
+                AppState.currentTotal = 0;
+                AppState.combinedTotal = AppState.previousTotal;
+                AppState.currentParsedMap = {};
+                saveSession();
+                document.getElementById('inputText').value = '';
+                document.getElementById('outputDisplay').innerHTML = `<div class="p-3.5 rounded-xl" style="background: rgba(201,168,106,0.08); border: 1px solid rgba(201,168,106,0.35); color: #D4B47A;">✅ ယနေ့ စုစုပေါင်း စာရင်းထဲသို့ အောင်မြင်စွာ ပေါင်းထည့်ပြီးပါပြီ။</div>`;
+                updateUI();
+                showToast("ယနေ့ စာရင်းထဲသို့ ပေါင်းထည့်ပြီးပါပြီ");
+            });
+
+            document.getElementById('checkWinBtn').addEventListener('click', () => {
+                const winNum = document.getElementById('winNumInput').value.trim();
+                if (!winNum || winNum.length !== 2 || isNaN(winNum)) { showToast("ဂဏန်း ၂ လုံး မှန်ကန်စွာ ရိုက်ထည့်ပါ (ဥပမာ 37)"); return; }
+                const playedAmt = (AppState.numbersMap[winNum] || 0) + (AppState.currentParsedMap[winNum] || 0);
+                const winAmt = playedAmt * 80;
+                let winHtml = `<div class="p-5 rounded-xl space-y-2.5" style="background: rgba(201,168,106,0.07); border: 1px solid rgba(201,168,106,0.35);">`;
+                winHtml += `<div class="font-bold text-sm flex items-center gap-2.5" style="color: #D4B47A;"><i class="fa-solid fa-trophy"></i> 2D Win Check</div>`;
+                winHtml += `<div class="text-xs" style="color: #CFC6B2;">2D ဂဏန်း: <span class="font-mono text-xl font-black" style="color: #EAD9B8;">${winNum}</span></div>`;
+                winHtml += `<div class="text-xs" style="color: #CFC6B2;">ထိုးကြေး ပမာဏ: <b class="font-mono">${formatMoney(playedAmt)} MMK</b></div>`;
+                winHtml += `<div class="font-bold font-mono text-base gold-text">ပေါက်ငွေ (x80): ${formatMoney(winAmt)} MMK</div>`;
+                if (playedAmt === 0) winHtml += `<div class="text-xs italic" style="color: #8A8578;">❌ (ယနေ့ အဆိုပါဂဏန်း ထိုးထားခြင်း မရှိပါ)</div>`;
+                winHtml += `<div class="text-[10px]" style="color: #4A453C;">⏰ ${getYangonFormattedTimeString()}</div></div>`;
+                document.getElementById('outputDisplay').innerHTML = winHtml;
+                showToast(`ဂဏန်း ${winNum} ပေါက်ငွေ စစ်ဆေးပြီးပါပြီ`);
+            });
+
+            document.getElementById('copyReportBtn').addEventListener('click', () => {
+                if (!AppState.rawOutputText) { showToast("ကူးယူရန် ရလဒ်မရှိသေးပါ"); return; }
+                const ta = document.createElement('textarea');
+                ta.value = AppState.rawOutputText;
+                document.body.appendChild(ta); ta.select();
+                try { document.execCommand('copy'); showToast("Report ကို Copy ကူးယူပြီးပါပြီ"); }
+                catch (err) { showToast("Copy ကူးယူခြင်း မအောင်မြင်ပါ"); }
+                document.body.removeChild(ta);
+            });
+
+            document.getElementById('clearInputBtn').addEventListener('click', () => {
+                document.getElementById('inputText').value = '';
+                showToast("Input များ ရှင်းလင်းပြီးပါပြီ");
+            });
+
+            const alertModal = document.getElementById('alertModal');
+            const openModal = () => { alertModal.classList.add('show'); };
+            const closeModal = () => { alertModal.classList.remove('show'); };
+
+            document.getElementById('resetSessionBtn').addEventListener('click', openModal);
+            document.getElementById('modalCancelBtn').addEventListener('click', closeModal);
+            alertModal.addEventListener('click', (e) => { if (e.target === alertModal) closeModal(); });
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+            document.getElementById('modalConfirmBtn').addEventListener('click', () => {
+                closeModal();
+                localStorage.removeItem(`2d_calc_${AppState.todayStr}`);
+                Object.assign(AppState, { previousTotal: 0, currentTotal: 0, combinedTotal: 0, numbersMap: {}, currentParsedMap: {}, rawOutputText: '' });
+                document.getElementById('inputText').value = '';
+                document.getElementById('outputDisplay').innerHTML = `<div class="text-center py-12" style="color: #4A453C;"><i class="fa-solid fa-chess-board text-3xl mb-3 opacity-60 block"></i><span class="text-[11px] tracking-widest uppercase">စာရင်းများ ပြန်လည်စတင်ပါပြီ</span></div>`;
+                updateUI();
+                showToast("ယနေ့ စာရင်းများ ရှင်းလင်းပြီးပါပြီ");
+            });
+        });
+    </script>
+</body>
+</html>
