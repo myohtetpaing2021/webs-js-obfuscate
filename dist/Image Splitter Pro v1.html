@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Splitter — Pro</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        :root {
+            --bg: #0b0b0d;
+            --bg-soft: #121216;
+            --card: #17171c;
+            --card-2: #1d1d23;
+            --border: #2b2b33;
+            --border-soft: #232329;
+            --gold: #d4af6a;
+            --gold-light: #e9cf9a;
+            --gold-deep: #b08d45;
+            --text: #f4f4f6;
+            --muted: #9b9ba4;
+            --danger: #e05656;
+            --radius: 14px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background:
+                radial-gradient(1200px 600px at 80% -10%, rgba(212,175,106,.07), transparent 60%),
+                radial-gradient(900px 500px at -10% 20%, rgba(212,175,106,.05), transparent 60%),
+                var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 3rem 1.25rem 4rem;
+        }
+
+        .container { max-width: 1040px; margin: 0 auto; }
+
+
+        /* ---------- Preloader (Tile Assembly) ---------- */
+        #preloader {
+            position: fixed; inset: 0; z-index: 9999;
+            background:
+                radial-gradient(900px 500px at 50% 45%, rgba(212,175,106,.07), transparent 65%),
+                var(--bg);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+            transition: opacity .55s ease, visibility .55s ease;
+            overflow: hidden;
+        }
+        #preloader::before {
+            content: ''; position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(212,175,106,.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(212,175,106,.04) 1px, transparent 1px);
+            background-size: 44px 44px;
+            mask-image: radial-gradient(600px 400px at 50% 50%, #000 30%, transparent 100%);
+            -webkit-mask-image: radial-gradient(600px 400px at 50% 50%, #000 30%, transparent 100%);
+        }
+        #preloader.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        .pre-grid {
+            display: grid; grid-template-columns: repeat(3, 30px); gap: 7px;
+            position: relative; z-index: 1;
+        }
+        .pre-grid .pt {
+            width: 30px; height: 30px; border-radius: 5px;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold) 55%, var(--gold-deep));
+            box-shadow: 0 4px 14px -4px rgba(212,175,106,.55);
+            opacity: 0;
+            transform: scale(0) rotate(70deg);
+            animation: ptIn .55s cubic-bezier(.2,.9,.3,1.4) forwards;
+            transition: transform .45s cubic-bezier(.5,0,.8,.4), opacity .4s ease;
+        }
+        .pre-grid .pt:nth-child(even) { background: linear-gradient(135deg, #2c2c34, #1a1a20); border: 1px solid rgba(212,175,106,.35); }
+        .pre-grid .pt:nth-child(1)  { animation-delay: .10s; --dx:-1; --dy:-1; }
+        .pre-grid .pt:nth-child(2)  { animation-delay: .20s; --dx: 0; --dy:-1; }
+        .pre-grid .pt:nth-child(3)  { animation-delay: .30s; --dx: 1; --dy:-1; }
+        .pre-grid .pt:nth-child(4)  { animation-delay: .40s; --dx:-1; --dy: 0; }
+        .pre-grid .pt:nth-child(5)  { animation-delay: .50s; --dx: 0; --dy: 0; }
+        .pre-grid .pt:nth-child(6)  { animation-delay: .60s; --dx: 1; --dy: 0; }
+        .pre-grid .pt:nth-child(7)  { animation-delay: .70s; --dx:-1; --dy: 1; }
+        .pre-grid .pt:nth-child(8)  { animation-delay: .80s; --dx: 0; --dy: 1; }
+        .pre-grid .pt:nth-child(9)  { animation-delay: .90s; --dx: 1; --dy: 1; }
+        @keyframes ptIn {
+            0%   { opacity: 0; transform: scale(0) rotate(70deg); }
+            60%  { opacity: 1; transform: scale(1.15) rotate(-6deg); }
+            100% { opacity: 1; transform: scale(1) rotate(0deg); }
+        }
+        /* exit: tiles fly apart */
+        .pre-grid.done .pt {
+            animation: none; opacity: 0;
+            transform: translate(calc(var(--dx) * 90px), calc(var(--dy) * 90px)) scale(.2) rotate(30deg);
+        }
+        .pre-grid.done .pt:nth-child(5) { transform: scale(1.6); opacity: 0; }
+
+        .pre-center { position: relative; z-index: 1; text-align: center; transition: opacity .35s ease, transform .35s ease; }
+        #preloader.bye .pre-center { opacity: 0; transform: translateY(12px); }
+        .pre-brand {
+            font-size: .82rem; letter-spacing: .55em; text-transform: uppercase;
+            font-weight: 800; margin-bottom: .55rem; padding-left: .55em;
+            background: linear-gradient(120deg, #fff 25%, var(--gold-light) 60%, var(--gold));
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        .pre-brand span { display: inline-block; animation: letterIn .7s ease both; }
+        @keyframes letterIn {
+            from { opacity: 0; transform: translateY(16px); filter: blur(5px); }
+            to   { opacity: 1; transform: none; filter: blur(0); }
+        }
+        .pre-count { font-size: 2rem; font-weight: 800; color: var(--gold); font-variant-numeric: tabular-nums; }
+        .pre-count small { font-size: .95rem; color: var(--muted); font-weight: 600; }
+        .pre-bar {
+            width: 210px; height: 3px; margin: .9rem auto 0;
+            background: var(--border-soft); border-radius: 3px; overflow: hidden;
+        }
+        .pre-bar i {
+            display: block; height: 100%; width: 0%;
+            background: linear-gradient(90deg, var(--gold-deep), var(--gold-light));
+            border-radius: 3px; transition: width .15s linear;
+        }
+
+        /* ---------- Header ---------- */
+        header { text-align: center; margin-bottom: 2.5rem; }
+        .eyebrow {
+            display: inline-flex; align-items: center; gap: .6rem;
+            font-size: .72rem; letter-spacing: .35em; text-transform: uppercase;
+            color: var(--gold); margin-bottom: 1rem;
+        }
+        .eyebrow::before, .eyebrow::after {
+            content: ''; width: 36px; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold));
+        }
+        .eyebrow::after { background: linear-gradient(90deg, var(--gold), transparent); }
+        header h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+            background: linear-gradient(120deg, #fff 20%, var(--gold-light) 50%, var(--gold) 80%);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            letter-spacing: .01em;
+        }
+        header p { color: var(--muted); margin-top: .6rem; font-size: .95rem; }
+
+        /* ---------- Card ---------- */
+        .card {
+            background: linear-gradient(180deg, var(--card) 0%, var(--card-2) 100%);
+            border: 1px solid var(--border-soft);
+            border-radius: var(--radius);
+            box-shadow: 0 20px 50px -20px rgba(0,0,0,.6);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            animation: rise .5s ease both;
+        }
+        @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+        .section-title {
+            font-size: .72rem; letter-spacing: .25em; text-transform: uppercase;
+            color: var(--gold); font-weight: 700; margin-bottom: 1rem;
+            display: flex; align-items: center; gap: .6rem;
+        }
+        .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border-soft); }
+
+        /* ---------- Dropzone ---------- */
+        .drop-zone {
+            border: 1.5px dashed rgba(212,175,106,.45);
+            border-radius: 12px;
+            padding: 3rem 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all .25s ease;
+            background: rgba(212,175,106,.03);
+            position: relative;
+            overflow: hidden;
+        }
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: var(--gold);
+            background: rgba(212,175,106,.07);
+            box-shadow: 0 0 0 4px rgba(212,175,106,.08), inset 0 0 60px rgba(212,175,106,.05);
+        }
+        .drop-zone .icon-wrap {
+            width: 64px; height: 64px; margin: 0 auto 1rem;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, rgba(212,175,106,.18), rgba(212,175,106,.05));
+            border: 1px solid rgba(212,175,106,.3);
+        }
+        .drop-zone svg { width: 28px; height: 28px; stroke: var(--gold); fill: none; stroke-width: 1.6; }
+        .drop-zone p { font-weight: 600; margin-bottom: .35rem; }
+        .drop-zone span { font-size: .82rem; color: var(--muted); }
+        .drop-zone .loaded-thumb {
+            width: 100%; max-height: 180px; object-fit: contain;
+            border-radius: 10px; margin-bottom: 1rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,.7);
+        }
+        #fileInput { display: none; }
+
+        /* ---------- Layout presets ---------- */
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: .75rem;
+            margin-top: 1.5rem;
+        }
+        .preset {
+            border: 1px solid var(--border);
+            background: var(--bg-soft);
+            border-radius: 10px;
+            padding: .9rem .5rem .7rem;
+            cursor: pointer;
+            text-align: center;
+            transition: all .2s ease;
+        }
+        .preset:hover { border-color: rgba(212,175,106,.5); transform: translateY(-2px); }
+        .preset.active {
+            border-color: var(--gold);
+            background: linear-gradient(180deg, rgba(212,175,106,.14), rgba(212,175,106,.04));
+            box-shadow: 0 0 0 3px rgba(212,175,106,.12);
+        }
+        .preset .mini-grid {
+            display: grid; gap: 2px; width: 34px; margin: 0 auto .5rem;
+        }
+        .preset .mini-grid i { background: var(--border); border-radius: 1px; aspect-ratio: 1; display: block; }
+        .preset.active .mini-grid i { background: var(--gold); }
+        .preset label { font-size: .8rem; font-weight: 600; color: var(--muted); cursor: pointer; }
+        .preset.active label { color: var(--gold-light); }
+
+        /* custom inputs */
+        .custom-row {
+            display: none;
+            margin-top: 1rem;
+            align-items: center; gap: .8rem;
+            background: var(--bg-soft);
+            border: 1px solid var(--border);
+            border-radius: 10px; padding: .8rem 1rem;
+        }
+        .custom-row.show { display: flex; animation: rise .3s ease both; }
+        .custom-row label { font-size: .82rem; color: var(--muted); font-weight: 600; }
+        .num-field { display: flex; align-items: center; gap: .5rem; }
+        .num-field input {
+            width: 72px; padding: .55rem .7rem;
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 8px; color: var(--text); font-size: .95rem; outline: none;
+            text-align: center;
+        }
+        .num-field input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,175,106,.15); }
+        .num-field span { color: var(--muted); }
+
+        /* ---------- Buttons ---------- */
+        .actions { display: flex; gap: .9rem; flex-wrap: wrap; margin-top: 1.6rem; }
+        .btn {
+            border: none; padding: .85rem 1.8rem;
+            font-weight: 700; font-size: .92rem; border-radius: 10px;
+            cursor: pointer; transition: all .2s ease;
+            display: inline-flex; align-items: center; gap: .55rem;
+            letter-spacing: .02em;
+        }
+        .btn-gold {
+            background: linear-gradient(120deg, var(--gold-light), var(--gold) 45%, var(--gold-deep));
+            color: #1a1409;
+            box-shadow: 0 10px 25px -8px rgba(212,175,106,.5);
+        }
+        .btn-gold:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 14px 30px -8px rgba(212,175,106,.6); filter: brightness(1.05); }
+        .btn-gold:disabled { opacity: .35; cursor: not-allowed; box-shadow: none; }
+        .btn-ghost {
+            background: transparent; color: var(--gold);
+            border: 1px solid rgba(212,175,106,.4);
+        }
+        .btn-ghost:hover { background: rgba(212,175,106,.1); border-color: var(--gold); }
+
+        /* ---------- Preview ---------- */
+        .preview-section { display: none; animation: rise .4s ease both; }
+        .preview-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: .8rem; }
+        .preview-header h2 { font-size: 1.25rem; }
+        .badge {
+            display: inline-flex; align-items: center; gap: .45rem;
+            background: rgba(212,175,106,.12); color: var(--gold-light);
+            border: 1px solid rgba(212,175,106,.3);
+            padding: .35rem .9rem; border-radius: 999px;
+            font-size: .8rem; font-weight: 700;
+        }
+        .hint { color: var(--muted); font-size: .85rem; margin-bottom: 1.1rem; }
+        .grid-container {
+            display: grid; gap: 5px;
+            background: #0a0a0c; padding: 6px;
+            border: 1px solid var(--border-soft);
+            border-radius: 12px; overflow: auto;
+        }
+        .tile-wrapper {
+            position: relative; background: #1a1a1f; overflow: hidden; cursor: pointer;
+            animation: tileIn .35s ease both;
+        }
+        @keyframes tileIn { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: none; } }
+        .tile-wrapper img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .tile-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg, rgba(11,11,13,.2), rgba(11,11,13,.85));
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .4rem;
+            opacity: 0; transition: opacity .2s ease; color: var(--gold-light);
+        }
+        .tile-wrapper:hover .tile-overlay { opacity: 1; }
+        .tile-overlay svg { width: 20px; height: 20px; stroke: var(--gold); fill: none; stroke-width: 2; }
+        .tile-overlay small { font-size: .68rem; color: var(--muted); letter-spacing: .1em; }
+
+        .meta-bar {
+            display: flex; gap: 1.2rem; flex-wrap: wrap;
+            margin-top: 1.2rem; padding: .9rem 1.1rem;
+            background: var(--bg-soft); border: 1px solid var(--border-soft);
+            border-radius: 10px; font-size: .8rem; color: var(--muted);
+        }
+        .meta-bar b { color: var(--gold-light); }
+
+        footer { text-align: center; color: #55555e; font-size: .75rem; letter-spacing: .15em; margin-top: 3rem; text-transform: uppercase; }
+    </style>
+<base target="_blank">
+</head>
+<body>
+<div id="preloader">
+    <div class="pre-grid" id="preGrid">
+        <div class="pt"></div><div class="pt"></div><div class="pt"></div>
+        <div class="pt"></div><div class="pt"></div><div class="pt"></div>
+        <div class="pt"></div><div class="pt"></div><div class="pt"></div>
+    </div>
+    <div class="pre-center">
+        <div class="pre-brand"><span style="animation-delay:0.00s">I</span><span style="animation-delay:0.06s">M</span><span style="animation-delay:0.12s">A</span><span style="animation-delay:0.18s">G</span><span style="animation-delay:0.24s">E</span><span style="animation-delay:.30s">&nbsp;</span><span style="animation-delay:0.36s">S</span><span style="animation-delay:0.42s">P</span><span style="animation-delay:0.48s">L</span><span style="animation-delay:0.54s">I</span><span style="animation-delay:0.60s">T</span><span style="animation-delay:0.66s">T</span><span style="animation-delay:0.72s">E</span><span style="animation-delay:0.78s">R</span></div>
+        <div class="pre-count"><span id="preCount">0</span><small>%</small></div>
+        <div class="pre-bar"><i id="preBar"></i></div>
+    </div>
+</div>
+<div class="container">
+    <header>
+        <div class="eyebrow">Premium Toolkit</div>
+        <h1>Image Splitter Pro</h1>
+        <p>ပုံတစ်ပုံကို grid tiles အဖြစ် ကိုယ်ပ.browser ထဲမှာပဲ လုံခြုံစွာ ခွဲပါ။ JPG · PNG · WebP · GIF · BMP</p>
+    </header>
+
+    <div class="card">
+        <div class="section-title">Step 1 — Upload Image</div>
+        <div class="drop-zone" id="dropZone">
+            <div class="icon-wrap">
+                <svg viewBox="0 0 24 24"><path d="M12 16V4m0 0l-4 4m4-4l4 4"/><path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+            </div>
+            <p>Click (သို့) Drag &amp; Drop နဲ့ ပုံ ထည့်ပါ</p>
+            <span>JPG, PNG, WebP, GIF, BMP — ကusc本地 Processing Only</span>
+            <input type="file" id="fileInput" accept="image/jpeg, image/png, image/webp, image/gif, image/bmp">
+        </div>
+
+        <div class="section-title" style="margin-top:2rem;">Step 2 — Choose Layout</div>
+        <div class="preset-grid" id="presetGrid">
+            <div class="preset" data-value="2x2"><div class="mini-grid" style="grid-template-columns:1fr 1fr;"><i></i><i></i><i></i><i></i></div><label>2 × 2</label></div>
+            <div class="preset active" data-value="3x3"><div class="mini-grid" style="grid-template-columns:1fr 1fr 1fr;"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><label>3 × 3</label></div>
+            <div class="preset" data-value="4x4"><div class="mini-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><label>4 × 4</label></div>
+            <div class="preset" data-value="custom"><div class="mini-grid" style="grid-template-columns:1fr 1fr;"><i style="background:var(--gold);"></i><i></i><i></i><i style="background:var(--gold);"></i></div><label>Custom</label></div>
+        </div>
+
+        <div class="custom-row" id="customRow">
+            <label>Rows × Cols (1–20):</label>
+            <div class="num-field">
+                <input type="number" id="customRows" min="1" max="20" value="3">
+                <span>×</span>
+                <input type="number" id="customCols" min="1" max="20" value="3">
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-gold" id="splitBtn" disabled>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+                Split Image
+            </button>
+            <button class="btn btn-ghost" id="downloadZipBtn" style="display:none;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1zM10 12h4"/></svg>
+                Download All (ZIP)
+            </button>
+        </div>
+    </div>
+
+    <div class="preview-section" id="previewSection">
+        <div class="preview-header">
+            <h2>Generated Tiles</h2>
+            <span class="badge" id="tileCountBadge">0 Tiles</span>
+        </div>
+        <p class="hint">Tile တစ်ခုချင်းစီကို click လုပ်ရင် single PNG အဖြစ် download လုပ်နိုင်ပါတယ်။</p>
+        <div class="grid-container" id="gridContainer"></div>
+        <div class="meta-bar" id="metaBar"></div>
+    </div>
+
+    <footer>Image Splitter Pro — 100% Client-Side · No Upload</footer>
+</div>
+
+<script>
+/* obfuscated */
+const _0xacb31a=_0x3bc4;(function(_0x3c21a6,_0x463228){const _0xcd8e13=_0x3bc4,_0x26142f=_0x3c21a6();while(!![]){try{const _0x2af980=parseInt(_0xcd8e13(0x14b))/0x1*(-parseInt(_0xcd8e13(0xab))/0x2)+-parseInt(_0xcd8e13(0x134))/0x3*(parseInt(_0xcd8e13(0x100))/0x4)+-parseInt(_0xcd8e13(0x13e))/0x5*(-parseInt(_0xcd8e13(0x110))/0x6)+-parseInt(_0xcd8e13(0x12e))/0x7*(parseInt(_0xcd8e13(0xc3))/0x8)+parseInt(_0xcd8e13(0xe0))/0x9*(parseInt(_0xcd8e13(0x14e))/0xa)+parseInt(_0xcd8e13(0xd0))/0xb+parseInt(_0xcd8e13(0xe4))/0xc;if(_0x2af980===_0x463228)break;else _0x26142f['push'](_0x26142f['shift']());}catch(_0x2a44f0){_0x26142f['push'](_0x26142f['shift']());}}}(_0x545f,0xa2ad3));function _0x545f(){const _0x40b615=['rfUiw','preventDefault','cisHt','change','onload','QSNut','metaBar','length','3881575wVtmuJ','jwaxj','hsKdb','canvas','files','VWlxq','blob','forEach','div','rnKoI','yNpyU','onclick','name','2qnBAeE','sqlyD','cYOdK','1180dLZozJ','pow','IfRmj','rFQCF','socYg','click','MrKlA','add','FKsei','downloadZipBtn','getContext','FQZlC','querySelectorAll','asaby','AHczV','done','ssiPd','customRow','1130680wOHwDv','push','textContent','xWPRi','KNaNE','dataTransfer','sslKP','preBar','oCRdM','href','previewSection','eEIQS','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<img\x20src=\x22','dropZone','tile-wrapper','hide','innerHTML','all','dQgCV','</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>','appendChild','getElementById','presetGrid','\x20Tiles\x20·\x20','12184cGxRRn','width','100%','omSWk','hwTHD','target','vjvXo','yZgsm','4x4','readAsDataURL','2x2','EMTkp','Pmeoo','12311992SmOfEd','body','RDCsX','hLnfM','createElement','qWpJm','min','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>Original:\x20<b>','rZfKy','WqdMw','uLSJz','\x20×\x20','className','block','.png','type','3501iHBsXe','preCount','FPnBL','rLdQC','15183984Fxsftk','JPG,\x20PNG,\x20WebP,\x20GIF,\x20BMP\x20only.','OFUEG','FXZlw','drawImage','dataUrl','rqrdI','waGmU','dragover','download','zvoyK','px</b></span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>Tile\x20size:\x20<b>','BrxIH','Compressing…','load','remove','animationDelay','hhWfY','image/gif','fzxgL','classList','generateAsync','dVliw','gridTemplateColumns','vlqtQ','bGLEs','active',',\x201fr)','1649012cXvlaS','scrollIntoView','\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22tile-overlay\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<svg\x20viewBox=\x220\x200\x2024\x2024\x22><path\x20d=\x22M12\x203v12m0\x200l-4-4m4\x204l4-4\x22/><path\x20d=\x22M4\x2017v2a2\x202\x200\x20002\x202h12a2\x202\x200\x20002-2v-2\x22/></svg>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<small>','result','RRzQe','folder','height','smooth','round','value','jeCJK','Ffaiz','addEventListener','max','\x22\x20alt=\x22preview\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p>','SXQcl','6QTRmix','toDataURL','show','ZIP\x20ဆောက်ရာတွင်\x20အမှားဖြစ်ပါတယ်။','disabled','image/jpeg','mOssR','JhrJF','image_tiles.zip','customCols','oZVHN','repeat(','YBYrF','3x3','XFeGQ','splitBtn','style','readyState','JbwNM','tileCountBadge','createObjectURL','file','custom','image/png','src','drop','</small>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>','then','jvpWJ','.preset','4585nHVRKd','dragleave','cuXMz','\x22\x20alt=\x22','Hxeza','DWIlt','3VxrebC','HyRhR'];_0x545f=function(){return _0x40b615;};return _0x545f();}const dropZone=document['getElementById'](_0xacb31a(0xb8)),fileInput=document[_0xacb31a(0xc0)]('fileInput'),presetGrid=document[_0xacb31a(0xc0)](_0xacb31a(0xc1)),customRow=document[_0xacb31a(0xc0)](_0xacb31a(0xaa)),customRows=document['getElementById']('customRows'),customCols=document[_0xacb31a(0xc0)](_0xacb31a(0x119)),splitBtn=document[_0xacb31a(0xc0)](_0xacb31a(0x11f)),downloadZipBtn=document[_0xacb31a(0xc0)](_0xacb31a(0xa2)),previewSection=document[_0xacb31a(0xc0)](_0xacb31a(0xb5)),gridContainer=document['getElementById']('gridContainer'),tileCountBadge=document['getElementById'](_0xacb31a(0x123)),metaBar=document[_0xacb31a(0xc0)](_0xacb31a(0x13c));(function(){const _0x4d1d9f=_0xacb31a,_0x3e5095={'EMTkp':function(_0xb26a88,_0x1748b2){return _0xb26a88/_0x1748b2;},'JbwNM':function(_0x4da47d,_0x4b3119){return _0x4da47d-_0x4b3119;},'RRzQe':function(_0x1a1d40,_0x3121c1){return _0x1a1d40+_0x3121c1;},'KNaNE':function(_0x3e3e67,_0x1d9595){return _0x3e3e67<_0x1d9595;},'cuXMz':function(_0x4801ed,_0x11bc7c){return _0x4801ed(_0x11bc7c);},'hwTHD':_0x4d1d9f(0xa8),'jvpWJ':'bye','Pmeoo':function(_0x324114,_0x4cd5a0,_0x1930c2){return _0x324114(_0x4cd5a0,_0x1930c2);},'asaby':'2|0|1|3|4','sqlyD':_0x4d1d9f(0xc5),'UNAuO':function(_0x214c9a,_0x53bcf1,_0x3250dc){return _0x214c9a(_0x53bcf1,_0x3250dc);},'hhWfY':function(_0x27a737,_0x3d7e08){return _0x27a737===_0x3d7e08;},'uLSJz':function(_0x150039){return _0x150039();},'OEFky':_0x4d1d9f(0xf2),'socYg':'preGrid','hsKdb':_0x4d1d9f(0xe1),'FQZlC':_0x4d1d9f(0xb2),'vlqtQ':function(_0x36f3e6,_0x6f6f26){return _0x36f3e6(_0x6f6f26);},'FYXHi':function(_0x4cb07e,_0x258d1c,_0x1c952f){return _0x4cb07e(_0x258d1c,_0x1c952f);}},_0x2197f7=document['getElementById']('preloader'),_0x5c24d3=document[_0x4d1d9f(0xc0)](_0x3e5095[_0x4d1d9f(0x9d)]),_0x27e157=document[_0x4d1d9f(0xc0)](_0x3e5095[_0x4d1d9f(0x140)]),_0x16ce46=document['getElementById'](_0x3e5095[_0x4d1d9f(0xa4)]),_0x4bf406=0x76c,_0x2310cf=performance['now']();let _0x33472d=![];function _0xb5672(_0x3a7b5c){const _0xa64b9e=_0x4d1d9f;if(_0x33472d)return;const _0x33812b=Math[_0xa64b9e(0xd6)](_0x3e5095[_0xa64b9e(0xce)](_0x3e5095[_0xa64b9e(0x122)](_0x3a7b5c,_0x2310cf),_0x4bf406),0x1),_0x361937=_0x3e5095[_0xa64b9e(0x122)](0x1,Math[_0xa64b9e(0x14f)](_0x3e5095[_0xa64b9e(0x122)](0x1,_0x33812b),0x3)),_0x1c64e4=Math[_0xa64b9e(0x108)](_0x361937*0x64);_0x27e157[_0xa64b9e(0xad)]=_0x1c64e4,_0x16ce46[_0xa64b9e(0x120)]['width']=_0x3e5095[_0xa64b9e(0x104)](_0x1c64e4,'%');if(_0x3e5095[_0xa64b9e(0xaf)](_0x33812b,0x1))_0x3e5095[_0xa64b9e(0x130)](requestAnimationFrame,_0xb5672);}_0x3e5095[_0x4d1d9f(0xfc)](requestAnimationFrame,_0xb5672);function _0x1ca6b9(){const _0x40a418=_0x4d1d9f,_0x3383fe=_0x3e5095[_0x40a418(0xa6)]['split']('|');let _0x1f0dac=0x0;while(!![]){switch(_0x3383fe[_0x1f0dac++]){case'0':_0x33472d=!![];continue;case'1':_0x27e157[_0x40a418(0xad)]=0x64;continue;case'2':if(_0x33472d)return;continue;case'3':_0x16ce46[_0x40a418(0x120)]['width']=_0x3e5095[_0x40a418(0x14c)];continue;case'4':_0x3e5095['UNAuO'](setTimeout,()=>{const _0x5ee4cc=_0x40a418;_0x5c24d3['classList'][_0x5ee4cc(0xa0)](_0x3e5095[_0x5ee4cc(0xc7)]),_0x2197f7[_0x5ee4cc(0xf8)]['add'](_0x3e5095[_0x5ee4cc(0x12c)]),_0x3e5095[_0x5ee4cc(0xcf)](setTimeout,()=>_0x2197f7[_0x5ee4cc(0xf8)][_0x5ee4cc(0xa0)](_0x5ee4cc(0xba)),0x1e0);},0xfa);continue;}break;}}const _0x354fba=new Promise(_0x35c395=>setTimeout(_0x35c395,_0x4bf406+0x96)),_0x4f9658=new Promise(_0x42d51b=>{const _0x323cef=_0x4d1d9f;if(_0x3e5095[_0x323cef(0xf5)](document[_0x323cef(0x121)],'complete'))_0x3e5095[_0x323cef(0xda)](_0x42d51b);else window[_0x323cef(0x10c)](_0x3e5095['OEFky'],_0x42d51b);});Promise[_0x4d1d9f(0xbc)]([_0x354fba,_0x4f9658])[_0x4d1d9f(0x12b)](_0x1ca6b9),_0x3e5095['FYXHi'](setTimeout,_0x1ca6b9,0x1388);}());let loadedImage=null,currentPreset=_0xacb31a(0x11d),generatedTiles=[];dropZone[_0xacb31a(0x10c)](_0xacb31a(0x9e),()=>fileInput['click']()),dropZone[_0xacb31a(0x10c)](_0xacb31a(0xec),_0x443ce3=>{const _0x16f6bd=_0xacb31a,_0x5b8628={'OkxBn':_0x16f6bd(0xec)};_0x443ce3['preventDefault'](),dropZone[_0x16f6bd(0xf8)]['add'](_0x5b8628['OkxBn']);}),dropZone[_0xacb31a(0x10c)](_0xacb31a(0x12f),()=>dropZone['classList']['remove'](_0xacb31a(0xec))),dropZone['addEventListener'](_0xacb31a(0x129),_0x5856f0=>{const _0x332d87=_0xacb31a,_0x116771={'DWIlt':_0x332d87(0xec),'RDCsX':function(_0x5dcf7e,_0x33d740){return _0x5dcf7e(_0x33d740);}};_0x5856f0[_0x332d87(0x137)](),dropZone['classList'][_0x332d87(0xf3)](_0x116771[_0x332d87(0x133)]);if(_0x5856f0['dataTransfer'][_0x332d87(0x142)]['length'])_0x116771[_0x332d87(0xd2)](handleFile,_0x5856f0[_0x332d87(0xb0)][_0x332d87(0x142)][0x0]);}),fileInput[_0xacb31a(0x10c)](_0xacb31a(0x139),_0x244ddc=>{const _0x386080=_0xacb31a,_0x557eab={'fzxgL':function(_0xee1ef5,_0x4a9dc5){return _0xee1ef5(_0x4a9dc5);}};if(_0x244ddc[_0x386080(0xc8)][_0x386080(0x142)][_0x386080(0x13d)])_0x557eab[_0x386080(0xf7)](handleFile,_0x244ddc[_0x386080(0xc8)]['files'][0x0]);});function handleFile(_0x3b30ec){const _0x996238=_0xacb31a,_0xb2c156={'rfUiw':function(_0xa8d437,_0x455380){return _0xa8d437!==_0x455380;},'wmuuC':'SfoNL','dQgCV':_0x996238(0xf0),'jwaxj':_0x996238(0x115),'FKsei':_0x996238(0x127),'zvoyK':'image/bmp','oZVHN':function(_0x44c799,_0x2fb360){return _0x44c799===_0x2fb360;},'rFQCF':_0x996238(0x116),'FXZlw':_0x996238(0xb6),'AHczV':function(_0x257aca,_0x458f45){return _0x257aca(_0x458f45);}},_0x2db04a=[_0xb2c156[_0x996238(0x13f)],_0xb2c156[_0x996238(0xa1)],'image/webp',_0x996238(0xf6),_0xb2c156[_0x996238(0xee)]];if(!_0x2db04a['includes'](_0x3b30ec[_0x996238(0xdf)])){if(_0xb2c156[_0x996238(0x11a)](_0xb2c156[_0x996238(0x151)],_0xb2c156[_0x996238(0xe7)])){const _0x381161=_0x1633c3[_0x996238(0xd4)]('a');_0x381161[_0x996238(0xb4)]=_0x887fa2,_0x381161[_0x996238(0xed)]=_0x56fc3b,_0x3081c4[_0x996238(0xd1)][_0x996238(0xbf)](_0x381161),_0x381161[_0x996238(0x9e)](),_0x381161['remove']();}else{_0xb2c156[_0x996238(0xa7)](alert,_0x996238(0xe5));return;}}const _0x31c2f5=new FileReader();_0x31c2f5[_0x996238(0x13a)]=_0x5757a1=>{const _0x331037=_0x996238,_0x30bb33={'QSNut':function(_0x35b775,_0x14874c){const _0x4da81=_0x3bc4;return _0xb2c156[_0x4da81(0x136)](_0x35b775,_0x14874c);},'sslKP':_0xb2c156['wmuuC'],'dVliw':_0xb2c156[_0x331037(0xbd)]},_0x40184=new Image();_0x40184[_0x331037(0x13a)]=()=>{const _0x475cc6=_0x331037;_0x30bb33[_0x475cc6(0x13b)](_0x30bb33[_0x475cc6(0xb1)],_0x30bb33[_0x475cc6(0xfa)])?(loadedImage=_0x40184,splitBtn['disabled']=![],dropZone[_0x475cc6(0xbb)]='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<img\x20class=\x22loaded-thumb\x22\x20src=\x22'+_0x5757a1[_0x475cc6(0xc8)]['result']+_0x475cc6(0x10e)+_0x3b30ec[_0x475cc6(0x14a)]+_0x475cc6(0xbe)+_0x40184[_0x475cc6(0xc4)]+_0x475cc6(0xdb)+_0x40184['height']+'\x20px\x20—\x20click\x20to\x20change\x20image</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20type=\x22file\x22\x20id=\x22fileInput\x22\x20accept=\x22image/jpeg,\x20image/png,\x20image/webp,\x20image/gif,\x20image/bmp\x22>'):(_0x32f539=0x4,_0x461ed3=0x4);},_0x40184[_0x331037(0x128)]=_0x5757a1['target'][_0x331037(0x103)];},_0x31c2f5[_0x996238(0xcc)](_0x3b30ec);}presetGrid[_0xacb31a(0x10c)](_0xacb31a(0x9e),_0x37c4d5=>{const _0x47e338=_0xacb31a,_0x5a2032={'qWpJm':_0x47e338(0x12d),'rnKoI':_0x47e338(0x126)},_0x2df5cb=_0x37c4d5[_0x47e338(0xc8)]['closest'](_0x5a2032[_0x47e338(0xd5)]);if(!_0x2df5cb)return;presetGrid[_0x47e338(0xa5)](_0x5a2032[_0x47e338(0xd5)])[_0x47e338(0x145)](_0x34e29a=>_0x34e29a['classList'][_0x47e338(0xf3)]('active')),_0x2df5cb[_0x47e338(0xf8)][_0x47e338(0xa0)](_0x47e338(0xfe)),currentPreset=_0x2df5cb['dataset']['value'],customRow['classList']['toggle'](_0x47e338(0x112),currentPreset===_0x5a2032[_0x47e338(0x147)]);});function getGridDimensions(){const _0x3e4b32=_0xacb31a,_0x30e1ed={'OFUEG':function(_0x24e601,_0x46447c){return _0x24e601===_0x46447c;},'omSWk':_0x3e4b32(0xcd),'DTQkf':_0x3e4b32(0xcb),'waGmU':'custom','yNpyU':function(_0x2ff1a8,_0x319338){return _0x2ff1a8(_0x319338);},'Hxeza':function(_0x4614a0,_0x461043){return _0x4614a0(_0x461043);}};let _0x32a9be=0x3,_0x4cca76=0x3;if(_0x30e1ed[_0x3e4b32(0xe6)](currentPreset,_0x30e1ed[_0x3e4b32(0xc6)]))_0x32a9be=0x2,_0x4cca76=0x2;else{if(_0x30e1ed[_0x3e4b32(0xe6)](currentPreset,_0x30e1ed['DTQkf']))_0x32a9be=0x4,_0x4cca76=0x4;else _0x30e1ed['OFUEG'](currentPreset,_0x30e1ed[_0x3e4b32(0xeb)])&&(_0x32a9be=Math[_0x3e4b32(0xd6)](Math['max'](_0x30e1ed[_0x3e4b32(0x148)](parseInt,customRows[_0x3e4b32(0x109)])||0x1,0x1),0x14),_0x4cca76=Math[_0x3e4b32(0xd6)](Math[_0x3e4b32(0x10d)](_0x30e1ed[_0x3e4b32(0x132)](parseInt,customCols['value'])||0x1,0x1),0x14));}return{'rows':_0x32a9be,'cols':_0x4cca76};}splitBtn[_0xacb31a(0x10c)](_0xacb31a(0x9e),()=>{const _0x21d7ad=_0xacb31a,_0x177beb={'cYOdK':_0x21d7ad(0xec),'VWlxq':function(_0x52f1c9){return _0x52f1c9();},'rZfKy':function(_0x458041,_0x75a1bb){return _0x458041/_0x75a1bb;},'FHQIf':function(_0x5ed505,_0x56630b){return _0x5ed505<_0x56630b;},'WqdMw':function(_0xd11ab6,_0x366e23){return _0xd11ab6===_0x366e23;},'yZgsm':_0x21d7ad(0x10b),'jeCJK':_0x21d7ad(0x141),'rqrdI':function(_0x42e894,_0x257c07){return _0x42e894*_0x257c07;},'xWPRi':'image/png','JhrJF':function(_0x31d83f,_0x2f66ce){return _0x31d83f+_0x2f66ce;},'hLnfM':_0x21d7ad(0x146),'XEBgB':_0x21d7ad(0xb9),'cisHt':function(_0xd0809a,_0x562d52){return _0xd0809a*_0x562d52;},'RtlFb':_0x21d7ad(0xdd),'qVJUY':'inline-flex','YHLdu':_0x21d7ad(0x107)};if(!loadedImage)return;const {rows:_0x2e176b,cols:_0x5d083d}=_0x177beb[_0x21d7ad(0x143)](getGridDimensions);generatedTiles=[],gridContainer[_0x21d7ad(0xbb)]='';const _0x370054=_0x177beb[_0x21d7ad(0xd8)](loadedImage[_0x21d7ad(0xc4)],_0x5d083d),_0x44935e=_0x177beb[_0x21d7ad(0xd8)](loadedImage[_0x21d7ad(0x106)],_0x2e176b);gridContainer['style'][_0x21d7ad(0xfb)]=_0x21d7ad(0x11b)+_0x5d083d+_0x21d7ad(0xff);for(let _0x48a779=0x0;_0x177beb['FHQIf'](_0x48a779,_0x2e176b);_0x48a779++){for(let _0x31fd10=0x0;_0x31fd10<_0x5d083d;_0x31fd10++){if(_0x177beb[_0x21d7ad(0xd9)](_0x177beb[_0x21d7ad(0xca)],_0x177beb[_0x21d7ad(0xca)])){const _0x4822a4=document[_0x21d7ad(0xd4)](_0x177beb[_0x21d7ad(0x10a)]);_0x4822a4[_0x21d7ad(0xc4)]=Math[_0x21d7ad(0x108)](_0x370054),_0x4822a4[_0x21d7ad(0x106)]=Math[_0x21d7ad(0x108)](_0x44935e);const _0x47193d=_0x4822a4[_0x21d7ad(0xa3)]('2d');_0x47193d[_0x21d7ad(0xe8)](loadedImage,_0x177beb[_0x21d7ad(0xea)](_0x31fd10,_0x370054),_0x177beb[_0x21d7ad(0xea)](_0x48a779,_0x44935e),_0x370054,_0x44935e,0x0,0x0,_0x4822a4[_0x21d7ad(0xc4)],_0x4822a4[_0x21d7ad(0x106)]);const _0x5f3c64=_0x4822a4[_0x21d7ad(0x111)](_0x177beb[_0x21d7ad(0xae)]),_0x33e60b='tile_'+_0x177beb[_0x21d7ad(0x117)](_0x48a779,0x1)+'_'+(_0x31fd10+0x1)+_0x21d7ad(0xde);generatedTiles[_0x21d7ad(0xac)]({'name':_0x33e60b,'dataUrl':_0x5f3c64});const _0x5019fe=document[_0x21d7ad(0xd4)](_0x177beb[_0x21d7ad(0xd3)]);_0x5019fe[_0x21d7ad(0xdc)]=_0x177beb['XEBgB'],_0x5019fe[_0x21d7ad(0x120)][_0x21d7ad(0xf4)]=_0x177beb[_0x21d7ad(0x138)](_0x177beb[_0x21d7ad(0x117)](_0x48a779*_0x5d083d,_0x31fd10),0x19)+'ms',_0x5019fe[_0x21d7ad(0xbb)]=_0x21d7ad(0xb7)+_0x5f3c64+_0x21d7ad(0x131)+_0x33e60b+_0x21d7ad(0x102)+_0x33e60b+_0x21d7ad(0x12a),_0x5019fe[_0x21d7ad(0x149)]=()=>downloadSingle(_0x5f3c64,_0x33e60b),gridContainer[_0x21d7ad(0xbf)](_0x5019fe);}else _0x312fa3[_0x21d7ad(0x137)](),_0x48447b[_0x21d7ad(0xf8)][_0x21d7ad(0xa0)](_0x177beb[_0x21d7ad(0x14d)]);}}tileCountBadge[_0x21d7ad(0xad)]=generatedTiles[_0x21d7ad(0x13d)]+_0x21d7ad(0xc2)+_0x2e176b+'×'+_0x5d083d,metaBar['innerHTML']=_0x21d7ad(0xd7)+loadedImage[_0x21d7ad(0xc4)]+'\x20×\x20'+loadedImage[_0x21d7ad(0x106)]+_0x21d7ad(0xef)+Math[_0x21d7ad(0x108)](_0x370054)+'\x20×\x20'+Math[_0x21d7ad(0x108)](_0x44935e)+'px</b></span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>Format:\x20<b>PNG</b></span>',previewSection['style']['display']=_0x177beb['RtlFb'],downloadZipBtn[_0x21d7ad(0x120)]['display']=_0x177beb['qVJUY'],previewSection[_0x21d7ad(0x101)]({'behavior':_0x177beb['YHLdu']});});function downloadSingle(_0x1038b3,_0xa47f96){const _0x55a04f=_0xacb31a,_0x48f7a1=document[_0x55a04f(0xd4)]('a');_0x48f7a1[_0x55a04f(0xb4)]=_0x1038b3,_0x48f7a1[_0x55a04f(0xed)]=_0xa47f96,document['body'][_0x55a04f(0xbf)](_0x48f7a1),_0x48f7a1[_0x55a04f(0x9e)](),_0x48f7a1[_0x55a04f(0xf3)]();}function _0x3bc4(_0x552b22,_0x586c4d){_0x552b22=_0x552b22-0x9d;const _0x545f46=_0x545f();let _0x3bc481=_0x545f46[_0x552b22];return _0x3bc481;}downloadZipBtn[_0xacb31a(0x10c)](_0xacb31a(0x9e),async()=>{const _0x163da3=_0xacb31a,_0x2f43f7={'IfRmj':_0x163da3(0x141),'XFeGQ':function(_0x4399f4,_0xdaa9bd){return _0x4399f4*_0xdaa9bd;},'VeLSu':_0x163da3(0x127),'oCRdM':function(_0x200501,_0x45ecc2){return _0x200501+_0x45ecc2;},'ssiPd':'div','bGLEs':_0x163da3(0xb9),'YBYrF':function(_0x4cd20c,_0x3028da){return _0x4cd20c*_0x3028da;},'HyRhR':function(_0x9fd8f3,_0x61e20a){return _0x9fd8f3+_0x61e20a;},'sLasr':_0x163da3(0xf1),'OYpIf':_0x163da3(0x144),'MrKlA':_0x163da3(0x118),'vjvXo':function(_0x3eb4e8,_0xefd347){return _0x3eb4e8(_0xefd347);},'rIdrX':_0x163da3(0x113),'FPnBL':function(_0x1b2251,_0x5b8a1b){return _0x1b2251===_0x5b8a1b;},'SXQcl':_0x163da3(0xe3)};if(!generatedTiles[_0x163da3(0x13d)])return;const _0x50e70e=new JSZip(),_0x56486e=_0x50e70e[_0x163da3(0x105)]('tiles');generatedTiles[_0x163da3(0x145)](_0x4f8528=>_0x56486e[_0x163da3(0x125)](_0x4f8528['name'],_0x4f8528[_0x163da3(0xe9)]['replace'](/^data:image\/png;base64,/,''),{'base64':!![]}));const _0x305671=downloadZipBtn[_0x163da3(0xbb)];downloadZipBtn[_0x163da3(0xbb)]=_0x2f43f7['sLasr'],downloadZipBtn[_0x163da3(0x114)]=!![];try{const _0x58e9f9=await _0x50e70e[_0x163da3(0xf9)]({'type':_0x2f43f7['OYpIf']}),_0x5b1764=document['createElement']('a');_0x5b1764['href']=URL[_0x163da3(0x124)](_0x58e9f9),_0x5b1764['download']=_0x2f43f7[_0x163da3(0x9f)],document['body'][_0x163da3(0xbf)](_0x5b1764),_0x5b1764[_0x163da3(0x9e)](),_0x5b1764[_0x163da3(0xf3)]();}catch(_0x288f71){_0x2f43f7[_0x163da3(0xc9)](alert,_0x2f43f7['rIdrX']);}finally{if(_0x2f43f7[_0x163da3(0xe2)](_0x2f43f7['SXQcl'],_0x2f43f7[_0x163da3(0x10f)]))downloadZipBtn[_0x163da3(0xbb)]=_0x305671,downloadZipBtn[_0x163da3(0x114)]=![];else{const _0x20164d=_0x2451ba[_0x163da3(0xd4)](_0x2f43f7[_0x163da3(0x150)]);_0x20164d[_0x163da3(0xc4)]=_0x47e026['round'](_0x57468c),_0x20164d[_0x163da3(0x106)]=_0x2d0ac1['round'](_0x20b27f);const _0x2368ad=_0x20164d[_0x163da3(0xa3)]('2d');_0x2368ad['drawImage'](_0x8dae77,_0x2fea2c*_0x29ed1e,_0x2f43f7[_0x163da3(0x11e)](_0x4b060b,_0x1c1e4b),_0x173d68,_0x59c25f,0x0,0x0,_0x20164d[_0x163da3(0xc4)],_0x20164d[_0x163da3(0x106)]);const _0x327fd6=_0x20164d[_0x163da3(0x111)](_0x2f43f7['VeLSu']),_0x13dc55='tile_'+_0x2f43f7[_0x163da3(0xb3)](_0x2138e4,0x1)+'_'+_0x2f43f7['oCRdM'](_0x580987,0x1)+_0x163da3(0xde);_0x24d819[_0x163da3(0xac)]({'name':_0x13dc55,'dataUrl':_0x327fd6});const _0x335b61=_0x53db74[_0x163da3(0xd4)](_0x2f43f7[_0x163da3(0xa9)]);_0x335b61['className']=_0x2f43f7[_0x163da3(0xfd)],_0x335b61[_0x163da3(0x120)][_0x163da3(0xf4)]=_0x2f43f7[_0x163da3(0x11c)](_0x2f43f7[_0x163da3(0x135)](_0x4849b9*_0x36ccb0,_0x505b2b),0x19)+'ms',_0x335b61[_0x163da3(0xbb)]=_0x163da3(0xb7)+_0x327fd6+'\x22\x20alt=\x22'+_0x13dc55+'\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22tile-overlay\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<svg\x20viewBox=\x220\x200\x2024\x2024\x22><path\x20d=\x22M12\x203v12m0\x200l-4-4m4\x204l4-4\x22/><path\x20d=\x22M4\x2017v2a2\x202\x200\x20002\x202h12a2\x202\x200\x20002-2v-2\x22/></svg>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<small>'+_0x13dc55+_0x163da3(0x12a),_0x335b61[_0x163da3(0x149)]=()=>_0x562847(_0x327fd6,_0x13dc55),_0x50f8b2[_0x163da3(0xbf)](_0x335b61);}}});
+</script>
+</body>
+</html>
