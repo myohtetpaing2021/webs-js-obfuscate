@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="my" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>အမြတ်နှုန်းတွက်စက် | Smart Margin & Markup Calculator</title>
+    
+    <!-- Tailwind CSS v4 Browser Runtime CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <!-- Custom Theme Styling based on ComfyUI aesthetic -->
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                font-family: 'Padauk', sans-serif;
+                background-color: #0c0d10;
+                color: #e4e4e7;
+            }
+            .font-num {
+                font-family: 'Inter', sans-serif;
+            }
+        }
+
+        /* ComfyUI inspired Glassmorphism & Gold Theme */
+        .theme-card {
+            background: rgba(20, 21, 26, 0.75);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+        }
+
+        .theme-card-gold {
+            background: linear-gradient(135deg, rgba(35, 30, 26, 0.9) 0%, rgba(20, 20, 24, 0.95) 100%);
+            border: 1px solid rgba(227, 184, 140, 0.25);
+            box-shadow: 0 10px 30px -10px rgba(227, 184, 140, 0.15);
+        }
+
+        .gold-text-gradient {
+            background: linear-gradient(135deg, #ffffff 20%, #f3d5b5 60%, #d9a066 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-btn {
+            background: linear-gradient(135deg, #e3b88c 0%, #c89357 100%);
+            color: #0c0d10;
+            font-weight: 700;
+        }
+
+        .gold-btn:hover {
+            background: linear-gradient(135deg, #f3d5b5 0%, #d9a066 100%);
+            box-shadow: 0 0 20px rgba(227, 184, 140, 0.35);
+        }
+
+        /* Dynamic keyframes */
+        @keyframes ambientGlow {
+            0%, 100% { opacity: 0.35; transform: scale(1); }
+            50% { opacity: 0.55; transform: scale(1.1); }
+        }
+
+        .animate-ambient {
+            animation: ambientGlow 10s ease-in-out infinite;
+        }
+
+        /* Chrome inputs fix */
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+    </style>
+</head>
+<body class="min-h-screen relative overflow-x-hidden transition-colors duration-300">
+
+    <!-- Preloader Overlay -->
+    <div id="preloader" class="fixed inset-0 z-50 bg-[#0c0d10] flex flex-col items-center justify-center transition-opacity duration-500">
+        <div class="relative flex items-center justify-center">
+            <div class="w-16 h-16 border-2 border-[#e3b88c]/20 border-t-[#e3b88c] rounded-full animate-spin"></div>
+            <i data-lucide="calculator" class="w-6 h-6 text-[#e3b88c] absolute"></i>
+        </div>
+        <p class="mt-4 text-xs font-semibold text-zinc-400 tracking-wider">အချက်အလက်များ ပြင်ဆင်နေပါသည်...</p>
+    </div>
+
+    <!-- ComfyUI Dark Ambient Background Glows -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+        <div class="absolute -top-40 -left-40 w-[500px] h-[500px] bg-[#e3b88c]/10 rounded-full blur-[140px] animate-ambient"></div>
+        <div class="absolute top-1/3 -right-40 w-[450px] h-[450px] bg-[#d9a066]/8 rounded-full blur-[150px] animate-ambient" style="animation-delay: 4s;"></div>
+        <div class="absolute -bottom-40 left-1/3 w-[500px] h-[500px] bg-amber-900/10 rounded-full blur-[140px] animate-ambient" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-4 py-8 relative z-10">
+        
+        <!-- Top Banner / Navbar -->
+        <header class="flex items-center justify-between pb-6 mb-8 border-b border-zinc-800/80">
+            <div class="flex items-center gap-3.5">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#e3b88c] to-[#c89357] flex items-center justify-center text-[#0c0d10] shadow-lg shadow-[#e3b88c]/15">
+                    <i data-lucide="percent" class="w-6 h-6 stroke-[2.5]"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-wide gold-text-gradient">အမြတ်နှုန်းတွက်စက်</h1>
+                    <p class="text-xs text-zinc-400 font-num tracking-wider">COMFY-STYLE MARGIN & MARKUP CALCULATOR</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold bg-zinc-900 border border-zinc-800 text-zinc-300">
+                    <i data-lucide="layers" class="w-4 h-4 text-[#e3b88c]"></i>
+                    <span>အုပ်စုလိုက် ပေါင်းချုပ် စနစ်ပါဝင်သည်</span>
+                </span>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <div class="text-center max-w-2xl mx-auto mb-10">
+            <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#e3b88c]/10 text-[#e3b88c] border border-[#e3b88c]/20 mb-4">
+                <span class="w-2 h-2 rounded-full bg-[#e3b88c] animate-ping"></span>
+                PRO BUSINESS TOOL
+            </span>
+            <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-snug mb-3 text-white">
+                အမှန်တကယ် အမြတ်ရမည့် <span class="gold-text-gradient">ရောင်းစျေးနှင့် ပေါင်းချုပ်ကို</span> တွက်ပါ
+            </h2>
+            <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                ကုန်ရင်းစျေးနှင့် Margin % ကို ထည့်သွင်း၍ ရောင်းစျေးတွက်နိုင်သလို ပစ္စည်းအများအပြားအတွက် စုစုပေါင်း ရောင်းရငွေနှင့် အမြတ်ငွေ ပေါင်းချုပ်ကိုပါ တစ်နေရာတည်းတွင် ကြည့်ရှုနိုင်ပါသည်။
+            </p>
+        </div>
+
+        <!-- Main Calculator Grid -->
+        <div class="grid md:grid-cols-2 gap-6 items-start mb-8">
+            
+            <!-- Input Form Card -->
+            <section class="theme-card rounded-3xl p-6 sm:p-8">
+                <div class="flex items-center gap-3 mb-6 pb-4 border-b border-zinc-800/60">
+                    <div class="w-10 h-10 rounded-xl bg-[#e3b88c]/10 text-[#e3b88c] flex items-center justify-center border border-[#e3b88c]/20">
+                        <i data-lucide="sliders" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-white">အချက်အလက် ထည့်သွင်းရန်</h3>
+                        <p class="text-xs text-zinc-400">တွက်ချက်လိုသော တန်ဖိုးများကို ဖြည့်ပါ</p>
+                    </div>
+                </div>
+
+                <form id="calcForm" onsubmit="event.preventDefault();" class="space-y-5">
+                    <div>
+                        <label for="itemName" class="block text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2">ပစ္စည်းအမည် (Optional)</label>
+                        <div class="relative rounded-2xl bg-zinc-900/90 border border-zinc-800 focus-within:border-[#e3b88c] focus-within:ring-1 focus-within:ring-[#e3b88c]/30 transition-all">
+                            <input type="text" id="itemName" placeholder="ဥပမာ - အင်္ကျီ / ဖုန်းကာဗာ" class="w-full bg-transparent border-0 py-3 pl-4 pr-4 text-sm font-semibold text-white outline-none">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="col-span-2">
+                            <label for="cost" class="block text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2">ကုန်ရင်းစျေး (Cost)</label>
+                            <div class="relative rounded-2xl bg-zinc-900/90 border border-zinc-800 focus-within:border-[#e3b88c] focus-within:ring-1 focus-within:ring-[#e3b88c]/30 transition-all">
+                                <input type="number" id="cost" value="10000" min="0" step="any" inputmode="decimal" class="w-full bg-transparent border-0 py-3.5 pl-4 pr-12 text-xl font-black font-num text-white outline-none">
+                                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-zinc-400">ကျပ်</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="qty" class="block text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2">အရေအတွက်</label>
+                            <div class="relative rounded-2xl bg-zinc-900/90 border border-zinc-800 focus-within:border-[#e3b88c] focus-within:ring-1 focus-within:ring-[#e3b88c]/30 transition-all">
+                                <input type="number" id="qty" value="1" min="1" step="1" inputmode="numeric" class="w-full bg-transparent border-0 py-3.5 px-3 text-center text-xl font-black font-num text-white outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="margin" class="block text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2">လိုချင်သော အမြတ်နှုန်း (Margin %)</label>
+                        <div class="relative rounded-2xl bg-zinc-900/90 border border-zinc-800 focus-within:border-[#e3b88c] focus-within:ring-1 focus-within:ring-[#e3b88c]/30 transition-all">
+                            <input type="number" id="margin" value="20" min="0" max="99.99" step="any" inputmode="decimal" class="w-full bg-transparent border-0 py-3.5 pl-4 pr-12 text-xl font-black font-num text-white outline-none">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-zinc-400">%</span>
+                        </div>
+
+                        <!-- Presets -->
+                        <div class="flex flex-wrap gap-2 mt-3" id="presetContainer">
+                            <button type="button" class="preset-btn px-3 py-1.5 rounded-xl text-xs font-bold font-num bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-[#e3b88c] hover:text-white transition-all" data-val="10">10%</button>
+                            <button type="button" class="preset-btn px-3 py-1.5 rounded-xl text-xs font-bold font-num bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-[#e3b88c] hover:text-white transition-all" data-val="15">15%</button>
+                            <button type="button" class="preset-btn active px-3 py-1.5 rounded-xl text-xs font-bold font-num bg-[#e3b88c] text-zinc-950 border border-[#e3b88c] transition-all" data-val="20">20%</button>
+                            <button type="button" class="preset-btn px-3 py-1.5 rounded-xl text-xs font-bold font-num bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-[#e3b88c] hover:text-white transition-all" data-val="25">25%</button>
+                            <button type="button" class="preset-btn px-3 py-1.5 rounded-xl text-xs font-bold font-num bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-[#e3b88c] hover:text-white transition-all" data-val="30">30%</button>
+                            <button type="button" class="preset-btn px-3 py-1.5 rounded-xl text-xs font-bold font-num bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-[#e3b88c] hover:text-white transition-all" data-val="50">50%</button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                        <button type="button" id="addToListBtn" class="flex-1 px-4 py-3 rounded-2xl gold-btn text-xs font-extrabold transition-all flex items-center justify-center gap-2 shadow-lg">
+                            <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                            <span>ပေါင်းချုပ်စာရင်းသို့ ထည့်မည်</span>
+                        </button>
+                        <button type="button" id="resetBtn" class="px-4 py-3 rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-zinc-300 text-xs font-bold border border-zinc-800 transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                            ပြန်စမည်
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Current Item Results Card -->
+            <section class="theme-card rounded-3xl p-6 sm:p-8">
+                <div class="flex items-center gap-3 mb-6 pb-4 border-b border-zinc-800/60">
+                    <div class="w-10 h-10 rounded-xl bg-[#e3b88c]/10 text-[#e3b88c] flex items-center justify-center border border-[#e3b88c]/20">
+                        <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-white">လက်ရှိ ပစ္စည်းတွက်ချက်မှု ရလဒ်</h3>
+                        <p class="text-xs text-zinc-400">တစ်ခုချင်း အကြံပြု ရောင်းစျေးနှင့် အမြတ်</p>
+                    </div>
+                </div>
+
+                <!-- Main Highlight Price Box -->
+                <div class="theme-card-gold relative overflow-hidden rounded-2xl p-6 text-white mb-5">
+                    <p class="text-xs font-bold text-[#e3b88c] uppercase tracking-wider mb-1">အကြံပြု ရောင်းစျေး (Selling Price / Unit)</p>
+                    <div class="text-3xl sm:text-4xl font-black font-num tracking-tight mb-4 break-all text-white" id="price">12,500 ကျပ်</div>
+                    
+                    <div class="border-t border-white/10 pt-3">
+                        <div class="flex justify-between text-xs font-semibold text-zinc-300 mb-2">
+                            <span id="costRatioText">စရိတ် 80%</span>
+                            <span id="profitRatioText" class="text-[#e3b88c]">အမြတ် 20%</span>
+                        </div>
+                        <div class="h-2.5 w-full bg-zinc-950/80 rounded-full overflow-hidden flex p-0.5 border border-white/5">
+                            <div id="barCost" class="bg-zinc-500 h-full rounded-l-full transition-all duration-300" style="width: 80%;"></div>
+                            <div id="barProfit" class="bg-[#e3b88c] h-full rounded-r-full transition-all duration-300" style="width: 20%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 mb-5">
+                    <div class="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800">
+                        <p class="text-[11px] font-bold text-zinc-400 mb-1">တစ်ခု အမြတ်ငွေ (Profit)</p>
+                        <p class="text-lg font-black font-num text-[#e3b88c]"><span id="profit">2,500</span> ကျပ်</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800">
+                        <p class="text-[11px] font-bold text-zinc-400 mb-1">Markup% (စျေးတင်နှုန်း)</p>
+                        <p class="text-lg font-black font-num text-amber-200"><span id="markup">25</span>%</p>
+                    </div>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-[#e3b88c]/10 border border-[#e3b88c]/20 text-xs">
+                    <p class="font-bold text-[#e3b88c] mb-1 flex items-center gap-1.5">
+                        <i data-lucide="calculator" class="w-4 h-4"></i>
+                        စုစုပေါင်း ရောင်းရငွေ (Total Value)
+                    </p>
+                    <p class="text-white text-base font-black font-num mt-1" id="totalItemRevenue">12,500 ကျပ် <span class="text-xs font-normal text-zinc-400">(1 ခု)</span></p>
+                </div>
+            </section>
+        </div>
+
+        <!-- TOTAL SUMMARY SECTION (ပေါင်းချုပ်) -->
+        <section class="theme-card rounded-3xl p-6 sm:p-8 mb-8 border border-[#e3b88c]/30">
+            <div class="flex items-center justify-between flex-wrap gap-3 mb-6 pb-4 border-b border-zinc-800/60">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#e3b88c] to-[#c89357] text-[#0c0d10] flex items-center justify-center font-bold">
+                        <i data-lucide="calculator" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-extrabold text-white">ပေါင်းချုပ် စာရင်း (Total Batch Summary)</h3>
+                        <p class="text-xs text-zinc-400">ထည့်သွင်းထားသော ပစ္စည်းများ၏ စုစုပေါင်း ပေါင်းချုပ် တွက်ချက်မှုများ</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button id="copySummaryBtn" class="px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 text-xs font-bold border border-zinc-800 flex items-center gap-1.5 transition-all">
+                        <i data-lucide="copy" class="w-3.5 h-3.5 text-[#e3b88c]"></i>
+                        <span>ပေါင်းချုပ် Copy ကူးမည်</span>
+                    </button>
+                    <button id="clearListBtn" class="px-3.5 py-2 rounded-xl bg-red-950/40 hover:bg-red-900/50 text-red-300 text-xs font-bold border border-red-900/50 flex items-center gap-1.5 transition-all">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                        <span>စာရင်းရှင်းမည်</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Summary KPI Cards Grid -->
+            <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800">
+                    <p class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider mb-1">စုစုပေါင်း ကုန်ရင်း (Total Cost)</p>
+                    <p class="text-xl font-black font-num text-white" id="sumCost">0 ကျပ်</p>
+                    <p class="text-[10px] text-zinc-500 mt-1" id="sumItemsCount">ပစ္စည်း ၀ မျိုး</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800">
+                    <p class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider mb-1">စုစုပေါင်း ရောင်းရငွေ (Revenue)</p>
+                    <p class="text-xl font-black font-num text-emerald-400" id="sumRevenue">0 ကျပ်</p>
+                    <p class="text-[10px] text-zinc-500 mt-1">ခန့်မှန်း ရောင်းရငွေ</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800">
+                    <p class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider mb-1">စုစုပေါင်း အမြတ်ငွေ (Total Profit)</p>
+                    <p class="text-xl font-black font-num text-[#e3b88c]" id="sumProfit">0 ကျပ်</p>
+                    <p class="text-[10px] text-zinc-500 mt-1">အသားတင် အမြတ်</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800">
+                    <p class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider mb-1">ပျမ်းမျှ Margin (Avg Margin)</p>
+                    <p class="text-xl font-black font-num text-amber-300" id="avgMargin">0 %</p>
+                    <p class="text-[10px] text-zinc-500 mt-1">ပျမ်းမျှ အမြတ်ရာခိုင်နှုန်း</p>
+                </div>
+            </div>
+
+            <!-- Summary Table -->
+            <div class="overflow-x-auto rounded-2xl border border-zinc-800 bg-zinc-950/60">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead>
+                        <tr class="bg-zinc-900/80 border-b border-zinc-800 text-zinc-400 font-bold uppercase">
+                            <th class="p-3.5">စဉ်</th>
+                            <th class="p-3.5">ပစ္စည်းအမည်</th>
+                            <th class="p-3.5 font-num text-right">ခုရေ</th>
+                            <th class="p-3.5 font-num text-right">ကုန်ရင်း (Unit)</th>
+                            <th class="p-3.5 font-num text-right">Margin %</th>
+                            <th class="p-3.5 font-num text-right">ရောင်းစျေး (Unit)</th>
+                            <th class="p-3.5 font-num text-right">အမြတ် (စုစုပေါင်း)</th>
+                            <th class="p-3.5 text-center">လုပ်ဆောင်ချက်</th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemListTable" class="divide-y divide-zinc-800/60 font-medium text-zinc-200">
+                        <tr>
+                            <td colspan="8" class="p-8 text-center text-zinc-500 font-normal">
+                                ပေါင်းချုပ် စာရင်းတွက်ချက်ရန် ပစ္စည်းများကို အထက်ပါ Input တွင် ဖြည့်၍ "ပေါင်းချုပ်စာရင်းသို့ ထည့်မည်" ကို နှိပ်ပါခင်ဗျာ။
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Educational Section -->
+        <section class="theme-card rounded-3xl p-6 sm:p-8">
+            <div class="flex items-center justify-between flex-wrap gap-2 mb-6 pb-4 border-b border-zinc-800/60">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i data-lucide="book-open" class="w-5 h-5 text-[#e3b88c]"></i>
+                    Markup နဲ့ Margin ဘာကွာသလဲ?
+                </h3>
+                <span class="text-xs bg-[#e3b88c]/10 text-[#e3b88c] px-3 py-1 rounded-full font-bold border border-[#e3b88c]/20">စီးပွားရေးဗဟုသုတ</span>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800">
+                    <span class="text-xs font-black text-[#e3b88c] font-num">STEP 1</span>
+                    <h4 class="text-sm font-bold text-white my-1.5">၁၀,၀၀၀ ကျပ် ကုန်ရင်း</h4>
+                    <p class="text-xs text-zinc-400 leading-relaxed">ကုန်ရင်း ၁၀,၀၀၀ ကို ၂၀% တင်ရောင်းလျှင် (Markup) ရောင်းစျေး ၁၂,၀၀၀ ကျပ် ဖြစ်လာပါမည်။</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800">
+                    <span class="text-xs font-black text-[#e3b88c] font-num">STEP 2</span>
+                    <h4 class="text-sm font-bold text-white my-1.5">Margin အမှန် ၁၆.၆၇% သာရှိ</h4>
+                    <p class="text-xs text-zinc-400 leading-relaxed">အမြတ် ၂,၀၀၀ ÷ ရောင်းစျေး ၁၂,၀၀၀ = ၁၆.၆၇% သာဖြစ်၍ လိုချင်သော Margin ၂၀% အပြည့်မရပါ။</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800">
+                    <span class="text-xs font-black text-[#e3b88c] font-num">STEP 3</span>
+                    <h4 class="text-sm font-bold text-white my-1.5">မှန်ကန်သောစျေး = ၁၂,၅၀၀</h4>
+                    <p class="text-xs text-zinc-400 leading-relaxed">Margin ၂၀% အမှန်တကယ်ရရန် ၁၀,၀၀၀ ÷ (၁ - ၀.၂) = ၁၂,၅၀၀ ကျပ် ဖြင့် ရောင်းချရမည်ဖြစ်ပါသည်။</p>
+                </div>
+            </div>
+
+            <div class="mt-5 p-4 rounded-2xl bg-[#e3b88c]/10 border-l-4 border-[#e3b88c] text-xs text-zinc-300 leading-relaxed">
+                <span class="font-bold text-[#e3b88c]">သတိပြုရန် —</span> ကုန်ရင်းစျေးအပေါ် ရာခိုင်နှုန်းတင်ခြင်း (Markup) နှင့် ရောင်းစျေးအပေါ် အမြတ်ရာခိုင်နှုန်းယူခြင်း (Margin) တို့ မတူညီပါ။ ဤတွက်စက်သည် Margin အမှန်နှင့် စုစုပေါင်း ပေါင်းချုပ်ဇယားကို တိကျစွာ တွက်ချက်ပေးပါသည်။
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-8 text-xs text-zinc-500">
+            <p>အမြတ်နှုန်းတွက်စက် · Comfy Dark & Gold Theme Edition with Total Summary</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript Logic & Functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Lucide Icons
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+
+            // Hide Preloader
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                if (preloader) {
+                    preloader.classList.add('opacity-0', 'pointer-events-none');
+                    setTimeout(() => preloader.remove(), 500);
+                }
+            }, 400);
+
+            // DOM Elements
+            const itemNameEl = document.getElementById('itemName');
+            const costEl = document.getElementById('cost');
+            const qtyEl = document.getElementById('qty');
+            const marginEl = document.getElementById('margin');
+            
+            const priceEl = document.getElementById('price');
+            const profitEl = document.getElementById('profit');
+            const markupEl = document.getElementById('markup');
+            const totalItemRevenueEl = document.getElementById('totalItemRevenue');
+            
+            const barCost = document.getElementById('barCost');
+            const barProfit = document.getElementById('barProfit');
+            const costRatioText = document.getElementById('costRatioText');
+            const profitRatioText = document.getElementById('profitRatioText');
+            
+            const addToListBtn = document.getElementById('addToListBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const clearListBtn = document.getElementById('clearListBtn');
+            const copySummaryBtn = document.getElementById('copySummaryBtn');
+            const presetBtns = document.querySelectorAll('.preset-btn');
+
+            // Summary Elements
+            const sumCostEl = document.getElementById('sumCost');
+            const sumRevenueEl = document.getElementById('sumRevenue');
+            const sumProfitEl = document.getElementById('sumProfit');
+            const avgMarginEl = document.getElementById('avgMargin');
+            const sumItemsCountEl = document.getElementById('sumItemsCount');
+            const itemListTable = document.getElementById('itemListTable');
+
+            let itemsList = [];
+
+            const fmt = num => new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(num);
+
+            function calculateSingleItem() {
+                const cost = parseFloat(costEl.value) || 0;
+                const margin = parseFloat(marginEl.value) || 0;
+                const qty = parseInt(qtyEl.value) || 1;
+
+                if (cost <= 0 || margin < 0 || margin >= 100) {
+                    priceEl.textContent = "0 ကျပ်";
+                    profitEl.textContent = "0";
+                    markupEl.textContent = "0";
+                    totalItemRevenueEl.textContent = "0 ကျပ်";
+                    barCost.style.width = "100%";
+                    barProfit.style.width = "0%";
+                    return { price: 0, profit: 0, markup: 0, totalRevenue: 0, totalCost: 0, totalProfit: 0 };
+                }
+
+                const price = cost / (1 - (margin / 100));
+                const profit = price - cost;
+                const markup = (profit / cost) * 100;
+                const costPercent = (cost / price) * 100;
+                const profitPercent = (profit / price) * 100;
+                
+                const totalRevenue = price * qty;
+                const totalCost = cost * qty;
+                const totalProfit = profit * qty;
+
+                priceEl.textContent = `${fmt(price)} ကျပ်`;
+                profitEl.textContent = fmt(profit);
+                markupEl.textContent = fmt(markup);
+                totalItemRevenueEl.innerHTML = `${fmt(totalRevenue)} ကျပ် <span class="text-xs font-normal text-zinc-400">(${qty} ခု)</span>`;
+
+                barCost.style.width = `${costPercent}%`;
+                barProfit.style.width = `${profitPercent}%`;
+                costRatioText.textContent = `စရိတ် ${costPercent.toFixed(0)}%`;
+                profitRatioText.textContent = `အမြတ် ${profitPercent.toFixed(0)}%`;
+
+                return {
+                    price, profit, markup, totalRevenue, totalCost, totalProfit
+                };
+            }
+
+            function updateSummaryTable() {
+                if (itemsList.length === 0) {
+                    itemListTable.innerHTML = `
+                        <tr>
+                            <td colspan="8" class="p-8 text-center text-zinc-500 font-normal">
+                                ပေါင်းချုပ် စာရင်းတွက်ချက်ရန် ပစ္စည်းများကို အထက်ပါ Input တွင် ဖြည့်၍ "ပေါင်းချုပ်စာရင်းသို့ ထည့်မည်" ကို နှိပ်ပါခင်ဗျာ။
+                            </td>
+                        </tr>
+                    `;
+                    sumCostEl.textContent = "0 ကျပ်";
+                    sumRevenueEl.textContent = "0 ကျပ်";
+                    sumProfitEl.textContent = "0 ကျပ်";
+                    avgMarginEl.textContent = "0 %";
+                    sumItemsCountEl.textContent = "ပစ္စည်း ၀ မျိုး";
+                    return;
+                }
+
+                let totalCostSum = 0;
+                let totalRevenueSum = 0;
+                let totalProfitSum = 0;
+                let totalQtySum = 0;
+
+                itemListTable.innerHTML = itemsList.map((item, index) => {
+                    totalCostSum += item.totalCost;
+                    totalRevenueSum += item.totalRevenue;
+                    totalProfitSum += item.totalProfit;
+                    totalQtySum += item.qty;
+
+                    return `
+                        <tr class="hover:bg-zinc-900/50 transition-colors">
+                            <td class="p-3.5 font-num text-zinc-400">${index + 1}</td>
+                            <td class="p-3.5 font-bold text-white">${item.name}</td>
+                            <td class="p-3.5 font-num text-right">${fmt(item.qty)}</td>
+                            <td class="p-3.5 font-num text-right">${fmt(item.cost)} ကျပ်</td>
+                            <td class="p-3.5 font-num text-right text-amber-200">${fmt(item.margin)}%</td>
+                            <td class="p-3.5 font-num text-right text-emerald-300 font-bold">${fmt(item.price)} ကျပ်</td>
+                            <td class="p-3.5 font-num text-right text-[#e3b88c] font-bold">${fmt(item.totalProfit)} ကျပ်</td>
+                            <td class="p-3.5 text-center">
+                                <button onclick="removeItem(${index})" class="text-zinc-500 hover:text-red-400 p-1 rounded-lg transition-colors" title="ဖျက်မည်">
+                                    <i data-lucide="trash" class="w-4 h-4"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+
+                const avgMargin = totalRevenueSum > 0 ? ((totalProfitSum / totalRevenueSum) * 100) : 0;
+
+                sumCostEl.textContent = `${fmt(totalCostSum)} ကျပ်`;
+                sumRevenueEl.textContent = `${fmt(totalRevenueSum)} ကျပ်`;
+                sumProfitEl.textContent = `${fmt(totalProfitSum)} ကျပ်`;
+                avgMarginEl.textContent = `${fmt(avgMargin)} %`;
+                sumItemsCountEl.textContent = `ပစ္စည်း ${itemsList.length} မျိုး (စုစုပေါင်း ${fmt(totalQtySum)} ခု)`;
+
+                if (window.lucide) lucide.createIcons();
+            }
+
+            window.removeItem = function(index) {
+                itemsList.splice(index, 1);
+                updateSummaryTable();
+            };
+
+            // Add to list handler
+            addToListBtn.addEventListener('click', () => {
+                const cost = parseFloat(costEl.value) || 0;
+                const margin = parseFloat(marginEl.value) || 0;
+                const qty = parseInt(qtyEl.value) || 1;
+                const name = itemNameEl.value.trim() || `ပစ္စည်း (${itemsList.length + 1})`;
+
+                if (cost <= 0 || margin < 0 || margin >= 100) {
+                    alert("ကျေးဇူးပြု၍ မှန်ကန်သော ကုန်ရင်းစျေးနှင့် Margin% ကို ထည့်ပါ။");
+                    return;
+                }
+
+                const singleCalc = calculateSingleItem();
+
+                itemsList.push({
+                    name,
+                    cost,
+                    margin,
+                    qty,
+                    price: singleCalc.price,
+                    profit: singleCalc.profit,
+                    totalCost: singleCalc.totalCost,
+                    totalRevenue: singleCalc.totalRevenue,
+                    totalProfit: singleCalc.totalProfit
+                });
+
+                itemNameEl.value = '';
+                updateSummaryTable();
+            });
+
+            // Presets Handler
+            presetBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    presetBtns.forEach(b => {
+                        b.classList.remove('bg-[#e3b88c]', 'text-zinc-950', 'border-[#e3b88c]', 'active');
+                        b.classList.add('bg-zinc-900', 'border-zinc-800', 'text-zinc-300');
+                    });
+                    btn.classList.add('bg-[#e3b88c]', 'text-zinc-950', 'border-[#e3b88c]', 'active');
+                    marginEl.value = btn.getAttribute('data-val');
+                    calculateSingleItem();
+                });
+            });
+
+            // Input Event Listeners
+            [costEl, marginEl, qtyEl].forEach(el => el.addEventListener('input', calculateSingleItem));
+
+            // Reset Form Handler
+            resetBtn.addEventListener('click', () => {
+                itemNameEl.value = '';
+                costEl.value = '10000';
+                marginEl.value = '20';
+                qtyEl.value = '1';
+                presetBtns.forEach(b => {
+                    b.classList.remove('bg-[#e3b88c]', 'text-zinc-950', 'border-[#e3b88c]', 'active');
+                    b.classList.add('bg-zinc-900', 'border-zinc-800', 'text-zinc-300');
+                });
+                const defaultPreset = document.querySelector('[data-val="20"]');
+                if (defaultPreset) {
+                    defaultPreset.classList.add('bg-[#e3b88c]', 'text-zinc-950', 'border-[#e3b88c]', 'active');
+                }
+                calculateSingleItem();
+            });
+
+            // Clear Summary List
+            clearListBtn.addEventListener('click', () => {
+                if (itemsList.length === 0) return;
+                itemsList = [];
+                updateSummaryTable();
+            });
+
+            // Copy Summary Report Text
+            copySummaryBtn.addEventListener('click', () => {
+                if (itemsList.length === 0) {
+                    alert("ကူးယူရန် ပေါင်းချုပ် စာရင်း မရှိသေးပါခင်ဗျာ။");
+                    return;
+                }
+
+                let text = `=========================\n📊 ပေါင်းချုပ် အမြတ်နှုန်း အစီရင်ခံစာ\n=========================\n\n`;
+                itemsList.forEach((item, idx) => {
+                    text += `${idx + 1}. ${item.name}\n   - အရေအတွက်: ${item.qty} ခု\n   - ကုန်ရင်း (unit): ${fmt(item.cost)} ကျပ်\n   - ရောင်းစျေး (unit): ${fmt(item.price)} ကျပ် (Margin ${item.margin}%)\n   - စုစုပေါင်း အမြတ်: ${fmt(item.totalProfit)} ကျပ်\n\n`;
+                });
+
+                text += `-------------------------\n`;
+                text += `📌 စုစုပေါင်း ကုန်ရင်းစရိတ်: ${sumCostEl.textContent}\n`;
+                text += `💰 စုစုပေါင်း ခန့်မှန်းရောင်းရငွေ: ${sumRevenueEl.textContent}\n`;
+                text += `✨ စုစုပေါင်း အသားတင်အမြတ်: ${sumProfitEl.textContent}\n`;
+                text += `📈 ပျမ်းမျှ Margin%: ${avgMarginEl.textContent}\n`;
+                text += `=========================`;
+
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    const origHtml = copySummaryBtn.innerHTML;
+                    copySummaryBtn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i><span>ကူးယူပြီးပါပြီ</span>`;
+                    if (window.lucide) lucide.createIcons();
+                    setTimeout(() => {
+                        copySummaryBtn.innerHTML = origHtml;
+                        if (window.lucide) lucide.createIcons();
+                    }, 2000);
+                } catch (e) {
+                    console.error("Copy failed", e);
+                }
+                document.body.removeChild(textarea);
+            });
+
+            calculateSingleItem();
+        });
+    </script>
+</body>
+</html>
