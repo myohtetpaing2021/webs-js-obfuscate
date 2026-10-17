@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="my" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>အမြတ်နှုန်းတွက်စက် | Smart Margin & Markup Calculator</title>
+    
+    <!-- Tailwind CSS v4 Browser Runtime CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <!-- Custom Theme Styling based on ComfyUI aesthetic -->
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                font-family: 'Padauk', sans-serif;
+                background-color: #0c0d10;
+                color: #e4e4e7;
+            }
+            .font-num {
+                font-family: 'Inter', sans-serif;
+            }
+        }
+
+        /* ComfyUI inspired Glassmorphism & Gold Theme */
+        .theme-card {
+            background: rgba(20, 21, 26, 0.75);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+        }
+
+        .theme-card-gold {
+            background: linear-gradient(135deg, rgba(35, 30, 26, 0.9) 0%, rgba(20, 20, 24, 0.95) 100%);
+            border: 1px solid rgba(227, 184, 140, 0.25);
+            box-shadow: 0 10px 30px -10px rgba(227, 184, 140, 0.15);
+        }
+
+        .gold-text-gradient {
+            background: linear-gradient(135deg, #ffffff 20%, #f3d5b5 60%, #d9a066 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-btn {
+            background: linear-gradient(135deg, #e3b88c 0%, #c89357 100%);
+            color: #0c0d10;
+            font-weight: 700;
+        }
+
+        .gold-btn:hover {
+            background: linear-gradient(135deg, #f3d5b5 0%, #d9a066 100%);
+            box-shadow: 0 0 20px rgba(227, 184, 140, 0.35);
+        }
+
+        /* Dynamic keyframes */
+        @keyframes ambientGlow {
+            0%, 100% { opacity: 0.35; transform: scale(1); }
+            50% { opacity: 0.55; transform: scale(1.1); }
+        }
+
+        .animate-ambient {
+            animation: ambientGlow 10s ease-in-out infinite;
+        }
+
+        /* Chrome inputs fix */
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+    </style>
+</head>
+<body class="min-h-screen relative overflow-x-hidden transition-colors duration-300">
+
+    <!-- Preloader Overlay -->
+    <div id="preloader" class="fixed inset-0 z-50 bg-[#0c0d10] flex flex-col items-center justify-center transition-opacity duration-500">
+        <div class="relative flex items-center justify-center">
+            <div class="w-16 h-16 border-2 border-[#e3b88c]/20 border-t-[#e3b88c] rounded-full animate-spin"></div>
+            <i data-lucide="calculator" class="w-6 h-6 text-[#e3b88c] absolute"></i>
+        </div>
+        <p class="mt-4 text-xs font-semibold text-zinc-400 tracking-wider">အချက်အလက်များ ပြင်ဆင်နေပါသည်...</p>
+    </div>
+
+    <!-- ComfyUI Dark Ambient Background Glows -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+        <div class="absolute -top-40 -left-40 w-[500px] h-[500px] bg-[#e3b88c]/10 rounded-full blur-[140px] animate-ambient"></div>
+        <div class="absolute top-1/3 -right-40 w-[450px] h-[450px] bg-[#d9a066]/8 rounded-full blur-[150px] animate-ambient" style="animation-delay: 4s;"></div>
+        <div class="absolute -bottom-40 left-1/3 w-[500px] h-[500px] bg-amber-900/10 rounded-full blur-[140px] animate-ambient" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-4 py-8 relative z-10">
+        
+        <!-- Top Banner / Navbar -->
+        <header class="flex items-center justify-between pb-6 mb-8 border-b border-zinc-800/80">
+            <div class="flex items-center gap-3.5">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#e3b88c] to-[#c89357] flex items-center justify-center text-[#0c0d10] shadow-lg shadow-[#e3b88c]/15">
+                    <i data-lucide="percent" class="w-6 h-6 stroke-[2.5]"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-wide gold-text-gradient">အမြတ်နှုန်းတွက်စက်</h1>
+                    <p class="text-xs text-zinc-400 font-num tracking-wider">COMFY-STYLE MARGIN & MARKUP CALCULATOR</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold bg-zinc-900 border border-zinc-800 text-zinc-300">
+                    <i data-lucide="layers" class="w-4 h-4 text-[#e3b88c]"></i>
+                    <span>အုပ်စုလိုက် ပေါင်းချုပ် စနစ်ပါဝင်သည်</span>
+                </span>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <div class="text-center max-w-2xl mx-auto mb-10">
+            <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#e3b88c]/10 text-[#e3b88c] border border-[#e3b88c]/20 mb-4">
+                <span class="w-2 h-2 rounded-full bg-[#e3b88c] animate-ping"></span>
+                PRO BUSINESS TOOL
+            </span>
+            <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-snug mb-3 text-white">
+                အမှန်တကယ် အမြတ်ရမည့် <span class="gold-text-gradient">ရောင်းစျေးနှင့် ပေါင်းချုပ်ကို</span> တွက်ပါ
+            </h2>
+            <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                ကုန်ရင်းစျေးနှင့် Margin % ကို ထည့်သွင်း၍ ရောင်းစျေးတွက်နိုင်သလို ပစ္စည်းအများအပြားအတွက် စုစုပေါင်း ရောင်းရငွေနှင့် အမြတ်ငွေ ပေါင်းချုပ်ကိုပါ တစ်နေရာတည်းတွင် ကြည့်ရှုနိုင်ပါသည်။
+            </p>
+        </div>
+
+        <!-- Main Calculator Grid -->
+        <div class="grid md:grid-cols-2 gap-6 items-start mb-8">
+            
+            <!-- Input Form Card -->
+            <section class="theme-card rounded-3xl p-6 sm:p-8">
+                <div class="flex items-center gap-3 mb-6 pb-4 border-b border-zinc-800/60">
+                    <div class="w-10 h-10 rounded-xl bg-[#e3b88c]/10 text-[#e3b88c] flex items-center justify-center border border-[#e3b88c]/20">
+                        <i data-lucide="sliders" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-white">အချက်အလက် ထည့်သွင်းရန်</h3>
+                        <p class="text-xs text-zinc-400">တွက်ချက်လိုသော တန်ဖိုးများကို ဖြည့်ပါ</p>
+                    </div>
+                </div>
+
+                <form id="calcForm" onsubmit="event.preventDefault();" class="space-y-5">
+                    <div>
+                        <label for="itemName" class="block text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2">ပစ္စည်းအမည် (Optional)</label>
+                        <div class="relative rounded-2xl bg-zinc-900/90 border border-zinc-800 focus-within:border-[#e3b88c] focus-within:ring-1 focus-within:ring-[#e3b88c]/30 transition-all">
+                            <input type="text" id="itemName" placeholder="ဥပမာ - အင်္ကျီ / ဖုန်းကာဗာ" class="w-full bg-transparent border-0 py-3 pl-4 pr-4 text-sm font-semibold text-white outline-none">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="col-span-2">
+                            <label for="cost" class="block text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2">ကုန်ရင်းစျေး (Cost)</label>
+                            <div class="relative rounded-2xl bg-zinc-900/90 border border-zinc-800 focus-within:border-[#e3b88c] focus-within:ring-1 focus-within:ring-[#e3b88c]/30 transition-all">
+                                <input type="number" id="cost" value="10000" min="0" step="any" inputmode="decimal" class="w-full bg-transparent border-0 py-3.5 pl-4 pr-12 text-xl font-black font-num text-white outline-none">
+                                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-zinc-400">ကျပ်</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="qty" class="block text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2">အရေအတွက်</label>
+                            <div class="relative rounded-2xl bg-zinc-900/90 border border-zinc-800 focus-within:border-[#e3b88c] focus-within:ring-1 focus-within:ring-[#e3b88c]/30 transition-all">
+                                <input type="number" id="qty" value="1" min="1" step="1" inputmode="numeric" class="w-full bg-transparent border-0 py-3.5 px-3 text-center text-xl font-black font-num text-white outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="margin" class="block text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2">လိုချင်သော အမြတ်နှုန်း (Margin %)</label>
+                        <div class="relative rounded-2xl bg-zinc-900/90 border border-zinc-800 focus-within:border-[#e3b88c] focus-within:ring-1 focus-within:ring-[#e3b88c]/30 transition-all">
+                            <input type="number" id="margin" value="20" min="0" max="99.99" step="any" inputmode="decimal" class="w-full bg-transparent border-0 py-3.5 pl-4 pr-12 text-xl font-black font-num text-white outline-none">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-zinc-400">%</span>
+                        </div>
+
+                        <!-- Presets -->
+                        <div class="flex flex-wrap gap-2 mt-3" id="presetContainer">
+                            <button type="button" class="preset-btn px-3 py-1.5 rounded-xl text-xs font-bold font-num bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-[#e3b88c] hover:text-white transition-all" data-val="10">10%</button>
+                            <button type="button" class="preset-btn px-3 py-1.5 rounded-xl text-xs font-bold font-num bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-[#e3b88c] hover:text-white transition-all" data-val="15">15%</button>
+                            <button type="button" class="preset-btn active px-3 py-1.5 rounded-xl text-xs font-bold font-num bg-[#e3b88c] text-zinc-950 border border-[#e3b88c] transition-all" data-val="20">20%</button>
+                            <button type="button" class="preset-btn px-3 py-1.5 rounded-xl text-xs font-bold font-num bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-[#e3b88c] hover:text-white transition-all" data-val="25">25%</button>
+                            <button type="button" class="preset-btn px-3 py-1.5 rounded-xl text-xs font-bold font-num bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-[#e3b88c] hover:text-white transition-all" data-val="30">30%</button>
+                            <button type="button" class="preset-btn px-3 py-1.5 rounded-xl text-xs font-bold font-num bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-[#e3b88c] hover:text-white transition-all" data-val="50">50%</button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                        <button type="button" id="addToListBtn" class="flex-1 px-4 py-3 rounded-2xl gold-btn text-xs font-extrabold transition-all flex items-center justify-center gap-2 shadow-lg">
+                            <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                            <span>ပေါင်းချုပ်စာရင်းသို့ ထည့်မည်</span>
+                        </button>
+                        <button type="button" id="resetBtn" class="px-4 py-3 rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-zinc-300 text-xs font-bold border border-zinc-800 transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                            ပြန်စမည်
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Current Item Results Card -->
+            <section class="theme-card rounded-3xl p-6 sm:p-8">
+                <div class="flex items-center gap-3 mb-6 pb-4 border-b border-zinc-800/60">
+                    <div class="w-10 h-10 rounded-xl bg-[#e3b88c]/10 text-[#e3b88c] flex items-center justify-center border border-[#e3b88c]/20">
+                        <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-white">လက်ရှိ ပစ္စည်းတွက်ချက်မှု ရလဒ်</h3>
+                        <p class="text-xs text-zinc-400">တစ်ခုချင်း အကြံပြု ရောင်းစျေးနှင့် အမြတ်</p>
+                    </div>
+                </div>
+
+                <!-- Main Highlight Price Box -->
+                <div class="theme-card-gold relative overflow-hidden rounded-2xl p-6 text-white mb-5">
+                    <p class="text-xs font-bold text-[#e3b88c] uppercase tracking-wider mb-1">အကြံပြု ရောင်းစျေး (Selling Price / Unit)</p>
+                    <div class="text-3xl sm:text-4xl font-black font-num tracking-tight mb-4 break-all text-white" id="price">12,500 ကျပ်</div>
+                    
+                    <div class="border-t border-white/10 pt-3">
+                        <div class="flex justify-between text-xs font-semibold text-zinc-300 mb-2">
+                            <span id="costRatioText">စရိတ် 80%</span>
+                            <span id="profitRatioText" class="text-[#e3b88c]">အမြတ် 20%</span>
+                        </div>
+                        <div class="h-2.5 w-full bg-zinc-950/80 rounded-full overflow-hidden flex p-0.5 border border-white/5">
+                            <div id="barCost" class="bg-zinc-500 h-full rounded-l-full transition-all duration-300" style="width: 80%;"></div>
+                            <div id="barProfit" class="bg-[#e3b88c] h-full rounded-r-full transition-all duration-300" style="width: 20%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 mb-5">
+                    <div class="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800">
+                        <p class="text-[11px] font-bold text-zinc-400 mb-1">တစ်ခု အမြတ်ငွေ (Profit)</p>
+                        <p class="text-lg font-black font-num text-[#e3b88c]"><span id="profit">2,500</span> ကျပ်</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800">
+                        <p class="text-[11px] font-bold text-zinc-400 mb-1">Markup% (စျေးတင်နှုန်း)</p>
+                        <p class="text-lg font-black font-num text-amber-200"><span id="markup">25</span>%</p>
+                    </div>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-[#e3b88c]/10 border border-[#e3b88c]/20 text-xs">
+                    <p class="font-bold text-[#e3b88c] mb-1 flex items-center gap-1.5">
+                        <i data-lucide="calculator" class="w-4 h-4"></i>
+                        စုစုပေါင်း ရောင်းရငွေ (Total Value)
+                    </p>
+                    <p class="text-white text-base font-black font-num mt-1" id="totalItemRevenue">12,500 ကျပ် <span class="text-xs font-normal text-zinc-400">(1 ခု)</span></p>
+                </div>
+            </section>
+        </div>
+
+        <!-- TOTAL SUMMARY SECTION (ပေါင်းချုပ်) -->
+        <section class="theme-card rounded-3xl p-6 sm:p-8 mb-8 border border-[#e3b88c]/30">
+            <div class="flex items-center justify-between flex-wrap gap-3 mb-6 pb-4 border-b border-zinc-800/60">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#e3b88c] to-[#c89357] text-[#0c0d10] flex items-center justify-center font-bold">
+                        <i data-lucide="calculator" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-extrabold text-white">ပေါင်းချုပ် စာရင်း (Total Batch Summary)</h3>
+                        <p class="text-xs text-zinc-400">ထည့်သွင်းထားသော ပစ္စည်းများ၏ စုစုပေါင်း ပေါင်းချုပ် တွက်ချက်မှုများ</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button id="copySummaryBtn" class="px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 text-xs font-bold border border-zinc-800 flex items-center gap-1.5 transition-all">
+                        <i data-lucide="copy" class="w-3.5 h-3.5 text-[#e3b88c]"></i>
+                        <span>ပေါင်းချုပ် Copy ကူးမည်</span>
+                    </button>
+                    <button id="clearListBtn" class="px-3.5 py-2 rounded-xl bg-red-950/40 hover:bg-red-900/50 text-red-300 text-xs font-bold border border-red-900/50 flex items-center gap-1.5 transition-all">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                        <span>စာရင်းရှင်းမည်</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Summary KPI Cards Grid -->
+            <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800">
+                    <p class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider mb-1">စုစုပေါင်း ကုန်ရင်း (Total Cost)</p>
+                    <p class="text-xl font-black font-num text-white" id="sumCost">0 ကျပ်</p>
+                    <p class="text-[10px] text-zinc-500 mt-1" id="sumItemsCount">ပစ္စည်း ၀ မျိုး</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800">
+                    <p class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider mb-1">စုစုပေါင်း ရောင်းရငွေ (Revenue)</p>
+                    <p class="text-xl font-black font-num text-emerald-400" id="sumRevenue">0 ကျပ်</p>
+                    <p class="text-[10px] text-zinc-500 mt-1">ခန့်မှန်း ရောင်းရငွေ</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800">
+                    <p class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider mb-1">စုစုပေါင်း အမြတ်ငွေ (Total Profit)</p>
+                    <p class="text-xl font-black font-num text-[#e3b88c]" id="sumProfit">0 ကျပ်</p>
+                    <p class="text-[10px] text-zinc-500 mt-1">အသားတင် အမြတ်</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800">
+                    <p class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider mb-1">ပျမ်းမျှ Margin (Avg Margin)</p>
+                    <p class="text-xl font-black font-num text-amber-300" id="avgMargin">0 %</p>
+                    <p class="text-[10px] text-zinc-500 mt-1">ပျမ်းမျှ အမြတ်ရာခိုင်နှုန်း</p>
+                </div>
+            </div>
+
+            <!-- Summary Table -->
+            <div class="overflow-x-auto rounded-2xl border border-zinc-800 bg-zinc-950/60">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead>
+                        <tr class="bg-zinc-900/80 border-b border-zinc-800 text-zinc-400 font-bold uppercase">
+                            <th class="p-3.5">စဉ်</th>
+                            <th class="p-3.5">ပစ္စည်းအမည်</th>
+                            <th class="p-3.5 font-num text-right">ခုရေ</th>
+                            <th class="p-3.5 font-num text-right">ကုန်ရင်း (Unit)</th>
+                            <th class="p-3.5 font-num text-right">Margin %</th>
+                            <th class="p-3.5 font-num text-right">ရောင်းစျေး (Unit)</th>
+                            <th class="p-3.5 font-num text-right">အမြတ် (စုစုပေါင်း)</th>
+                            <th class="p-3.5 text-center">လုပ်ဆောင်ချက်</th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemListTable" class="divide-y divide-zinc-800/60 font-medium text-zinc-200">
+                        <tr>
+                            <td colspan="8" class="p-8 text-center text-zinc-500 font-normal">
+                                ပေါင်းချုပ် စာရင်းတွက်ချက်ရန် ပစ္စည်းများကို အထက်ပါ Input တွင် ဖြည့်၍ "ပေါင်းချုပ်စာရင်းသို့ ထည့်မည်" ကို နှိပ်ပါခင်ဗျာ။
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Educational Section -->
+        <section class="theme-card rounded-3xl p-6 sm:p-8">
+            <div class="flex items-center justify-between flex-wrap gap-2 mb-6 pb-4 border-b border-zinc-800/60">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i data-lucide="book-open" class="w-5 h-5 text-[#e3b88c]"></i>
+                    Markup နဲ့ Margin ဘာကွာသလဲ?
+                </h3>
+                <span class="text-xs bg-[#e3b88c]/10 text-[#e3b88c] px-3 py-1 rounded-full font-bold border border-[#e3b88c]/20">စီးပွားရေးဗဟုသုတ</span>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800">
+                    <span class="text-xs font-black text-[#e3b88c] font-num">STEP 1</span>
+                    <h4 class="text-sm font-bold text-white my-1.5">၁၀,၀၀၀ ကျပ် ကုန်ရင်း</h4>
+                    <p class="text-xs text-zinc-400 leading-relaxed">ကုန်ရင်း ၁၀,၀၀၀ ကို ၂၀% တင်ရောင်းလျှင် (Markup) ရောင်းစျေး ၁၂,၀၀၀ ကျပ် ဖြစ်လာပါမည်။</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800">
+                    <span class="text-xs font-black text-[#e3b88c] font-num">STEP 2</span>
+                    <h4 class="text-sm font-bold text-white my-1.5">Margin အမှန် ၁၆.၆၇% သာရှိ</h4>
+                    <p class="text-xs text-zinc-400 leading-relaxed">အမြတ် ၂,၀၀၀ ÷ ရောင်းစျေး ၁၂,၀၀၀ = ၁၆.၆၇% သာဖြစ်၍ လိုချင်သော Margin ၂၀% အပြည့်မရပါ။</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800">
+                    <span class="text-xs font-black text-[#e3b88c] font-num">STEP 3</span>
+                    <h4 class="text-sm font-bold text-white my-1.5">မှန်ကန်သောစျေး = ၁၂,၅၀၀</h4>
+                    <p class="text-xs text-zinc-400 leading-relaxed">Margin ၂၀% အမှန်တကယ်ရရန် ၁၀,၀၀၀ ÷ (၁ - ၀.၂) = ၁၂,၅၀၀ ကျပ် ဖြင့် ရောင်းချရမည်ဖြစ်ပါသည်။</p>
+                </div>
+            </div>
+
+            <div class="mt-5 p-4 rounded-2xl bg-[#e3b88c]/10 border-l-4 border-[#e3b88c] text-xs text-zinc-300 leading-relaxed">
+                <span class="font-bold text-[#e3b88c]">သတိပြုရန် —</span> ကုန်ရင်းစျေးအပေါ် ရာခိုင်နှုန်းတင်ခြင်း (Markup) နှင့် ရောင်းစျေးအပေါ် အမြတ်ရာခိုင်နှုန်းယူခြင်း (Margin) တို့ မတူညီပါ။ ဤတွက်စက်သည် Margin အမှန်နှင့် စုစုပေါင်း ပေါင်းချုပ်ဇယားကို တိကျစွာ တွက်ချက်ပေးပါသည်။
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-8 text-xs text-zinc-500">
+            <p>အမြတ်နှုန်းတွက်စက် · Comfy Dark & Gold Theme Edition with Total Summary</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript Logic & Functionality -->
+    <script>
+/* obfuscated */
+const _0x18efc7=_0x420a;function _0xa2a2(){const _0x50722b=['avgMargin','UdrXz','461686Ozbgzv','FTwfu','\x20ကျပ်','SlWhG','bkIAG','MHdqN','IsglX','📈\x20ပျမ်းမျှ\x20Margin%:\x20','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-3.5\x20font-bold\x20text-white\x22>','bg-[#e3b88c]','querySelectorAll','VtQpP','bg-zinc-900','TnIte','💰\x20စုစုပေါင်း\x20ခန့်မှန်းရောင်းရငွေ:\x20','border-zinc-800','eXLgq','vZxZo','uVYzJ','bKQXd','fIsrO','uwpMQ','length','EiYsE','profit','opacity-0','hvLYq','lkTnZ','fFvFT','execCommand','lbWkE','addEventListener','HfIMt','ZRcrB','YIqVD','hqVAu','bkoFP','QoZVe','lAYWg','gAbhZ','\x20မျိုး\x20(စုစုပေါင်း\x20','text-zinc-300','\x20ကျပ်\x0a\x0a','HtnBK','CyRUT','en-US','BOGio','removeItem','📌\x20စုစုပေါင်း\x20ကုန်ရင်းစရိတ်:\x20','createElement','querySelector','textContent','HouZE','\x20ကျပ်\x20(Margin\x20','gMxMf','FaMPr','sumRevenue','preloader','102WIYpFG','aRsQa','sumItemsCount','%)\x0a\x20\x20\x20-\x20စုစုပေါင်း\x20အမြတ်:\x20','NOgZa','tcYpu','\x20ကျပ်</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-3.5\x20font-num\x20text-right\x20text-amber-200\x22>','vFSUD','ကူးယူရန်\x20ပေါင်းချုပ်\x20စာရင်း\x20မရှိသေးပါခင်ဗျာ။','YMPib','FWECa','ESwZc','value','tUzjL','qKJHI','textarea','[data-val=\x2220\x22]','push','YeslQ','CxdDG','format','xnSXg','pjUKm','oFTaE','10000','\x20ခု)</span>','FSrtF','mSKnf','WHNJs','-------------------------\x0a','TMofT','click','%</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-3.5\x20font-num\x20text-right\x20text-emerald-300\x20font-bold\x22>','Alzrj','gIaQX','pointer-events-none','3003fRkfJR','စရိတ်\x20','QogLk','rsJXi','NEzVV','\x20ကျပ်\x0a\x20\x20\x20-\x20ရောင်းစျေး\x20(unit):\x20','ssUUH','body','gcJkI','696852MsDKcC','KEvlX','trim','itemListTable','41130DIPdBo','YLSZG',')\x22\x20class=\x22text-zinc-500\x20hover:text-red-400\x20p-1\x20rounded-lg\x20transition-colors\x22\x20title=\x22ဖျက်မည်\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20data-lucide=\x22trash\x22\x20class=\x22w-4\x20h-4\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','QSOhq','SmivB','PoqGx','vXigm','HlCdU','zaEoG','add','MfIKA','clearListBtn','addToListBtn','yCMkj','fvwxr','Copy\x20failed','qty','error','IeMGY','totalProfit','mAVvg','CcZxS','rvbhM','text-zinc-950','wwsrW','map','price','bogxX','xiRsK','totalRevenue','margin','zLkXX','DlwCo','318829ZDxKRF','vxoee','cost','PgOLm','BkcGL','loleO','3|2|4|0|1','appendChild','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20colspan=\x228\x22\x20class=\x22p-8\x20text-center\x20text-zinc-500\x20font-normal\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20ပေါင်းချုပ်\x20စာရင်းတွက်ချက်ရန်\x20ပစ္စည်းများကို\x20အထက်ပါ\x20Input\x20တွင်\x20ဖြည့်၍\x20\x22ပေါင်းချုပ်စာရင်းသို့\x20ထည့်မည်\x22\x20ကို\x20နှိပ်ပါခင်ဗျာ။\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','lucide','chtIz','2125984agmsSs','\x20ကျပ်</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-3.5\x20text-center\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22removeItem(','27VVGYuc','=========================','100%','costRatioText','barProfit','0\x20%','qZwqB','NumberFormat','input','0\x20ကျပ်','aTgOE','\x20ခု)','profitRatioText','dKHwI','iAxbL','mdloP','yiWSH','HryYn','WIBKs','name','3|5|6|2|1|0|4','tzEZI','\x20ကျပ်</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-3.5\x20font-num\x20text-right\x20text-[#e3b88c]\x20font-bold\x22>','mztJt','VadDO','XXaGi','DFByJ','createIcons','KzZzR','3|4|1|6|5|0|2','✨\x20စုစုပေါင်း\x20အသားတင်အမြတ်:\x20','split','1889218knxTXL','markup','select','qincN','tJpLD','cIPcA','222315NcQOKR','vRZoB','remove','forEach','KZDPx','RjrdU','lBgaT','<i\x20data-lucide=\x22check\x22\x20class=\x22w-3.5\x20h-3.5\x20text-emerald-400\x22></i><span>ကူးယူပြီးပါပြီ</span>','getElementById','totalCost','ybMNL','CkLTF','ပစ္စည်း\x20','resetBtn','removeChild','xRNQx','active','5|2|3|0|6|1|4','\x0a\x20\x20\x20-\x20အရေအတွက်:\x20','innerHTML','mqzjC','width','classList','jKyXI','XXqaY','ကျေးဇူးပြု၍\x20မှန်ကန်သော\x20ကုန်ရင်းစျေးနှင့်\x20Margin%\x20ကို\x20ထည့်ပါ။','အမြတ်\x20','yElMy','FNfKW','sipYr','vmOir','kjYgo','\x20ကျပ်\x20<span\x20class=\x22text-xs\x20font-normal\x20text-zinc-400\x22>(','zopek','.preset-btn','itemName','qWegW','style','100gQcDKx','border-[#e3b88c]','DnPvh','sfZYL','Armnr','ofOMk','PGCJF','GnbnA','toFixed','gKYib','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-3.5\x20font-num\x20text-right\x22>'];_0xa2a2=function(){return _0x50722b;};return _0xa2a2();}function _0x420a(_0x176fbb,_0x5c3b11){_0x176fbb=_0x176fbb-0x85;const _0xa2a2e6=_0xa2a2();let _0x420ace=_0xa2a2e6[_0x176fbb];return _0x420ace;}(function(_0x2a6b41,_0x37c7a5){const _0x45dfef=_0x420a,_0x3f4090=_0x2a6b41();while(!![]){try{const _0xeb1a62=-parseInt(_0x45dfef(0x16d))/0x1+parseInt(_0x45dfef(0x134))/0x2+parseInt(_0x45dfef(0xe2))/0x3+parseInt(_0x45dfef(0x160))/0x4*(parseInt(_0x45dfef(0x13a))/0x5)+parseInt(_0x45dfef(0xb5))/0x6*(-parseInt(_0x45dfef(0x107))/0x7)+parseInt(_0x45dfef(0x112))/0x8*(parseInt(_0x45dfef(0x114))/0x9)+parseInt(_0x45dfef(0xe6))/0xa*(-parseInt(_0x45dfef(0xd9))/0xb);if(_0xeb1a62===_0x37c7a5)break;else _0x3f4090['push'](_0x3f4090['shift']());}catch(_0x534eb){_0x3f4090['push'](_0x3f4090['shift']());}}}(_0xa2a2,0xb175e),document[_0x18efc7(0x9a)]('DOMContentLoaded',()=>{const _0x57df70=_0x18efc7,_0x42ce90={'KZDPx':_0x57df70(0x14b),'KEvlX':_0x57df70(0x11d),'RjrdU':_0x57df70(0x116),'tUzjL':_0x57df70(0xb4),'XXqaY':_0x57df70(0x94),'NOgZa':_0x57df70(0xd8),'CyRUT':function(_0x25460f,_0x5023c9){return _0x25460f(_0x5023c9);},'gMxMf':function(_0x24e883,_0x4e1b9a){return _0x24e883<_0x4e1b9a;},'VtQpP':function(_0x1e9667,_0x31e1a5){return _0x1e9667>=_0x31e1a5;},'MHdqN':_0x57df70(0x128),'fIsrO':function(_0x165435,_0x3c622c){return _0x165435-_0x3c622c;},'PgOLm':function(_0x373d07,_0x343b3f){return _0x373d07/_0x343b3f;},'QoZVe':function(_0xba96df,_0x279dda){return _0xba96df*_0x279dda;},'HfIMt':function(_0x30386b,_0x342d39){return _0x30386b*_0x342d39;},'mztJt':function(_0x5c345e,_0x45a3d4){return _0x5c345e/_0x45a3d4;},'ESwZc':function(_0xba1c8b,_0x4aa5a7){return _0xba1c8b*_0x4aa5a7;},'vmOir':function(_0x5abe01,_0x536596){return _0x5abe01(_0x536596);},'YLSZG':function(_0x16bdd9,_0x438a8a){return _0x16bdd9(_0x438a8a);},'xnSXg':function(_0x3c855b,_0x28d308){return _0x3c855b(_0x28d308);},'lkTnZ':function(_0x3852c2,_0x5631fc){return _0x3852c2(_0x5631fc);},'bogxX':function(_0x100407,_0xfb85f){return _0x100407<=_0xfb85f;},'lAYWg':function(_0xe71fe1,_0x2e4303){return _0xe71fe1<_0x2e4303;},'HtnBK':function(_0x30b160,_0x4d1ac2){return _0x30b160>=_0x4d1ac2;},'xiRsK':_0x57df70(0x153),'hqVAu':function(_0x2e4feb){return _0x2e4feb();},'EVUnJ':function(_0x36adb6,_0x471124){return _0x36adb6(_0x471124);},'rvbhM':_0x57df70(0x12c),'ybMNL':_0x57df70(0x10d),'qWegW':_0x57df70(0xd1),'cIPcA':function(_0x524826,_0xf39751){return _0x524826===_0xf39751;},'xRNQx':function(_0x2432f6,_0xe1278d){return _0x2432f6!==_0xe1278d;},'PVwxn':'JxCFq','Alzrj':'ndcTT','NzBAI':_0x57df70(0x131),'TnIte':'ပစ္စည်း\x20၀\x20မျိုး','SlWhG':function(_0x39798b,_0x46a0cc){return _0x39798b>_0x46a0cc;},'CcZxS':function(_0x51146c,_0x11e754){return _0x51146c*_0x11e754;},'SmivB':function(_0x132ecd,_0x2c784b){return _0x132ecd/_0x2c784b;},'BOGio':function(_0x23f455,_0x1c6b3c){return _0x23f455(_0x1c6b3c);},'vXigm':function(_0x2a6b97,_0x3c76c7){return _0x2a6b97(_0x3c76c7);},'yCMkj':function(_0x2ccf30,_0x8992e7){return _0x2ccf30<=_0x8992e7;},'DnPvh':function(_0x2dc893,_0x35e09e){return _0x2dc893<_0x35e09e;},'gKYib':'0|1|5|2|3|4|6','kjYgo':function(_0x402877,_0x52d5fc){return _0x402877-_0x52d5fc;},'FNfKW':function(_0x7bc379,_0x1bfb45){return _0x7bc379-_0x1bfb45;},'WIBKs':function(_0x1e5ac7,_0x2a1c63){return _0x1e5ac7/_0x2a1c63;},'tJpLD':function(_0x3c617d,_0x53f426){return _0x3c617d*_0x53f426;},'qincN':function(_0x5a1872,_0x2e3746){return _0x5a1872/_0x2e3746;},'QogLk':function(_0x1d163a,_0x53bdb6){return _0x1d163a*_0x53bdb6;},'lBgaT':function(_0x348386,_0x36af71){return _0x348386(_0x36af71);},'fvwxr':function(_0x3c1b6,_0x238c88){return _0x3c1b6(_0x238c88);},'FTwfu':_0x57df70(0x13b),'HlCdU':_0x57df70(0x108),'QSOhq':_0x57df70(0x119),'mqzjC':function(_0x3b5a59,_0x28d2a7){return _0x3b5a59>_0x28d2a7;},'vnHEk':function(_0x667b54,_0x18c9fd){return _0x667b54(_0x18c9fd);},'nVXft':function(_0x5193d4,_0x5c6fd3){return _0x5193d4(_0x5c6fd3);},'uwpMQ':_0x57df70(0xa2),'bDvXx':_0x57df70(0xba),'mdloP':function(_0x359834,_0x5c9e50){return _0x359834+_0x5c9e50;},'chtIz':function(_0x296f67,_0x565c1a){return _0x296f67>=_0x565c1a;},'IeMGY':function(_0xe70c6a,_0x316cdc){return _0xe70c6a(_0x316cdc);},'CkLTF':function(_0x3f6486){return _0x3f6486();},'vFSUD':_0x57df70(0x176),'PoqGx':_0x57df70(0xfd),'mSKnf':_0x57df70(0x161),'DFByJ':_0x57df70(0x87),'iAxbL':_0x57df70(0x14a),'GnbnA':'data-val','CxdDG':function(_0x46e002){return _0x46e002();},'FSrtF':'click','YeslQ':'border-zinc-800','VXDdT':'text-zinc-300','BkcGL':function(_0x1d9911,_0x413f22){return _0x1d9911+_0x413f22;},'HouZE':function(_0x58238a,_0x250ec6){return _0x58238a(_0x250ec6);},'YMPib':function(_0x787710,_0x4315e3){return _0x787710(_0x4315e3);},'MdLMb':function(_0x42957e,_0x5bed99){return _0x42957e(_0x5bed99);},'ljPAF':function(_0x5bc26e,_0x4b0814){return _0x5bc26e===_0x4b0814;},'NEzVV':_0x57df70(0x99),'EiYsE':_0x57df70(0xcd),'jKyXI':_0x57df70(0xc5),'fFvFT':function(_0x130a60,_0x7afb4b,_0x5b59f0){return _0x130a60(_0x7afb4b,_0x5b59f0);},'tzEZI':function(_0x341f6b,_0x197092){return _0x341f6b!==_0x197092;},'aTgOE':_0x57df70(0x9d),'pjUKm':function(_0x44ff34,_0x85e515){return _0x44ff34===_0x85e515;},'DlwCo':function(_0x497efe,_0x2e793e){return _0x497efe!==_0x2e793e;},'WVkDC':'gIaQX','EoaEn':_0x57df70(0xbd),'ochKA':_0x57df70(0xc4),'loleO':'copy','IsglX':function(_0xa3c498,_0x5abf64,_0x4bf4c9){return _0xa3c498(_0x5abf64,_0x4bf4c9);},'oFTaE':_0x57df70(0xf5),'bSlHn':_0x57df70(0x15d),'zopek':_0x57df70(0x100),'bkoFP':_0x57df70(0x93),'ssUUH':_0x57df70(0x135),'MfIKA':'totalItemRevenue','UdrXz':_0x57df70(0x118),'vYkOr':_0x57df70(0x117),'EqSEW':_0x57df70(0xf2),'FaMPr':_0x57df70(0x147),'aHuVK':_0x57df70(0xf1),'qKJHI':'copySummaryBtn','ZRcrB':_0x57df70(0x15c),'yElMy':'sumCost','bkIAG':'sumProfit','nXCKV':_0x57df70(0x16b),'gcJkI':_0x57df70(0xe5)};if(window[_0x57df70(0x110)]){if(_0x42ce90[_0x57df70(0x139)]('sfZYL',_0x57df70(0x163)))lucide['createIcons']();else{const _0x31da3d=_0x42ce90[_0x57df70(0x13e)]['split']('|');let _0x335481=0x0;while(!![]){switch(_0x31da3d[_0x335481++]){case'0':_0x919888[_0x57df70(0xae)]=_0x42ce90[_0x57df70(0xe3)];continue;case'1':_0x164ce1['style'][_0x57df70(0x14f)]='0%';continue;case'2':_0x530d06[_0x57df70(0xae)]='0';continue;case'3':_0x3b017d[_0x57df70(0xae)]='0';continue;case'4':return{'price':0x0,'profit':0x0,'markup':0x0,'totalRevenue':0x0,'totalCost':0x0,'totalProfit':0x0};case'5':_0x175315['textContent']=_0x42ce90['KEvlX'];continue;case'6':_0x40e273['style']['width']=_0x42ce90[_0x57df70(0x13f)];continue;}break;}}}setTimeout(()=>{const _0x4f3427=_0x57df70,_0x4058d1=document[_0x4f3427(0x142)](_0x42ce90[_0x4f3427(0xc2)]);_0x4058d1&&(_0x4058d1[_0x4f3427(0x150)][_0x4f3427(0xef)](_0x42ce90[_0x4f3427(0x152)],_0x42ce90['NOgZa']),setTimeout(()=>_0x4058d1['remove'](),0x1f4));},0x190);const _0xd48992=document['getElementById'](_0x42ce90['bSlHn']),_0x34ef61=document['getElementById'](_0x57df70(0x109)),_0x298fc4=document[_0x57df70(0x142)](_0x57df70(0xf6)),_0x45cc77=document[_0x57df70(0x142)]('margin'),_0x41e3cf=document['getElementById'](_0x42ce90[_0x57df70(0x15b)]),_0x29e098=document[_0x57df70(0x142)](_0x42ce90[_0x57df70(0x9f)]),_0x423233=document[_0x57df70(0x142)](_0x42ce90[_0x57df70(0xdf)]),_0x48823c=document[_0x57df70(0x142)](_0x42ce90[_0x57df70(0xf0)]),_0x29e376=document['getElementById']('barCost'),_0x27d05c=document[_0x57df70(0x142)](_0x42ce90[_0x57df70(0x16c)]),_0x50f8a9=document[_0x57df70(0x142)](_0x42ce90['vYkOr']),_0x8fbb60=document[_0x57df70(0x142)](_0x57df70(0x120)),_0x52a717=document[_0x57df70(0x142)](_0x42ce90['EqSEW']),_0x47a280=document[_0x57df70(0x142)](_0x42ce90[_0x57df70(0xb2)]),_0x3f2954=document[_0x57df70(0x142)](_0x42ce90['aHuVK']),_0x438743=document[_0x57df70(0x142)](_0x42ce90[_0x57df70(0xc3)]),_0x5580fb=document[_0x57df70(0x85)](_0x42ce90[_0x57df70(0x9c)]),_0x456fc1=document[_0x57df70(0x142)](_0x42ce90[_0x57df70(0x155)]),_0x4788c2=document[_0x57df70(0x142)](_0x57df70(0xb3)),_0x3c6a68=document[_0x57df70(0x142)](_0x42ce90[_0x57df70(0x171)]),_0x115f42=document[_0x57df70(0x142)](_0x42ce90['nXCKV']),_0x3a0e32=document[_0x57df70(0x142)](_0x57df70(0xb7)),_0x5df8e6=document[_0x57df70(0x142)](_0x42ce90[_0x57df70(0xe1)]);let _0x1ee414=[];const _0x50bbdd=_0x418d1d=>new Intl[(_0x57df70(0x11b))](_0x57df70(0xa8),{'maximumFractionDigits':0x2})[_0x57df70(0xc9)](_0x418d1d);function _0x4a631a(){const _0x4fff75=_0x57df70,_0x225d1a=parseFloat(_0x34ef61[_0x4fff75(0xc1)])||0x0,_0x292ca9=parseFloat(_0x45cc77[_0x4fff75(0xc1)])||0x0,_0x37b5a4=_0x42ce90[_0x4fff75(0xa7)](parseInt,_0x298fc4[_0x4fff75(0xc1)])||0x1;if(_0x225d1a<=0x0||_0x42ce90[_0x4fff75(0xb1)](_0x292ca9,0x0)||_0x42ce90[_0x4fff75(0x86)](_0x292ca9,0x64)){const _0x4f970f=_0x42ce90[_0x4fff75(0x172)][_0x4fff75(0x133)]('|');let _0x425e9e=0x0;while(!![]){switch(_0x4f970f[_0x425e9e++]){case'0':_0x27d05c['style']['width']='0%';continue;case'1':_0x29e376[_0x4fff75(0x15f)][_0x4fff75(0x14f)]=_0x42ce90[_0x4fff75(0x13f)];continue;case'2':_0x48823c[_0x4fff75(0xae)]=_0x42ce90[_0x4fff75(0xe3)];continue;case'3':_0x41e3cf[_0x4fff75(0xae)]=_0x42ce90[_0x4fff75(0xe3)];continue;case'4':return{'price':0x0,'profit':0x0,'markup':0x0,'totalRevenue':0x0,'totalCost':0x0,'totalProfit':0x0};case'5':_0x29e098[_0x4fff75(0xae)]='0';continue;case'6':_0x423233[_0x4fff75(0xae)]='0';continue;}break;}}const _0xa963ab=_0x225d1a/_0x42ce90[_0x4fff75(0x8f)](0x1,_0x42ce90[_0x4fff75(0x10a)](_0x292ca9,0x64)),_0x127894=_0xa963ab-_0x225d1a,_0x503303=_0x42ce90[_0x4fff75(0xa0)](_0x42ce90['PgOLm'](_0x127894,_0x225d1a),0x64),_0x763621=_0x42ce90[_0x4fff75(0x9b)](_0x42ce90[_0x4fff75(0x12b)](_0x225d1a,_0xa963ab),0x64),_0x5c3ee2=_0x42ce90[_0x4fff75(0xa0)](_0x127894/_0xa963ab,0x64),_0x37076c=_0x42ce90[_0x4fff75(0xc0)](_0xa963ab,_0x37b5a4),_0x407353=_0x42ce90[_0x4fff75(0x9b)](_0x225d1a,_0x37b5a4),_0xf8ac41=_0x42ce90[_0x4fff75(0xa0)](_0x127894,_0x37b5a4);return _0x41e3cf[_0x4fff75(0xae)]=_0x50bbdd(_0xa963ab)+_0x4fff75(0x16f),_0x29e098['textContent']=_0x50bbdd(_0x127894),_0x423233[_0x4fff75(0xae)]=_0x42ce90['vmOir'](_0x50bbdd,_0x503303),_0x48823c[_0x4fff75(0x14d)]=_0x42ce90[_0x4fff75(0xe7)](_0x50bbdd,_0x37076c)+_0x4fff75(0x15a)+_0x37b5a4+_0x4fff75(0xce),_0x29e376['style'][_0x4fff75(0x14f)]=_0x763621+'%',_0x27d05c[_0x4fff75(0x15f)]['width']=_0x5c3ee2+'%',_0x50f8a9[_0x4fff75(0xae)]=_0x4fff75(0xda)+_0x763621['toFixed'](0x0)+'%',_0x8fbb60['textContent']='အမြတ်\x20'+_0x5c3ee2['toFixed'](0x0)+'%',{'price':_0xa963ab,'profit':_0x127894,'markup':_0x503303,'totalRevenue':_0x37076c,'totalCost':_0x407353,'totalProfit':_0xf8ac41};}function _0x1356af(){const _0x45a683=_0x57df70,_0x184aec={'qZwqB':function(_0x505ee6,_0x149088){return _0x42ce90['EVUnJ'](_0x505ee6,_0x149088);},'eXLgq':_0x42ce90[_0x45a683(0x102)],'cwcQG':_0x42ce90[_0x45a683(0xfc)],'ofOMk':_0x42ce90[_0x45a683(0x144)],'MNoAq':function(_0x105203,_0x342900){const _0x2c31c2=_0x45a683;return _0x42ce90[_0x2c31c2(0x158)](_0x105203,_0x342900);}};if(_0x42ce90['qWegW']===_0x42ce90[_0x45a683(0x15e)]){if(_0x42ce90['cIPcA'](_0x1ee414[_0x45a683(0x91)],0x0)){if(_0x42ce90[_0x45a683(0x149)](_0x42ce90['PVwxn'],_0x42ce90[_0x45a683(0xd6)])){const _0x4e56e3=_0x42ce90['NzBAI'][_0x45a683(0x133)]('|');let _0x59df97=0x0;while(!![]){switch(_0x4e56e3[_0x59df97++]){case'0':_0x3a0e32[_0x45a683(0xae)]=_0x42ce90[_0x45a683(0x88)];continue;case'1':_0x4788c2[_0x45a683(0xae)]=_0x45a683(0x11d);continue;case'2':return;case'3':_0x5df8e6[_0x45a683(0x14d)]=_0x45a683(0x10f);continue;case'4':_0x456fc1['textContent']=_0x42ce90[_0x45a683(0xe3)];continue;case'5':_0x115f42[_0x45a683(0xae)]=_0x45a683(0x119);continue;case'6':_0x3c6a68[_0x45a683(0xae)]=_0x42ce90[_0x45a683(0xe3)];continue;}break;}}else{_0x52fd1a['innerHTML']=_0x432c2e;if(_0xdb7b68['lucide'])_0x58cde6[_0x45a683(0x12f)]();}}let _0x41fd2e=0x0,_0x177e47=0x0,_0x3877e9=0x0,_0x3d830b=0x0;_0x5df8e6[_0x45a683(0x14d)]=_0x1ee414['map']((_0x113160,_0x34fe80)=>{const _0x1ad745=_0x45a683;if(_0x1ad745(0x8d)===_0x184aec['cwcQG']){_0x184aec['qZwqB'](_0x3540ea,_0x184aec[_0x1ad745(0x8b)]);return;}else{const _0x1596f2=_0x184aec[_0x1ad745(0x165)][_0x1ad745(0x133)]('|');let _0x20824a=0x0;while(!![]){switch(_0x1596f2[_0x20824a++]){case'0':_0x3d830b+=_0x113160[_0x1ad745(0xf6)];continue;case'1':return'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20class=\x22hover:bg-zinc-900/50\x20transition-colors\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-3.5\x20font-num\x20text-zinc-400\x22>'+(_0x34fe80+0x1)+_0x1ad745(0x175)+_0x113160['name']+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-3.5\x20font-num\x20text-right\x22>'+_0x184aec['MNoAq'](_0x50bbdd,_0x113160['qty'])+_0x1ad745(0x16a)+_0x184aec[_0x1ad745(0x11a)](_0x50bbdd,_0x113160['cost'])+_0x1ad745(0xbb)+_0x184aec[_0x1ad745(0x11a)](_0x50bbdd,_0x113160[_0x1ad745(0x104)])+_0x1ad745(0xd5)+_0x184aec[_0x1ad745(0x11a)](_0x50bbdd,_0x113160[_0x1ad745(0x100)])+_0x1ad745(0x12a)+_0x50bbdd(_0x113160[_0x1ad745(0xf9)])+_0x1ad745(0x113)+_0x34fe80+_0x1ad745(0xe8);case'2':_0x177e47+=_0x113160[_0x1ad745(0x103)];continue;case'3':_0x41fd2e+=_0x113160[_0x1ad745(0x143)];continue;case'4':_0x3877e9+=_0x113160[_0x1ad745(0xf9)];continue;}break;}}})['join']('');const _0x454676=_0x42ce90[_0x45a683(0x170)](_0x177e47,0x0)?_0x42ce90[_0x45a683(0xfb)](_0x42ce90[_0x45a683(0xea)](_0x3877e9,_0x177e47),0x64):0x0;_0x456fc1['textContent']=_0x50bbdd(_0x41fd2e)+_0x45a683(0x16f),_0x4788c2['textContent']=_0x50bbdd(_0x177e47)+'\x20ကျပ်',_0x3c6a68['textContent']=_0x42ce90['BOGio'](_0x50bbdd,_0x3877e9)+_0x45a683(0x16f),_0x115f42[_0x45a683(0xae)]=_0x42ce90[_0x45a683(0xa9)](_0x50bbdd,_0x454676)+'\x20%',_0x3a0e32[_0x45a683(0xae)]=_0x45a683(0x146)+_0x1ee414[_0x45a683(0x91)]+_0x45a683(0xa3)+_0x42ce90[_0x45a683(0x96)](_0x50bbdd,_0x3d830b)+_0x45a683(0x11f);if(window[_0x45a683(0x110)])lucide['createIcons']();}else{const _0x20b419=_0x42ce90[_0x45a683(0xca)](_0x477e6e,_0x31f76b[_0x45a683(0xc1)])||0x0,_0x3f7f4d=_0x42ce90[_0x45a683(0xca)](_0x370a48,_0x389ff1[_0x45a683(0xc1)])||0x0,_0x1e440b=_0x42ce90['lkTnZ'](_0x474b0a,_0x24c0ae[_0x45a683(0xc1)])||0x1,_0x3b00fa=_0x32468f[_0x45a683(0xc1)][_0x45a683(0xe4)]()||'ပစ္စည်း\x20('+(_0x3dd11f[_0x45a683(0x91)]+0x1)+')';if(_0x42ce90[_0x45a683(0x101)](_0x20b419,0x0)||_0x42ce90[_0x45a683(0xa1)](_0x3f7f4d,0x0)||_0x42ce90[_0x45a683(0xa6)](_0x3f7f4d,0x64)){_0x42ce90[_0x45a683(0xe7)](_0x271f07,_0x42ce90[_0x45a683(0x102)]);return;}const _0xbd494e=_0x42ce90[_0x45a683(0x9e)](_0x55233c);_0x446cc6[_0x45a683(0xc6)]({'name':_0x3b00fa,'cost':_0x20b419,'margin':_0x3f7f4d,'qty':_0x1e440b,'price':_0xbd494e[_0x45a683(0x100)],'profit':_0xbd494e[_0x45a683(0x93)],'totalCost':_0xbd494e['totalCost'],'totalRevenue':_0xbd494e[_0x45a683(0x103)],'totalProfit':_0xbd494e[_0x45a683(0xf9)]}),_0x7f6d68[_0x45a683(0xc1)]='',_0x42ce90[_0x45a683(0x9e)](_0x5403ad);}}window[_0x57df70(0xaa)]=function(_0x160cf8){const _0xf23cb=_0x57df70;if(_0x42ce90[_0xf23cb(0x149)](_0x42ce90[_0xf23cb(0x16e)],_0x42ce90[_0xf23cb(0xed)]))_0x1ee414['splice'](_0x160cf8,0x1),_0x42ce90[_0xf23cb(0x9e)](_0x1356af);else{const _0x440961=_0x389b31(_0x231b2d[_0xf23cb(0xc1)])||0x0,_0x4f6813=_0x2f0675(_0x75a1ce[_0xf23cb(0xc1)])||0x0,_0x4697fb=_0x42ce90[_0xf23cb(0xec)](_0x263997,_0x2191e2[_0xf23cb(0xc1)])||0x1;if(_0x42ce90[_0xf23cb(0xf3)](_0x440961,0x0)||_0x42ce90['DnPvh'](_0x4f6813,0x0)||_0x42ce90[_0xf23cb(0x86)](_0x4f6813,0x64)){const _0x1489c2=_0x42ce90[_0xf23cb(0x169)]['split']('|');let _0x159687=0x0;while(!![]){switch(_0x1489c2[_0x159687++]){case'0':_0x2eae6a['textContent']=_0x42ce90['KEvlX'];continue;case'1':_0x5c7722[_0xf23cb(0xae)]='0';continue;case'2':_0x59114e[_0xf23cb(0xae)]=_0x42ce90[_0xf23cb(0xe3)];continue;case'3':_0x2697be[_0xf23cb(0x15f)]['width']=_0x42ce90['RjrdU'];continue;case'4':_0xe049da[_0xf23cb(0x15f)][_0xf23cb(0x14f)]='0%';continue;case'5':_0x25dc69[_0xf23cb(0xae)]='0';continue;case'6':return{'price':0x0,'profit':0x0,'markup':0x0,'totalRevenue':0x0,'totalCost':0x0,'totalProfit':0x0};}break;}}const _0x39b418=_0x440961/_0x42ce90[_0xf23cb(0x159)](0x1,_0x42ce90[_0xf23cb(0x10a)](_0x4f6813,0x64)),_0xcad069=_0x42ce90[_0xf23cb(0x156)](_0x39b418,_0x440961),_0x467240=_0x42ce90[_0xf23cb(0xa0)](_0x42ce90[_0xf23cb(0x126)](_0xcad069,_0x440961),0x64),_0x5516dc=_0x42ce90[_0xf23cb(0x9b)](_0x440961/_0x39b418,0x64),_0x4534a0=_0x42ce90[_0xf23cb(0x138)](_0x42ce90[_0xf23cb(0x137)](_0xcad069,_0x39b418),0x64),_0x30bc2d=_0x42ce90[_0xf23cb(0xdb)](_0x39b418,_0x4697fb),_0x860b02=_0x440961*_0x4697fb,_0x75b16b=_0x42ce90[_0xf23cb(0xc0)](_0xcad069,_0x4697fb);return _0x13dbc9[_0xf23cb(0xae)]=_0x42ce90['lBgaT'](_0x2ec674,_0x39b418)+_0xf23cb(0x16f),_0x4a448b[_0xf23cb(0xae)]=_0x42ce90[_0xf23cb(0x140)](_0x30e75f,_0xcad069),_0x46de04[_0xf23cb(0xae)]=_0x42ce90[_0xf23cb(0xf4)](_0x4b3a96,_0x467240),_0x43249b[_0xf23cb(0x14d)]=_0x42ce90['fvwxr'](_0x25b8d8,_0x30bc2d)+_0xf23cb(0x15a)+_0x4697fb+'\x20ခု)</span>',_0x5f3a65[_0xf23cb(0x15f)][_0xf23cb(0x14f)]=_0x5516dc+'%',_0x2b6b4d[_0xf23cb(0x15f)][_0xf23cb(0x14f)]=_0x4534a0+'%',_0x200cf7[_0xf23cb(0xae)]=_0xf23cb(0xda)+_0x5516dc['toFixed'](0x0)+'%',_0x15acad[_0xf23cb(0xae)]=_0xf23cb(0x154)+_0x4534a0[_0xf23cb(0x168)](0x0)+'%',{'price':_0x39b418,'profit':_0xcad069,'markup':_0x467240,'totalRevenue':_0x30bc2d,'totalCost':_0x860b02,'totalProfit':_0x75b16b};}},_0x52a717['addEventListener'](_0x57df70(0xd4),()=>{const _0x30e364=_0x57df70,_0x54c60e={'aRsQa':function(_0x492387,_0x10141e){return _0x492387(_0x10141e);},'HUzcm':function(_0x3ce3e9,_0x4798c9){return _0x3ce3e9===_0x4798c9;},'Armnr':'0\x20ကျပ်','Tctlk':_0x42ce90[_0x30e364(0xe9)],'bKQXd':_0x42ce90[_0x30e364(0x88)],'PGCJF':function(_0x40644e,_0x527023){const _0x421fcc=_0x30e364;return _0x42ce90[_0x421fcc(0x14e)](_0x40644e,_0x527023);},'KzZzR':function(_0x8483b2,_0x4b1ffe){return _0x8483b2*_0x4b1ffe;},'TMofT':function(_0x171032,_0x1b264b){const _0x2a6fa3=_0x30e364;return _0x42ce90[_0x2a6fa3(0x126)](_0x171032,_0x1b264b);},'dKHwI':function(_0x5a744f,_0x11d552){const _0xa43404=_0x30e364;return _0x42ce90[_0xa43404(0xca)](_0x5a744f,_0x11d552);},'rsJXi':function(_0x1930fb,_0x3014e5){return _0x42ce90['vnHEk'](_0x1930fb,_0x3014e5);},'HryYn':function(_0x593b6f,_0x256e86){return _0x42ce90['nVXft'](_0x593b6f,_0x256e86);}};if(_0x42ce90[_0x30e364(0x139)](_0x42ce90[_0x30e364(0x90)],_0x42ce90['bDvXx'])){const _0xd0da5d={'jSYcL':function(_0x30644e,_0x4a0267){return _0x30644e+_0x4a0267;},'FWECa':function(_0x475f5e,_0x56200a){const _0xa34875=_0x30e364;return _0x54c60e[_0xa34875(0xb6)](_0x475f5e,_0x56200a);},'sipYr':function(_0x99ca8f,_0x5edf8d){return _0x99ca8f(_0x5edf8d);},'zLkXX':function(_0x5b681c,_0x8c82e3){return _0x5b681c(_0x8c82e3);}};if(_0x54c60e['HUzcm'](_0x1b775a[_0x30e364(0x91)],0x0)){_0x190aa0[_0x30e364(0x14d)]='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20colspan=\x228\x22\x20class=\x22p-8\x20text-center\x20text-zinc-500\x20font-normal\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20ပေါင်းချုပ်\x20စာရင်းတွက်ချက်ရန်\x20ပစ္စည်းများကို\x20အထက်ပါ\x20Input\x20တွင်\x20ဖြည့်၍\x20\x22ပေါင်းချုပ်စာရင်းသို့\x20ထည့်မည်\x22\x20ကို\x20နှိပ်ပါခင်ဗျာ။\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20',_0x4a80dd['textContent']='0\x20ကျပ်',_0x596752[_0x30e364(0xae)]=_0x30e364(0x11d),_0x4f80fe[_0x30e364(0xae)]=_0x54c60e[_0x30e364(0x164)],_0x37cbda[_0x30e364(0xae)]=_0x54c60e['Tctlk'],_0x2c823f[_0x30e364(0xae)]=_0x54c60e[_0x30e364(0x8e)];return;}let _0x17ccab=0x0,_0x495355=0x0,_0x58cb1f=0x0,_0x25c154=0x0;_0x282b5e[_0x30e364(0x14d)]=_0xe70773[_0x30e364(0xff)]((_0x300f29,_0x3b23de)=>{const _0x5ea5bc=_0x30e364;return _0x17ccab+=_0x300f29[_0x5ea5bc(0x143)],_0x495355+=_0x300f29['totalRevenue'],_0x58cb1f+=_0x300f29[_0x5ea5bc(0xf9)],_0x25c154+=_0x300f29['qty'],'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20class=\x22hover:bg-zinc-900/50\x20transition-colors\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-3.5\x20font-num\x20text-zinc-400\x22>'+_0xd0da5d['jSYcL'](_0x3b23de,0x1)+_0x5ea5bc(0x175)+_0x300f29[_0x5ea5bc(0x127)]+_0x5ea5bc(0x16a)+_0xd0da5d[_0x5ea5bc(0xbf)](_0x6272dd,_0x300f29[_0x5ea5bc(0xf6)])+_0x5ea5bc(0x16a)+_0xd0da5d['sipYr'](_0x3bc3f1,_0x300f29['cost'])+_0x5ea5bc(0xbb)+_0xf7fb8f(_0x300f29[_0x5ea5bc(0x104)])+_0x5ea5bc(0xd5)+_0xd0da5d[_0x5ea5bc(0x105)](_0x12957d,_0x300f29[_0x5ea5bc(0x100)])+_0x5ea5bc(0x12a)+_0xd0da5d[_0x5ea5bc(0x157)](_0x299d9c,_0x300f29[_0x5ea5bc(0xf9)])+_0x5ea5bc(0x113)+_0x3b23de+_0x5ea5bc(0xe8);})['join']('');const _0x41672c=_0x54c60e[_0x30e364(0x166)](_0x495355,0x0)?_0x54c60e[_0x30e364(0x130)](_0x54c60e[_0x30e364(0xd3)](_0x58cb1f,_0x495355),0x64):0x0;_0xd582ba['textContent']=_0x54c60e[_0x30e364(0x121)](_0x5a0214,_0x17ccab)+'\x20ကျပ်',_0x1d1dee['textContent']=_0x54c60e[_0x30e364(0xdc)](_0x1f906c,_0x495355)+_0x30e364(0x16f),_0x5e0dcc[_0x30e364(0xae)]=_0x54c60e[_0x30e364(0x125)](_0x1a25da,_0x58cb1f)+'\x20ကျပ်',_0x1d73dc['textContent']=_0x54c60e[_0x30e364(0xdc)](_0x2dae7a,_0x41672c)+'\x20%',_0x1165b2[_0x30e364(0xae)]=_0x30e364(0x146)+_0x421844['length']+_0x30e364(0xa3)+_0x3d8c9e(_0x25c154)+_0x30e364(0x11f);if(_0x1a3067[_0x30e364(0x110)])_0x5a4cd9[_0x30e364(0x12f)]();}else{const _0x5eccdb=_0x42ce90[_0x30e364(0xe7)](parseFloat,_0x34ef61['value'])||0x0,_0x1409ab=parseFloat(_0x45cc77[_0x30e364(0xc1)])||0x0,_0x47a855=_0x42ce90[_0x30e364(0xec)](parseInt,_0x298fc4[_0x30e364(0xc1)])||0x1,_0xb0372b=_0xd48992['value']['trim']()||'ပစ္စည်း\x20('+_0x42ce90[_0x30e364(0x123)](_0x1ee414[_0x30e364(0x91)],0x1)+')';if(_0x42ce90['bogxX'](_0x5eccdb,0x0)||_0x42ce90[_0x30e364(0x162)](_0x1409ab,0x0)||_0x42ce90[_0x30e364(0x111)](_0x1409ab,0x64)){_0x42ce90[_0x30e364(0xf8)](alert,_0x30e364(0x153));return;}const _0x48f2fb=_0x42ce90[_0x30e364(0x145)](_0x4a631a);_0x1ee414[_0x30e364(0xc6)]({'name':_0xb0372b,'cost':_0x5eccdb,'margin':_0x1409ab,'qty':_0x47a855,'price':_0x48f2fb[_0x30e364(0x100)],'profit':_0x48f2fb[_0x30e364(0x93)],'totalCost':_0x48f2fb[_0x30e364(0x143)],'totalRevenue':_0x48f2fb[_0x30e364(0x103)],'totalProfit':_0x48f2fb[_0x30e364(0xf9)]}),_0xd48992[_0x30e364(0xc1)]='',_0x42ce90[_0x30e364(0x145)](_0x1356af);}}),_0x5580fb[_0x57df70(0x13d)](_0x2dced4=>{const _0x37f46d=_0x57df70;_0x2dced4['addEventListener'](_0x42ce90[_0x37f46d(0xcf)],()=>{const _0x5d27f7=_0x37f46d,_0x13d30e={'yiWSH':_0x42ce90[_0x5d27f7(0xbc)],'wwsrW':_0x42ce90[_0x5d27f7(0xeb)],'mAVvg':_0x42ce90[_0x5d27f7(0xd0)],'ZBJDB':_0x5d27f7(0x14a),'XXaGi':_0x42ce90[_0x5d27f7(0x12e)]};_0x5580fb[_0x5d27f7(0x13d)](_0x269c94=>{const _0x142aa9=_0x5d27f7;_0x269c94[_0x142aa9(0x150)][_0x142aa9(0x13c)](_0x13d30e[_0x142aa9(0x124)],_0x13d30e[_0x142aa9(0xfe)],_0x13d30e[_0x142aa9(0xfa)],_0x13d30e['ZBJDB']),_0x269c94[_0x142aa9(0x150)][_0x142aa9(0xef)](_0x13d30e[_0x142aa9(0x12d)],_0x142aa9(0x8a),_0x142aa9(0xa4));}),_0x2dced4[_0x5d27f7(0x150)]['add'](_0x5d27f7(0x176),_0x42ce90[_0x5d27f7(0xeb)],_0x5d27f7(0x161),_0x42ce90[_0x5d27f7(0x122)]),_0x45cc77[_0x5d27f7(0xc1)]=_0x2dced4['getAttribute'](_0x42ce90[_0x5d27f7(0x167)]),_0x42ce90[_0x5d27f7(0xc8)](_0x4a631a);});}),[_0x34ef61,_0x45cc77,_0x298fc4][_0x57df70(0x13d)](_0x6224ad=>_0x6224ad[_0x57df70(0x9a)](_0x57df70(0x11c),_0x4a631a)),_0x47a280[_0x57df70(0x9a)](_0x42ce90[_0x57df70(0xcf)],()=>{const _0x25e7e4=_0x57df70;if(_0x42ce90['ljPAF'](_0x42ce90[_0x25e7e4(0xdd)],_0x42ce90[_0x25e7e4(0xdd)])){_0xd48992[_0x25e7e4(0xc1)]='',_0x34ef61['value']=_0x42ce90[_0x25e7e4(0x92)],_0x45cc77[_0x25e7e4(0xc1)]='20',_0x298fc4[_0x25e7e4(0xc1)]='1',_0x5580fb[_0x25e7e4(0x13d)](_0x4bac6e=>{const _0x4a4a64=_0x25e7e4;_0x4bac6e[_0x4a4a64(0x150)]['remove'](_0x4a4a64(0x176),_0x4a4a64(0xfd),_0x42ce90[_0x4a4a64(0xd0)],_0x42ce90[_0x4a4a64(0x122)]),_0x4bac6e[_0x4a4a64(0x150)][_0x4a4a64(0xef)](_0x42ce90[_0x4a4a64(0x12e)],_0x42ce90[_0x4a4a64(0xc7)],_0x42ce90['VXDdT']);});const _0x260c05=document[_0x25e7e4(0xad)](_0x42ce90[_0x25e7e4(0x151)]);_0x260c05&&_0x260c05['classList']['add'](_0x42ce90[_0x25e7e4(0xbc)],_0x42ce90[_0x25e7e4(0xeb)],_0x42ce90[_0x25e7e4(0xd0)],_0x42ce90[_0x25e7e4(0x122)]),_0x42ce90[_0x25e7e4(0x9e)](_0x4a631a);}else return _0x33f653+=_0x52911f['totalCost'],_0x450d57+=_0x46433c['totalRevenue'],_0x236016+=_0x3b2aa6['totalProfit'],_0x11d8ec+=_0x3647b2[_0x25e7e4(0xf6)],'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20class=\x22hover:bg-zinc-900/50\x20transition-colors\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-3.5\x20font-num\x20text-zinc-400\x22>'+_0x42ce90[_0x25e7e4(0x10b)](_0x3dc63f,0x1)+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-3.5\x20font-bold\x20text-white\x22>'+_0x352079[_0x25e7e4(0x127)]+_0x25e7e4(0x16a)+_0x42ce90[_0x25e7e4(0xaf)](_0x1fd7c7,_0x3d110a[_0x25e7e4(0xf6)])+_0x25e7e4(0x16a)+_0x42ce90['vmOir'](_0x29ce75,_0x4df415[_0x25e7e4(0x109)])+'\x20ကျပ်</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-3.5\x20font-num\x20text-right\x20text-amber-200\x22>'+_0x31ad28(_0x24d215['margin'])+'%</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22p-3.5\x20font-num\x20text-right\x20text-emerald-300\x20font-bold\x22>'+_0x42ce90[_0x25e7e4(0xbe)](_0x4e4779,_0x2774a3[_0x25e7e4(0x100)])+_0x25e7e4(0x12a)+_0x42ce90['MdLMb'](_0x5d3fad,_0x5c8579[_0x25e7e4(0xf9)])+_0x25e7e4(0x113)+_0x301e2c+_0x25e7e4(0xe8);}),_0x3f2954[_0x57df70(0x9a)](_0x42ce90[_0x57df70(0xcf)],()=>{const _0x5c957b=_0x57df70,_0x5867a9={'hvLYq':_0x42ce90[_0x5c957b(0x152)],'zaEoG':_0x42ce90[_0x5c957b(0xb9)],'vZxZo':function(_0x4b608f,_0x6d8cc0,_0x4133ae){const _0x1a70c7=_0x5c957b;return _0x42ce90[_0x1a70c7(0x97)](_0x4b608f,_0x6d8cc0,_0x4133ae);}};if(_0x42ce90[_0x5c957b(0x129)](_0x42ce90[_0x5c957b(0x11e)],_0x42ce90[_0x5c957b(0x11e)]))_0x3e536f[_0x5c957b(0x150)]['add'](_0x5867a9[_0x5c957b(0x95)],_0x5867a9[_0x5c957b(0xee)]),_0x5867a9[_0x5c957b(0x8c)](_0x16b01e,()=>_0x3701f0['remove'](),0x1f4);else{if(_0x42ce90['pjUKm'](_0x1ee414[_0x5c957b(0x91)],0x0))return;_0x1ee414=[],_0x1356af();}}),_0x438743[_0x57df70(0x9a)](_0x42ce90[_0x57df70(0xcf)],()=>{const _0xec0909=_0x57df70;if(_0x42ce90[_0xec0909(0xcb)](_0x1ee414[_0xec0909(0x91)],0x0)){if(_0x42ce90[_0xec0909(0x106)](_0xec0909(0xd7),_0x42ce90['WVkDC'])){const _0x5e5840='0|1|3|6|5|2|4'[_0xec0909(0x133)]('|');let _0x467cb1=0x0;while(!![]){switch(_0x5e5840[_0x467cb1++]){case'0':_0x5192d7[_0xec0909(0x14d)]=_0xec0909(0x10f);continue;case'1':_0x2ae622[_0xec0909(0xae)]=_0x42ce90[_0xec0909(0xe3)];continue;case'2':_0x45adef[_0xec0909(0xae)]=_0x42ce90[_0xec0909(0x88)];continue;case'3':_0x325259[_0xec0909(0xae)]=_0x42ce90[_0xec0909(0xe3)];continue;case'4':return;case'5':_0x1ab675[_0xec0909(0xae)]=_0x42ce90[_0xec0909(0xe9)];continue;case'6':_0x21b54d[_0xec0909(0xae)]=_0x42ce90['KEvlX'];continue;}break;}}else{alert(_0x42ce90['EoaEn']);return;}}let _0x547fc5='=========================\x0a📊\x20ပေါင်းချုပ်\x20အမြတ်နှုန်း\x20အစီရင်ခံစာ\x0a=========================\x0a\x0a';_0x1ee414[_0xec0909(0x13d)]((_0x2f14bb,_0x46f4d6)=>{const _0x4a789f=_0xec0909;_0x547fc5+=_0x46f4d6+0x1+'.\x20'+_0x2f14bb[_0x4a789f(0x127)]+_0x4a789f(0x14c)+_0x2f14bb[_0x4a789f(0xf6)]+'\x20ခု\x0a\x20\x20\x20-\x20ကုန်ရင်း\x20(unit):\x20'+_0x50bbdd(_0x2f14bb[_0x4a789f(0x109)])+_0x4a789f(0xde)+_0x42ce90['xnSXg'](_0x50bbdd,_0x2f14bb[_0x4a789f(0x100)])+_0x4a789f(0xb0)+_0x2f14bb[_0x4a789f(0x104)]+_0x4a789f(0xb8)+_0x50bbdd(_0x2f14bb['totalProfit'])+_0x4a789f(0xa5);}),_0x547fc5+=_0xec0909(0xd2),_0x547fc5+=_0xec0909(0xab)+_0x456fc1[_0xec0909(0xae)]+'\x0a',_0x547fc5+=_0xec0909(0x89)+_0x4788c2['textContent']+'\x0a',_0x547fc5+=_0xec0909(0x132)+_0x3c6a68[_0xec0909(0xae)]+'\x0a',_0x547fc5+=_0xec0909(0x174)+_0x115f42[_0xec0909(0xae)]+'\x0a',_0x547fc5+=_0xec0909(0x115);const _0x2e6666=document[_0xec0909(0xac)](_0x42ce90['ochKA']);_0x2e6666[_0xec0909(0xc1)]=_0x547fc5,document[_0xec0909(0xe0)][_0xec0909(0x10e)](_0x2e6666),_0x2e6666[_0xec0909(0x136)]();try{document[_0xec0909(0x98)](_0x42ce90[_0xec0909(0x10c)]);const _0x2f8fd3=_0x438743[_0xec0909(0x14d)];_0x438743[_0xec0909(0x14d)]=_0xec0909(0x141);if(window[_0xec0909(0x110)])lucide[_0xec0909(0x12f)]();_0x42ce90[_0xec0909(0x173)](setTimeout,()=>{const _0xa1abe5=_0xec0909;_0x438743[_0xa1abe5(0x14d)]=_0x2f8fd3;if(window[_0xa1abe5(0x110)])lucide[_0xa1abe5(0x12f)]();},0x7d0);}catch(_0x4803e8){console[_0xec0909(0xf7)](_0x42ce90[_0xec0909(0xcc)],_0x4803e8);}document['body'][_0xec0909(0x148)](_0x2e6666);}),_0x4a631a();}));
+</script>
+</body>
+</html>
