@@ -1,0 +1,843 @@
+<!doctype html>
+<html lang="my">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090d16">
+<title>TikTok Analytics — ပို့စ်မှတ်တမ်း dashboards</title>
+<!-- Tailwind CSS for modern layout base -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Google Font & Lucide Icons -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Padauk:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<style>
+:root {
+  --bg-dark: #070913;
+  --panel-bg: rgba(15, 23, 42, 0.65);
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --accent-cyan: #06b6d4;
+  --accent-pink: #ec4899;
+  --accent-purple: #8b5cf6;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-dark);
+  color: #f8fafc;
+  font-family: 'Plus Jakarta Sans', 'Padauk', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Glassmorphism Styles */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+}
+
+.glass-panel-glow {
+  position: relative;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.glass-panel-glow::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.4), transparent, rgba(236, 72, 153, 0.3));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Glow Background Ambient */
+.ambient-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.15;
+  animation: floatOrb 12s ease-in-out infinite alternate;
+}
+.orb-1 { width: 50vw; height: 50vw; top: -10%; left: -10%; background: #06b6d4; }
+.orb-2 { width: 45vw; height: 45vw; bottom: -10%; right: -10%; background: #ec4899; animation-delay: -4s; }
+.orb-3 { width: 35vw; height: 35vw; top: 40%; left: 30%; background: #6366f1; animation-delay: -8s; opacity: 0.1; }
+
+@keyframes floatOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -40px) scale(1.08); }
+  100% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.2);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.4);
+}
+
+/* Preloader Animation */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #050714;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+.preloader.done {
+  opacity: 0;
+  visibility: hidden;
+}
+.loader-ring {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #06b6d4;
+  border-right-color: #ec4899;
+  animation: spinRing 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+}
+@keyframes spinRing {
+  100% { transform: rotate(360deg); }
+}
+
+/* Table styles */
+.custom-table th {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(8px);
+}
+.custom-table tr {
+  transition: background-color 0.15s ease;
+}
+.custom-table tbody tr:hover {
+  background-color: rgba(56, 189, 248, 0.05);
+}
+
+/* Button & Field Interactivity */
+.btn-glow {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-glow:hover {
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+  transform: translateY(-1px);
+}
+.input-field {
+  background: rgba(2, 6, 23, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+}
+.input-field:focus {
+  outline: none;
+  border-color: rgba(56, 189, 248, 0.6);
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
+  background: rgba(15, 23, 42, 0.8);
+}
+</style>
+</head>
+
+<body class="relative">
+
+<!-- Dynamic Glowing Background -->
+<div class="ambient-bg">
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+  <div class="glow-orb orb-3"></div>
+</div>
+
+<!-- Preloader Screen -->
+<div class="preloader" id="preloader">
+  <div class="relative flex items-center justify-center mb-6">
+    <div class="loader-ring"></div>
+    <div class="absolute text-cyan-400 font-black text-xl">T</div>
+  </div>
+  <div class="text-xl font-bold tracking-widest text-white mb-1">TIKTOK <span class="text-cyan-400">ANALYTICS</span></div>
+  <div class="text-xs text-slate-400 tracking-wider mb-6">ဒေတာများ တွက်ချက်ပြင်ဆင်နေသည်...</div>
+  <div class="w-64 h-1.5 bg-slate-800 rounded-full overflow-hidden border border-white/5">
+    <div class="h-full bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 w-0 transition-all duration-200" id="loaderProgress"></div>
+  </div>
+  <div class="flex justify-between w-64 text-[11px] text-slate-400 mt-2">
+    <span id="loaderMessage">စတင်နေသည်...</span>
+    <span id="loaderPercent" class="text-cyan-400 font-bold">0%</span>
+  </div>
+</div>
+
+<!-- Main App Wrapper -->
+<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+  <!-- Header Section -->
+  <header class="glass-panel rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row justify-between items-center gap-4 sticky top-4 z-40">
+    <div class="flex items-center gap-3.5 w-full md:w-auto justify-between md:justify-start">
+      <div class="flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-pink-500 flex items-center justify-center text-white font-extrabold text-2xl shadow-lg shadow-cyan-500/30 border border-white/20">
+          <i data-lucide="video" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+            TikTok Analytics
+            <span class="text-xs px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 font-medium">PRO</span>
+          </h1>
+          <p class="text-xs text-slate-400">ကိုယ်ပိုင်ဗီဒီယိုတင်မှတ်တမ်းနှင့် ရလဒ်နှိုင်းယှဉ်မှု Dashboard</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions Buttons -->
+    <div class="flex items-center gap-2.5 w-full md:w-auto justify-end">
+      <button id="exportBtn" type="button" class="btn-glow px-4 py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-white/10 text-slate-200 text-sm font-semibold flex items-center gap-2 transition">
+        <i data-lucide="download" class="w-4 h-4 text-cyan-400"></i>
+        <span>CSV ထုတ်ယူရန်</span>
+      </button>
+      <button id="clearBtn" type="button" class="btn-glow px-4 py-2.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-rose-300 text-sm font-semibold flex items-center gap-2 transition">
+        <i data-lucide="trash-2" class="w-4 h-4 text-rose-400"></i>
+        <span>မှတ်တမ်းအားလုံးဖျက်ရန်</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Highlight Bar -->
+  <section class="glass-panel-glow rounded-2xl p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div class="space-y-1">
+      <div class="flex items-center gap-2 text-cyan-400 text-sm font-semibold">
+        <i data-lucide="sparkles" class="w-4 h-4"></i>
+        <span>တင်ချိန်ကောင်း အကြံပြုချက်</span>
+      </div>
+      <p class="text-slate-300 text-sm max-w-3xl leading-relaxed">
+        ပို့စ်တင်ပြီး ၂၄ နာရီအကြာ ရရှိသော Views နှင့် Engagement များကို မှတ်တမ်းတင်ပါ။ ပရိသတ် တုံ့ပြန်မှုအများဆုံး နေ့ရက်နှင့် အချိန်တန်းများကို တွက်ချက်ပေးပါမည်။
+      </p>
+    </div>
+    <div class="shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-semibold">
+      <i data-lucide="clock" class="w-4 h-4"></i>
+      <span>မြန်မာစံတော်ချိန် · UTC+6:30</span>
+    </div>
+  </section>
+
+  <!-- Key Metrics Dashboard Grid -->
+  <section class="grid grid-cols-2 lg:grid-cols-4 gap-4" aria-label="အဓိကအချက်အလက်များ">
+    <!-- Stat Item 1 -->
+    <div class="glass-panel rounded-2xl p-4 sm:p-5 relative overflow-hidden group hover:border-cyan-500/40 transition-all duration-300">
+      <div class="absolute -right-2 -bottom-2 opacity-5 text-white group-hover:opacity-10 transition">
+        <i data-lucide="film" class="w-24 h-24"></i>
+      </div>
+      <div class="flex justify-between items-start mb-2">
+        <span class="text-xs font-semibold text-slate-400">မှတ်တမ်းတင်ထားသော ပို့စ်</span>
+        <div class="p-2 rounded-lg bg-cyan-500/10 text-cyan-400"><i data-lucide="video" class="w-4 h-4"></i></div>
+      </div>
+      <div class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight" id="totalPosts">0</div>
+      <div class="text-[11px] text-slate-400 mt-1">စာရင်းထဲရှိ ဗီဒီယိုစုစုပေါင်း</div>
+    </div>
+
+    <!-- Stat Item 2 -->
+    <div class="glass-panel rounded-2xl p-4 sm:p-5 relative overflow-hidden group hover:border-emerald-500/40 transition-all duration-300">
+      <div class="absolute -right-2 -bottom-2 opacity-5 text-white group-hover:opacity-10 transition">
+        <i data-lucide="eye" class="w-24 h-24"></i>
+      </div>
+      <div class="flex justify-between items-start mb-2">
+        <span class="text-xs font-semibold text-slate-400">ပျမ်းမျှ Views</span>
+        <div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400"><i data-lucide="trending-up" class="w-4 h-4"></i></div>
+      </div>
+      <div class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight" id="avgViews">—</div>
+      <div class="text-[11px] text-slate-400 mt-1">တင်ပြီး ၂၄ နာရီအကြာ ပျမ်းမျှ</div>
+    </div>
+
+    <!-- Stat Item 3 -->
+    <div class="glass-panel rounded-2xl p-4 sm:p-5 relative overflow-hidden group hover:border-purple-500/40 transition-all duration-300">
+      <div class="absolute -right-2 -bottom-2 opacity-5 text-white group-hover:opacity-10 transition">
+        <i data-lucide="heart" class="w-24 h-24"></i>
+      </div>
+      <div class="flex justify-between items-start mb-2">
+        <span class="text-xs font-semibold text-slate-400">ပျမ်းမျှ Engagement</span>
+        <div class="p-2 rounded-lg bg-purple-500/10 text-purple-400"><i data-lucide="activity" class="w-4 h-4"></i></div>
+      </div>
+      <div class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight" id="avgEng">—</div>
+      <div class="text-[11px] text-slate-400 mt-1">(Interactions ÷ Views) %</div>
+    </div>
+
+    <!-- Stat Item 4 -->
+    <div class="glass-panel rounded-2xl p-4 sm:p-5 relative overflow-hidden group hover:border-amber-500/40 transition-all duration-300">
+      <div class="absolute -right-2 -bottom-2 opacity-5 text-white group-hover:opacity-10 transition">
+        <i data-lucide="calendar" class="w-24 h-24"></i>
+      </div>
+      <div class="flex justify-between items-start mb-2">
+        <span class="text-xs font-semibold text-slate-400">အများဆုံးတင်သောနေ့</span>
+        <div class="p-2 rounded-lg bg-amber-500/10 text-amber-400"><i data-lucide="award" class="w-4 h-4"></i></div>
+      </div>
+      <div class="text-xl sm:text-2xl font-extrabold text-white tracking-tight truncate" id="topDay">—</div>
+      <div class="text-[11px] text-slate-400 mt-1">မှတ်တမ်းအရ ပို့စ်အများဆုံး</div>
+    </div>
+  </section>
+
+  <!-- Main Grid Layout (Form & Summaries) -->
+  <main class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+    
+    <!-- Left Column: Form Panel -->
+    <section class="lg:col-span-5 glass-panel rounded-2xl p-5 sm:p-6 space-y-5">
+      <div class="border-b border-white/10 pb-4">
+        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+          <i data-lucide="plus-circle" class="w-5 h-5 text-cyan-400"></i>
+          <span>ဗီဒီယိုအသစ် မှတ်တမ်းတင်ရန်</span>
+        </h2>
+        <p class="text-xs text-slate-400 mt-1">တင်ချိန်ကို မြန်မာစံတော်ချိန် (MMT) ဖြင့် ဖြည့်စွက်ပါ။</p>
+      </div>
+
+      <form id="postForm" class="space-y-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <label for="date" class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+              <span>တင်ရက်စွဲ *</span>
+            </label>
+            <input id="date" type="date" required class="input-field w-full px-3 py-2.5 rounded-xl text-xs text-white color-scheme-dark">
+          </div>
+          <div class="space-y-1">
+            <label for="time" class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+              <span>တင်ချိန် *</span>
+            </label>
+            <input id="time" type="time" required class="input-field w-full px-3 py-2.5 rounded-xl text-xs text-white color-scheme-dark">
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label for="url" class="text-xs font-semibold text-slate-300">ဗီဒီယိုလင့်ခ် (ရွေးချယ်နိုင်)</label>
+          <input id="url" type="url" placeholder="https://www.tiktok.com/@.../video/..." class="input-field w-full px-3 py-2.5 rounded-xl text-xs text-white placeholder-slate-500">
+        </div>
+
+        <div class="space-y-1">
+          <label for="topic" class="text-xs font-semibold text-slate-300">အကြောင်းအရာ / အမျိုးအစား</label>
+          <input id="topic" type="text" maxlength="120" placeholder="ဥပမာ - recap, tutorial, comedy" class="input-field w-full px-3 py-2.5 rounded-xl text-xs text-white placeholder-slate-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <label for="views" class="text-xs font-semibold text-slate-300">Views (၂၄ နာရီ) *</label>
+            <input id="views" type="number" min="0" step="1" required placeholder="0" class="input-field w-full px-3 py-2.5 rounded-xl text-xs text-white placeholder-slate-500">
+          </div>
+          <div class="space-y-1">
+            <label for="likes" class="text-xs font-semibold text-slate-300">Likes</label>
+            <input id="likes" type="number" min="0" step="1" value="0" class="input-field w-full px-3 py-2.5 rounded-xl text-xs text-white">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <label for="comments" class="text-xs font-semibold text-slate-300">Comments</label>
+            <input id="comments" type="number" min="0" step="1" value="0" class="input-field w-full px-3 py-2.5 rounded-xl text-xs text-white">
+          </div>
+          <div class="space-y-1">
+            <label for="shares" class="text-xs font-semibold text-slate-300">Shares</label>
+            <input id="shares" type="number" min="0" step="1" value="0" class="input-field w-full px-3 py-2.5 rounded-xl text-xs text-white">
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label for="watch" class="text-xs font-semibold text-slate-300">ပျမ်းမျှကြည့်ချိန် (စက္ကန့်)</label>
+          <input id="watch" type="number" min="0" step="0.1" placeholder="ဥပမာ - 12.5" class="input-field w-full px-3 py-2.5 rounded-xl text-xs text-white placeholder-slate-500">
+        </div>
+
+        <div class="flex items-center gap-3 pt-2">
+          <button type="submit" class="btn-glow flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-sm shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-2 transition">
+            <i data-lucide="save" class="w-4 h-4"></i>
+            <span>မှတ်တမ်းသိမ်းရန်</span>
+          </button>
+          <button type="reset" class="px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm border border-white/10 transition">
+            ပြန်စရန်
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Right Column: Performance Summary Tables -->
+    <section class="lg:col-span-7 glass-panel rounded-2xl p-5 sm:p-6 space-y-5">
+      <div class="border-b border-white/10 pb-4">
+        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+          <i data-lucide="bar-chart-3" class="w-5 h-5 text-emerald-400"></i>
+          <span>ဘယ်အချိန်/ဘယ်နေ့မှာ ပိုကောင်းသလဲ</span>
+        </h2>
+        <p class="text-xs text-slate-400 mt-1">အုပ်စုတစ်ခုချင်းတွင် ပို့စ် ၃–၅ ခုရပြီးမှ ပျမ်းမျှရလဒ်ကို သုံးသပ်ပါ။</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Day Summary Subpanel -->
+        <div class="bg-slate-900/60 rounded-xl p-4 border border-white/5 space-y-3">
+          <div class="flex items-center gap-2 text-xs font-bold text-slate-200">
+            <div class="w-2 h-2 rounded-full bg-cyan-400 shadow-sm shadow-cyan-400"></div>
+            <span>တစ်ပတ်၏နေ့အလိုက်</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs custom-table">
+              <thead>
+                <tr class="text-slate-400 border-b border-white/10">
+                  <th class="pb-2 font-semibold">နေ့</th>
+                  <th class="pb-2 text-right font-semibold">ပို့စ်</th>
+                  <th class="pb-2 text-right font-semibold">Views</th>
+                  <th class="pb-2 text-right font-semibold">Eng.</th>
+                </tr>
+              </thead>
+              <tbody id="weekdayRows" class="divide-y divide-white/5 text-slate-300"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Slot Summary Subpanel -->
+        <div class="bg-slate-900/60 rounded-xl p-4 border border-white/5 space-y-3">
+          <div class="flex items-center gap-2 text-xs font-bold text-slate-200">
+            <div class="w-2 h-2 rounded-full bg-purple-400 shadow-sm shadow-purple-400"></div>
+            <span>တင်ချိန်အုပ်စုအလိုက် (MMT)</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs custom-table">
+              <thead>
+                <tr class="text-slate-400 border-b border-white/10">
+                  <th class="pb-2 font-semibold">အချိန်</th>
+                  <th class="pb-2 text-right font-semibold">ပို့စ်</th>
+                  <th class="pb-2 text-right font-semibold">Views</th>
+                  <th class="pb-2 text-right font-semibold">Eng.</th>
+                </tr>
+              </thead>
+              <tbody id="slotRows" class="divide-y divide-white/5 text-slate-300"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Hint Box -->
+      <div class="p-3.5 rounded-xl bg-slate-900/80 border border-white/10 text-xs text-slate-400 flex items-start gap-2.5">
+        <i data-lucide="info" class="w-4 h-4 text-cyan-400 shrink-0 mt-0.5"></i>
+        <span>အချိန်အုပ်စုများ: 06–09၊ 11–14၊ 16–19၊ 19–22။ အခြားအချိန်များကို "အခြား" ထဲတွင် ထည့်တွက်သည်။ နမူနာနည်းသော အုပ်စုများ၏ ရလဒ်ကို အတည်မယူပါနှင့်။</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Records Table Section -->
+  <section class="glass-panel rounded-2xl p-5 sm:p-6 space-y-4">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <div>
+        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+          <i data-lucide="list-video" class="w-5 h-5 text-purple-400"></i>
+          <span>ပို့စ်မှတ်တမ်းများ</span>
+        </h2>
+        <p class="text-xs text-slate-400 mt-0.5" id="recordMeta">ဒီဘရောက်ဇာတွင်သာ သိမ်းဆည်းထားသည်။</p>
+      </div>
+      <div class="text-xs text-slate-400 flex items-center gap-1.5 bg-slate-900/60 px-3 py-1.5 rounded-lg border border-white/5 self-start sm:self-auto">
+        <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
+        <span>စက်တွင်းသီးသန့် Local Data</span>
+      </div>
+    </div>
+
+    <!-- Data Table Container -->
+    <div class="overflow-x-auto rounded-xl border border-white/10 bg-slate-950/40">
+      <table class="w-full text-left text-xs custom-table whitespace-nowrap min-w-[900px]">
+        <thead>
+          <tr class="text-slate-300 font-semibold border-b border-white/10">
+            <th class="p-3">ရက်စွဲ</th>
+            <th class="p-3">နေ့</th>
+            <th class="p-3">အချိန်</th>
+            <th class="p-3">အချိန်တန်း</th>
+            <th class="p-3">အကြောင်းအရာ</th>
+            <th class="p-3 text-right">Views</th>
+            <th class="p-3 text-right">Likes</th>
+            <th class="p-3 text-right">Comments</th>
+            <th class="p-3 text-right">Shares</th>
+            <th class="p-3 text-right">Engagement</th>
+            <th class="p-3 text-center">လင့်ခ်</th>
+            <th class="p-3 text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody id="postRows" class="divide-y divide-white/5 text-slate-300"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center text-xs text-slate-500 py-4">
+    အချက်အလက်များကို သင့်စက်၏ ဘရောက်ဇာ (LocalStorage) တွင်သာ သိုလှောင်ထားပါသည်။ TikTok အကောင့်သို့ အလိုအလျောက် ချိတ်ဆက်ခြင်း မပြုပါ။
+  </footer>
+
+</div>
+
+<!-- Custom Toast Notification -->
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-xl bg-slate-900/95 border border-cyan-500/30 text-white text-xs font-semibold shadow-2xl backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2.5">
+  <i data-lucide="check-circle-2" class="w-4 h-4 text-cyan-400" id="toastIcon"></i>
+  <span id="toastMsg">အကြောင်းကြားချက်</span>
+</div>
+
+<!-- Custom Confirmation Modal -->
+<div id="confirmModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+  <div class="glass-panel max-w-sm w-full rounded-2xl p-6 space-y-4 text-center border border-white/10 shadow-2xl transform scale-95 transition-transform duration-200" id="modalBox">
+    <div class="w-12 h-12 rounded-full bg-rose-500/10 text-rose-400 flex items-center justify-center mx-auto border border-rose-500/20">
+      <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+    </div>
+    <div class="space-y-1">
+      <h3 class="text-base font-bold text-white" id="modalTitle">သေချာပါသလား။</h3>
+      <p class="text-xs text-slate-400 leading-relaxed" id="modalText">ဒီမှတ်တမ်းကို အပြီးဖျက်ပါမည်။</p>
+    </div>
+    <div class="flex gap-2.5 pt-2">
+      <button id="modalCancel" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition border border-white/10">မဖျက်တော့ပါ</button>
+      <button id="modalConfirm" class="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition shadow-lg shadow-rose-600/30">ဖျက်မည်</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  'use strict';
+
+  const KEY = 'tiktokAnalyticsMM_v1';
+  const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  const dayMy = {
+    Monday: 'တနင်္လာ',
+    Tuesday: 'အင်္ဂါ',
+    Wednesday: 'ဗုဒ္ဓဟူး',
+    Thursday: 'ကြာသပတေး',
+    Friday: 'သောကြာ',
+    Saturday: 'စနေ',
+    Sunday: 'တနင်္ဂနွေ'
+  };
+
+  const $ = s => document.querySelector(s);
+  let posts = load();
+  let pendingDeleteAction = null;
+
+  // Initialize Lucide icons
+  lucide.createIcons();
+
+  function load() {
+    try {
+      const x = JSON.parse(localStorage.getItem(KEY) || '[]');
+      return Array.isArray(x) ? x : [];
+    } catch(e) {
+      return [];
+    }
+  }
+
+  function save() {
+    try {
+      localStorage.setItem(KEY, JSON.stringify(posts));
+      return true;
+    } catch(e) {
+      showToast('သိမ်းဆည်းမှုမအောင်မြင်ပါ။ ဘရောက်ဇာနေရာလွတ်ကို စစ်ပါ၊', true);
+      return false;
+    }
+  }
+
+  function showToast(msg, isError = false) {
+    const el = $('#toast');
+    const msgEl = $('#toastMsg');
+    const iconEl = $('#toastIcon');
+    
+    msgEl.textContent = msg;
+    if (isError) {
+      el.classList.replace('border-cyan-500/30', 'border-rose-500/30');
+      iconEl.setAttribute('data-lucide', 'alert-circle');
+      iconEl.setAttribute('class', 'w-4 h-4 text-rose-400');
+    } else {
+      el.classList.replace('border-rose-500/30', 'border-cyan-500/30');
+      iconEl.setAttribute('data-lucide', 'check-circle-2');
+      iconEl.setAttribute('class', 'w-4 h-4 text-cyan-400');
+    }
+    lucide.createIcons();
+
+    el.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+    el.classList.add('opacity-100', 'translate-y-0');
+
+    clearTimeout(showToast.t);
+    showToast.t = setTimeout(() => {
+      el.classList.remove('opacity-100', 'translate-y-0');
+      el.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+    }, 2800);
+  }
+
+  // Custom Modal Helper
+  function openConfirmModal(title, text, onConfirm) {
+    const modal = $('#confirmModal');
+    const box = $('#modalBox');
+    $('#modalTitle').textContent = title;
+    $('#modalText').textContent = text;
+    pendingDeleteAction = onConfirm;
+
+    modal.classList.remove('opacity-0', 'pointer-events-none');
+    box.classList.remove('scale-95');
+    box.classList.add('scale-100');
+  }
+
+  function closeConfirmModal() {
+    const modal = $('#confirmModal');
+    const box = $('#modalBox');
+    modal.classList.add('opacity-0', 'pointer-events-none');
+    box.classList.remove('scale-100');
+    box.classList.add('scale-95');
+    pendingDeleteAction = null;
+  }
+
+  $('#modalCancel').addEventListener('click', closeConfirmModal);
+  $('#modalConfirm').addEventListener('click', () => {
+    if (pendingDeleteAction) pendingDeleteAction();
+    closeConfirmModal();
+  });
+
+  function dayName(d) {
+    const x = new Date(d + 'T12:00:00');
+    return days[(x.getDay() + 6) % 7];
+  }
+
+  function slotOf(t) {
+    const [h, m] = t.split(':').map(Number);
+    const n = h + m / 60;
+    if (n >= 6 && n < 9) return '06–09';
+    if (n >= 11 && n < 14) return '11–14';
+    if (n >= 16 && n < 19) return '16–19';
+    if (n >= 19 && n < 22) return '19–22';
+    return 'အခြား';
+  }
+
+  function eng(p) {
+    return p.views > 0 ? (p.likes + p.comments + p.shares) / p.views : 0;
+  }
+
+  function avg(xs, fn) {
+    return xs.length ? xs.reduce((a, x) => a + fn(x), 0) / xs.length : null;
+  }
+
+  const num = n => Number(n || 0).toLocaleString('en-US');
+  const pct = n => n === null ? '—' : (n * 100).toFixed(1) + '%';
+  function esc(v) {
+    return String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  function render() {
+    const total = posts.length;
+    $('#totalPosts').textContent = num(total);
+    $('#avgViews').textContent = total ? num(Math.round(avg(posts, p => p.views))) : '—';
+    $('#avgEng').textContent = total ? pct(avg(posts, eng)) : '—';
+
+    const dayCounts = days.map(d => posts.filter(p => dayName(p.date) === d));
+    let mx = Math.max(0, ...dayCounts.map(a => a.length));
+    $('#topDay').textContent = total && mx > 0 ? dayMy[days[dayCounts.findIndex(a => a.length === mx)]] : '—';
+
+    // Render Weekday breakdown table
+    $('#weekdayRows').innerHTML = days.map((d, i) => {
+      let a = dayCounts[i];
+      return `<tr class="hover:bg-white/5">
+        <td class="py-2.5 font-medium">${dayMy[d]}</td>
+        <td class="py-2.5 text-right font-mono">${num(a.length)}</td>
+        <td class="py-2.5 text-right font-mono text-cyan-300">${a.length ? num(Math.round(avg(a, p => p.views))) : '—'}</td>
+        <td class="py-2.5 text-right font-mono text-emerald-400">${a.length ? pct(avg(a, eng)) : '—'}</td>
+      </tr>`;
+    }).join('');
+
+    // Render Time slot breakdown table
+    const slots = ['06–09', '11–14', '16–19', '19–22', 'အခြား'];
+    const sg = slots.map(s => posts.filter(p => slotOf(p.time) === s));
+    $('#slotRows').innerHTML = slots.map((s, i) => {
+      let a = sg[i];
+      return `<tr class="hover:bg-white/5">
+        <td class="py-2.5 font-medium"><span class="px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 text-[11px] border border-purple-500/20">${s}</span></td>
+        <td class="py-2.5 text-right font-mono">${num(a.length)}</td>
+        <td class="py-2.5 text-right font-mono text-cyan-300">${a.length ? num(Math.round(avg(a, p => p.views))) : '—'}</td>
+        <td class="py-2.5 text-right font-mono text-emerald-400">${a.length ? pct(avg(a, eng)) : '—'}</td>
+      </tr>`;
+    }).join('');
+
+    $('#recordMeta').textContent = `မှတ်တမ်းစုစုပေါင်း ${num(total)} ခု · ဒီဘရောက်ဇာတွင်သာ သိမ်းဆည်းထားသည်။`;
+
+    if (!total) {
+      $('#postRows').innerHTML = `<tr><td colspan="12" class="text-center py-8 text-slate-500">မှတ်တမ်းမရှိသေးပါ။ ဖောင်မှ ပထမဆုံး ပို့စ်အချက်အလက်များကို ထည့်ပါ။</td></tr>`;
+      return;
+    }
+
+    const sorted = [...posts].sort((a, b) => (b.date + b.time).localeCompare(a.date + a.time));
+    $('#postRows').innerHTML = sorted.map(p => {
+      let d = dayName(p.date), sl = slotOf(p.time);
+      let link = p.url ? `<a href="${esc(p.url)}" target="_blank" rel="noopener text-cyan-400" class="inline-flex items-center gap-1 text-cyan-400 hover:underline"><i data-lucide="external-link" class="w-3.5 h-3.5"></i>ဖွင့်ရန်</a>` : '—';
+      return `<tr class="hover:bg-white/5 transition">
+        <td class="p-3 font-mono">${esc(p.date)}</td>
+        <td class="p-3 font-medium text-slate-200">${dayMy[d]}</td>
+        <td class="p-3 font-mono text-slate-300">${esc(p.time)}</td>
+        <td class="p-3"><span class="px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 font-medium text-[11px]">${esc(sl)}</span></td>
+        <td class="p-3 max-w-[160px] truncate text-slate-300">${esc(p.topic || '—')}</td>
+        <td class="p-3 text-right font-mono font-bold text-white">${num(p.views)}</td>
+        <td class="p-3 text-right font-mono text-slate-300">${num(p.likes)}</td>
+        <td class="p-3 text-right font-mono text-slate-300">${num(p.comments)}</td>
+        <td class="p-3 text-right font-mono text-slate-300">${num(p.shares)}</td>
+        <td class="p-3 text-right font-mono text-emerald-400 font-bold">${pct(eng(p))}</td>
+        <td class="p-3 text-center">${link}</td>
+        <td class="p-3 text-center">
+          <button type="button" class="p-1.5 rounded-lg hover:bg-rose-500/20 text-rose-400 hover:text-rose-300 transition" data-id="${esc(p.id)}" aria-label="ဖျက်ရန်">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
+        </td>
+      </tr>`;
+    }).join('');
+
+    lucide.createIcons();
+  }
+
+  // Form Submit Handler
+  $('#postForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const vals = {
+      date: $('#date').value,
+      time: $('#time').value,
+      url: $('#url').value.trim(),
+      topic: $('#topic').value.trim(),
+      views: Number($('#views').value),
+      likes: Number($('#likes').value || 0),
+      comments: Number($('#comments').value || 0),
+      shares: Number($('#shares').value || 0),
+      watch: $('#watch').value === '' ? null : Number($('#watch').value)
+    };
+
+    if (!vals.date || !vals.time || !Number.isFinite(vals.views) || vals.views < 0) {
+      showToast('လိုအပ်သော ရက်စွဲ၊ အချိန်နှင့် Views ကို မှန်ကန်စွာ ဖြည့်ပါ။', true);
+      return;
+    }
+    if (vals.url && !/^https?:\/\//i.test(vals.url)) {
+      showToast('ဗီဒီယိုလင့်ခ်ကို https:// ဖြင့် စတင်ထည့်ပါ၊', true);
+      return;
+    }
+
+    posts.push({
+      id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()),
+      ...vals
+    });
+
+    if (!save()) {
+      posts.pop();
+      return;
+    }
+
+    e.currentTarget.reset();
+    $('#likes').value = '0';
+    $('#comments').value = '0';
+    $('#shares').value = '0';
+    render();
+    showToast('ပို့စ်မှတ်တမ်း အောင်မြင်စွာ သိမ်းပြီးပါပြီ။');
+  });
+
+  // Single Item Delete
+  $('#postRows').addEventListener('click', e => {
+    const btn = e.target.closest('[data-id]');
+    if (!btn) return;
+    const id = btn.dataset.id;
+    openConfirmModal('မှတ်တမ်းဖျက်ရန် သေချာပါသလား။', 'ဒီဗီဒီယို၏ Analytics မှတ်တမ်းကို စာရင်းမှ ဖျက်ပါမည်။', () => {
+      posts = posts.filter(p => p.id !== id);
+      save();
+      render();
+      showToast('မှတ်တမ်းတစ်ခုကို ဖျက်လိုက်ပါပြီ။');
+    });
+  });
+
+  // Clear All
+  $('#clearBtn').addEventListener('click', () => {
+    if (!posts.length) {
+      showToast('ဖျက်ရန် မှတ်တမ်း မရှိသေးပါ။', true);
+      return;
+    }
+    openConfirmModal('မှတ်တမ်းအားလုံး ဖျက်ရန် သေချာပါသလား။', `စုစုပေါင်း မှတ်တမ်း ${posts.length} ခုလုံးကို အပြီးဖျက်ပါမည်။ CSV ထုတ်ယူထားရန် အကြံပြုပါသည်။`, () => {
+      posts = [];
+      save();
+      render();
+      showToast('မှတ်တမ်းအားလုံးကို ဖျက်ပြီးပါပြီ။');
+    });
+  });
+
+  // Export CSV
+  $('#exportBtn').addEventListener('click', () => {
+    if (!posts.length) {
+      showToast('CSV ထုတ်ယူရန် မှတ်တမ်းမရှိသေးပါ။', true);
+      return;
+    }
+
+    const rows = [
+      ['ရက်စွဲ', 'နေ့', 'တင်ချိန် MMT', 'အချိန်တန်း', 'ဗီဒီယိုလင့်ခ်', 'အကြောင်းအရာ', 'Views 24h', 'Likes', 'Comments', 'Shares', 'စုစုပေါင်း interactions', 'Engagement rate', 'ပျမ်းမျှကြည့်ချိန် စက္ကန့်'],
+      ...posts.map(p => [
+        p.date,
+        dayMy[dayName(p.date)],
+        p.time,
+        slotOf(p.time),
+        p.url,
+        p.topic,
+        p.views,
+        p.likes,
+        p.comments,
+        p.shares,
+        p.likes + p.comments + p.shares,
+        (eng(p) * 100).toFixed(2) + '%',
+        p.watch ?? ''
+      ])
+    ];
+
+    const csv = '\ufeff' + rows.map(r => r.map(x => '"' + String(x ?? '').replace(/"/g, '""') + '"').join(',')).join('\r\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'tiktok-analytics-myanmar.csv';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    showToast('CSV ဖိုင်ကို ထုတ်ယူပြီးပါပြီ။');
+  });
+
+  // Set Default Date & Time to MMT
+  const now = new Date(Date.now() + 390 * 60000);
+  $('#date').value = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, '0')}-${String(now.getUTCDate()).padStart(2, '0')}`;
+  $('#time').value = `${String(now.getUTCHours()).padStart(2, '0')}:${String(now.getUTCMinutes()).padStart(2, '0')}`;
+
+  render();
+
+  // Animated Preloader Logic
+  const preloader = document.getElementById('preloader');
+  const progress = document.getElementById('loaderProgress');
+  const percent = document.getElementById('loaderPercent');
+  const message = document.getElementById('loaderMessage');
+  
+  let loadPct = 0;
+  const loadTimer = setInterval(() => {
+    loadPct = Math.min(100, loadPct + 12 + Math.random() * 15);
+    progress.style.width = loadPct + '%';
+    percent.textContent = Math.floor(loadPct) + '%';
+    
+    if (loadPct > 60) message.textContent = 'Analytics ပြင်ဆင်နေသည်...';
+    if (loadPct >= 100) {
+      clearInterval(loadTimer);
+      message.textContent = 'အသင့်ဖြစ်ပါပြီ';
+      setTimeout(() => {
+        preloader.classList.add('done');
+      }, 200);
+    }
+  }, 50);
+
+})();
+</script>
+</body>
+</html>
