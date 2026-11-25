@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixed Deposit Interest Calculator - Yoma Bank Style</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Noto Sans Myanmar -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans Myanmar', 'sans-serif'],
+                    },
+                    colors: {
+                        yoma: {
+                            red: '#E31837',
+                            darkRed: '#C4122D',
+                            lightRed: '#FFF1F3',
+                            gray: '#4A4A4A',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Remove default number input up/down spinner arrows */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col justify-between text-gray-800 antialiased selection:bg-yoma-red selection:text-white">
+
+    <!-- Main Calculator Section -->
+    <main class="flex-grow relative py-6 sm:py-10 px-4">
+        <!-- Decorative Red Side Bars matching reference design -->
+        <div class="hidden md:block fixed inset-y-0 left-0 w-3 bg-gradient-to-b from-yoma-darkRed via-yoma-red to-yoma-darkRed"></div>
+        <div class="hidden md:block fixed inset-y-0 right-0 w-3 bg-gradient-to-b from-yoma-darkRed via-yoma-red to-yoma-darkRed"></div>
+
+        <div class="max-w-lg mx-auto bg-white rounded-2xl shadow-lg border border-gray-100 p-5 sm:p-8 relative overflow-hidden">
+            
+            <!-- Title & Language Switcher -->
+            <div class="mb-6 flex items-start justify-between gap-3">
+                <div>
+                    <h1 class="text-lg sm:text-xl font-bold text-gray-900" data-i18n="calc_title">Fixed Deposit Calculator</h1>
+                    <p class="text-xs sm:text-sm text-gray-500 mt-1" data-i18n="calc_subtitle">Calculate your estimated interest earnings based on deposit amount and tenor.</p>
+                </div>
+                <div class="flex items-center space-x-1 shrink-0">
+                    <!-- Language Switcher -->
+                    <div class="flex items-center space-x-1 bg-gray-50 border border-gray-200 rounded-lg p-0.5">
+                        <button id="btn-en" onclick="setLanguage('en')" class="px-2.5 py-1 text-xs font-semibold rounded-md bg-yoma-red text-white transition">EN</button>
+                        <button id="btn-mm" onclick="setLanguage('mm')" class="px-2.5 py-1 text-xs font-semibold rounded-md text-gray-600 hover:text-gray-900 transition">မြန်မာ</button>
+                    </div>
+                    <!-- Rate Table Modal Button -->
+                    <button onclick="toggleSummaryModal()" aria-label="Rate Schedule" title="Interest Rates" class="p-1.5 text-gray-500 hover:text-yoma-red hover:bg-gray-100 rounded-lg transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Deposit Amount Input -->
+            <div class="mb-6">
+                <label for="deposit-amount" class="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-2" data-i18n="label_amount">Deposit Amount</label>
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        id="deposit-amount" 
+                        inputmode="numeric"
+                        value="" 
+                        placeholder="0"
+                        class="w-full text-xl sm:text-2xl font-semibold text-gray-800 bg-white border border-gray-300 rounded-xl px-4 py-3.5 pr-16 focus:outline-none focus:ring-2 focus:ring-yoma-red focus:border-yoma-red transition"
+                    >
+                    <button onclick="clearAmount()" title="Clear" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1.5 rounded-lg">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex items-center justify-between mt-2">
+                    <span class="text-sm font-medium text-gray-500">MMK</span>
+                    <!-- Quick Preset Buttons -->
+                    <div class="flex space-x-1.5">
+                        <button type="button" onclick="setPresetAmount(10000000)" class="text-xs px-2.5 py-1 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium transition">10M</button>
+                        <button type="button" onclick="setPresetAmount(50000000)" class="text-xs px-2.5 py-1 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium transition">50M</button>
+                        <button type="button" onclick="setPresetAmount(100000000)" class="text-xs px-2.5 py-1 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium transition">100M</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tenor Selection -->
+            <div class="mb-7">
+                <label class="block text-sm font-medium text-gray-600 mb-3" data-i18n="label_tenor">Tenor</label>
+                <div id="tenor-buttons" class="grid grid-cols-3 gap-2.5 sm:gap-3">
+                    <!-- Buttons will be dynamically rendered via JS -->
+                </div>
+            </div>
+
+            <!-- Interest Rate Per Annum -->
+            <div class="mb-7 bg-gray-50 rounded-xl p-4 border border-gray-100 flex items-center justify-between gap-3">
+                <div>
+                    <label for="custom-rate" class="text-sm text-gray-600 font-medium block cursor-pointer" data-i18n="label_rate">Interest Rate Per Annum</label>
+                    <p class="text-xs text-gray-400 mt-0.5" data-i18n="rate_note">Editable • 365-day year basis</p>
+                </div>
+                <div class="relative flex items-center">
+                    <input 
+                        type="number" 
+                        id="custom-rate" 
+                        step="0.01" 
+                        min="0" 
+                        max="100"
+                        value="10.75"
+                        aria-label="Interest Rate Per Annum"
+                        class="w-24 sm:w-28 text-right text-xl sm:text-2xl font-bold text-gray-800 bg-white border border-gray-300 rounded-xl pl-3 pr-8 py-2 focus:outline-none focus:ring-2 focus:ring-yoma-red focus:border-yoma-red transition"
+                    >
+                    <span class="absolute right-3 text-lg sm:text-xl font-bold text-gray-500 pointer-events-none">%</span>
+                </div>
+            </div>
+
+            <!-- Result Card (Red Container matching reference) -->
+            <div class="bg-gradient-to-br from-yoma-red to-[#F02849] rounded-2xl p-5 sm:p-6 text-white shadow-md">
+                <!-- Total Interest -->
+                <div class="pb-5 border-b border-white/25">
+                    <div class="flex items-baseline justify-between flex-wrap gap-2">
+                        <span class="text-2xl sm:text-3xl font-bold tracking-tight" id="display-interest">441,781 MMK</span>
+                    </div>
+                    <p class="text-sm text-white/90 mt-1 font-medium" data-i18n="label_total_interest">Total Interest</p>
+                </div>
+
+                <!-- Total Maturity Amount White Box -->
+                <div class="mt-5 bg-white rounded-xl p-4 sm:p-5 text-gray-800 shadow-inner">
+                    <p class="text-xs sm:text-sm text-gray-600 leading-relaxed" data-i18n="label_maturity">
+                        Total amount you will get<br>(amount + total interest)
+                    </p>
+                    <div class="mt-2 flex items-center justify-between">
+                        <p class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight" id="display-total">
+                            50,441,781 MMK
+                        </p>
+                        <button onclick="copyResult()" id="copy-btn" title="Copy Result" class="p-2 text-gray-400 hover:text-yoma-red hover:bg-red-50 rounded-lg transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toast Notification for Copy -->
+            <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs sm:text-sm px-4 py-2.5 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50">
+                Copied to clipboard!
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Interest Rate Table Modal -->
+    <div id="rate-modal" class="fixed inset-0 bg-black/50 backdrop-blur-xs hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
+                <h3 class="text-lg font-bold text-gray-900" data-i18n="modal_title">Fixed Deposit Interest Rates</h3>
+                <button onclick="toggleSummaryModal()" class="text-gray-400 hover:text-gray-700 p-1 rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="overflow-hidden rounded-xl border border-gray-200">
+                <table class="w-full text-sm text-left">
+                    <thead class="bg-gray-50 text-gray-600 font-semibold border-b border-gray-200">
+                        <tr>
+                            <th class="py-3 px-4" data-i18n="col_tenor">Tenor</th>
+                            <th class="py-3 px-4 text-right" data-i18n="col_rate">Interest Rate (p.a.)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rate-table-body" class="divide-y divide-gray-100">
+                        <!-- Populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-4 flex gap-2">
+                <button onclick="resetDefaultRates()" class="w-1/2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2.5 rounded-xl transition text-sm" data-i18n="btn_reset">
+                    Reset Default
+                </button>
+                <button onclick="toggleSummaryModal()" class="w-1/2 bg-yoma-red hover:bg-yoma-darkRed text-white font-semibold py-2.5 rounded-xl transition text-sm" data-i18n="btn_done">
+                    Done
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-5 px-4 text-xs text-gray-500">
+        <p data-i18n="footer_disclaimer">* Note: Interest figures shown are estimates based on standard annual rates (365-day basis).</p>
+    </footer>
+
+    <!-- Application Logic (Vanilla JavaScript) -->
+    <script>
+        // 1. Default Tenor and Interest Rate Configuration
+        const DEFAULT_RATES = [
+            { days: 30, rate: 10.75 },
+            { days: 90, rate: 11.25 },
+            { days: 180, rate: 11.7 },
+            { days: 270, rate: 11.9 },
+            { days: 365, rate: 12.5 }
+        ];
+
+        // Load saved rates from localStorage or use defaults
+        let TENOR_RATES = JSON.parse(localStorage.getItem('fd_tenor_rates')) || JSON.parse(JSON.stringify(DEFAULT_RATES));
+
+        // 2. Localization Dictionary (English & Myanmar)
+        const I18N = {
+            en: {
+                nav_personal: "Personal Banking",
+                nav_business: "Business Banking",
+                nav_about: "Who We Are",
+                calc_title: "Fixed Deposit Calculator",
+                calc_subtitle: "Calculate your estimated interest earnings based on deposit amount and tenor.",
+                label_amount: "Deposit Amount",
+                label_tenor: "Tenor",
+                days_unit: "Days",
+                label_rate: "Interest Rate Per Annum",
+                rate_note: "Editable • 365-day year basis",
+                label_total_interest: "Total Interest",
+                label_maturity: "Total amount you will get<br>(amount + total interest)",
+                modal_title: "Edit Interest Rates (%)",
+                col_tenor: "Tenor",
+                col_rate: "Interest Rate (p.a.)",
+                btn_reset: "Reset Default",
+                btn_done: "Done",
+                footer_disclaimer: "* Note: Interest figures shown are estimates based on annual rates (365-day basis).",
+                copied: "Calculation copied to clipboard!",
+                rates_reset: "Default interest rates restored!"
+            },
+            mm: {
+                nav_personal: "တစ်ဦးချင်း ဘဏ်လုပ်ငန်း",
+                nav_business: "စီးပွားရေး ဘဏ်လုပ်ငန်း",
+                nav_about: "ကျွန်ုပ်တို့အကြောင်း",
+                calc_title: "စာရင်းသေအပ်ငွေ အတိုးနှုန်း တွက်ချက်ရန်",
+                calc_subtitle: "အပ်နှံမည့်ငွေပမာဏနှင့် အချိန်ကာလအလိုက် ရရှိမည့် အတိုးနှုန်းကို တွက်ချက်ပါ။",
+                label_amount: "အပ်နှံမည့် ငွေပမာဏ",
+                label_tenor: "အပ်နှံမည့် ကာလ (Tenor)",
+                days_unit: "ရက်",
+                label_rate: "တစ်နှစ်လျှင် အတိုးနှုန်း",
+                rate_note: "ပြင်ဆင်ရိုက်ထည့်နိုင်သည် • ၃၆၅ ရက်နှုန်း",
+                label_total_interest: "စုစုပေါင်း ရရှိမည့် အတိုးငွေ",
+                label_maturity: "သက်တမ်းပြည့်ချိန်တွင် စုစုပေါင်းရရှိမည့် ငွေပမာဏ<br>(အရင်း + စုစုပေါင်းအတိုး)",
+                modal_title: "အတိုးနှုန်းများ ပြင်ဆင်ရန် (%)",
+                col_tenor: "အပ်နှံကာလ",
+                col_rate: "တစ်နှစ်အတိုးနှုန်း",
+                btn_reset: "မူလအတိုင်းပြန်ထားမည်",
+                btn_done: "သိမ်းဆည်းမည်",
+                footer_disclaimer: "* မှတ်ချက် - ဖော်ပြပါ အတိုးငွေပမာဏများသည် ၃၆၅ ရက်ပေါ်အခြေခံ၍ ခန့်မှန်းတွက်ချက်ထားခြင်း ဖြစ်ပါသည်။",
+                copied: "တွက်ချက်မှုရလဒ်ကို ကူးယူပြီးပါပြီ!",
+                rates_reset: "မူလအတိုးနှုန်းများအတိုင်း ပြန်လည်သတ်မှတ်ပြီးပါပြီ!"
+            }
+        };
+
+        // 3. Application State
+        let state = {
+            amount: 0,
+            selectedDays: 30,
+            currentRate: TENOR_RATES[0].rate,
+            lang: 'en'
+        };
+
+        // DOM Elements
+        const amountInput = document.getElementById('deposit-amount');
+        const tenorContainer = document.getElementById('tenor-buttons');
+        const rateInput = document.getElementById('custom-rate');
+        const displayInterest = document.getElementById('display-interest');
+        const displayTotal = document.getElementById('display-total');
+        const rateTableBody = document.getElementById('rate-table-body');
+
+        // Format number with commas (e.g., 50000000 -> "50,000,000")
+        function formatNumber(num) {
+            return Math.round(num).toLocaleString('en-US');
+        }
+
+        // Parse numeric string removing commas
+        function parseNumber(str) {
+            const cleaned = str.replace(/[^0-9]/g, '');
+            return cleaned ? parseInt(cleaned, 10) : 0;
+        }
+
+        // Save rates to localStorage
+        function saveRates() {
+            localStorage.setItem('fd_tenor_rates', JSON.stringify(TENOR_RATES));
+        }
+
+        // Render Tenor Selection Buttons
+        function renderTenorButtons() {
+            const unit = I18N[state.lang].days_unit;
+            tenorContainer.innerHTML = TENOR_RATES.map(item => {
+                const isActive = item.days === state.selectedDays;
+                const activeClasses = isActive
+                    ? 'bg-yoma-red text-white border-yoma-red shadow-sm font-semibold'
+                    : 'bg-white text-yoma-red border-gray-300 hover:border-yoma-red hover:bg-yoma-lightRed font-medium';
+
+                return `
+                    <button 
+                        type="button"
+                        onclick="selectTenor(${item.days})"
+                        class="py-3 px-2 rounded-xl border text-sm sm:text-base transition-all duration-150 active:scale-95 ${activeClasses}">
+                        ${item.days} ${unit}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        // Render Editable Rate Table in Modal
+        function renderRateTable() {
+            const unit = I18N[state.lang].days_unit;
+            rateTableBody.innerHTML = TENOR_RATES.map((item, index) => `
+                <tr class="${item.days === state.selectedDays ? 'bg-red-50/70 font-semibold text-yoma-red' : 'text-gray-700'}">
+                    <td class="py-2.5 px-4">${item.days} ${unit}</td>
+                    <td class="py-2.5 px-4 text-right">
+                        <div class="inline-flex items-center">
+                            <input 
+                                type="number" 
+                                step="0.01" 
+                                min="0" 
+                                max="100"
+                                value="${item.rate}"
+                                onchange="updateTierRate(${index}, this.value)"
+                                class="w-20 text-right font-semibold text-gray-800 bg-white border border-gray-300 rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-yoma-red"
+                            >
+                            <span class="ml-1.5 text-gray-500">%</span>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Update specific tier rate from Modal
+        function updateTierRate(index, newVal) {
+            const parsed = parseFloat(newVal);
+            const validRate = isNaN(parsed) || parsed < 0 ? 0 : Math.min(parsed, 100);
+            TENOR_RATES[index].rate = validRate;
+            saveRates();
+
+            if (TENOR_RATES[index].days === state.selectedDays) {
+                state.currentRate = validRate;
+                rateInput.value = validRate;
+                calculateAndRender();
+            }
+        }
+
+        // Reset all rates to defaults
+        function resetDefaultRates() {
+            TENOR_RATES = JSON.parse(JSON.stringify(DEFAULT_RATES));
+            saveRates();
+            const currentTier = TENOR_RATES.find(t => t.days === state.selectedDays) || TENOR_RATES[0];
+            state.currentRate = currentTier.rate;
+            rateInput.value = state.currentRate;
+            renderRateTable();
+            calculateAndRender();
+            showToast(I18N[state.lang].rates_reset);
+        }
+
+        // Core Interest Calculation Formula
+        function calculateAndRender() {
+            const rate = state.currentRate;
+
+            // Formula: Principal * (Annual Rate / 100) * (Days / 365)
+            const rawInterest = state.amount * (rate / 100) * (state.selectedDays / 365);
+            const totalInterest = Math.round(rawInterest);
+            const totalMaturity = state.amount + totalInterest;
+
+            // Update UI
+            displayInterest.textContent = `${formatNumber(totalInterest)} MMK`;
+            displayTotal.textContent = `${formatNumber(totalMaturity)} MMK`;
+        }
+
+        // Event Handler: Select Tenor
+        function selectTenor(days) {
+            state.selectedDays = days;
+            const currentTier = TENOR_RATES.find(t => t.days === days) || TENOR_RATES[0];
+            state.currentRate = currentTier.rate;
+            rateInput.value = state.currentRate;
+
+            renderTenorButtons();
+            renderRateTable();
+            calculateAndRender();
+        }
+
+        // Event Handler: Custom Interest Rate Input Change
+        rateInput.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            state.currentRate = isNaN(val) || val < 0 ? 0 : Math.min(val, 100);
+
+            // Sync with current tenor tier and save
+            const tierIndex = TENOR_RATES.findIndex(t => t.days === state.selectedDays);
+            if (tierIndex !== -1) {
+                TENOR_RATES[tierIndex].rate = state.currentRate;
+                saveRates();
+                renderRateTable();
+            }
+
+            calculateAndRender();
+        });
+
+        // Event Handler: Input Change with Auto Comma Formatting
+        amountInput.addEventListener('input', (e) => {
+            const rawValue = parseNumber(e.target.value);
+            // Cap max input at 100 Billion to prevent overflow
+            state.amount = Math.min(rawValue, 100000000000);
+            
+            if (state.amount === 0 && e.target.value === '') {
+                e.target.value = '';
+            } else {
+                e.target.value = formatNumber(state.amount);
+            }
+            calculateAndRender();
+        });
+
+        // Helper: Set Preset Amount
+        function setPresetAmount(val) {
+            state.amount = val;
+            amountInput.value = formatNumber(val);
+            calculateAndRender();
+        }
+
+        // Helper: Clear Input
+        function clearAmount() {
+            state.amount = 0;
+            amountInput.value = '';
+            amountInput.focus();
+            calculateAndRender();
+        }
+
+        // Helper: Focus Input
+        function focusInput() {
+            amountInput.focus();
+            amountInput.select();
+        }
+
+        // Language Switcher
+        function setLanguage(lang) {
+            state.lang = lang;
+
+            // Update Toggle Button Styles
+            const btnEn = document.getElementById('btn-en');
+            const btnMm = document.getElementById('btn-mm');
+            if (lang === 'en') {
+                btnEn.className = 'px-2.5 py-1 text-xs font-semibold rounded-md bg-yoma-red text-white transition';
+                btnMm.className = 'px-2.5 py-1 text-xs font-semibold rounded-md text-gray-600 hover:text-gray-900 transition';
+            } else {
+                btnMm.className = 'px-2.5 py-1 text-xs font-semibold rounded-md bg-yoma-red text-white transition';
+                btnEn.className = 'px-2.5 py-1 text-xs font-semibold rounded-md text-gray-600 hover:text-gray-900 transition';
+            }
+
+            // Translate all elements with data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (I18N[lang][key]) {
+                    el.innerHTML = I18N[lang][key];
+                }
+            });
+
+            renderTenorButtons();
+            renderRateTable();
+        }
+
+        // Toggle Rate Schedule Modal
+        function toggleSummaryModal() {
+            const modal = document.getElementById('rate-modal');
+            modal.classList.toggle('hidden');
+            modal.classList.toggle('flex');
+        }
+
+        // Copy Result to Clipboard (iframe-safe)
+        function copyResult() {
+            const textToCopy = `Fixed Deposit Summary:\nAmount: ${formatNumber(state.amount)} MMK\nTenor: ${state.selectedDays} Days (${state.currentRate}% p.a.)\nTotal Interest: ${displayInterest.textContent}\nMaturity Amount: ${displayTotal.textContent}`;
+
+            const tempTextarea = document.createElement('textarea');
+            tempTextarea.value = textToCopy;
+            document.body.appendChild(tempTextarea);
+            tempTextarea.select();
+            try {
+                document.execCommand('copy');
+                showToast(I18N[state.lang].copied);
+            } catch (err) {
+                console.error('Copy failed', err);
+            }
+            document.body.removeChild(tempTextarea);
+        }
+
+        // Show Toast Notification
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.remove('opacity-0');
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+            }, 2200);
+        }
+
+        // Initialize App on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            rateInput.value = state.currentRate;
+            renderTenorButtons();
+            renderRateTable();
+            calculateAndRender();
+        });
+    </script>
+</body>
+</html>
