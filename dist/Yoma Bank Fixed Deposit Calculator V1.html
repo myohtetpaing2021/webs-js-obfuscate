@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixed Deposit Interest Calculator - Yoma Bank Style</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Noto Sans Myanmar -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+/* obfuscated */
+var _0x13b18d=_0x149e;function _0x149e(_0x386a7c,_0xa83b01){_0x386a7c=_0x386a7c-0xc8;var _0x28c4c8=_0x28c4();var _0x149e06=_0x28c4c8[_0x386a7c];return _0x149e06;}function _0x28c4(){var _0x4dd1cc=['#FFF1F3','2287044wzevZK','Inter','#4A4A4A','2465hBtGzZ','6545480yUQyKB','5866398JvCCyy','2740304fKCMUS','#C4122D','4820528EqesEv','36oeTKLY','14938qwIPTu','sans-serif','10PZAORN','6264XgLgUg'];_0x28c4=function(){return _0x4dd1cc;};return _0x28c4();}(function(_0x3d7213,_0x2c2640){var _0x55d88d=_0x149e,_0x28a4fa=_0x3d7213();while(!![]){try{var _0xad5cae=-parseInt(_0x55d88d(0xd1))/0x1*(parseInt(_0x55d88d(0xd3))/0x2)+-parseInt(_0x55d88d(0xd6))/0x3+parseInt(_0x55d88d(0xd4))/0x4*(parseInt(_0x55d88d(0xca))/0x5)+-parseInt(_0x55d88d(0xcc))/0x6+-parseInt(_0x55d88d(0xcd))/0x7+-parseInt(_0x55d88d(0xcf))/0x8+parseInt(_0x55d88d(0xd0))/0x9*(parseInt(_0x55d88d(0xcb))/0xa);if(_0xad5cae===_0x2c2640)break;else _0x28a4fa['push'](_0x28a4fa['shift']());}catch(_0x5b2432){_0x28a4fa['push'](_0x28a4fa['shift']());}}}(_0x28c4,0x8df2d),tailwind['config']={'theme':{'extend':{'fontFamily':{'sans':[_0x13b18d(0xc8),'Noto\x20Sans\x20Myanmar',_0x13b18d(0xd2)]},'colors':{'yoma':{'red':'#E31837','darkRed':_0x13b18d(0xce),'lightRed':_0x13b18d(0xd5),'gray':_0x13b18d(0xc9)}}}}});
+</script>
+    <style>
+        /* Remove default number input up/down spinner arrows */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col justify-between text-gray-800 antialiased selection:bg-yoma-red selection:text-white">
+
+    <!-- Main Calculator Section -->
+    <main class="flex-grow relative py-6 sm:py-10 px-4">
+        <!-- Decorative Red Side Bars matching reference design -->
+        <div class="hidden md:block fixed inset-y-0 left-0 w-3 bg-gradient-to-b from-yoma-darkRed via-yoma-red to-yoma-darkRed"></div>
+        <div class="hidden md:block fixed inset-y-0 right-0 w-3 bg-gradient-to-b from-yoma-darkRed via-yoma-red to-yoma-darkRed"></div>
+
+        <div class="max-w-lg mx-auto bg-white rounded-2xl shadow-lg border border-gray-100 p-5 sm:p-8 relative overflow-hidden">
+            
+            <!-- Title & Language Switcher -->
+            <div class="mb-6 flex items-start justify-between gap-3">
+                <div>
+                    <h1 class="text-lg sm:text-xl font-bold text-gray-900" data-i18n="calc_title">Fixed Deposit Calculator</h1>
+                    <p class="text-xs sm:text-sm text-gray-500 mt-1" data-i18n="calc_subtitle">Calculate your estimated interest earnings based on deposit amount and tenor.</p>
+                </div>
+                <div class="flex items-center space-x-1 shrink-0">
+                    <!-- Language Switcher -->
+                    <div class="flex items-center space-x-1 bg-gray-50 border border-gray-200 rounded-lg p-0.5">
+                        <button id="btn-en" onclick="setLanguage('en')" class="px-2.5 py-1 text-xs font-semibold rounded-md bg-yoma-red text-white transition">EN</button>
+                        <button id="btn-mm" onclick="setLanguage('mm')" class="px-2.5 py-1 text-xs font-semibold rounded-md text-gray-600 hover:text-gray-900 transition">မြန်မာ</button>
+                    </div>
+                    <!-- Rate Table Modal Button -->
+                    <button onclick="toggleSummaryModal()" aria-label="Rate Schedule" title="Interest Rates" class="p-1.5 text-gray-500 hover:text-yoma-red hover:bg-gray-100 rounded-lg transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Deposit Amount Input -->
+            <div class="mb-6">
+                <label for="deposit-amount" class="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-2" data-i18n="label_amount">Deposit Amount</label>
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        id="deposit-amount" 
+                        inputmode="numeric"
+                        value="" 
+                        placeholder="0"
+                        class="w-full text-xl sm:text-2xl font-semibold text-gray-800 bg-white border border-gray-300 rounded-xl px-4 py-3.5 pr-16 focus:outline-none focus:ring-2 focus:ring-yoma-red focus:border-yoma-red transition"
+                    >
+                    <button onclick="clearAmount()" title="Clear" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1.5 rounded-lg">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex items-center justify-between mt-2">
+                    <span class="text-sm font-medium text-gray-500">MMK</span>
+                    <!-- Quick Preset Buttons -->
+                    <div class="flex space-x-1.5">
+                        <button type="button" onclick="setPresetAmount(10000000)" class="text-xs px-2.5 py-1 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium transition">10M</button>
+                        <button type="button" onclick="setPresetAmount(50000000)" class="text-xs px-2.5 py-1 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium transition">50M</button>
+                        <button type="button" onclick="setPresetAmount(100000000)" class="text-xs px-2.5 py-1 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium transition">100M</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tenor Selection -->
+            <div class="mb-7">
+                <label class="block text-sm font-medium text-gray-600 mb-3" data-i18n="label_tenor">Tenor</label>
+                <div id="tenor-buttons" class="grid grid-cols-3 gap-2.5 sm:gap-3">
+                    <!-- Buttons will be dynamically rendered via JS -->
+                </div>
+            </div>
+
+            <!-- Interest Rate Per Annum -->
+            <div class="mb-7 bg-gray-50 rounded-xl p-4 border border-gray-100 flex items-center justify-between gap-3">
+                <div>
+                    <label for="custom-rate" class="text-sm text-gray-600 font-medium block cursor-pointer" data-i18n="label_rate">Interest Rate Per Annum</label>
+                    <p class="text-xs text-gray-400 mt-0.5" data-i18n="rate_note">Editable • 365-day year basis</p>
+                </div>
+                <div class="relative flex items-center">
+                    <input 
+                        type="number" 
+                        id="custom-rate" 
+                        step="0.01" 
+                        min="0" 
+                        max="100"
+                        value="10.75"
+                        aria-label="Interest Rate Per Annum"
+                        class="w-24 sm:w-28 text-right text-xl sm:text-2xl font-bold text-gray-800 bg-white border border-gray-300 rounded-xl pl-3 pr-8 py-2 focus:outline-none focus:ring-2 focus:ring-yoma-red focus:border-yoma-red transition"
+                    >
+                    <span class="absolute right-3 text-lg sm:text-xl font-bold text-gray-500 pointer-events-none">%</span>
+                </div>
+            </div>
+
+            <!-- Result Card (Red Container matching reference) -->
+            <div class="bg-gradient-to-br from-yoma-red to-[#F02849] rounded-2xl p-5 sm:p-6 text-white shadow-md">
+                <!-- Total Interest -->
+                <div class="pb-5 border-b border-white/25">
+                    <div class="flex items-baseline justify-between flex-wrap gap-2">
+                        <span class="text-2xl sm:text-3xl font-bold tracking-tight" id="display-interest">441,781 MMK</span>
+                    </div>
+                    <p class="text-sm text-white/90 mt-1 font-medium" data-i18n="label_total_interest">Total Interest</p>
+                </div>
+
+                <!-- Total Maturity Amount White Box -->
+                <div class="mt-5 bg-white rounded-xl p-4 sm:p-5 text-gray-800 shadow-inner">
+                    <p class="text-xs sm:text-sm text-gray-600 leading-relaxed" data-i18n="label_maturity">
+                        Total amount you will get<br>(amount + total interest)
+                    </p>
+                    <div class="mt-2 flex items-center justify-between">
+                        <p class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight" id="display-total">
+                            50,441,781 MMK
+                        </p>
+                        <button onclick="copyResult()" id="copy-btn" title="Copy Result" class="p-2 text-gray-400 hover:text-yoma-red hover:bg-red-50 rounded-lg transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toast Notification for Copy -->
+            <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs sm:text-sm px-4 py-2.5 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50">
+                Copied to clipboard!
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Interest Rate Table Modal -->
+    <div id="rate-modal" class="fixed inset-0 bg-black/50 backdrop-blur-xs hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
+                <h3 class="text-lg font-bold text-gray-900" data-i18n="modal_title">Fixed Deposit Interest Rates</h3>
+                <button onclick="toggleSummaryModal()" class="text-gray-400 hover:text-gray-700 p-1 rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="overflow-hidden rounded-xl border border-gray-200">
+                <table class="w-full text-sm text-left">
+                    <thead class="bg-gray-50 text-gray-600 font-semibold border-b border-gray-200">
+                        <tr>
+                            <th class="py-3 px-4" data-i18n="col_tenor">Tenor</th>
+                            <th class="py-3 px-4 text-right" data-i18n="col_rate">Interest Rate (p.a.)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rate-table-body" class="divide-y divide-gray-100">
+                        <!-- Populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-4 flex gap-2">
+                <button onclick="resetDefaultRates()" class="w-1/2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2.5 rounded-xl transition text-sm" data-i18n="btn_reset">
+                    Reset Default
+                </button>
+                <button onclick="toggleSummaryModal()" class="w-1/2 bg-yoma-red hover:bg-yoma-darkRed text-white font-semibold py-2.5 rounded-xl transition text-sm" data-i18n="btn_done">
+                    Done
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-5 px-4 text-xs text-gray-500">
+        <p data-i18n="footer_disclaimer">* Note: Interest figures shown are estimates based on standard annual rates (365-day basis).</p>
+    </footer>
+
+    <!-- Application Logic (Vanilla JavaScript) -->
+    <script>
+/* obfuscated */
+const _0x347ace=_0x298b;function _0x1e26(){const _0xbeaf96=['IBFBV','Personal\x20Banking','keTDf','amount','NpzrK','2991863AixBoa','target','round','တွက်ချက်မှုရလဒ်ကို\x20ကူးယူပြီးပါပြီ!','replace','lmSqs','4351528ZMBnAJ','pXtgk','Done','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20class=\x22','createElement','IyuQR','DaqaA','12670CiTQIw','မူလအတိုးနှုန်းများအတိုင်း\x20ပြန်လည်သတ်မှတ်ပြီးပါပြီ!','143KMtfVd','en-US','jbxfE','selectedDays','\x20MMK\x0aTenor:\x20','KHiLb','Fixed\x20Deposit\x20Calculator','opacity-0','getItem','Reset\x20Default','find','data-i18n','SrVGd','တစ်နှစ်အတိုးနှုန်း','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','KXhDK','210VPGLdD','NXhVs','bg-red-50/70\x20font-semibold\x20text-yoma-red','qXShn','Copy\x20failed','Dshoj','bVCHD','cczAM','findIndex','textContent','Fixed\x20Deposit\x20Summary:\x0aAmount:\x20','92331XtGHyE','YCbgj','VwcRe','fqKiT','focus','QeFEd','Deposit\x20Amount','reJGN','12697kZgnOm','\x20MMK','GfUDH','XFbkB','တစ်နှစ်လျှင်\x20အတိုးနှုန်း','hYbCT','Business\x20Banking','Interest\x20Rate\x20(p.a.)','getElementById','currentRate','Editable\x20•\x20365-day\x20year\x20basis','အပ်နှံမည့်ငွေပမာဏနှင့်\x20အချိန်ကာလအလိုက်\x20ရရှိမည့်\x20အတိုးနှုန်းကို\x20တွက်ချက်ပါ။','toLocaleString','days_unit','Calculate\x20your\x20estimated\x20interest\x20earnings\x20based\x20on\x20deposit\x20amount\x20and\x20tenor.','cGJwD','SOKWc','parse','Total\x20amount\x20you\x20will\x20get<br>(amount\x20+\x20total\x20interest)','fd_tenor_rates','စာရင်းသေအပ်ငွေ\x20အတိုးနှုန်း\x20တွက်ချက်ရန်','မူလအတိုင်းပြန်ထားမည်','သက်တမ်းပြည့်ချိန်တွင်\x20စုစုပေါင်းရရှိမည့်\x20ငွေပမာဏ<br>(အရင်း\x20+\x20စုစုပေါင်းအတိုး)','sshWm','\x22\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20onchange=\x22updateTierRate(','getAttribute','stringify','668VMmVBW','DnPWk','isoib','flex','Swoja','rate-table-body','BkCRI','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22py-2.5\x20px-4\x20text-right\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22inline-flex\x20items-center\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20type=\x22number\x22\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20step=\x220.01\x22\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20min=\x220\x22\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20max=\x22100\x22\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20value=\x22','guSap','Default\x20interest\x20rates\x20restored!','YuOda','innerHTML','AIKJB','တစ်ဦးချင်း\x20ဘဏ်လုပ်ငန်း','display-interest','px-2.5\x20py-1\x20text-xs\x20font-semibold\x20rounded-md\x20text-gray-600\x20hover:text-gray-900\x20transition','Calculation\x20copied\x20to\x20clipboard!','className','body','min','remove','ပြင်ဆင်ရိုက်ထည့်နိုင်သည်\x20•\x20၃၆၅\x20ရက်နှုန်း','input','days','tgxzW','Edit\x20Interest\x20Rates\x20(%)','အတိုးနှုန်းများ\x20ပြင်ဆင်ရန်\x20(%)','fkEqV','appendChild','text-gray-700','ZKXQh','1441953Sbqdaz','သိမ်းဆည်းမည်','NVEVS','classList','copied','DOMContentLoaded','အပ်နှံမည့်\x20ငွေပမာဏ','ကျွန်ုပ်တို့အကြောင်း','omjQo','*\x20Note:\x20Interest\x20figures\x20shown\x20are\x20estimates\x20based\x20on\x20annual\x20rates\x20(365-day\x20basis).','ရက်','rate-modal','PrpQr','lang','TBZEx','display-total','GCMWe','toggle','\x0aMaturity\x20Amount:\x20','oMkTo','*\x20မှတ်ချက်\x20-\x20ဖော်ပြပါ\x20အတိုးငွေပမာဏများသည်\x20၃၆၅\x20ရက်ပေါ်အခြေခံ၍\x20ခန့်မှန်းတွက်ချက်ထားခြင်း\x20ဖြစ်ပါသည်။','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20type=\x22button\x22\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20onclick=\x22selectTenor(','Interest\x20Rate\x20Per\x20Annum','guTEH','6PLkkUP','bg-white\x20text-yoma-red\x20border-gray-300\x20hover:border-yoma-red\x20hover:bg-yoma-lightRed\x20font-medium','select','UTAMV','hidden','value',',\x20this.value)\x22\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20class=\x22w-20\x20text-right\x20font-semibold\x20text-gray-800\x20bg-white\x20border\x20border-gray-300\x20rounded-lg\x20px-2\x20py-1\x20focus:outline-none\x20focus:ring-1\x20focus:ring-yoma-red\x22\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22ml-1.5\x20text-gray-500\x22>%</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','setItem','vAoaY',')\x22\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20class=\x22py-3\x20px-2\x20rounded-xl\x20border\x20text-sm\x20sm:text-base\x20transition-all\x20duration-150\x20active:scale-95\x20','forEach','CzkkR','lkZnP','UqdQz','querySelectorAll','map','rates_reset','qJjeI','aqHWX','Who\x20We\x20Are','NObJl','copy','[data-i18n]','addEventListener','38fBfHxg','658632Qjkusj','rate','join'];_0x1e26=function(){return _0xbeaf96;};return _0x1e26();}(function(_0x29f606,_0x3310d1){const _0x2f509e=_0x298b,_0x32845b=_0x29f606();while(!![]){try{const _0x1f2a49=parseInt(_0x2f509e(0xdb))/0x1*(-parseInt(_0x2f509e(0x145))/0x2)+-parseInt(_0x2f509e(0x115))/0x3+-parseInt(_0x2f509e(0xf6))/0x4*(-parseInt(_0x2f509e(0x15b))/0x5)+parseInt(_0x2f509e(0x12d))/0x6*(-parseInt(_0x2f509e(0x14e))/0x7)+parseInt(_0x2f509e(0x154))/0x8+parseInt(_0x2f509e(0xd3))/0x9*(-parseInt(_0x2f509e(0x16d))/0xa)+parseInt(_0x2f509e(0x15d))/0xb*(parseInt(_0x2f509e(0x146))/0xc);if(_0x1f2a49===_0x3310d1)break;else _0x32845b['push'](_0x32845b['shift']());}catch(_0x104501){_0x32845b['push'](_0x32845b['shift']());}}}(_0x1e26,0x4d1f7));const DEFAULT_RATES=[{'days':0x1e,'rate':10.75},{'days':0x5a,'rate':11.25},{'days':0xb4,'rate':11.7},{'days':0x10e,'rate':11.9},{'days':0x16d,'rate':12.5}];function _0x298b(_0x5f5c92,_0x2d5583){_0x5f5c92=_0x5f5c92-0xd2;const _0x1e269b=_0x1e26();let _0x298b9f=_0x1e269b[_0x5f5c92];return _0x298b9f;}let TENOR_RATES=JSON[_0x347ace(0xec)](localStorage[_0x347ace(0x165)](_0x347ace(0xee)))||JSON[_0x347ace(0xec)](JSON[_0x347ace(0xf5)](DEFAULT_RATES));const I18N={'en':{'nav_personal':_0x347ace(0x14a),'nav_business':_0x347ace(0xe1),'nav_about':_0x347ace(0x140),'calc_title':_0x347ace(0x163),'calc_subtitle':_0x347ace(0xe9),'label_amount':_0x347ace(0xd9),'label_tenor':'Tenor','days_unit':'Days','label_rate':_0x347ace(0x12b),'rate_note':_0x347ace(0xe5),'label_total_interest':'Total\x20Interest','label_maturity':_0x347ace(0xed),'modal_title':_0x347ace(0x10f),'col_tenor':'Tenor','col_rate':_0x347ace(0xe2),'btn_reset':_0x347ace(0x166),'btn_done':_0x347ace(0x156),'footer_disclaimer':_0x347ace(0x11e),'copied':_0x347ace(0x106),'rates_reset':_0x347ace(0xff)},'mm':{'nav_personal':_0x347ace(0x103),'nav_business':'စီးပွားရေး\x20ဘဏ်လုပ်ငန်း','nav_about':_0x347ace(0x11c),'calc_title':_0x347ace(0xef),'calc_subtitle':_0x347ace(0xe6),'label_amount':_0x347ace(0x11b),'label_tenor':'အပ်နှံမည့်\x20ကာလ\x20(Tenor)','days_unit':_0x347ace(0x11f),'label_rate':_0x347ace(0xdf),'rate_note':_0x347ace(0x10b),'label_total_interest':'စုစုပေါင်း\x20ရရှိမည့်\x20အတိုးငွေ','label_maturity':_0x347ace(0xf1),'modal_title':_0x347ace(0x110),'col_tenor':'အပ်နှံကာလ','col_rate':_0x347ace(0x16a),'btn_reset':_0x347ace(0xf0),'btn_done':_0x347ace(0x116),'footer_disclaimer':_0x347ace(0x129),'copied':_0x347ace(0x151),'rates_reset':_0x347ace(0x15c)}};let state={'amount':0x0,'selectedDays':0x1e,'currentRate':TENOR_RATES[0x0]['rate'],'lang':'en'};const amountInput=document[_0x347ace(0xe3)]('deposit-amount'),tenorContainer=document[_0x347ace(0xe3)]('tenor-buttons'),rateInput=document[_0x347ace(0xe3)]('custom-rate'),displayInterest=document['getElementById'](_0x347ace(0x104)),displayTotal=document[_0x347ace(0xe3)](_0x347ace(0x124)),rateTableBody=document[_0x347ace(0xe3)](_0x347ace(0xfb));function formatNumber(_0x5904a8){const _0x3caeb6=_0x347ace,_0x295712={'AcxzN':'en-US'};return Math['round'](_0x5904a8)[_0x3caeb6(0xe7)](_0x295712['AcxzN']);}function parseNumber(_0x3c39e0){const _0x46207a=_0x347ace,_0xff0e94=_0x3c39e0[_0x46207a(0x152)](/[^0-9]/g,'');return _0xff0e94?parseInt(_0xff0e94,0xa):0x0;}function saveRates(){const _0x2a5230=_0x347ace,_0x22b4ee={'BkCRI':'fd_tenor_rates'};localStorage[_0x2a5230(0x134)](_0x22b4ee[_0x2a5230(0xfc)],JSON[_0x2a5230(0xf5)](TENOR_RATES));}function renderTenorButtons(){const _0x5d1a33=_0x347ace,_0x39f19f={'pXtgk':function(_0x1561d4,_0xf28a35){return _0x1561d4===_0xf28a35;},'edcAV':'bg-yoma-red\x20text-white\x20border-yoma-red\x20shadow-sm\x20font-semibold'},_0x7b1ac5=I18N[state['lang']][_0x5d1a33(0xe8)];tenorContainer[_0x5d1a33(0x101)]=TENOR_RATES['map'](_0x5ca9c4=>{const _0x59f782=_0x5d1a33,_0x48f12b=_0x39f19f[_0x59f782(0x155)](_0x5ca9c4[_0x59f782(0x10d)],state[_0x59f782(0x160)]),_0x213088=_0x48f12b?_0x39f19f['edcAV']:_0x59f782(0x12e);return _0x59f782(0x12a)+_0x5ca9c4[_0x59f782(0x10d)]+_0x59f782(0x136)+_0x213088+'\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+_0x5ca9c4[_0x59f782(0x10d)]+'\x20'+_0x7b1ac5+_0x59f782(0x16b);})['join']('');}function renderRateTable(){const _0x32a882=_0x347ace,_0x44bd99=I18N[state[_0x32a882(0x122)]][_0x32a882(0xe8)];rateTableBody[_0x32a882(0x101)]=TENOR_RATES['map']((_0x1a35a2,_0x21d17c)=>_0x32a882(0x157)+(_0x1a35a2['days']===state[_0x32a882(0x160)]?'bg-red-50/70\x20font-semibold\x20text-yoma-red':_0x32a882(0x113))+'\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22py-2.5\x20px-4\x22>'+_0x1a35a2[_0x32a882(0x10d)]+'\x20'+_0x44bd99+_0x32a882(0xfd)+_0x1a35a2[_0x32a882(0x147)]+_0x32a882(0xf3)+_0x21d17c+',\x20this.value)\x22\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20class=\x22w-20\x20text-right\x20font-semibold\x20text-gray-800\x20bg-white\x20border\x20border-gray-300\x20rounded-lg\x20px-2\x20py-1\x20focus:outline-none\x20focus:ring-1\x20focus:ring-yoma-red\x22\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22ml-1.5\x20text-gray-500\x22>%</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20')[_0x32a882(0x148)]('');}function updateTierRate(_0x216b89,_0x15f5c5){const _0xd87e05=_0x347ace,_0x7c6f67={'Swoja':function(_0x13ce8e,_0x65a72c){return _0x13ce8e(_0x65a72c);},'Dshoj':function(_0x26dd27,_0x537cfd){return _0x26dd27(_0x537cfd);},'vAoaY':function(_0x3490df,_0xf9f47a){return _0x3490df<_0xf9f47a;},'oMkTo':function(_0x3d263c){return _0x3d263c();},'JADin':function(_0x52e753,_0x41d118){return _0x52e753(_0x41d118);},'GfUDH':function(_0x3bf8b2,_0x540be5){return _0x3bf8b2===_0x540be5;},'lmSqs':_0xd87e05(0xd6)},_0x42e672=_0x7c6f67[_0xd87e05(0x172)](parseFloat,_0x15f5c5),_0x190d98=_0x7c6f67['JADin'](isNaN,_0x42e672)||_0x42e672<0x0?0x0:Math['min'](_0x42e672,0x64);TENOR_RATES[_0x216b89]['rate']=_0x190d98,_0x7c6f67[_0xd87e05(0x128)](saveRates);if(_0x7c6f67[_0xd87e05(0xdd)](TENOR_RATES[_0x216b89][_0xd87e05(0x10d)],state[_0xd87e05(0x160)])){if(_0x7c6f67[_0xd87e05(0x153)]===_0x7c6f67[_0xd87e05(0x153)])state[_0xd87e05(0xe4)]=_0x190d98,rateInput[_0xd87e05(0x132)]=_0x190d98,_0x7c6f67[_0xd87e05(0x128)](calculateAndRender);else{const _0x4c228a=_0x7c6f67[_0xd87e05(0xfa)](_0x252986,_0x597585[_0xd87e05(0x14f)]['value']);_0x186161[_0xd87e05(0xe4)]=_0x7c6f67[_0xd87e05(0x172)](_0x476058,_0x4c228a)||_0x7c6f67[_0xd87e05(0x135)](_0x4c228a,0x0)?0x0:_0x5bcee3[_0xd87e05(0x109)](_0x4c228a,0x64);const _0x4e4c49=_0x5193b5[_0xd87e05(0x175)](_0x5a684d=>_0x5a684d['days']===_0x5386da[_0xd87e05(0x160)]);_0x4e4c49!==-0x1&&(_0x59b57b[_0x4e4c49][_0xd87e05(0x147)]=_0x41aa18['currentRate'],_0xb3c109(),_0x5c26c9()),_0x7c6f67[_0xd87e05(0x128)](_0x180256);}}}function resetDefaultRates(){const _0x470df5=_0x347ace,_0x532b3b={'NVEVS':function(_0x4bfc33){return _0x4bfc33();},'isoib':function(_0x55ef30){return _0x55ef30();},'bVCHD':function(_0x137059,_0x64653e){return _0x137059(_0x64653e);}};TENOR_RATES=JSON[_0x470df5(0xec)](JSON[_0x470df5(0xf5)](DEFAULT_RATES)),_0x532b3b[_0x470df5(0x117)](saveRates);const _0x2a3563=TENOR_RATES[_0x470df5(0x167)](_0x231f5b=>_0x231f5b[_0x470df5(0x10d)]===state[_0x470df5(0x160)])||TENOR_RATES[0x0];state['currentRate']=_0x2a3563[_0x470df5(0x147)],rateInput[_0x470df5(0x132)]=state['currentRate'],_0x532b3b[_0x470df5(0x117)](renderRateTable),_0x532b3b[_0x470df5(0xf8)](calculateAndRender),_0x532b3b[_0x470df5(0x173)](showToast,I18N[state[_0x470df5(0x122)]][_0x470df5(0x13d)]);}function calculateAndRender(){const _0x39e789=_0x347ace,_0x46493c={'DNybP':function(_0x524552,_0x3b3495){return _0x524552*_0x3b3495;},'IyuQR':function(_0xfba815,_0x162916){return _0xfba815*_0x162916;},'XFbkB':function(_0x170df7,_0x220cf4){return _0x170df7/_0x220cf4;},'PrpQr':function(_0x3473c9,_0x302229){return _0x3473c9/_0x302229;},'QeFEd':function(_0x3a8a88,_0x1592f0){return _0x3a8a88+_0x1592f0;},'jbxfE':function(_0x517907,_0x2e3ea9){return _0x517907(_0x2e3ea9);}},_0x46dde1=state[_0x39e789(0xe4)],_0x3a644c=_0x46493c['DNybP'](_0x46493c[_0x39e789(0x159)](state['amount'],_0x46493c[_0x39e789(0xde)](_0x46dde1,0x64)),_0x46493c[_0x39e789(0x121)](state[_0x39e789(0x160)],0x16d)),_0x2ec1d9=Math['round'](_0x3a644c),_0x4a95d3=_0x46493c[_0x39e789(0xd8)](state[_0x39e789(0x14c)],_0x2ec1d9);displayInterest[_0x39e789(0x176)]=_0x46493c[_0x39e789(0x15f)](formatNumber,_0x2ec1d9)+_0x39e789(0xdc),displayTotal['textContent']=formatNumber(_0x4a95d3)+'\x20MMK';}function selectTenor(_0x539c49){const _0x574b77=_0x347ace,_0x32816b={'keTDf':function(_0x4baf10){return _0x4baf10();}};state[_0x574b77(0x160)]=_0x539c49;const _0x569a45=TENOR_RATES[_0x574b77(0x167)](_0x2f101e=>_0x2f101e[_0x574b77(0x10d)]===_0x539c49)||TENOR_RATES[0x0];state['currentRate']=_0x569a45[_0x574b77(0x147)],rateInput['value']=state['currentRate'],renderTenorButtons(),_0x32816b[_0x574b77(0x14b)](renderRateTable),calculateAndRender();}rateInput[_0x347ace(0x144)]('input',_0x5328ac=>{const _0x30034e=_0x347ace,_0x2e80c7={'YuOda':_0x30034e(0x168),'Zqnqq':function(_0x4b1749,_0x20e257){return _0x4b1749(_0x20e257);},'dkakD':function(_0x12105d,_0x408d80){return _0x12105d<_0x408d80;},'qXShn':function(_0x20ea3e,_0x2424f3){return _0x20ea3e!==_0x2424f3;},'qJjeI':function(_0x5ef9af){return _0x5ef9af();},'VwcRe':function(_0xb7bb6a){return _0xb7bb6a();}},_0x33f95e=_0x2e80c7['Zqnqq'](parseFloat,_0x5328ac[_0x30034e(0x14f)][_0x30034e(0x132)]);state[_0x30034e(0xe4)]=_0x2e80c7['Zqnqq'](isNaN,_0x33f95e)||_0x2e80c7['dkakD'](_0x33f95e,0x0)?0x0:Math['min'](_0x33f95e,0x64);const _0x1c5a9e=TENOR_RATES['findIndex'](_0x1d12da=>_0x1d12da[_0x30034e(0x10d)]===state[_0x30034e(0x160)]);if(_0x1c5a9e!==-0x1){if(_0x2e80c7[_0x30034e(0x170)](_0x30034e(0x11d),'omjQo')){const _0x30145e=_0x4332da[_0x30034e(0xf4)](_0x2e80c7[_0x30034e(0x100)]);_0xa27d59[_0x2b58d4][_0x30145e]&&(_0x3722d4['innerHTML']=_0x3aaeec[_0x1add9b][_0x30145e]);}else TENOR_RATES[_0x1c5a9e][_0x30034e(0x147)]=state[_0x30034e(0xe4)],_0x2e80c7['qJjeI'](saveRates),_0x2e80c7[_0x30034e(0x13e)](renderRateTable);}_0x2e80c7[_0x30034e(0xd5)](calculateAndRender);}),amountInput[_0x347ace(0x144)](_0x347ace(0x10c),_0x22d615=>{const _0x429d03=_0x347ace,_0x5d0ebe={'DaqaA':function(_0x5c7f42,_0x34859c){return _0x5c7f42===_0x34859c;},'SOKWc':function(_0x1e4a72,_0xe1b329){return _0x1e4a72(_0xe1b329);},'tgxzW':function(_0x12e93f){return _0x12e93f();}},_0x29ecd3=parseNumber(_0x22d615[_0x429d03(0x14f)][_0x429d03(0x132)]);state[_0x429d03(0x14c)]=Math[_0x429d03(0x109)](_0x29ecd3,0x174876e800),_0x5d0ebe[_0x429d03(0x15a)](state[_0x429d03(0x14c)],0x0)&&_0x22d615[_0x429d03(0x14f)]['value']===''?_0x22d615[_0x429d03(0x14f)][_0x429d03(0x132)]='':_0x22d615[_0x429d03(0x14f)][_0x429d03(0x132)]=_0x5d0ebe[_0x429d03(0xeb)](formatNumber,state['amount']),_0x5d0ebe[_0x429d03(0x10e)](calculateAndRender);});function setPresetAmount(_0xa0e81a){const _0x16433d=_0x347ace,_0x1591db={'hYbCT':function(_0x469723,_0x4eb4c2){return _0x469723(_0x4eb4c2);},'aqHWX':function(_0x31fdfb){return _0x31fdfb();}};state[_0x16433d(0x14c)]=_0xa0e81a,amountInput[_0x16433d(0x132)]=_0x1591db[_0x16433d(0xe0)](formatNumber,_0xa0e81a),_0x1591db[_0x16433d(0x13f)](calculateAndRender);}function clearAmount(){const _0x6cca43=_0x347ace,_0x3cc6d7={'VoENv':function(_0x47bb58){return _0x47bb58();}};state[_0x6cca43(0x14c)]=0x0,amountInput[_0x6cca43(0x132)]='',amountInput[_0x6cca43(0xd7)](),_0x3cc6d7['VoENv'](calculateAndRender);}function focusInput(){amountInput['focus'](),amountInput['select']();}function setLanguage(_0x24f027){const _0x3fedde=_0x347ace,_0x60515={'reJGN':function(_0xba474e,_0x463dbc){return _0xba474e===_0x463dbc;},'CzkkR':_0x3fedde(0x13a),'AIKJB':_0x3fedde(0x168),'TBZEx':'btn-en','TywbJ':'btn-mm','YCbgj':function(_0xeb6956,_0x7c2e54){return _0xeb6956!==_0x7c2e54;},'IBFBV':'DwFEW','sshWm':'zNrvm','fkEqV':'px-2.5\x20py-1\x20text-xs\x20font-semibold\x20rounded-md\x20bg-yoma-red\x20text-white\x20transition','guTEH':_0x3fedde(0x105),'vOYjZ':_0x3fedde(0x143),'KYlaI':function(_0x1a5a5f){return _0x1a5a5f();},'FQTik':function(_0x4d1f8d){return _0x4d1f8d();}};state[_0x3fedde(0x122)]=_0x24f027;const _0x1ebc19=document['getElementById'](_0x60515[_0x3fedde(0x123)]),_0x33e86f=document['getElementById'](_0x60515['TywbJ']);if(_0x60515[_0x3fedde(0xda)](_0x24f027,'en')){if(_0x60515[_0x3fedde(0xd4)](_0x60515[_0x3fedde(0x149)],_0x60515[_0x3fedde(0xf2)]))_0x1ebc19[_0x3fedde(0x107)]=_0x60515[_0x3fedde(0x111)],_0x33e86f['className']=_0x60515[_0x3fedde(0x12c)];else return _0x43ae66[_0x3fedde(0x150)](_0x3f4c8b)[_0x3fedde(0xe7)](_0x3fedde(0x15e));}else _0x33e86f['className']=_0x60515['fkEqV'],_0x1ebc19[_0x3fedde(0x107)]=_0x60515[_0x3fedde(0x12c)];document[_0x3fedde(0x13b)](_0x60515['vOYjZ'])[_0x3fedde(0x137)](_0x265f53=>{const _0x1ef3ed=_0x3fedde;if(_0x60515[_0x1ef3ed(0xda)](_0x1ef3ed(0x13a),_0x60515[_0x1ef3ed(0x138)])){const _0x2dba45=_0x265f53[_0x1ef3ed(0xf4)](_0x60515[_0x1ef3ed(0x102)]);I18N[_0x24f027][_0x2dba45]&&(_0x265f53['innerHTML']=I18N[_0x24f027][_0x2dba45]);}else _0x423dff[_0x1ef3ed(0x101)]=_0x3110ea[_0x53a586][_0x2d0246];}),_0x60515['KYlaI'](renderTenorButtons),_0x60515['FQTik'](renderRateTable);}function toggleSummaryModal(){const _0x25b16a=_0x347ace,_0x2c6c17={'UTAMV':_0x25b16a(0x120),'QzOmo':_0x25b16a(0x131),'DnPWk':_0x25b16a(0xf9)},_0x6ff1f6=document[_0x25b16a(0xe3)](_0x2c6c17[_0x25b16a(0x130)]);_0x6ff1f6[_0x25b16a(0x118)][_0x25b16a(0x126)](_0x2c6c17['QzOmo']),_0x6ff1f6[_0x25b16a(0x118)]['toggle'](_0x2c6c17[_0x25b16a(0xf7)]);}function copyResult(){const _0x1b6b7a=_0x347ace,_0x391004={'SrVGd':_0x1b6b7a(0xee),'cczAM':function(_0x8724,_0x389d35){return _0x8724(_0x389d35);},'kPLZl':'textarea','GCMWe':function(_0x22dd1f,_0x541b48){return _0x22dd1f===_0x541b48;},'XkiSO':_0x1b6b7a(0x142),'NpzrK':function(_0x1c4647,_0x3b9257){return _0x1c4647!==_0x3b9257;},'lkZnP':_0x1b6b7a(0xfe),'ZKXQh':_0x1b6b7a(0x171)},_0x411357=_0x1b6b7a(0xd2)+_0x391004[_0x1b6b7a(0x174)](formatNumber,state['amount'])+_0x1b6b7a(0x161)+state['selectedDays']+'\x20Days\x20('+state[_0x1b6b7a(0xe4)]+'%\x20p.a.)\x0aTotal\x20Interest:\x20'+displayInterest[_0x1b6b7a(0x176)]+_0x1b6b7a(0x127)+displayTotal[_0x1b6b7a(0x176)],_0x4fd776=document[_0x1b6b7a(0x158)](_0x391004['kPLZl']);_0x4fd776['value']=_0x411357,document[_0x1b6b7a(0x108)][_0x1b6b7a(0x112)](_0x4fd776),_0x4fd776[_0x1b6b7a(0x12f)]();try{_0x391004[_0x1b6b7a(0x125)](_0x1b6b7a(0x141),_0x1b6b7a(0x16e))?_0x35f341['setItem'](_0x391004[_0x1b6b7a(0x169)],_0x5306fa[_0x1b6b7a(0xf5)](_0x18f00b)):(document['execCommand'](_0x391004['XkiSO']),_0x391004[_0x1b6b7a(0x174)](showToast,I18N[state[_0x1b6b7a(0x122)]][_0x1b6b7a(0x119)]));}catch(_0x792685){if(_0x391004[_0x1b6b7a(0x14d)](_0x391004[_0x1b6b7a(0x139)],_0x391004[_0x1b6b7a(0x139)])){const _0x3b769e=_0x4cd688[_0x46af0d[_0x1b6b7a(0x122)]][_0x1b6b7a(0xe8)];_0x1d4179[_0x1b6b7a(0x101)]=_0x406048[_0x1b6b7a(0x13c)]((_0x466d2d,_0x3cddce)=>_0x1b6b7a(0x157)+(_0x466d2d['days']===_0x39adb5[_0x1b6b7a(0x160)]?_0x1b6b7a(0x16f):_0x1b6b7a(0x113))+'\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22py-2.5\x20px-4\x22>'+_0x466d2d[_0x1b6b7a(0x10d)]+'\x20'+_0x3b769e+_0x1b6b7a(0xfd)+_0x466d2d[_0x1b6b7a(0x147)]+'\x22\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20onchange=\x22updateTierRate('+_0x3cddce+_0x1b6b7a(0x133))[_0x1b6b7a(0x148)]('');}else console['error'](_0x391004[_0x1b6b7a(0x114)],_0x792685);}document[_0x1b6b7a(0x108)]['removeChild'](_0x4fd776);}function showToast(_0x5f3d95){const _0x1f9441=_0x347ace,_0x1fb558={'KXhDK':_0x1f9441(0x164)},_0x4d4ca4=document['getElementById']('toast');_0x4d4ca4[_0x1f9441(0x176)]=_0x5f3d95,_0x4d4ca4[_0x1f9441(0x118)][_0x1f9441(0x10a)](_0x1fb558['KXhDK']),setTimeout(()=>{const _0x2ea711=_0x1f9441;_0x4d4ca4['classList']['add'](_0x1fb558[_0x2ea711(0x16c)]);},0x898);}window[_0x347ace(0x144)](_0x347ace(0x11a),()=>{const _0x363247=_0x347ace,_0x15b512={'KHiLb':function(_0x459ac1){return _0x459ac1();},'cGJwD':function(_0x1ff92e){return _0x1ff92e();}};rateInput[_0x363247(0x132)]=state[_0x363247(0xe4)],_0x15b512[_0x363247(0x162)](renderTenorButtons),_0x15b512['KHiLb'](renderRateTable),_0x15b512[_0x363247(0xea)](calculateAndRender);});
+</script>
+</body>
+</html>
